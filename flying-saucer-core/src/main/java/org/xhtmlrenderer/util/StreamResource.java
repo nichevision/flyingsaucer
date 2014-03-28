@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.BufferedInputStream;
+import java.util.zip.GZIPInputStream;
 import java.net.URLConnection;
 import java.net.URL;
 
@@ -70,7 +71,9 @@ public class StreamResource {
           _uriFinal = _conn.getURL().toString();
         }
 
-        return new BufferedInputStream(_inputStream);
+        // Check for encoding
+        final InputStream is =  "gzip".equals(_conn.getContentEncoding()) ? new GZIPInputStream(_inputStream) : _inputStream;
+        return new BufferedInputStream(is);
     }
 
     public String getFinalUri() {
