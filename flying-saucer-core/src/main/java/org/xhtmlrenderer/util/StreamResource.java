@@ -16,12 +16,14 @@ import java.net.URL;
  */
 public class StreamResource {
     private final String _uri;
+    private String _uriFinal;
     private URLConnection _conn;
     private int _slen;
     private InputStream _inputStream;
 
     public StreamResource(final String uri) {
         _uri = uri;
+        _uriFinal = uri;
     }
 
     public void connect() {
@@ -62,7 +64,17 @@ public class StreamResource {
 
     public BufferedInputStream bufferedStream() throws IOException {
         _inputStream = _conn.getInputStream();
+
+        // Check for redirects
+        if (!_conn.getURL().toString().equals(_uri)) {
+          _uriFinal = _conn.getURL().toString();
+        }
+
         return new BufferedInputStream(_inputStream);
+    }
+
+    public String getFinalUri() {
+      return _uriFinal;
     }
 
     public void close() {
