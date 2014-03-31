@@ -3,7 +3,7 @@ package com.github.danfickle.flyingsaucer.bootstrap;
 import java.awt.Color;
 import java.awt.Dimension;
 import org.xhtmlrenderer.simple.HtmlNamespaceHandler;
-import org.xhtmlrenderer.simple.XHTMLPanel;
+import com.github.danfickle.flyingsaucer.swing.XHTMLPanel;
 
 public class BsUtil 
 {

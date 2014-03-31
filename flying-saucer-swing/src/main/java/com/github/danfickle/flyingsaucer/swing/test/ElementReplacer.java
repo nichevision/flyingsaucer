@@ -1,4 +1,4 @@
-package org.xhtmlrenderer.test;
+package com.github.danfickle.flyingsaucer.swing.test;
 
 import org.jsoup.nodes.Element;
 import org.xhtmlrenderer.layout.LayoutContext;
