@@ -360,7 +360,7 @@ public abstract class BasicPanel extends RootPanel implements
 =========== set document utility methods =============== */
 
     public void setDocument(InputStream stream, String url, NamespaceHandler nsh) {
-        Document dom = HTMLResource.load(stream).getDocument();
+        Document dom = HTMLResource.load(stream, url).getDocument();
 
         setDocument(dom, url, nsh);
     }
@@ -414,8 +414,9 @@ public abstract class BasicPanel extends RootPanel implements
                 return;
             }
         }
-        Document dom = loadDocument(url);
-        setDocument(dom, url);
+        final HTMLResource resource = loadResource(url);
+        final Document dom = resource.getDocument();
+        setDocument(dom, resource.getURI());
     }
 
 
@@ -473,6 +474,10 @@ public abstract class BasicPanel extends RootPanel implements
     protected Document loadDocument(final String uri) {
         HTMLResource xmlResource = sharedContext.getUac().getXMLResource(uri);
         return xmlResource.getDocument();
+    }
+
+    protected HTMLResource loadResource(final String uri) {
+        return sharedContext.getUac().getXMLResource(uri);
     }
 
     /* ====== hover and active utility methods
