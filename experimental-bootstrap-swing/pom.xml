@@ -23,5 +23,10 @@
 			<artifactId>flying-saucer-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+    <dependency>
+      <groupId>org.xhtmlrenderer</groupId>
+      <artifactId>flying-saucer-swing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 	</dependencies>
 </project>

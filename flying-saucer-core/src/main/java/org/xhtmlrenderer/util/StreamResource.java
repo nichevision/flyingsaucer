@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.BufferedInputStream;
+import java.util.zip.GZIPInputStream;
 import java.net.URLConnection;
 import java.net.URL;
 
@@ -16,12 +17,14 @@ import java.net.URL;
  */
 public class StreamResource {
     private final String _uri;
+    private String _uriFinal;
     private URLConnection _conn;
     private int _slen;
     private InputStream _inputStream;
 
     public StreamResource(final String uri) {
         _uri = uri;
+        _uriFinal = uri;
     }
 
     public void connect() {
@@ -62,7 +65,19 @@ public class StreamResource {
 
     public BufferedInputStream bufferedStream() throws IOException {
         _inputStream = _conn.getInputStream();
-        return new BufferedInputStream(_inputStream);
+
+        // Check for redirects
+        if (!_conn.getURL().toString().equals(_uri)) {
+          _uriFinal = _conn.getURL().toString();
+        }
+
+        // Check for encoding
+        final InputStream is =  "gzip".equals(_conn.getContentEncoding()) ? new GZIPInputStream(_inputStream) : _inputStream;
+        return new BufferedInputStream(is);
+    }
+
+    public String getFinalUri() {
+      return _uriFinal;
     }
 
     public void close() {

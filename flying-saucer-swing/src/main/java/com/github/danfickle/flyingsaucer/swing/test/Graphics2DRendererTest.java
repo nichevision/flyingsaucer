@@ -1,6 +1,6 @@
-package org.xhtmlrenderer.test;
+package com.github.danfickle.flyingsaucer.swing.test;
 
-import org.xhtmlrenderer.simple.Graphics2DRenderer;
+import com.github.danfickle.flyingsaucer.swing.Graphics2DRenderer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -1,4 +1,5 @@
-package org.xhtmlrenderer.test;/*
+package com.github.danfickle.flyingsaucer.swing.test;
+/*
  * {{{ header & license
  * Copyright (c) 2006 Patrick Wright
  *

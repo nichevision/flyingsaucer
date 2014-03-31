@@ -1,4 +1,4 @@
-package org.xhtmlrenderer.test;
+package com.github.danfickle.flyingsaucer.swing.test;
 
 import org.xhtmlrenderer.layout.LayoutContext;
 import org.xhtmlrenderer.render.Box;

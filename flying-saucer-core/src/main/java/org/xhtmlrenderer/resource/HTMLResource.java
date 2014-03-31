@@ -35,13 +35,16 @@ import org.xhtmlrenderer.util.XRRuntimeException;
  */
 public class HTMLResource extends AbstractResource {
     private Document document;
+    private final String _uri;
     
     private HTMLResource(String html)
     {
     	setDocument(Jsoup.parse(html));
+      _uri = null;
     }
 
-    private HTMLResource(InputStream stream) {
+    private HTMLResource(InputStream stream, String uri) {
+      _uri = uri;
     	try {
 			document = Jsoup.parse(stream, null, "");
 		} catch (IOException e) {
@@ -52,6 +55,7 @@ public class HTMLResource extends AbstractResource {
     
     private HTMLResource(File file)
     {
+      _uri = null;
     	try {
 			document = Jsoup.parse(file, null);
 		} catch (IOException e) {
@@ -65,10 +69,13 @@ public class HTMLResource extends AbstractResource {
     	return new HTMLResource(html);
     }
     
-    public static HTMLResource load(InputStream stream) {
-        return new HTMLResource(stream);
+    public static HTMLResource load(InputStream stream, String uri) {
+        return new HTMLResource(stream, uri);
     }
 
+    public String getURI() {
+      return _uri;
+    }
     public static HTMLResource load(Reader reader) {
     	char[] cbuf = new char[4096];
     	int numChars;

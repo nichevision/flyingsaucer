@@ -1,27 +1,25 @@
-package org.xhtmlrenderer.test;
+package com.github.danfickle.flyingsaucer.swing.test;
+
+import com.github.danfickle.flyingsaucer.swing.Graphics2DRenderer;
+import org.xhtmlrenderer.util.Uu;
 
 import java.io.File;
 import java.util.Date;
 
-import org.xhtmlrenderer.simple.Graphics2DRenderer;
-import org.xhtmlrenderer.util.Uu;
-
-public class SimplePageTest {
+public class NetBeansPageTest {
 
     public static void main(String[] args) throws Exception {
         long total = 0;
         int cnt = 1;
-        String demosDir = "d:/java/javanet/xhtmlrenderer/demos/browser/xhtml/new";
-        String page = demosDir + "/dead-simple-page.xhtml";
-        if ( args.length == 1 ) {
-            page = demosDir + "/" + args[0];
-        }
+        String demosDir = "d:/data/projects/xhtmlrenderer/demos";
+        String page = demosDir + "/browser/xhtml/layout/multicol/glish/one.html";
         //String page = demosDir + "/browser/xhtml/hamlet.xhtml";
         //String page = demosDir + "/splash/splash.html";
         System.out.println("Testing with page " + page);
         for (int i = 0; i < cnt; i++) {
             Date start = new Date();
-            Graphics2DRenderer.renderToImage(new File(page).toURL().toExternalForm(),
+            Graphics2DRenderer.renderToImage(
+                    new File(page).toURL().toExternalForm(),
                     700, 700);
             Date end = new Date();
             long diff = (end.getTime() - start.getTime());

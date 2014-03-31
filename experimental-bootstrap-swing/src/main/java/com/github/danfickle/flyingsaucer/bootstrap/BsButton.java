@@ -1,7 +1,7 @@
 package com.github.danfickle.flyingsaucer.bootstrap;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import org.xhtmlrenderer.simple.XHTMLPanel;
+import com.github.danfickle.flyingsaucer.swing.XHTMLPanel;
 
 
 public class BsButton extends JButton
