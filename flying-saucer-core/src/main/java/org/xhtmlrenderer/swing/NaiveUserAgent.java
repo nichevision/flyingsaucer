@@ -216,7 +216,7 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
         InputStream inputStream = resolveAndOpenStream(uri);
         HTMLResource xmlResource;
         try {
-            xmlResource = HTMLResource.load(inputStream);
+            xmlResource = HTMLResource.load(inputStream, uri);
         } finally {
             if (inputStream != null) {
                 try {

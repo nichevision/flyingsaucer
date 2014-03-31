@@ -158,7 +158,7 @@ public class DemoUserAgent implements UserAgentCallback {
             uc.connect();
             // TODO: String contentType = uc.getContentType(); Maybe should popup a choice when content/unknown!
             inputStream = uc.getInputStream();
-            xr = HTMLResource.load(inputStream);
+            xr = HTMLResource.load(inputStream, uri);
         } catch (MalformedURLException e) {
             XRLog.exception("bad URL given: " + uri, e);
         } catch (IOException e) {

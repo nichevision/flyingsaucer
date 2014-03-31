@@ -127,13 +127,13 @@ public class PanelManager extends DelegatingUserAgent {
             //Maybe should popup a choice when content/unknown!
             if (contentType == null || contentType.equals("text/plain") || contentType.equals("content/unknown")) {
                 inputStream = uc.getInputStream();
-                xr = HTMLResource.load(inputStream);
+                xr = HTMLResource.load(inputStream, uri);
             } else if (contentType.startsWith("image")) {
                 String doc = "<img src='" + uri + "'/>";
                 xr = HTMLResource.load(doc);
             } else {
                 inputStream = uc.getInputStream();
-                xr = HTMLResource.load(inputStream);
+                xr = HTMLResource.load(inputStream, uri);
             }
         } catch (MalformedURLException e) {
             XRLog.exception("bad URL given: " + uri, e);
