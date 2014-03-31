@@ -19,8 +19,8 @@
 
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.extend.ReplacedElementFactory;
-import org.xhtmlrenderer.test.DelegatingReplacedElementFactory;
-import org.xhtmlrenderer.test.SwingImageReplacer;
+import com.github.danfickle.flyingsaucer.swing.test.DelegatingReplacedElementFactory;
+import com.github.danfickle.flyingsaucer.swing.test.SwingImageReplacer;
 
 import com.github.danfickle.flyingsaucer.swing.XHTMLPanel;
 

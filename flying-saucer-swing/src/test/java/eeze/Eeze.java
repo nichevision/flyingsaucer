@@ -33,8 +33,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import org.xhtmlrenderer.simple.FSScrollPane;
-import org.xhtmlrenderer.simple.Graphics2DRenderer;
-import org.xhtmlrenderer.simple.XHTMLPanel;
+import com.github.danfickle.flyingsaucer.swing.Graphics2DRenderer;
+import com.github.danfickle.flyingsaucer.swing.XHTMLPanel;
 import org.xhtmlrenderer.util.XRLog;
 
 

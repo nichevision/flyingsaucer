@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  * }}}
  */
-package org.xhtmlrenderer.test;
+package com.github.danfickle.flyingsaucer.swing.test;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -28,7 +28,7 @@ import java.util.logging.Level;
 
 import org.jsoup.nodes.Document;
 import org.xhtmlrenderer.render.Box;
-import org.xhtmlrenderer.simple.Graphics2DRenderer;
+import com.github.danfickle.flyingsaucer.swing.Graphics2DRenderer;
 import org.xhtmlrenderer.util.Uu;
 import org.xhtmlrenderer.util.XMLUtil;
 import org.xhtmlrenderer.util.XRLog;
