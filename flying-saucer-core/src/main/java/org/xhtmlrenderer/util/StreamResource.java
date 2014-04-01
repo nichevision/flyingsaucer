@@ -5,18 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.BufferedInputStream;
 import java.util.zip.GZIPInputStream;
+import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.net.URL;
 
-/**
- * Created by IntelliJ IDEA.
- * User: pdoubleya
- * Date: May 15, 2009
- * Time: 11:56:03 AM
- * To change this template use File | Settings | File Templates.
- */
 public class StreamResource {
-    private final String _uri;
+    private String _uri;
     private String _uriFinal;
     private URLConnection _conn;
     private int _slen;
@@ -41,11 +35,34 @@ public class StreamResource {
             // Since we target 1.4, we use a couple of system properties--note these are only supported
             // in the Sun JDK implementation--see the Net properties guide in the JDK
             // e.g. file:///usr/java/j2sdk1.4.2_17/docs/guide/net/properties.html
-            System.setProperty("sun.net.client.defaultConnectTimeout", String.valueOf(10 * 1000));
-            System.setProperty("sun.net.client.defaultReadTimeout", String.valueOf(30 * 1000));
-
+            //System.setProperty("sun.net.client.defaultConnectTimeout", String.valueOf(10 * 1000));
+            //System.setProperty("sun.net.client.defaultReadTimeout", String.valueOf(30 * 1000));
+            _conn.setRequestProperty("Accept-Encoding", "gzip");
+            
             _conn.connect();
             _slen = _conn.getContentLength();
+            
+            if (_conn instanceof HttpURLConnection)
+            {
+            	// Java doesn't automatically follow redirects from http
+            	// to https or vice versa but browsers do.
+            	// TODO: This should be configurable, especially going from
+            	// https to http.
+            	// TODO: Do more than one redirect.
+
+            	HttpURLConnection http = (HttpURLConnection) _conn;
+            	int code = http.getResponseCode();
+            	
+            	if (code >= 300 && code < 400)
+            	{
+            		String redirect = http.getHeaderField("Location");
+            		_uri = redirect;
+            		_conn = new URL(_uri).openConnection();
+            		_conn.setRequestProperty("Accept-Encoding", "gzip");
+            		_conn.connect();
+            		_slen = _conn.getContentLength();
+            	}
+            }
         } catch (java.net.MalformedURLException e) {
             XRLog.exception("bad URL given: " + _uri, e);
         } catch (FileNotFoundException e) {
@@ -89,4 +106,9 @@ public class StreamResource {
             }
         }
     }
+
+	public URLConnection getUrlConnection() 
+	{
+		return _conn;
+	}
 }

@@ -21,6 +21,7 @@ package org.xhtmlrenderer.demo.browser;
 
 import org.xhtmlrenderer.resource.HTMLResource;
 import org.xhtmlrenderer.swing.DelegatingUserAgent;
+import org.xhtmlrenderer.util.StreamResource;
 import org.xhtmlrenderer.util.Uu;
 import org.xhtmlrenderer.util.XRLog;
 import org.xhtmlrenderer.util.GeneralUtil;
@@ -28,6 +29,7 @@ import org.xhtmlrenderer.util.GeneralUtil;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 
 /**
@@ -121,18 +123,28 @@ public class PanelManager extends DelegatingUserAgent {
         URLConnection uc = null;
         InputStream inputStream = null;
         try {
-            uc = new URL(uri).openConnection();
-            uc.connect();
+        	StreamResource strm = new StreamResource(uri);
+        	strm.connect();
+        	uc = strm.getUrlConnection();
             String contentType = uc.getContentType();
+
+            XRLog.load(Level.INFO, "Content-Type = " + contentType);
+
+            if (uc instanceof HttpURLConnection)
+            {
+            	XRLog.load(Level.INFO, "Response Code = " + ((HttpURLConnection) uc).getResponseCode());
+            	XRLog.load(Level.INFO, "Response Message = " + ((HttpURLConnection) uc).getResponseMessage());
+            }
+            
             //Maybe should popup a choice when content/unknown!
             if (contentType == null || contentType.equals("text/plain") || contentType.equals("content/unknown")) {
-                inputStream = uc.getInputStream();
+                inputStream = strm.bufferedStream();
                 xr = HTMLResource.load(inputStream, uri);
             } else if (contentType.startsWith("image")) {
                 String doc = "<img src='" + uri + "'/>";
                 xr = HTMLResource.load(doc);
             } else {
-                inputStream = uc.getInputStream();
+                inputStream = strm.bufferedStream();
                 xr = HTMLResource.load(inputStream, uri);
             }
         } catch (MalformedURLException e) {
