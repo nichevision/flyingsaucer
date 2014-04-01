@@ -9,13 +9,13 @@ TODO
 + Remove redundant casts.
 + Update LICENSE.
 + Update Samples.
-+ Support media rules.
 + Support Bootstrap styles.
 + Lots more tests.
 + Implement builder API. See [proposed interface](/flying-saucer-core/src/main/java/org/xhtmlrenderer/service/HtmlRenderServiceConfigBuilder.java).
 
 DONE
 ----
++ Redirects and gzip response encoding.
 + Replace XML parser with Jsoup HTML5 parser.
 + Use a better text-breaker (Java's BreakIterator) to handle more languages.
 + CSS3 Support
@@ -29,6 +29,13 @@ DONE
 + Move to latest dependencies.
 + Delete extra files, jars, etc.
 
+BROWSER
+-------
+1. Fork and Clone the code.
+2. Set up Eclispe project with 'mvn eclipse:eclipse' command.
+3. Import project in Eclipse with File -> Import -> Existing project.
+3. Take the browser for a spin at:
+/flying-saucer-examples/src/main/java/org/xhtmlrenderer/demo/browser/BrowserStartup.java
 
 
 Flying Saucer
