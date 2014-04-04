@@ -204,7 +204,3 @@ public class LengthValue extends DerivedValue {
         return _style;
     }
 }
-
-/*
- * $Id$
- */

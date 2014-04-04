@@ -469,7 +469,3 @@ public class FloatManager {
         public void operate(Box floater);
     }
 }
-
-/*
- * $Id$
- */

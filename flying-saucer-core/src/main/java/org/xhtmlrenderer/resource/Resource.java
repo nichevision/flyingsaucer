@@ -26,13 +26,3 @@ package org.xhtmlrenderer.resource;
 public interface Resource {
     long getResourceLoadTimeStamp();    
 }
-
-/*
- * $Id$
- *
- * $Log$
- * Revision 1.1  2005/02/03 20:39:35  pdoubleya
- * Added to CVS.
- *
- *
- */
