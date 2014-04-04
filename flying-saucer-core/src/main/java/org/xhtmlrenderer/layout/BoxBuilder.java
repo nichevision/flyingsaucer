@@ -191,8 +191,8 @@ public class BoxBuilder {
         int cellCount = 0;
         boolean alwaysCreate = names.length > 1 && direction == MARGIN_BOX_HORIZONTAL;
 
-        for (int i = 0; i < names.length; i++) {
-            CascadedStyle cellStyle = pageInfo.createMarginBoxStyle(names[i], alwaysCreate);
+        for (MarginBoxName name : names) {
+            CascadedStyle cellStyle = pageInfo.createMarginBoxStyle(name, alwaysCreate);
             if (cellStyle != null) {
                 TableCellBox cell = createMarginBox(c, cellStyle, alwaysCreate);
                 if (cell != null) {
@@ -308,8 +308,7 @@ public class BoxBuilder {
     }
 
     private static boolean isAllProperTableNesting(IdentValue parentDisplay, List<Styleable> children) {
-        for (Iterator<Styleable> i = children.iterator(); i.hasNext();) {
-            Styleable child = i.next();
+        for (Styleable child : children) {
             if (!isProperTableNesting(parentDisplay, child.getStyle().getIdent(CSSName.DISPLAY))) {
                 return false;
             }
@@ -333,9 +332,7 @@ public class BoxBuilder {
         List<Styleable> childrenWithAnonymous = new ArrayList<Styleable>();
 
         IdentValue nextUp = getPreviousTableNestingLevel(target);
-        for (Iterator<Styleable> i = children.iterator(); i.hasNext();) {
-            Styleable styleable = i.next();
-
+        for (Styleable styleable : children) {
             if (matchesTableLevel(target, styleable.getStyle().getIdent(CSSName.DISPLAY))) {
                 childrenForAnonymous.add(styleable);
             } else {
@@ -380,8 +377,7 @@ public class BoxBuilder {
      */
     private static void rebalanceInlineContent(List<Styleable> content) {
         Map<Element, InlineBox> boxesByElement = new HashMap<Element, InlineBox>();
-        for (Iterator<Styleable> i = content.iterator(); i.hasNext();) {
-            Styleable styleable = i.next();
+        for (Styleable styleable : content) {
             if (styleable instanceof InlineBox) {
                 InlineBox iB = (InlineBox) styleable;
                 Element elem = iB.getElement();
@@ -394,8 +390,7 @@ public class BoxBuilder {
             }
         }
 
-        for (Iterator<InlineBox> i = boxesByElement.values().iterator(); i.hasNext();) {
-            InlineBox iB = i.next();
+        for (InlineBox iB : boxesByElement.values()) {
             iB.setEndsHere(true);
         }
     }
@@ -447,8 +442,7 @@ public class BoxBuilder {
         } else {
             List<Styleable> childrenForAnonymous = new ArrayList<Styleable>();
             List<Styleable> childrenWithAnonymous = new ArrayList<Styleable>();
-            for (Iterator<Styleable> i = children.iterator(); i.hasNext();) {
-                Styleable child = i.next();
+            for (Styleable child : children) {
                 IdentValue childDisplay = child.getStyle().getIdent(CSSName.DISPLAY);
 
                 if (isProperTableNesting(parentDisplay, childDisplay)) {
@@ -475,8 +469,7 @@ public class BoxBuilder {
     }
 
     private static boolean containsOrphanedTableContent(List<Styleable> children) {
-        for (Iterator<Styleable> i = children.iterator(); i.hasNext();) {
-            Styleable child = i.next();
+        for (Styleable child : children) {
             IdentValue display = child.getStyle().getIdent(CSSName.DISPLAY);
             if (display == IdentValue.TABLE_HEADER_GROUP ||
                     display == IdentValue.TABLE_ROW_GROUP ||
@@ -612,8 +605,7 @@ public class BoxBuilder {
 
     private static ChildBoxInfo lookForBlockContent(List<Styleable> styleables) {
         ChildBoxInfo result = new ChildBoxInfo();
-        for (Iterator<Styleable> i = styleables.iterator(); i.hasNext();) {
-            Styleable s = i.next();
+        for (Styleable s : styleables) {
             if (!s.getStyle().isLayedOutInInlineContext()) {
                 result.setContainsBlockLevelContent(true);
                 break;
@@ -799,8 +791,8 @@ public class BoxBuilder {
 
         List<Styleable> result = new ArrayList<Styleable>(values.size());
 
-        for (Iterator<?> i = values.iterator(); i.hasNext();) {
-            PropertyValue value = (PropertyValue) i.next();
+        for (Object valueObj : values) {
+            PropertyValue value = (PropertyValue) valueObj;
 
             ContentFunction contentFunction = null;
             FSFunction function = null;
@@ -943,16 +935,16 @@ public class BoxBuilder {
                 c, element, property, peName, style, CONTENT_LIST_DOCUMENT, null);
 
         if (style.isInline()) {
-            for (Iterator<Styleable> i = inlineBoxes.iterator(); i.hasNext();) {
-                InlineBox iB = (InlineBox) i.next();
+            for (Styleable styleable : inlineBoxes) {
+                InlineBox iB = (InlineBox) styleable;
                 iB.setStyle(style);
                 iB.applyTextTransform();
             }
             return inlineBoxes;
         } else {
             CalculatedStyle anon = style.createAnonymousStyle(IdentValue.INLINE);
-            for (Iterator<Styleable> i = inlineBoxes.iterator(); i.hasNext();) {
-                InlineBox iB = (InlineBox) i.next();
+            for (Styleable styleable : inlineBoxes) {
+                InlineBox iB = (InlineBox) styleable;
                 iB.setStyle(anon);
                 iB.applyTextTransform();
                 iB.setElement(null);
@@ -980,8 +972,7 @@ public class BoxBuilder {
                 c, element, property, null, style, CONTENT_LIST_MARGIN_BOX, info);
 
         CalculatedStyle anon = style.createAnonymousStyle(IdentValue.INLINE);
-        for (Iterator<Styleable> i = result.iterator(); i.hasNext();) {
-            Styleable s = i.next();
+        for (Styleable s : result) {
             if (s instanceof InlineBox) {
                 InlineBox iB = (InlineBox)s;
                 iB.setElement(null);
@@ -1224,8 +1215,7 @@ public class BoxBuilder {
         LinkedList<InlineBox> parents = new LinkedList<InlineBox>();
         List<InlineBox> savedParents = null;
 
-        for (Iterator<Styleable> i = children.iterator(); i.hasNext();) {
-            Styleable child = i.next();
+        for (Styleable child : children) {
             if (child.getStyle().isLayedOutInInlineContext() &&
                     ! (layoutRunningBlocks && child.getStyle().isRunning())) {
                 inline.add(child);

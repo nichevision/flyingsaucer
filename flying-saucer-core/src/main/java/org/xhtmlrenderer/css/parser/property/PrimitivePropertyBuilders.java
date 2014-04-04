@@ -887,9 +887,7 @@ public class PrimitivePropertyBuilders {
             // does it in standards mode so we do too.
             List<String> consecutiveIdents = new ArrayList<>();
             List<String> normalized = new ArrayList<>(values.size());
-            for (Iterator<PropertyValue> i = values.iterator(); i.hasNext(); ) {
-                PropertyValue value = (PropertyValue)i.next();
-
+            for (PropertyValue value : values) {
                 Token operator = value.getOperator();
                 if (operator != null && operator != Token.TK_COMMA) {
                     cssThrowError(LangId.INVALID_FONT_FAMILY);
@@ -1468,8 +1466,7 @@ public class PrimitivePropertyBuilders {
                 }
             }
 
-            for (Iterator<PropertyValue> i = values.iterator(); i.hasNext(); ) {
-                PropertyValue value = (PropertyValue)i.next();
+            for (PropertyValue value : values) {
                 checkInheritAllowed(value, false);
                 checkIdentType(cssName, value);
                 IdentValue ident = checkIdent(cssName, value);

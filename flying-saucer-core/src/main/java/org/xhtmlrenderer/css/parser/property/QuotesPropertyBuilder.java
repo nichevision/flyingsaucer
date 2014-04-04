@@ -21,7 +21,6 @@ package org.xhtmlrenderer.css.parser.property;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.xhtmlrenderer.css.constants.CSSName;
@@ -33,6 +32,7 @@ import org.xhtmlrenderer.css.parser.PropertyValueImp;
 import org.xhtmlrenderer.css.parser.PropertyValueImp.CSSValueType;
 import org.xhtmlrenderer.css.sheet.PropertyDeclaration;
 import org.xhtmlrenderer.css.sheet.StylesheetInfo.CSSOrigin;
+
 import static org.xhtmlrenderer.css.parser.property.BuilderUtil.*;
 
 public class QuotesPropertyBuilder implements PropertyBuilder {
@@ -57,8 +57,7 @@ public class QuotesPropertyBuilder implements PropertyBuilder {
         }
         
         List<String> resultValues = new ArrayList<String>();
-        for (Iterator<PropertyValue> i = values.iterator(); i.hasNext(); ) {
-            PropertyValue value = (PropertyValue)i.next();
+        for (PropertyValue value : values) {
             
             if (value.getOperator() != null) {
                 throw new CSSParseException(

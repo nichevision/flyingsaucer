@@ -22,7 +22,6 @@ package org.xhtmlrenderer.layout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -116,8 +115,8 @@ public class InlineBoxing {
 
         int lineOffset = 0;
 
-        for (Iterator<Styleable> i = box.getInlineContent().iterator(); i.hasNext(); ) {
-            Styleable node = (Styleable)i.next();
+        for (Styleable styleable : box.getInlineContent()) {
+            Styleable node = (Styleable)styleable;
 
             if (node.getStyle().isInline()) {
                 InlineBox iB = (InlineBox)node;
@@ -504,8 +503,7 @@ public class InlineBoxing {
             if (vaContext.getInlineTop() < 0) {
                 moveLineContents(current, -vaContext.getInlineTop());
                 if (lBDecorations != null) {
-                    for (Iterator<TextDecoration> i = lBDecorations.iterator(); i.hasNext(); ) {
-                        TextDecoration lBDecoration = i.next();
+                    for (TextDecoration lBDecoration : lBDecorations) {
                         lBDecoration.setOffset(lBDecoration.getOffset() - vaContext.getInlineTop());
                     }
                 }
@@ -787,8 +785,7 @@ public class InlineBoxing {
         }
 
         if (pendingFloats.size() > 0) {
-            for (Iterator<FloatLayoutResult> i = pendingFloats.iterator(); i.hasNext(); ) {
-                FloatLayoutResult layoutResult = i.next();
+            for (FloatLayoutResult layoutResult : pendingFloats) {
                 LayoutUtil.layoutFloated(c, current, layoutResult.getBlock(), maxAvailableWidth, null);
                 current.addNonFlowContent(layoutResult.getBlock());
             }
@@ -930,10 +927,8 @@ public class InlineBoxing {
         InlineLayoutBox previousIB = null;
 
         boolean first = true;
-        for (Iterator<InlineBox> i = openParents.iterator(); i.hasNext();) {
-            InlineBox iB = i.next();
-            currentIB = new InlineLayoutBox(
-                    c, iB.getElement(), iB.getStyle(), cbWidth);
+        for (InlineBox iB : openParents) {
+            currentIB = new InlineLayoutBox(c, iB.getElement(), iB.getStyle(), cbWidth);
 
             InlineLayoutBox prev = iBMap.get(iB);
             if (prev != null) {

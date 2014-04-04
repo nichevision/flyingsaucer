@@ -89,8 +89,8 @@ public class PageInfo {
     }
     
     public boolean hasAny(MarginBoxName[] marginBoxes) {
-        for (int i = 0; i < marginBoxes.length; i++) {
-            if (_marginBoxes.containsKey(marginBoxes[i])) {
+        for (MarginBoxName marginBox : marginBoxes) {
+            if (_marginBoxes.containsKey(marginBox)) {
                 return true;
             }
         }

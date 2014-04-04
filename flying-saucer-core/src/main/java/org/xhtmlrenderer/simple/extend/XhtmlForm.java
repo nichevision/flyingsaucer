@@ -160,12 +160,12 @@ public class XhtmlForm {
             if (field.includeInSubmission(source)) {
                 String [] dataStrings = field.getFormDataStrings();
                 
-                for (int i = 0; i < dataStrings.length; i++) {
+                for (String dataString : dataStrings) {
                     if (!first) {
                         data.append('&');
                     }
     
-                    data.append(dataStrings[i]);
+                    data.append(dataString);
                     first=false;
                 }
             }

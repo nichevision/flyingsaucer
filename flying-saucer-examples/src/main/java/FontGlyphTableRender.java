@@ -17,11 +17,35 @@
  */
 
 
-import com.github.danfickle.flyingsaucer.swing.FSMouseListener;
-import com.github.danfickle.flyingsaucer.swing.LinkListener;
-import com.github.danfickle.flyingsaucer.swing.XHTMLPanel;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.BaseFont;
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.jsoup.nodes.Document;
 import org.xhtmlrenderer.event.DefaultDocumentListener;
@@ -30,15 +54,12 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import org.xhtmlrenderer.resource.HTMLResource;
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.simple.HtmlNamespaceHandler;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+
+import com.github.danfickle.flyingsaucer.swing.FSMouseListener;
+import com.github.danfickle.flyingsaucer.swing.LinkListener;
+import com.github.danfickle.flyingsaucer.swing.XHTMLPanel;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.BaseFont;
 
 /**
  * Opens a frame and displays, for a selected font, the glyphs for a range of Unicode code points. Can be used to
@@ -245,9 +266,8 @@ public class FontGlyphTableRender {
     }
 
     private void resetMouseListeners() {
-        List l = xpanel.getMouseTrackingListeners();
-        for (Iterator i = l.iterator(); i.hasNext();) {
-            FSMouseListener listener = (FSMouseListener) i.next();
+        List<FSMouseListener> l = xpanel.getMouseTrackingListeners();
+        for (FSMouseListener listener : l) {
             if (listener instanceof LinkListener) {
                 xpanel.removeMouseTrackingListener(listener);
             }
@@ -511,8 +531,8 @@ public class FontGlyphTableRender {
     private static class Table {
         private int colCnt;
 
-        private List cols = new ArrayList();
-        private List headerLines = new ArrayList();
+        private List<Col> cols = new ArrayList<Col>();
+        private List<String> headerLines = new ArrayList<String>();
 
         public Table(int colCnt) {
             this.colCnt = colCnt;
@@ -520,8 +540,7 @@ public class FontGlyphTableRender {
 
         public String toHtml(String fontFamily, int curFrom) {
             StringBuilder sb = new StringBuilder();
-            for (Iterator it = headerLines.iterator(); it.hasNext();) {
-                String line = (String) it.next();
+            for (String line : headerLines) {
                 sb.append("<p>").append(line).append("</p>\n");
 
             }
@@ -531,13 +550,13 @@ public class FontGlyphTableRender {
 
             sb.append("<table>\n");
             for (int i = 0; i < colCnt; i++) {
-                sb.append("<col class=\"").append(((Col) cols.get(i)).cssClass).append("\"/>\n");
+                sb.append("<col class=\"").append(cols.get(i).cssClass).append("\"/>\n");
             }
             int cnt = 0;
             sb.append("<tr>\n");
-            for (Iterator it = cols.iterator(); it.hasNext();) {
-                Col col = (Col) it.next();
-                sb.append("<td class=\"").append(((Col) cols.get(cnt)).cssClass).append("\">").append(col.content).append("</td>");
+            for (Iterator<Col> it = cols.iterator(); it.hasNext();) {
+                Col col = it.next();
+                sb.append("<td class=\"").append(cols.get(cnt).cssClass).append("\">").append(col.content).append("</td>");
                 if (++cnt % colCnt == 0 && it.hasNext()) {
                     sb.append("\n</tr>\n");
                     sb.append("<tr>\n");

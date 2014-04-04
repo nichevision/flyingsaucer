@@ -374,9 +374,11 @@ public class LayoutContext implements CssContext {
             if (_parent == null) _parent = new CounterContext();//top-level context, above root element
             //first the explicitly named counters
             List<?> resets = style.getCounterReset();
-            if (resets != null) for (Iterator<?> i = resets.iterator(); i.hasNext();) {
-                CounterData cd = (CounterData) i.next();
-                _parent.resetCounter(cd);
+            if (resets != null) {
+              for (Object name : resets) {
+                  CounterData cd = (CounterData) name;
+                  _parent.resetCounter(cd);
+              }
             }
 
             List<?> increments = style.getCounterIncrement();

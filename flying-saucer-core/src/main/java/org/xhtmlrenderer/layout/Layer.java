@@ -296,8 +296,8 @@ public class Layer {
     
     private void paintSelection(RenderingContext c, List<Box> lines) {
         if (c.getOutputDevice().isSupportsSelection()) {
-            for (Iterator<Box> i = lines.iterator(); i.hasNext();) {
-                InlinePaintable paintable = (InlinePaintable) i.next();
+            for (Box box : lines) {
+                InlinePaintable paintable = (InlinePaintable) box;
                 if (paintable instanceof InlineLayoutBox) {
                     ((InlineLayoutBox)paintable).paintSelection(c);
                 }
@@ -432,8 +432,7 @@ public class Layer {
         Map<TableBox, TableCellBox> triggerCellsByTable = new HashMap<>();
         
         Set<CollapsedBorderValue> all = new HashSet<>();
-        for (Iterator<Box> i = blocks.iterator(); i.hasNext(); ) {
-            Box b = i.next();
+        for (Box b : blocks) {
             if (b instanceof TableCellBox) {
                 TableCellBox cell = (TableCellBox)b;
                 if (cell.hasCollapsedPaintingBorder()) {
@@ -453,8 +452,7 @@ public class Layer {
         } else {
             Map<TableCellBox, List<CollapsedBorderSide>> result = new HashMap<>();
             
-            for (Iterator<TableCellBox> i = triggerCellsByTable.values().iterator(); i.hasNext(); ) {
-                TableCellBox cell = i.next();
+            for (TableCellBox cell : triggerCellsByTable.values()) {
                 List<CollapsedBorderSide> borders = cellBordersByTable.get(cell.getTable());
                 Collections.sort(borders);
                 result.put(cell, borders);
@@ -465,8 +463,7 @@ public class Layer {
     }
     
     private void paintCollapsedTableBorders(RenderingContext c, List<CollapsedBorderSide> borders) {
-        for (Iterator<CollapsedBorderSide> i = borders.iterator(); i.hasNext(); ) {
-            CollapsedBorderSide border = i.next();
+        for (CollapsedBorderSide border : borders) {
             border.getCell().paintCollapsedBorder(c, border.getSide());
         }
     }
@@ -593,9 +590,7 @@ public class Layer {
     }
     
     public void positionChildren(LayoutContext c) {
-        for (Iterator<Layer> i = getChildren().iterator(); i.hasNext();) {
-            Layer child = i.next();
-
+        for (Layer child : getChildren()) {
             child.position(c);
         }
     }
@@ -616,9 +611,7 @@ public class Layer {
     }
 
     private boolean containsFixedLayer() {
-        for (Iterator<Layer> i = getChildren().iterator(); i.hasNext();) {
-            Layer child = i.next();
-
+        for (Layer child : getChildren()) {
             if (child.getMaster().getStyle().isFixed() || child.containsFixedLayer()) {
                 return true;
             }
@@ -933,8 +926,7 @@ public class Layer {
             CssContext cssCtx, int mode, int additionalClearance) {
         List<PageBox> pages = getPages();
         int paintingTop = additionalClearance;
-        for (Iterator<PageBox> i = pages.iterator(); i.hasNext(); ) {
-            PageBox page = i.next();
+        for (PageBox page : pages) {
             page.setPaintingTop(paintingTop);
             if (mode == PAGED_MODE_SCREEN) {
                 page.setPaintingBottom(paintingTop + page.getHeight(cssCtx));
@@ -950,8 +942,7 @@ public class Layer {
     public int getMaxPageWidth(CssContext cssCtx, int additionalClearance) {
         List<PageBox> pages = getPages();
         int maxWidth = 0;
-        for (Iterator<PageBox> i = pages.iterator(); i.hasNext(); ) {
-            PageBox page = i.next();
+        for (PageBox page : pages) {
             int pageWidth = page.getWidth(cssCtx) + additionalClearance*2;
             if (pageWidth > maxWidth) {
                 maxWidth = pageWidth;
@@ -1034,8 +1025,7 @@ public class Layer {
         
         if (which == PageElementPosition.START) {
             BlockBox prev = null;
-            for (Iterator<BlockBox> i = blocks.iterator(); i.hasNext(); ) {
-                BlockBox b = i.next();
+            for (BlockBox b : blocks) {
                 if (b.getStaticEquivalent().getAbsY() >= page.getTop()) {
                     break;
                 }
@@ -1043,8 +1033,7 @@ public class Layer {
             }
             return prev;
         } else if (which == PageElementPosition.FIRST) {
-            for (Iterator<BlockBox> i = blocks.iterator(); i.hasNext(); ) {
-                BlockBox b = i.next();
+            for (BlockBox b : blocks) {
                 int absY = b.getStaticEquivalent().getAbsY();
                 if (absY >= page.getTop() && absY < page.getBottom()) {
                     return b;
@@ -1053,8 +1042,7 @@ public class Layer {
             return getRunningBlock(identifer, page, PageElementPosition.START);
         } else if (which == PageElementPosition.LAST) {
             BlockBox prev = null;
-            for (Iterator<BlockBox> i = blocks.iterator(); i.hasNext(); ) {
-                BlockBox b = i.next();
+            for (BlockBox b : blocks) {
                 if (b.getStaticEquivalent().getAbsY() > page.getBottom()) {
                     break;
                 }
@@ -1063,8 +1051,7 @@ public class Layer {
             return prev;
         } else if (which == PageElementPosition.LAST_EXCEPT) {
             BlockBox prev = null;
-            for (Iterator<BlockBox> i = blocks.iterator(); i.hasNext(); ) {
-                BlockBox b = i.next();
+            for (BlockBox b : blocks) {
                 int absY = b.getStaticEquivalent().getAbsY();
                 if (absY >= page.getTop() && absY < page.getBottom()) {
                     return null;
@@ -1082,8 +1069,7 @@ public class Layer {
     
     public void layoutPages(LayoutContext c) {
         c.setRootDocumentLayer(c.getRootLayer());
-        for (Iterator<PageBox> i = _pages.iterator(); i.hasNext(); ) {
-            PageBox pageBox = i.next();
+        for (PageBox pageBox : _pages) {
             pageBox.layout(c);
         }
     }

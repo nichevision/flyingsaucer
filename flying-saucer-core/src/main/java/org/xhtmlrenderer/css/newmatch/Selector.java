@@ -89,8 +89,7 @@ public class Selector {
         if (_name == null || treeRes.matchesElement(e, _namespaceURI, _name)) {
             if (conditions != null) {
                 // all conditions need to be true
-                for (java.util.Iterator<Condition> i = conditions.iterator(); i.hasNext();) {
-                    Condition c = i.next();
+                for (Condition c : conditions) {
                     if (!c.matches(e, attRes, treeRes)) {
                         return false;
                     }

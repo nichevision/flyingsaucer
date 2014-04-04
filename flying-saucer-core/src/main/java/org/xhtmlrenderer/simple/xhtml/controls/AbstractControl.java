@@ -20,7 +20,6 @@
 package org.xhtmlrenderer.simple.xhtml.controls;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
@@ -70,20 +69,20 @@ public abstract class AbstractControl implements FormControl {
     }
 
     protected void fireChanged() {
-        for (Iterator<FormControlListener> iter = _listeners.iterator(); iter.hasNext();) {
-            iter.next().changed(this);
+        for (FormControlListener formControlListener : _listeners) {
+            formControlListener.changed(this);
         }
     }
 
     protected void fireSuccessful() {
-        for (Iterator<FormControlListener> iter = _listeners.iterator(); iter.hasNext();) {
-            iter.next().successful(this);
+        for (FormControlListener formControlListener : _listeners) {
+            formControlListener.successful(this);
         }
     }
 
     protected void fireEnabled() {
-        for (Iterator<FormControlListener> iter = _listeners.iterator(); iter.hasNext();) {
-            iter.next().enabled(this);
+        for (FormControlListener formControlListener : _listeners) {
+            formControlListener.enabled(this);
         }
     }
 

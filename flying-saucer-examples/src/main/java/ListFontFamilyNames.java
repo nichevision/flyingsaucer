@@ -1,4 +1,5 @@
 import com.lowagie.text.pdf.BaseFont;
+
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 
 import java.awt.*;
@@ -17,7 +18,7 @@ public class ListFontFamilyNames {
             System.exit(1);
         }
         File fod = new File(args[0]);
-        List fontFiles = new ArrayList();
+        List<File> fontFiles = new ArrayList<File>();
         if (fod.isDirectory()) {
             fontFiles.addAll(Arrays.asList(fod.listFiles(new FilenameFilter() {
                 public boolean accept(File file, String s) {
@@ -28,9 +29,9 @@ public class ListFontFamilyNames {
             fontFiles.add(fod);
         }
         //System.out.println("font files " + fontFiles);
-        List errors = new ArrayList();
-        for (Iterator fit = fontFiles.iterator(); fit.hasNext();) {
-            File f = (File) fit.next();
+        List<String> errors = new ArrayList<String>();
+        for (File file : fontFiles) {
+            File f = (File) file;
             Font awtf = null;
             try {
                 awtf = Font.createFont(Font.TRUETYPE_FONT, f);
@@ -64,8 +65,8 @@ public class ListFontFamilyNames {
         if (errors.size() > 0) {
             if (args.length == 2 && args[1].equals("-e")) {
                 System.err.println("Errors were reported on reading some font files.");
-                for (Iterator eit = errors.iterator(); eit.hasNext();) {
-                    System.err.println((String) eit.next());
+                for (String string : errors) {
+                    System.err.println((String) string);
                 }
             } else {
                 System.err.println("Errors were reported on reading some font files. Pass -e as argument to show them, and re-run.");

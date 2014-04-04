@@ -65,8 +65,8 @@ public class AWTFontResolver implements FontResolver {
         // we will only add them once we need to use them
         // put empty strings in instead
         available_fonts_hash = new HashMap<String, Serializable>();
-        for (int i = 0; i < available_fonts.length; i++) {
-            available_fonts_hash.put(available_fonts[i], "");
+        for (String available_font : available_fonts) {
+            available_fonts_hash.put(available_font, "");
         }
 
         // preload sans, serif, and monospace into the available font hash
@@ -96,8 +96,8 @@ public class AWTFontResolver implements FontResolver {
         //Uu.p(families);
         // for each font family
         if (families != null) {
-            for (int i = 0; i < families.length; i++) {
-                Font font = resolveFont(ctx, families[i], size, weight, style, variant);
+            for (String family : families) {
+                Font font = resolveFont(ctx, family, size, weight, style, variant);
                 if (font != null) {
                     return new AWTFSFont(font);
                 }

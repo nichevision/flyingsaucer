@@ -149,8 +149,8 @@ public class CascadedStyle {
             buckets[prop.getImportanceAndOrigin()].add(prop);
         }
 
-        for (int i = 0; i < buckets.length; i++) {
-            for (java.util.Iterator<PropertyDeclaration> it = buckets[i].iterator(); it.hasNext();) {
+        for (List<PropertyDeclaration> bucket : buckets) {
+            for (java.util.Iterator<PropertyDeclaration> it = bucket.iterator(); it.hasNext();) {
                 PropertyDeclaration prop = (PropertyDeclaration) it.next();
                 cascadedProperties.put(prop.getCSSName(), prop);
             }

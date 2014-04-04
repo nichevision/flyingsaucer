@@ -20,7 +20,6 @@
 package org.xhtmlrenderer.css.parser.property;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.xhtmlrenderer.css.constants.CSSName;
@@ -33,6 +32,7 @@ import org.xhtmlrenderer.css.parser.PropertyValueImp;
 import org.xhtmlrenderer.css.parser.PropertyValueImp.CSSValueType;
 import org.xhtmlrenderer.css.sheet.PropertyDeclaration;
 import org.xhtmlrenderer.css.sheet.StylesheetInfo.CSSOrigin;
+
 import static org.xhtmlrenderer.css.parser.property.BuilderUtil.*;
 
 public class BorderPropertyBuilders {
@@ -40,9 +40,9 @@ public class BorderPropertyBuilders {
         protected abstract CSSName[][] getProperties();
         
         private void addAll(List<PropertyDeclaration> result, CSSName[] properties, PropertyValue value, CSSOrigin origin, boolean important) {
-            for (int i = 0; i < properties.length; i++) {
+            for (CSSName property : properties) {
                 result.add(new PropertyDeclaration(
-                        properties[i], value, important, origin));
+                        property, value, important, origin));
             }
         }
         
@@ -66,8 +66,7 @@ public class BorderPropertyBuilders {
                 boolean haveBorderColor = false;
                 boolean haveBorderWidth = false;
                 
-                for (Iterator<PropertyValue> i = values.iterator(); i.hasNext(); ) {
-                    PropertyValue value = i.next();
+                for (PropertyValue value : values) {
                     checkInheritAllowed(value, false);
                     boolean matched = false;
                     PropertyValue borderWidth = convertToBorderWidth(value);

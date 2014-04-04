@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class MakeTokens {
@@ -55,9 +54,8 @@ public class MakeTokens {
         StringBuffer buf = new StringBuffer();
         
         int offset = 1;
-        for (Iterator<String> i = tokens.iterator(); i.hasNext(); offset++) {
-            String s = i.next();
-            String id = s.substring(0, s.indexOf(','));
+        for (String token : tokens) {
+            String id = token.substring(0, token.indexOf(','));
             
             buf.append("\tpublic static final int ");
             buf.append(id);
@@ -69,10 +67,9 @@ public class MakeTokens {
         
         buf.append(EOL);
         
-        for (Iterator<String> i = tokens.iterator(); i.hasNext(); offset++) {
-            String s = i.next();
-            String id = s.substring(0, s.indexOf(','));
-            String descr = s.substring(s.indexOf(',')+1);
+        for (String token : tokens) {
+            String id = token.substring(0, token.indexOf(','));
+            String descr = token.substring(token.indexOf(',')+1);
             
             buf.append("\tpublic static final Token TK_");
             buf.append(id);

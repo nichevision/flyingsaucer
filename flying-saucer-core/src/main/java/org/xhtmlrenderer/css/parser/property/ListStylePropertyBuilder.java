@@ -20,7 +20,6 @@
 package org.xhtmlrenderer.css.parser.property;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.xhtmlrenderer.css.constants.CSSName;
@@ -30,6 +29,7 @@ import org.xhtmlrenderer.css.parser.CSSParseException;
 import org.xhtmlrenderer.css.parser.PropertyValue;
 import org.xhtmlrenderer.css.sheet.PropertyDeclaration;
 import org.xhtmlrenderer.css.sheet.StylesheetInfo.CSSOrigin;
+
 import static org.xhtmlrenderer.css.parser.property.BuilderUtil.*;
 
 public class ListStylePropertyBuilder implements PropertyBuilder {
@@ -46,8 +46,7 @@ public class ListStylePropertyBuilder implements PropertyBuilder {
         PropertyDeclaration listStylePosition = null;
         PropertyDeclaration listStyleImage = null;
         
-        for (Iterator<PropertyValue> i = values.iterator(); i.hasNext(); ) {
-            PropertyValue value = (PropertyValue)i.next();
+        for (PropertyValue value : values) {
             checkInheritAllowed(value, false);
             CSSPrimitiveUnit type = value.getPrimitiveTypeN();
             if (type == CSSPrimitiveUnit.CSS_IDENT) {

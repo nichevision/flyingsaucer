@@ -188,9 +188,7 @@ public class FloatManager {
     private int findLowestY(CssContext cssCtx, List<BoxOffset> floats) {
         int result = 0;
 
-        for (Iterator<BoxOffset> i = floats.iterator(); i.hasNext();) {
-            BoxOffset floater = i.next();
-
+        for (BoxOffset floater : floats) {
             Rectangle bounds = floater.getBox().getMarginEdge(
                     cssCtx, -floater.getX(), -floater.getY());
             if (bounds.y + bounds.height > result) {
@@ -215,8 +213,7 @@ public class FloatManager {
         Point offset = bfc.getOffset();
         Rectangle bounds = current.getMarginEdge(cssCtx, -offset.x, -offset.y);
 
-        for (Iterator<BoxOffset> i = floats.iterator(); i.hasNext();) {
-            BoxOffset floater = i.next();
+        for (BoxOffset floater : floats) {
             Rectangle floaterBounds = floater.getBox().getMarginEdge(cssCtx,
                     -floater.getX(), -floater.getY());
 
@@ -288,8 +285,7 @@ public class FloatManager {
     }
 
     private void calcFloatLocations(List<BoxOffset> floats) {
-        for (Iterator<BoxOffset> i = floats.iterator(); i.hasNext();) {
-            BoxOffset boxOffset = i.next();
+        for (BoxOffset boxOffset : floats) {
             boxOffset.getBox().calcCanvasLocation();
             boxOffset.getBox().calcChildLocations();
         }
@@ -394,8 +390,7 @@ public class FloatManager {
     }
 
     private Point getOffset(BlockBox floater, List<BoxOffset> floats) {
-        for (Iterator<BoxOffset> i = floats.iterator(); i.hasNext();) {
-            BoxOffset boxOffset = i.next();
+        for (BoxOffset boxOffset : floats) {
             BlockBox box = boxOffset.getBox();
 
             if (box.equals(floater)) {
@@ -407,8 +402,7 @@ public class FloatManager {
     }
 
     private void performFloatOperation(FloatOperation op, List<BoxOffset> floats) {
-        for (Iterator<BoxOffset> i = floats.iterator(); i.hasNext();) {
-            BoxOffset boxOffset = i.next();
+        for (BoxOffset boxOffset : floats) {
             BlockBox box = boxOffset.getBox();
 
             box.setAbsX(box.getX() + getMaster().getAbsX() - boxOffset.getX());

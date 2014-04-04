@@ -22,7 +22,6 @@ package org.xhtmlrenderer.layout;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.RandomAccess;
 
@@ -65,8 +64,8 @@ public class BlockBoxing {
 
         int pageCount = NO_PAGE_TRIM;
         BlockBox previousChildBox = null;
-        for (Iterator<Box> i = localChildren.iterator(); i.hasNext();) {
-            BlockBox child = (BlockBox) i.next();
+        for (Box box : localChildren) {
+            BlockBox child = (BlockBox) box;
             offset++;
 
             RelayoutData relayoutData = null;

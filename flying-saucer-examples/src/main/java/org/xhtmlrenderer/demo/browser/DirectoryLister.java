@@ -79,28 +79,27 @@ public class DirectoryLister {
             File[] files = file.listFiles();
             String cls = "";
             String img = "";
-            for (int i = 0; i < files.length; i++) {
-                File f = files[i];
+            for (File f : files) {
                 if ( f.isHidden() ) continue;
                 long len = f.length();
                 String lenDesc = ( len > 1024 ? new DecimalFormat("#,###KB").format(len / 1024) : "");
                 String lastMod = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(new Date(f.lastModified()));
                 sb.append("<tr>");
-                if (files[i].isDirectory()) {
+                if (f.isDirectory()) {
                     cls = "dir";
                 } else {
                     cls = "file";
                 }
                 try {
-                    loc = GeneralUtil.htmlEscapeSpace(files[i].toURL().toExternalForm()).toString();
+                    loc = GeneralUtil.htmlEscapeSpace(f.toURL().toExternalForm()).toString();
                     sb.append("<td><a class='" + cls + "' href='" + loc + "'>" +
-                            files[i].getName() +
+                            f.getName() +
                             "</a></td>" +
                             "<td>" + lenDesc + "</td>" +
                             "<td>" + lastMod + "</td>"
                     );
                 } catch (MalformedURLException e) {
-                    sb.append(files[i].getAbsolutePath());
+                    sb.append(f.getAbsolutePath());
                 }
                 sb.append("</tr>");
             }

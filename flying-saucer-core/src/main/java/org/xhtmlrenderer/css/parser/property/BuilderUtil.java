@@ -240,11 +240,9 @@ public class BuilderUtil {
 			PropertyValue value = values.get(0);
 			checkInheritAllowed(value, inheritAllowed);
 			if (value.getCssValueTypeN() == CSSValueType.CSS_INHERIT) {
-				List<PropertyDeclaration> result = new ArrayList<PropertyDeclaration>(
-						all.length);
-				for (int i = 0; i < all.length; i++) {
-					result.add(new PropertyDeclaration(all[i], value,
-							important, origin));
+				List<PropertyDeclaration> result = new ArrayList<PropertyDeclaration>( all.length);
+				for (CSSName element : all) {
+					result.add(new PropertyDeclaration(element, value, important, origin));
 				}
 				return result;
 			}
