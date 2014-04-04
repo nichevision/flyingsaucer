@@ -53,8 +53,7 @@ public class DelegatingReplacedElementFactory implements ReplacedElementFactory 
         if (nameReplacer != null) {
             return replaceUsing(context, box, uac, cssWidth, cssHeight, nameReplacer);
         }
-        for (Iterator<ElementReplacer> iterator = replacers.iterator(); iterator.hasNext();) {
-            ElementReplacer replacer = iterator.next();
+        for (ElementReplacer replacer : replacers) {
             if (replacer.accept(context, box.getElement())) {
                 return replaceUsing(context, box, uac, cssWidth, cssHeight, replacer);
             }
@@ -71,12 +70,11 @@ public class DelegatingReplacedElementFactory implements ReplacedElementFactory 
     public void reset() {
         System.out.println("\n\n***Factory reset()");
         elementReplacements.clear();
-        for (Iterator<ElementReplacer> iterator = replacers.iterator(); iterator.hasNext();) {
-            ElementReplacer elementReplacer = iterator.next();
+        for (ElementReplacer elementReplacer : replacers) {
             elementReplacer.reset();
         }
-        for (Iterator<ElementReplacer> iterator = byNameReplacers.values().iterator(); iterator.hasNext();) {
-            iterator.next().reset();
+        for (ElementReplacer elementReplacer : byNameReplacers.values()) {
+            elementReplacer.reset();
         }
     }
 

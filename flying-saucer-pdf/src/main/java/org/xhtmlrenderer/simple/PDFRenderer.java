@@ -2,6 +2,7 @@ package org.xhtmlrenderer.simple;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfWriter;
+
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.File;
@@ -28,7 +29,7 @@ import java.util.HashMap;
  * @author Patrick Wright
  */
 public class PDFRenderer {
-    private static final Map versionMap = new HashMap();
+    private static final Map<String, Character> versionMap = new HashMap<String, Character>();
 
     static {
         versionMap.put("1.2", new Character(PdfWriter.VERSION_1_2));
@@ -173,7 +174,7 @@ public class PDFRenderer {
     }
 
     private static Character checkVersion(String version) {
-        final Character val = (Character) versionMap.get(version.trim());
+        final Character val = versionMap.get(version.trim());
         if (val == null) {
             usage("Invalid PDF version number; use 1.2 through 1.7");
         }

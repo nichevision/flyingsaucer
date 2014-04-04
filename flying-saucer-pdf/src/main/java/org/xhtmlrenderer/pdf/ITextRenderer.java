@@ -239,7 +239,7 @@ public class ITextRenderer {
     }
 
     public void writeNextDocument(int initialPageNo) throws DocumentException {
-        List pages = _root.getLayer().getPages();
+        List<PageBox> pages = _root.getLayer().getPages();
 
         RenderingContext c = newRenderingContext();
         c.setInitialPageNo(initialPageNo);
@@ -271,7 +271,7 @@ public class ITextRenderer {
      * something goes wrong.
      */
     public void createPDF(OutputStream os, boolean finish, int initialPageNo) throws DocumentException {
-        List pages = _root.getLayer().getPages();
+        List<PageBox> pages = _root.getLayer().getPages();
 
         RenderingContext c = newRenderingContext();
         c.setInitialPageNo(initialPageNo);
@@ -320,7 +320,7 @@ public class ITextRenderer {
         }
     }
 
-    private void writePDF(List pages, RenderingContext c, com.lowagie.text.Rectangle firstPageSize, com.lowagie.text.Document doc,
+    private void writePDF(List<PageBox> pages, RenderingContext c, com.lowagie.text.Rectangle firstPageSize, com.lowagie.text.Document doc,
             PdfWriter writer) throws DocumentException {
         _outputDevice.setRoot(_root);
 
@@ -335,12 +335,12 @@ public class ITextRenderer {
         firePreWrite(pageCount); // opportunity to adjust meta data
         setDidValues(doc); // set PDF header fields from meta data
         for (int i = 0; i < pageCount; i++) {
-            PageBox currentPage = (PageBox) pages.get(i);
+            PageBox currentPage = pages.get(i);
             c.setPage(i, currentPage);
             paintPage(c, writer, currentPage);
             _outputDevice.finishPage();
             if (i != pageCount - 1) {
-                PageBox nextPage = (PageBox) pages.get(i + 1);
+                PageBox nextPage = pages.get(i + 1);
                 com.lowagie.text.Rectangle nextPageSize = new com.lowagie.text.Rectangle(0, 0, nextPage.getWidth(c) / _dotsPerPoint,
                         nextPage.getHeight(c) / _dotsPerPoint);
                 doc.setPageSize(nextPageSize);
@@ -471,7 +471,7 @@ public class ITextRenderer {
         return _dotsPerPoint;
     }
 
-    public List findPagePositionsByID(Pattern pattern) {
+    public List<PagePosition> findPagePositionsByID(Pattern pattern) {
         return _outputDevice.findPagePositionsByID(newLayoutContext(), pattern);
     }
 

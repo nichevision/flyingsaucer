@@ -125,7 +125,7 @@ public class XHtmlMetaToPdfInfoAdapter extends DefaultPDFCreationListener {
     private static final String HTML_META_ATTR_NAME = "name";    
     private static final String HTML_META_ATTR_CONTENT = "content";    
 
-    private java.util.Map pdfInfoValues = new HashMap();    
+    private java.util.Map<PdfName, PdfString> pdfInfoValues = new HashMap<PdfName, PdfString>();    
 
     
     /**
@@ -219,11 +219,11 @@ public class XHtmlMetaToPdfInfoAdapter extends DefaultPDFCreationListener {
      */
     private void addPdfMetaValuesToPdfDocument( ITextRenderer renderer ) {
         
-        Iterator pdfNameIter = this.pdfInfoValues.keySet().iterator();
+        Iterator<PdfName> pdfNameIter = this.pdfInfoValues.keySet().iterator();
 
         while (pdfNameIter.hasNext()) {
-            PdfName pdfName = (PdfName) pdfNameIter.next();
-            PdfString pdfString = (PdfString) pdfInfoValues.get( pdfName );
+            PdfName pdfName = pdfNameIter.next();
+            PdfString pdfString = pdfInfoValues.get( pdfName );
             XRLog.render(Level.FINEST, "pdfName=" + pdfName + ", pdfString=" + pdfString );
             renderer.getOutputDevice().getWriter().getInfo().put( pdfName, pdfString );            
         }

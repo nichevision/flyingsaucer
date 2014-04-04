@@ -65,7 +65,7 @@ public class ITextUserAgent extends NaiveUserAgent {
             resource = loadEmbeddedBase64ImageResource(uri);
         } else {
             uri = resolveURI(uri);
-            resource = (ImageResource) _imageCache.get(uri);
+            resource = _imageCache.get(uri);
             if (resource == null) {
                 InputStream is = resolveAndOpenStream(uri);
                 if (is != null) {

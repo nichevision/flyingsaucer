@@ -149,8 +149,7 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 
 	private void scaleChanged() {
 		ScaleChangeEvent evt = new ScaleChangeEvent(this, scale);
-		for (int i = 0; i < scListeners.size(); i++) {
-			ScaleChangeListener scl = scListeners.get(i);
+		for (ScaleChangeListener scl: scListeners) {
 			scl.scaleChanged(evt);
 		}
 	}

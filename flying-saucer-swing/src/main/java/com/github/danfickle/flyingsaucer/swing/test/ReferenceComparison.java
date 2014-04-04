@@ -295,8 +295,7 @@ public class ReferenceComparison {
 
         public void report() {
             int failed = 0;
-            for (Iterator<File> it = files.keySet().iterator(); it.hasNext();) {
-                File file = (File) it.next();
+            for (File file : files.keySet()) {
                 Result result = (Result) files.get(file);
 
                 if (result instanceof FailedResult) {

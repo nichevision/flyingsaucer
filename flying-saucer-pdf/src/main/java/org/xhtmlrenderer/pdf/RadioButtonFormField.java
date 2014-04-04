@@ -20,7 +20,6 @@
 package org.xhtmlrenderer.pdf;
 
 import java.awt.Rectangle;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
@@ -58,7 +57,7 @@ public class RadioButtonFormField extends AbstractFormField {
 
     public void paint(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box) {
         String fieldName = getFieldName(outputDevice, box.getElement());
-        List radioBoxes = _factory.getRadioButtons(fieldName);
+        List<RadioButtonFormField> radioBoxes = _factory.getRadioButtons(fieldName);
         
         // iText wants all radio buttons in a group added at once across all pages
         
@@ -78,9 +77,7 @@ public class RadioButtonFormField extends AbstractFormField {
             group.setValueAsString(getValue(checked.getBox().getElement()));
         }
         
-        for (Iterator i = radioBoxes.iterator(); i.hasNext(); ) {
-            RadioButtonFormField fieldElem = (RadioButtonFormField)i.next();
-            
+        for (RadioButtonFormField fieldElem : radioBoxes) {
             createField(c, outputDevice, cb, writer, group, fieldElem, checked);            
         }
         
@@ -89,10 +86,9 @@ public class RadioButtonFormField extends AbstractFormField {
         _factory.remove(fieldName);
     }
     
-    private RadioButtonFormField getChecked(List fields) {
+    private RadioButtonFormField getChecked(List<RadioButtonFormField> fields) {
         RadioButtonFormField result = null;
-        for (Iterator i = fields.iterator(); i.hasNext(); ) {
-            RadioButtonFormField f = (RadioButtonFormField)i.next();
+        for (RadioButtonFormField f : fields) {
             if (isChecked(f.getBox().getElement())) {
                 result = f;
             }
