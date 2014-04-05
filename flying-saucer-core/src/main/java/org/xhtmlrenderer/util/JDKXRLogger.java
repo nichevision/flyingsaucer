@@ -179,6 +179,9 @@ public class JDKXRLogger implements XRLogger {
         }
     }
 
+    /* HACK: if loggers are not sequestered as strong references, they get garbage collected, losing their configuration */
+    public static List<Logger> savedLoggers = null;
+
     /**
      * Returns a List of all Logger instances used by Flying Saucer from the JDK LogManager; these will
      * be automatically created if they aren't already available.
@@ -191,6 +194,7 @@ public class JDKXRLogger implements XRLogger {
             final String ln = (String) it.next();
             loggers.add(Logger.getLogger(ln));
         }
+        savedLoggers = loggers;
         return loggers;
     }
 
