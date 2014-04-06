@@ -30,6 +30,7 @@ import com.github.danfickle.flyingsaucer.swing.LinkListener;
 import com.github.danfickle.flyingsaucer.swing.ScalableXHTMLPanel;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -86,7 +87,7 @@ public class BrowserMenuBar extends JMenuBar {
     /**
      * Description of the Field
      */
-    private Map allDemos;
+    private Map<String, String> allDemos;
     private JMenu help;
 
     /**
@@ -160,8 +161,7 @@ public class BrowserMenuBar extends JMenuBar {
         zoom.setMnemonic('Z');
         ScaleFactor[] factors = this.initializeScales();
         ButtonGroup zoomGroup = new ButtonGroup();
-        for (int i = 0; i < factors.length; i++) {
-            ScaleFactor factor = factors[i];
+        for (ScaleFactor factor : factors) {
             JRadioButtonMenuItem item = new JRadioButtonMenuItem(new ZoomAction(panel, factor));
 
             if (factor.isNotZoomed()) item.setSelected(true);
@@ -183,13 +183,13 @@ public class BrowserMenuBar extends JMenuBar {
         demos.add(new NextDemoAction());
         demos.add(new PriorDemoAction());
         demos.add(new JSeparator());
-        allDemos = new LinkedHashMap();
+        allDemos = new LinkedHashMap<String, String>();
 
         populateDemoList();
 
-        for (Iterator iter = allDemos.keySet().iterator(); iter.hasNext();) {
-            String s = (String) iter.next();
-            demos.add(new LoadAction(s, (String) allDemos.get(s)));
+        for (String string : allDemos.keySet()) {
+            String s = (String) string;
+            demos.add(new LoadAction(s, allDemos.get(s)));
         }
 
         add(demos);
@@ -253,7 +253,7 @@ public class BrowserMenuBar extends JMenuBar {
     }
 
     private void populateDemoList() {
-        List demoList = new ArrayList();
+        List<String> demoList = new ArrayList<String>();
         URL url = BrowserMenuBar.class.getResource("/demos/file-list.txt");
         InputStream is = null;
         LineNumberReader lnr = null;
@@ -288,8 +288,7 @@ public class BrowserMenuBar extends JMenuBar {
                 }
             }
 
-            for (Iterator itr = demoList.iterator(); itr.hasNext();) {
-                String s = (String) itr.next();
+            for (String s : demoList) {
                 String s1[] = s.split(",");
                 allDemos.put(s1[0], s1[1]);
             }
@@ -309,9 +308,8 @@ public class BrowserMenuBar extends JMenuBar {
      */
     public void createActions() {
         if (Configuration.isTrue("xr.use.listeners", true)) {
-            List l = root.panel.view.getMouseTrackingListeners();
-            for (Iterator i = l.iterator(); i.hasNext(); ) {
-                FSMouseListener listener = (FSMouseListener)i.next();
+            List<FSMouseListener> l = root.panel.view.getMouseTrackingListeners();
+            for (FSMouseListener listener : l) {
                 if ( listener instanceof LinkListener ) {
                     root.panel.view.removeMouseTrackingListener(listener);
                 }
@@ -511,23 +509,23 @@ public class BrowserMenuBar extends JMenuBar {
 
     public void navigateToNextDemo() {
         String nextPage = null;
-        for (Iterator iter = allDemos.keySet().iterator(); iter.hasNext();) {
-            String s = (String) iter.next();
+        for (Iterator<String> iter = allDemos.keySet().iterator(); iter.hasNext();) {
+            String s = iter.next();
             if (s.equals(lastDemoOpened)) {
                 if (iter.hasNext()) {
-                    nextPage = (String) iter.next();
+                    nextPage = iter.next();
                     break;
                 }
             }
         }
         if (nextPage == null) {
             // go to first page
-            Iterator iter = allDemos.keySet().iterator();
-            nextPage = (String) iter.next();
+            Iterator<String> iter = allDemos.keySet().iterator();
+            nextPage = iter.next();
         }
 
         try {
-            root.panel.loadPage((String) allDemos.get(nextPage));
+            root.panel.loadPage(allDemos.get(nextPage));
             lastDemoOpened = nextPage;
         } catch (Exception ex) {
             Uu.p(ex);
@@ -552,8 +550,8 @@ public class BrowserMenuBar extends JMenuBar {
 
     public void navigateToPriorDemo() {
         String priorPage = null;
-        for (Iterator iter = allDemos.keySet().iterator(); iter.hasNext();) {
-            String s = (String) iter.next();
+        for (Iterator<String> iter = allDemos.keySet().iterator(); iter.hasNext();) {
+            String s = iter.next();
             if (s.equals(lastDemoOpened)) {
                 break;
             }
@@ -561,14 +559,14 @@ public class BrowserMenuBar extends JMenuBar {
         }
         if (priorPage == null) {
             // go to last page
-            Iterator iter = allDemos.keySet().iterator();
+            Iterator<String> iter = allDemos.keySet().iterator();
             while (iter.hasNext()) {
-                priorPage = (String) iter.next();
+                priorPage = iter.next();
             }
         }
 
         try {
-            root.panel.loadPage((String) allDemos.get(priorPage));
+            root.panel.loadPage(allDemos.get(priorPage));
             lastDemoOpened = priorPage;
         } catch (Exception ex) {
             Uu.p(ex);

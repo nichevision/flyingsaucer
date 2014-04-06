@@ -276,8 +276,8 @@ abstract class Condition {
         protected boolean compare(String attrValue, String conditionValue) {
             String[] ca = split(attrValue, ' ');
             boolean matched = false;
-            for (int j = 0; j < ca.length; j++) {
-                if (conditionValue.equals(ca[j])) {
+            for (String element : ca) {
+                if (conditionValue.equals(element)) {
                     matched = true;
                 }
             }
@@ -317,8 +317,8 @@ abstract class Condition {
             }
             String[] ca = split(c, ' ');
             boolean matched = false;
-            for (int j = 0; j < ca.length; j++) {
-                if (_className.equals(ca[j])) {
+            for (String element : ca) {
+                if (_className.equals(element)) {
                     matched = true;
                 }
             }

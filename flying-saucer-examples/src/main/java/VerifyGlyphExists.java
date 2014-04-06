@@ -22,7 +22,6 @@ import java.io.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Iterator;
 
 
 /**
@@ -55,9 +54,8 @@ public class VerifyGlyphExists {
         File file = new File(args[1]);
         if (file.exists()) {
             if (file.getName().endsWith("txt")) {
-                List lines = readLines(file);
-                for (Iterator it = lines.iterator(); it.hasNext();) {
-                    String path = (String) it.next();
+                List<String> lines = readLines(file);
+                for (String path : lines) {
                     testForGlyph(codePoint, new File(path));
                 }
                 System.out.println("TODO: read list of fonts");
@@ -69,8 +67,8 @@ public class VerifyGlyphExists {
         }
     }
 
-    private static List readLines(File file) {
-        List l = new ArrayList();
+    private static List<String> readLines(File file) {
+        List<String> l = new ArrayList<String>();
         LineNumberReader r = null;
         try {
             r = new LineNumberReader(new BufferedReader(new FileReader(file)));

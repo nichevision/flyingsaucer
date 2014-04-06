@@ -19,8 +19,6 @@
  */
 package org.xhtmlrenderer.css.sheet;
 
-import java.util.Iterator;
-
 import org.xhtmlrenderer.css.newmatch.CascadedStyle;
 import org.xhtmlrenderer.css.sheet.StylesheetInfo.CSSOrigin;
 import org.xhtmlrenderer.css.style.CalculatedStyle;
@@ -61,8 +59,7 @@ public class FontFaceRule implements RulesetContainer {
     }
 
     public boolean hasFontFamily() {
-        for (Iterator<PropertyDeclaration> i = _ruleset.getPropertyDeclarations().iterator(); i.hasNext(); ) {
-            PropertyDeclaration decl = i.next();
+        for (PropertyDeclaration decl : _ruleset.getPropertyDeclarations()) {
             if (decl.getPropertyName().equals("font-family")) {
                 return true;
             }

@@ -189,8 +189,8 @@ public class CalculatedStyle {
 
     public int countAssigned() {
         int c = 0;
-        for (int i = 0; i < _derivedValuesById.length; i++) {
-            if (_derivedValuesById[i] != null) c++;
+        for (FSDerivedValue derivedValue : _derivedValuesById) {
+            if (derivedValue != null) c++;
         }
         return c;
     }
@@ -1204,9 +1204,9 @@ public class CalculatedStyle {
         } else {
             List<?> idents = ((ListValue) value).getValues();
             List<FSDerivedValue> result = new ArrayList<FSDerivedValue>(idents.size());
-            for (Iterator<?> i = idents.iterator(); i.hasNext();) {
+            for (Object ident : idents) {
                 result.add(DerivedValueFactory.newDerivedValue(
-                        this, CSSName.TEXT_DECORATION, (PropertyValue) i.next()));
+                        this, CSSName.TEXT_DECORATION, (PropertyValue) ident));
             }
             return result;
         }

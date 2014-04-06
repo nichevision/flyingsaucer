@@ -33,6 +33,7 @@ import com.github.danfickle.flyingsaucer.swing.SwingReplacedElement;
 import com.github.danfickle.flyingsaucer.swing.SwingReplacedElementFactory;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -41,6 +42,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 
@@ -158,7 +160,7 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
     }
 
     private static class ImageMapReplacedElement extends SwingReplacedElement {
-      private final Map areas;
+      private final Map<Shape, String> areas;
 
       public ImageMapReplacedElement(Image image, Node map, int targetWidth, int targetHeight, final ImageMapListener listener) {
          super(create(image, targetWidth, targetHeight));
@@ -166,11 +168,9 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
          getJComponent().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                final Point point = e.getPoint();
-                final Set set = areas.entrySet();
-                for (Iterator iterator = set.iterator(); iterator.hasNext();) {
-                    Map.Entry entry = (Map.Entry) iterator.next();
-
-                    if (((Shape) entry.getKey()).contains(point)) {
+                final Set<Entry<Shape, String>> set = areas.entrySet();
+                for (Entry<Shape, String> entry : set) {
+                    if (entry.getKey().contains(point)) {
                         listener.areaClicked(new ImageMapEvent(this, (String) entry.getValue()));
                     }
                 }
@@ -184,11 +184,9 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
             public void mouseMoved(MouseEvent e) {
                final JComponent c = getJComponent();
                final Point point = e.getPoint();
-                final Set set = areas.entrySet();
-                for (Iterator iterator = set.iterator(); iterator.hasNext();) {
-                    Map.Entry entry = (Map.Entry) iterator.next();
-
-                    if (((Shape) entry.getKey()).contains(point)) {
+                final Set<Entry<Shape, String>> set = areas.entrySet();
+                for (Entry<Shape, String> entry : set) {
+                    if ((entry.getKey()).contains(point)) {
                         updateCursor(c, Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                         return;
                     }
@@ -204,7 +202,7 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
          }
       }
 
-      private static Map parseMap(Node map) {
+      private static Map<Shape, String> parseMap(Node map) {
          if (null == map) {
             return Collections.emptyMap();
          } else if (map.childNodeSize() > 0) {
@@ -250,8 +248,7 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
          if ((-1 == length && 0 == coordValues.length % 2) || length == coordValues.length) {
             int[] coords = new int[coordValues.length];
             int i = 0;
-             for (int i1 = 0; i1 < coordValues.length; i1++) {
-                 String coord = coordValues[i1];
+             for (String coord : coordValues) {
                  try {
                      coords[i++] = Integer.parseInt(coord.trim());
                  } catch (NumberFormatException e) {

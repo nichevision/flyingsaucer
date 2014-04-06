@@ -21,7 +21,6 @@ package org.xhtmlrenderer.css.parser.property;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.xhtmlrenderer.css.constants.CSSName;
@@ -34,6 +33,7 @@ import org.xhtmlrenderer.css.parser.PropertyValueImp;
 import org.xhtmlrenderer.css.parser.PropertyValueImp.CSSValueType;
 import org.xhtmlrenderer.css.sheet.PropertyDeclaration;
 import org.xhtmlrenderer.css.sheet.StylesheetInfo.CSSOrigin;
+
 import static org.xhtmlrenderer.css.parser.property.BuilderUtil.*;
 
 public class ContentPropertyBuilder implements PropertyBuilder {
@@ -54,9 +54,7 @@ public class ContentPropertyBuilder implements PropertyBuilder {
         }
         
         List<PropertyValue> resultValues = new ArrayList<PropertyValue>();
-        for (Iterator<PropertyValue> i = values.iterator(); i.hasNext(); ) {
-            PropertyValue value = i.next();
-            
+        for (PropertyValue value : values) {
             if (value.getOperator() != null) {
                 throw new CSSParseException(
                         "Found unexpected operator, " + value.getOperator().getExternalName(), -1);

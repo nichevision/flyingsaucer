@@ -25,6 +25,7 @@ import org.xhtmlrenderer.extend.FontResolver;
 import org.xhtmlrenderer.layout.SharedContext;
 import org.xhtmlrenderer.render.FSFont;
 import org.xhtmlrenderer.swing.AWTFSFont;
+
 import static org.xhtmlrenderer.util.GeneralUtil.ciEquals;
 
 import java.awt.Font;
@@ -57,8 +58,8 @@ public class AWTFontResolver implements FontResolver
         String[] availableFonts = gfx.getAvailableFontFamilyNames();
         
         // preload the font map with the font names as keys in a set.
-        for (int i = 0; i < availableFonts.length; i++) {
-            _availableFontsSet.add(availableFonts[i]);
+        for (String availableFont : availableFonts) {
+            _availableFontsSet.add(availableFont);
         }
 
         // preload sans, serif, and monospace into the available font hash
@@ -75,8 +76,8 @@ public class AWTFontResolver implements FontResolver
         // Try to create a font for each font family provided as CSS
     	// can specify fallback fonts.
         if (families != null) {
-            for (int i = 0; i < families.length; i++) {
-                Font font = resolveFont(ctx, families[i], size, weight, style, variant);
+            for (String family : families) {
+                Font font = resolveFont(ctx, family, size, weight, style, variant);
                 if (font != null) {
                     return new AWTFSFont(font);
                 }

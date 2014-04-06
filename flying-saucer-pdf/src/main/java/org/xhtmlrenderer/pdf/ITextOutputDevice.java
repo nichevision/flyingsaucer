@@ -145,13 +145,13 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
 
     private PdfWriter _writer;
 
-    private Map _readerCache = new HashMap();
+    private Map<URI, PdfReader> _readerCache = new HashMap<URI, PdfReader>();
 
     private PdfDestination _defaultDestination;
 
-    private List _bookmarks = new ArrayList();
+    private List<Bookmark> _bookmarks = new ArrayList<Bookmark>();
 
-    private List _metadata = new ArrayList();
+    private List<Metadata> _metadata = new ArrayList<Metadata>();
 
     private Box _root;
 
@@ -159,7 +159,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
 
     private int _nextFormFieldIndex;
 
-    private Set _linkTargetAreas;
+    private Set<String> _linkTargetAreas;
     
     private boolean haveOpacity = false;
 
@@ -199,7 +199,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             _defaultDestination.addPage(_writer.getPageReference(1));
         }
 
-        _linkTargetAreas = new HashSet();
+        _linkTargetAreas = new HashSet<String>();
     }
 
     public void finishPage() {
@@ -777,8 +777,9 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         float scale = (float) Math.sqrt(Math.abs(_transform.getDeterminant()));
         float dash[] = st.getDashArray();
         if (dash != null) {
-            for (int k = 0; k < dash.length; ++k)
-                dash[k] *= scale;
+            for (int k = 0; k < dash.length; ++k) {
+              dash[k] *= scale;
+            }
         }
         return new BasicStroke(st.getLineWidth() * scale, st.getEndCap(), st.getLineJoin(), st.getMiterLimit(), dash, st.getDashPhase()
                 * scale);
@@ -892,7 +893,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
 
     public PdfReader getReader(URL url) throws IOException, URISyntaxException {
         URI uri = url.toURI();
-        PdfReader result = (PdfReader) _readerCache.get(uri);
+        PdfReader result = _readerCache.get(uri);
         if (result == null) {
             result = new PdfReader(url);
             _readerCache.put(uri, result);
@@ -921,21 +922,20 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         }
     }
 
-    private void writeBookmarks(RenderingContext c, Box root, PdfOutline parent, List bookmarks) {
-        for (Iterator i = bookmarks.iterator(); i.hasNext();) {
-            Bookmark bookmark = (Bookmark) i.next();
+    private void writeBookmarks(RenderingContext c, Box root, PdfOutline parent, List<Bookmark> bookmarks) {
+        for (Bookmark bookmark : bookmarks) {
             writeBookmark(c, root, parent, bookmark);
         }
     }
 
     private void writeNamedDestinations(RenderingContext c) {
-        Map idMap = getSharedContext().getIdMap();
+        Map<String, Box> idMap = getSharedContext().getIdMap();
         if ((idMap != null) && (!idMap.isEmpty())) {
             PdfArray dests = new PdfArray();
             try {
-                Iterator it = idMap.entrySet().iterator();
+                Iterator<Entry<String, Box>> it = idMap.entrySet().iterator();
                 while (it.hasNext()) {
-                    Entry entry = (Entry) it.next();
+                    Entry<String, Box> entry = it.next();
 
                     Box targetBox = (Box) entry.getValue();
 
@@ -1004,8 +1004,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             if (bookmarks != null) {
                 Elements l = bookmarks.select("bookmark");
                 if (l != null) {
-                    for (Iterator i = l.iterator(); i.hasNext();) {
-                        Element e = (Element) i.next();
+                    for (Element e : l) {
                         loadBookmark(null, e);
                     }
                 }
@@ -1022,8 +1021,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         }
         Elements l = bookmark.select("bookmark");
         if (l != null) {
-            for (Iterator i = l.iterator(); i.hasNext();) {
-                Element e = (Element) i.next();
+            for (Element e : l) {
                 loadBookmark(us, e);
             }
         }
@@ -1033,7 +1031,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         private String _name;
         private String _HRef;
 
-        private List _children;
+        private List<Bookmark> _children;
 
         public Bookmark() {
         }
@@ -1061,12 +1059,12 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
 
         public void addChild(Bookmark child) {
             if (_children == null) {
-                _children = new ArrayList();
+                _children = new ArrayList<Bookmark>();
             }
             _children.add(child);
         }
 
-        public List getChildren() {
+        public List<Bookmark> getChildren() {
             return _children == null ? Collections.EMPTY_LIST : _children;
         }
     }
@@ -1102,8 +1100,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
      */
     public String getMetadataByName(String name) {
         if (name != null) {
-            for (int i = 0, len = _metadata.size(); i < len; i++) {
-                Metadata m = (Metadata) _metadata.get(i);
+            for (Metadata m : _metadata) {
                 if ((m != null) && m.getName().equalsIgnoreCase(name)) {
                     return m.getContent();
                 }
@@ -1122,11 +1119,10 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
      * @return an ArrayList with matching content values; otherwise an empty
      *         list.
      */
-    public ArrayList getMetadataListByName(String name) {
-        ArrayList result = new ArrayList();
+    public ArrayList<String> getMetadataListByName(String name) {
+        ArrayList<String> result = new ArrayList<String>();
         if (name != null) {
-            for (int i = 0, len = _metadata.size(); i < len; i++) {
-                Metadata m = (Metadata) _metadata.get(i);
+            for (Metadata m : _metadata) {
                 if ((m != null) && m.getName().equalsIgnoreCase(name)) {
                     result.add(m.getContent());
                 }
@@ -1148,8 +1144,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         if (head != null) {
             Elements l = head.select("meta");
             if (l != null) {
-                for (Iterator i = l.iterator(); i.hasNext();) {
-                    Element e = (Element) i.next();
+                for (Element e : l) {
                     String name = e.attr("name");
                     if (name != null) { // ignore non-name metadata data
                         String content = e.attr("content");
@@ -1187,7 +1182,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             boolean remove = (value == null); // removing all instances of name?
             int free = -1; // first open slot in array
             for (int i = 0, len = _metadata.size(); i < len; i++) {
-                Metadata m = (Metadata) _metadata.get(i);
+                Metadata m = _metadata.get(i);
                 if (m != null) {
                     if (m.getName().equalsIgnoreCase(name)) {
                         if (!remove) {
@@ -1275,15 +1270,14 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return true;
     }
 
-    public List findPagePositionsByID(CssContext c, Pattern pattern) {
-        Map idMap = _sharedContext.getIdMap();
+    public List<PagePosition> findPagePositionsByID(CssContext c, Pattern pattern) {
+        Map<String, Box> idMap = _sharedContext.getIdMap();
         if (idMap == null) {
             return Collections.EMPTY_LIST;
         }
 
-        List result = new ArrayList();
-        for (Iterator i = idMap.entrySet().iterator(); i.hasNext();) {
-            Map.Entry entry = (Entry) i.next();
+        List<PagePosition> result = new ArrayList<PagePosition>();
+        for (Entry<String, Box> entry : idMap.entrySet()) {
             String id = (String) entry.getKey();
             if (pattern.matcher(id).find()) {
                 Box box = (Box) entry.getValue();

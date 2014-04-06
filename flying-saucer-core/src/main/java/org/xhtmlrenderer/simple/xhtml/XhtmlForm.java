@@ -31,6 +31,7 @@ import org.xhtmlrenderer.simple.xhtml.controls.CheckControl;
 import org.xhtmlrenderer.simple.xhtml.controls.HiddenControl;
 import org.xhtmlrenderer.simple.xhtml.controls.SelectControl;
 import org.xhtmlrenderer.simple.xhtml.controls.TextControl;
+
 import static org.xhtmlrenderer.util.GeneralUtil.ciEquals;
 
 public class XhtmlForm {
@@ -55,8 +56,7 @@ public class XhtmlForm {
     }
 
     public FormControl getControl(String name) {
-        for (Iterator<FormControl> iter = _controls.iterator(); iter.hasNext();) {
-            FormControl control = iter.next();
+        for (FormControl control : _controls) {
             if (control.getName().equals(name)) {
                 return control;
             }
@@ -66,8 +66,7 @@ public class XhtmlForm {
 
     public List<FormControl> getAllControls(String name) {
         List<FormControl> result = new ArrayList<FormControl>();
-        for (Iterator<FormControl> iter = _controls.iterator(); iter.hasNext();) {
-            FormControl control = iter.next();
+        for (FormControl control : _controls) {
             if (control.getName().equals(name)) {
                 result.add(control);
             }
@@ -120,8 +119,8 @@ public class XhtmlForm {
     }
 
     public void reset() {
-        for (Iterator<FormListener> iter = _listeners.iterator(); iter.hasNext();) {
-            iter.next().resetted(this);
+        for (FormListener formListener : _listeners) {
+            formListener.resetted(this);
         }
     }
 
@@ -133,13 +132,13 @@ public class XhtmlForm {
             if (control.isSuccessful()) {
                 if (control.isMultiple()) {
                     String[] values = control.getMultipleValues();
-                    for (int i = 0; i < values.length; i++) {
+                    for (String value : values) {
                         if (data.length() > 0) {
                             data.append('&');
                         }
                         data.append(URLUTF8Encoder.encode(control.getName()));
                         data.append('=');
-                        data.append(URLUTF8Encoder.encode(values[i]));
+                        data.append(URLUTF8Encoder.encode(value));
                     }
                 } else {
                     if (data.length() > 0) {
@@ -158,8 +157,8 @@ public class XhtmlForm {
         System.out.println("Method: ".concat(_method));
         System.out.println("Data: ".concat(data.toString()));
 
-        for (Iterator<FormListener> iter = _listeners.iterator(); iter.hasNext();) {
-            iter.next().submitted(this);
+        for (FormListener formListener : _listeners) {
+            formListener.submitted(this);
         }
     }
 

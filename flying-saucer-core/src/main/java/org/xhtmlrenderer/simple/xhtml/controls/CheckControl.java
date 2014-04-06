@@ -19,8 +19,6 @@
  */
 package org.xhtmlrenderer.simple.xhtml.controls;
 
-import java.util.Iterator;
-
 import org.jsoup.nodes.Element;
 import org.xhtmlrenderer.simple.xhtml.FormControl;
 import org.xhtmlrenderer.simple.xhtml.XhtmlForm;
@@ -46,16 +44,14 @@ public class CheckControl extends AbstractControl {
             if (form == null) {
                 return;
             }
-            for (Iterator<FormControl> iter = form.getAllControls(getName()).iterator(); iter
-                .hasNext();) {
-                FormControl control = (FormControl) iter.next();
-                if (control instanceof CheckControl) {
-                    CheckControl check = (CheckControl) control;
-                    if (check.isRadio() && check != this) {
-                        check.setSuccessful(false);
-                    }
+            for (FormControl control : form.getAllControls(getName())) {
+            if (control instanceof CheckControl) {
+                CheckControl check = (CheckControl) control;
+                if (check.isRadio() && check != this) {
+                    check.setSuccessful(false);
                 }
             }
+      }
         }
     }
 

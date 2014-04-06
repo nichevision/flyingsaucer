@@ -21,7 +21,6 @@ package org.xhtmlrenderer.pdf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -41,8 +40,8 @@ import static org.xhtmlrenderer.util.GeneralUtil.ciEquals;
 public class ITextReplacedElementFactory implements ReplacedElementFactory {
     private ITextOutputDevice _outputDevice;
 
-    private Map _radioButtonsByElem = new HashMap();
-    private Map _radioButtonsByName = new HashMap();
+    private Map<Element, RadioButtonFormField> _radioButtonsByElem = new HashMap<Element, RadioButtonFormField>();
+    private Map<String, List<RadioButtonFormField>> _radioButtonsByName = new HashMap<String, List<RadioButtonFormField>>();
 
     public ITextReplacedElementFactory(ITextOutputDevice outputDevice) {
         _outputDevice = outputDevice;
@@ -126,24 +125,24 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
         _radioButtonsByElem.put(e, result);
 
         String fieldName = result.getFieldName(_outputDevice, e);
-        List fields = (List) _radioButtonsByName.get(fieldName);
+        List<RadioButtonFormField> fields = _radioButtonsByName.get(fieldName);
         if (fields == null) {
-            fields = new ArrayList();
+            fields = new ArrayList<RadioButtonFormField>();
             _radioButtonsByName.put(fieldName, fields);
         }
         fields.add(result);
     }
 
     public void reset() {
-        _radioButtonsByElem = new HashMap();
-        _radioButtonsByName = new HashMap();
+        _radioButtonsByElem = new HashMap<Element, RadioButtonFormField>();
+        _radioButtonsByName = new HashMap<String, List<RadioButtonFormField>>();
     }
 
     public void remove(Element e) {
-        RadioButtonFormField field = (RadioButtonFormField) _radioButtonsByElem.remove(e);
+        RadioButtonFormField field = _radioButtonsByElem.remove(e);
         if (field != null) {
             String fieldName = field.getFieldName(_outputDevice, e);
-            List values = (List) _radioButtonsByName.get(fieldName);
+            List<RadioButtonFormField> values = _radioButtonsByName.get(fieldName);
             if (values != null) {
                 values.remove(field);
                 if (values.size() == 0) {
@@ -154,10 +153,9 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
     }
 
     public void remove(String fieldName) {
-        List values = (List) _radioButtonsByName.get(fieldName);
+        List<RadioButtonFormField> values = _radioButtonsByName.get(fieldName);
         if (values != null) {
-            for (Iterator i = values.iterator(); i.hasNext();) {
-                RadioButtonFormField field = (RadioButtonFormField) i.next();
+            for (RadioButtonFormField field : values) {
                 _radioButtonsByElem.remove(field.getBox().getElement());
             }
         }
@@ -165,8 +163,8 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
         _radioButtonsByName.remove(fieldName);
     }
 
-    public List getRadioButtons(String name) {
-        return (List) _radioButtonsByName.get(name);
+    public List<RadioButtonFormField> getRadioButtons(String name) {
+        return _radioButtonsByName.get(name);
     }
 
     public void setFormSubmissionListener(FormSubmissionListener listener) {

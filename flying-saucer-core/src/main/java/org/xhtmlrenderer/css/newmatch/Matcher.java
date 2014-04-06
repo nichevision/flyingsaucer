@@ -109,9 +109,7 @@ public class Matcher {
         List<PropertyDeclaration> props = new ArrayList<PropertyDeclaration>();
         Map<MarginBoxName, List<PropertyDeclaration>> marginBoxes = new HashMap<MarginBoxName, List<PropertyDeclaration>>();
 
-        for (Iterator<PageRule> i = _pageRules.iterator(); i.hasNext(); ) {
-            PageRule pageRule = i.next();
-            
+        for (PageRule pageRule : _pageRules) {
             if (pageRule.applies(pageName, pseudoPage)) {
                 props.addAll(pageRule.getRuleset().getPropertyDeclarations());
                 marginBoxes.putAll(pageRule.getMarginBoxes());
@@ -172,13 +170,10 @@ public class Matcher {
     private void addAllStylesheets(List<Stylesheet> stylesheets, TreeMap<String, Selector> sorter, String medium) {
         int count = 0;
         int pCount = 0;
-        for (Iterator<Stylesheet> i = stylesheets.iterator(); i.hasNext(); ) {
-            Stylesheet stylesheet = (Stylesheet)i.next();
-            for (Iterator<Object> j = stylesheet.getContents().iterator(); j.hasNext(); ) {
-                Object obj = (Object)j.next();
+        for (Stylesheet stylesheet : stylesheets) {
+            for (Object obj : stylesheet.getContents()) {
                 if (obj instanceof Ruleset) {
-                    for (Iterator<Selector> k = ((Ruleset)obj).getFSSelectors().iterator(); k.hasNext(); ) {
-                        Selector selector = (Selector)k.next();
+                    for (Selector selector : ((Ruleset)obj).getFSSelectors()) {
                         selector.setPos(++count);
                         sorter.put(selector.getOrder(), selector);
                     }
@@ -188,10 +183,8 @@ public class Matcher {
                 } else if (obj instanceof MediaRule) {
                     MediaRule mediaRule = (MediaRule)obj;
                     if (mediaRule.matches(medium)) {
-                        for (Iterator<Ruleset> k = mediaRule.getContents().iterator(); k.hasNext(); ) {
-                            Ruleset ruleset = (Ruleset)k.next();
-                            for (Iterator<Selector> l = ruleset.getFSSelectors().iterator(); l.hasNext(); ) {
-                                Selector selector = (Selector)l.next();
+                        for (Ruleset ruleset : mediaRule.getContents()) {
+                            for (Selector selector : ruleset.getFSSelectors()) {
                                 selector.setPos(++count);
                                 sorter.put(selector.getOrder(), selector);
                             }

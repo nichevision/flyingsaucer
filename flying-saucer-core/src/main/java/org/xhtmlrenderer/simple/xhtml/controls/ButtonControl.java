@@ -20,11 +20,11 @@
 package org.xhtmlrenderer.simple.xhtml.controls;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
 import org.xhtmlrenderer.simple.xhtml.XhtmlForm;
+
 import static org.xhtmlrenderer.util.GeneralUtil.ciEquals;
 
 public class ButtonControl extends AbstractControl {
@@ -75,8 +75,8 @@ public class ButtonControl extends AbstractControl {
     }
 
     public boolean press() {
-        for (Iterator<ButtonControlListener> iter = _listeners.iterator(); iter.hasNext();) {
-            if(!iter.next().pressed(this))
+        for (ButtonControlListener buttonControlListener : _listeners) {
+            if(!buttonControlListener.pressed(this))
                 return false;
         }
         return true;

@@ -90,8 +90,8 @@ public class StylesheetInfo {
     public void setMedia( String media ) {
         String[] mediaTypes = media.split(",");
         List<String> l = new ArrayList<String>(mediaTypes.length);
-        for (int i = 0; i < mediaTypes.length; i++) {
-            l.add(mediaTypes[i].trim().toLowerCase());
+        for (String mediaType : mediaTypes) {
+            l.add(mediaType.trim().toLowerCase());
         }
         this.mediaTypes = l;
     }

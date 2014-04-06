@@ -20,8 +20,7 @@ import com.lowagie.text.pdf.RandomAccessFileOrArray;
 public class TrueTypeUtil {
     private static IdentValue guessStyle(BaseFont font) {
         String[][] names = font.getFullFontName();
-        for (int i = 0; i < names.length; i++) {
-            String name[] = names[i];
+        for (String[] name : names) {
             String lower = name[3].toLowerCase();
             if (lower.indexOf("italic") != -1) {
                 return IdentValue.ITALIC;
@@ -39,27 +38,26 @@ public class TrueTypeUtil {
             return new String[] { names[0][3] };
         }
 
-        List result = new ArrayList();
-        for (int k = 0; k < names.length; ++k) {
-            String name[] = names[k];
+        List<String> result = new ArrayList<String>();
+        for (String[] name : names) {
             if ((name[0].equals("1") && name[1].equals("0")) ||
                     name[2].equals("1033")) {
                 result.add(name[3]);
             }
         }
-        return (String[]) result.toArray(new String[result.size()]);
+        return result.toArray(new String[result.size()]);
     }
 
     // HACK No accessor
-    private static Map extractTables(BaseFont font)
+    private static Map<?, ?> extractTables(BaseFont font)
             throws SecurityException, NoSuchFieldException, IllegalArgumentException,
                     IllegalAccessException {
-        Class current = font.getClass();
+        Class<?> current = font.getClass();
         while (current != null) {
             if (current.getName().endsWith(".TrueTypeFont")) {
                 Field f = current.getDeclaredField("tables");
                 f.setAccessible(true);
-                return (Map)f.get(font);
+                return (Map<?, ?>)f.get(font);
             }
 
             current = current.getSuperclass();
@@ -116,7 +114,7 @@ public class TrueTypeUtil {
     private static RandomAccessFileOrArray populateDescription0(String path,
             BaseFont font, FontDescription descr, RandomAccessFileOrArray rf)
                throws NoSuchFieldException, IllegalAccessException, DocumentException, IOException {
-        Map tables = extractTables(font);
+        Map<?, ?> tables = extractTables(font);
 
         descr.setStyle(guessStyle(font));
 

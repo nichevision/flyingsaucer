@@ -20,7 +20,6 @@
 package org.xhtmlrenderer.pdf;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
@@ -31,6 +30,7 @@ import org.xhtmlrenderer.layout.LayoutContext;
 import org.xhtmlrenderer.render.BlockBox;
 import org.xhtmlrenderer.render.RenderingContext;
 import org.xhtmlrenderer.util.*;
+
 import static org.xhtmlrenderer.util.GeneralUtil.ciEquals;
 
 import com.lowagie.text.pdf.PdfAnnotation;
@@ -46,7 +46,7 @@ public class SelectFormField extends AbstractFormField {
     private static final int EMPTY_SPACE_COUNT = 10;
     private static final int EXTRA_SPACE_COUNT = 4;
     
-    private List _options;
+    private List<Option> _options;
 
     private int _baseline;
     
@@ -62,11 +62,10 @@ public class SelectFormField extends AbstractFormField {
     private int getSelectedIndex() {
         int result = 0;
         
-        List options = _options;
+        List<Option> options = _options;
         
         int offset = 0;
-        for (Iterator i = options.iterator(); i.hasNext(); offset++) {
-            Option option = (Option)i.next();
+        for (Option option : options) {
             if (option.isSelected()) {
                 result = offset;
             }
@@ -76,12 +75,11 @@ public class SelectFormField extends AbstractFormField {
     }
     
     private String[][] getPDFOptions() {
-        List options = _options;
+        List<Option> options = _options;
         String[][] result = new String[options.size()][];
         
         int offset = 0;
-        for (Iterator i = options.iterator(); i.hasNext(); offset++) {
-            Option option = (Option)i.next();
+        for (Option option : options) {
             result[offset] = new String[] { option.getValue(), option.getLabel() };
         }
         
@@ -89,7 +87,7 @@ public class SelectFormField extends AbstractFormField {
     }
     
     private int calcDefaultWidth(LayoutContext c, BlockBox box) {
-        List options = _options;
+        List<Option> options = _options;
         
         if (options.size() == 0) {
             return c.getTextRenderer().getWidth(
@@ -98,9 +96,7 @@ public class SelectFormField extends AbstractFormField {
                     spaces(EMPTY_SPACE_COUNT));
         } else {
             int maxWidth = 0;
-            for (Iterator i = options.iterator(); i.hasNext(); ) {
-                Option option = (Option)i.next();
-                
+            for (Option option : options) {
                 String result = option.getLabel() + spaces(EXTRA_SPACE_COUNT);
                 
                 int width = c.getTextRenderer().getWidth(

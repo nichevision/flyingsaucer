@@ -246,8 +246,9 @@ class SelectField extends FormField {
 
         public String toString() {
             String txt = getName();
-            for (int i = 0; i < getIndent(); i++)
-                txt = "    " + txt;
+            for (int i = 0; i < getIndent(); i++) {
+              txt = "    " + txt;
+            }
             return txt;
         }
     }

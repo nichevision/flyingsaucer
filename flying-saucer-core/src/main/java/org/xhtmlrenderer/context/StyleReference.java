@@ -21,7 +21,6 @@ package org.xhtmlrenderer.context;
 
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -93,8 +92,7 @@ public class StyleReference {
     
     private List<Stylesheet> readAndParseAll(List<StylesheetInfo> infos, String medium) {
         List<Stylesheet> result = new ArrayList<Stylesheet>(infos.size() + 15);
-        for (Iterator<StylesheetInfo> i = infos.iterator(); i.hasNext(); ) {
-            StylesheetInfo info = i.next();
+        for (StylesheetInfo info : infos) {
             if (info.appliesToMedia(medium)) {
                 Stylesheet sheet = info.getStylesheet();
                 

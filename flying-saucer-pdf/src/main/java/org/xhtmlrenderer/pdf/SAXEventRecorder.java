@@ -29,7 +29,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 public class SAXEventRecorder implements ContentHandler {
-    private List _events = new LinkedList();
+    private List<Event> _events = new LinkedList<Event>();
     
     private interface Event {
         public void replay(ContentHandler handler) throws SAXException;
@@ -121,8 +121,8 @@ public class SAXEventRecorder implements ContentHandler {
     }
     
     public void replay(ContentHandler handler) throws SAXException {
-        for (Iterator i = _events.iterator(); i.hasNext(); ) {
-            Event e = (Event)i.next();
+        for (Iterator<Event> i = _events.iterator(); i.hasNext(); ) {
+            Event e = i.next();
             e.replay(handler);
         }
     }

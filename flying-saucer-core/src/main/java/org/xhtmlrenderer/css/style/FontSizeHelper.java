@@ -56,12 +56,11 @@ public class FontSizeHelper {
     
     public static IdentValue getNextSmaller(IdentValue absFontSize) {
         IdentValue prev = null;
-        for (Iterator<IdentValue> i = PROPORTIONAL_FONT_SIZES.keySet().iterator(); i.hasNext(); ) {
-            IdentValue ident = i.next();
-            if (ident == absFontSize) {
+        for (IdentValue size : PROPORTIONAL_FONT_SIZES.keySet()) {
+            if (size == absFontSize) {
                 return prev;
             }
-            prev = ident;
+            prev = size;
         }
         return null;
     }
@@ -97,8 +96,8 @@ public class FontSizeHelper {
     }
     
     private static boolean isMonospace(String[] fontFamilies) {
-        for (int i = 0; i < fontFamilies.length; i++) {
-            if (fontFamilies[i].equals("monospace")) {
+        for (String fontFamily : fontFamilies) {
+            if (fontFamily.equals("monospace")) {
                 return true;
             }
         }
