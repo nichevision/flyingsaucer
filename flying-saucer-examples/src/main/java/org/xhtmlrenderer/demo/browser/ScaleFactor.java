@@ -10,10 +10,10 @@ public class ScaleFactor {
     public static final double PAGE_WIDTH = -2.0d;
     public static final double PAGE_HEIGHT = -3.0d;
     public static final double PAGE_WHOLE = -4.0d;
-    private Double factor;
-    private String zoomLabel;
+    private final Double factor;
+    private final String zoomLabel;
 
-    public ScaleFactor(double factor, String zoomLabel) {
+    public ScaleFactor(final double factor, final String zoomLabel) {
         super();
         this.factor = new Double(factor);
         this.zoomLabel = zoomLabel;

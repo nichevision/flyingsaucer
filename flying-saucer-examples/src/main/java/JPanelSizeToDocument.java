@@ -43,11 +43,11 @@ public class JPanelSizeToDocument {
     private String fileName;
     private int targetWidth = 800;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         new JPanelSizeToDocument().run(args);
     }
 
-    private void run(String[] args) {
+    private void run(final String[] args) {
         loadAndCheckArgs(args);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -81,7 +81,7 @@ public class JPanelSizeToDocument {
         // are a variety of overloads for setDocument().
         try {
             panel.setDocument(new File(fileName));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             XRLog.general(Level.WARNING, "Could not load XHTML document " + fileName, e);
             messageAndExit("Failed to load document", -1);
         }
@@ -107,21 +107,21 @@ public class JPanelSizeToDocument {
         frame.setVisible(true);
     }
 
-    private void loadAndCheckArgs(String[] args) {
+    private void loadAndCheckArgs(final String[] args) {
         if (args.length == 0) {
             messageAndExit("Enter a file or URI.", -1);
         }
-        String name = args[0];
+        final String name = args[0];
         if (!new File(name).exists()) {
             messageAndExit("File " + name + " does not exist.", -1);
         }
         this.fileName = name;
 
         if (args.length > 1) {
-            String widthVal = args[1];
+            final String widthVal = args[1];
             try {
                 targetWidth = Integer.valueOf(widthVal).intValue();
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 messageAndExit("Target width " + widthVal + " is not an integer", -1);
             }
         }

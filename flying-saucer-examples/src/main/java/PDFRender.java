@@ -28,7 +28,7 @@ import org.xhtmlrenderer.resource.HTMLResource;
 import java.io.*;
 
 public class PDFRender {
-    public static void main(String[] args) throws IOException, DocumentException {
+    public static void main(final String[] args) throws IOException, DocumentException {
         if (args.length != 2) {
             System.err.println("Usage: ... [url] [pdf]");
             System.exit(1);
@@ -36,7 +36,7 @@ public class PDFRender {
         String url = args[0];
         if (url.indexOf("://") == -1) {
             // maybe it's a file
-            File f = new File(url);
+            final File f = new File(url);
             if (f.exists()) {
                 url = f.toURI().toURL().toString();
             }
@@ -44,7 +44,7 @@ public class PDFRender {
         createPDF(url, args[1]);
     }
 
-    public static void createPDF(String url, String pdf)
+    public static void createPDF(final String url, final String pdf)
             throws IOException, DocumentException {
         OutputStream os = null;
         try {
@@ -58,13 +58,13 @@ public class PDFRender {
             renderer.createPDF(os);
             */
 
-            ITextRenderer renderer = new ITextRenderer();
-            ResourceLoaderUserAgent callback = new ResourceLoaderUserAgent(renderer.getOutputDevice());
+            final ITextRenderer renderer = new ITextRenderer();
+            final ResourceLoaderUserAgent callback = new ResourceLoaderUserAgent(renderer.getOutputDevice());
             callback.setSharedContext(renderer.getSharedContext());
             renderer.getSharedContext ().setUserAgentCallback(callback);
 
             // TODO
-            Document doc = HTMLResource.load("<body>TODO</body>").getDocument();
+            final Document doc = HTMLResource.load("<body>TODO</body>").getDocument();
 
             renderer.setDocument(doc, url);
             renderer.layout();
@@ -76,7 +76,7 @@ public class PDFRender {
             if (os != null) {
                 try {
                     os.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }
@@ -85,12 +85,12 @@ public class PDFRender {
 
     private static class ResourceLoaderUserAgent extends ITextUserAgent
     {
-        public ResourceLoaderUserAgent(ITextOutputDevice outputDevice) {
+        public ResourceLoaderUserAgent(final ITextOutputDevice outputDevice) {
             super(outputDevice);
         }
 
-        protected InputStream resolveAndOpenStream(String uri) {
-            InputStream is = super.resolveAndOpenStream(uri);
+        protected InputStream resolveAndOpenStream(final String uri) {
+            final InputStream is = super.resolveAndOpenStream(uri);
             System.out.println("IN resolveAndOpenStream() " + uri);
             return is;
         }

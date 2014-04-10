@@ -78,7 +78,7 @@ public class BrowserStartup {
     /**
      * Constructor for the BrowserStartup object
      */
-    public BrowserStartup(String startPage) {
+    public BrowserStartup(final String startPage) {
         logger.info("starting up");
         this.startPage = startPage;
     }
@@ -91,10 +91,10 @@ public class BrowserStartup {
             try {
                 System.setProperty("apple.laf.useScreenMenuBar", "true");
                 System.setProperty("com.apple.mrj.application.apple.menu.about.name", "FS Browser");
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 try {
                     logger.log(Level.SEVERE, "error initalizing the mac properties", ex);
-                } catch (Exception ex2) {
+                } catch (final Exception ex2) {
                     //System.out.println("error writing to the log file!" + ex2);
                     //ex2.printStackTrace();
                 }
@@ -103,7 +103,7 @@ public class BrowserStartup {
             setLookAndFeel();
         }
 
-        JFrame frame = new JFrame();
+        final JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame = frame;
         logger.info("creating UI");
@@ -152,7 +152,7 @@ public class BrowserStartup {
             panel.loadPage(startPage);
 
             frame.setVisible(true);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             XRLog.general(Level.SEVERE, ex.getMessage(), ex);
         }
     }
@@ -162,13 +162,13 @@ public class BrowserStartup {
         try {
             UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
             lnfSet = true;
-        } catch (Throwable th) {
+        } catch (final Throwable th) {
         }
         if (!lnfSet) {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 lnfSet = true;
-            } catch (Throwable th) {
+            } catch (final Throwable th) {
                 th.printStackTrace();
             }
         }
@@ -186,7 +186,7 @@ public class BrowserStartup {
          * @param url   PARAM
          * @param title PARAM
          */
-        public void pageLoadSuccess(String url, String title) {
+        public void pageLoadSuccess(final String url, final String title) {
             frame.setTitle(title + (title.length() > 0 ? " - " : "") + "Flying Saucer");
         }
     }

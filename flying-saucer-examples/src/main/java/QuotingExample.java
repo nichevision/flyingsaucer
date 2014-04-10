@@ -35,10 +35,10 @@ public class QuotingExample extends JFrame {
         setTitle("CSS Quoting Example");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-        XHTMLPanel xr = new XHTMLPanel();
+        final XHTMLPanel xr = new XHTMLPanel();
         try {
             xr.setDocument(XMLUtil.documentFromString(DOCUMENT));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ExceptionInInitializerError(e);
         }
         
@@ -50,7 +50,7 @@ public class QuotingExample extends JFrame {
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 new QuotingExample().setVisible(true);

@@ -20,13 +20,13 @@ public class PlainTextXMLReader implements XMLReader {
     private DTDHandler dtdHandler;
     private ContentHandler contentHandler;
     private ErrorHandler errorHandler;
-    private BufferedReader text;
+    private final BufferedReader text;
 
-    public PlainTextXMLReader(InputStream is) {
+    public PlainTextXMLReader(final InputStream is) {
         text = new BufferedReader(new InputStreamReader(is));
     }
 
-    public boolean getFeature(String s) throws SAXNotRecognizedException, SAXNotSupportedException {
+    public boolean getFeature(final String s) throws SAXNotRecognizedException, SAXNotSupportedException {
         if (s.equals("http://xml.org/sax/features/namespaces")) {
             return true;
         }
@@ -36,7 +36,7 @@ public class PlainTextXMLReader implements XMLReader {
         throw new SAXNotRecognizedException(s);
     }
 
-    public void setFeature(String s, boolean b) throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setFeature(final String s, final boolean b) throws SAXNotRecognizedException, SAXNotSupportedException {
         if (s.equals("http://xml.org/sax/features/namespaces")) {
             if (!b)
                 throw new SAXNotSupportedException(s);
@@ -52,15 +52,15 @@ public class PlainTextXMLReader implements XMLReader {
         throw new SAXNotRecognizedException(s);
     }
 
-    public Object getProperty(String s) throws SAXNotRecognizedException, SAXNotSupportedException {
+    public Object getProperty(final String s) throws SAXNotRecognizedException, SAXNotSupportedException {
         throw new SAXNotRecognizedException(s);
     }
 
-    public void setProperty(String s, Object o) throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setProperty(final String s, final Object o) throws SAXNotRecognizedException, SAXNotSupportedException {
         throw new SAXNotRecognizedException(s);
     }
 
-    public void setEntityResolver(EntityResolver entityResolver) {
+    public void setEntityResolver(final EntityResolver entityResolver) {
         this.entityResolver = entityResolver;
     }
 
@@ -68,7 +68,7 @@ public class PlainTextXMLReader implements XMLReader {
         return entityResolver;
     }
 
-    public void setDTDHandler(DTDHandler dtdHandler) {
+    public void setDTDHandler(final DTDHandler dtdHandler) {
         this.dtdHandler = dtdHandler;
     }
 
@@ -76,7 +76,7 @@ public class PlainTextXMLReader implements XMLReader {
         return dtdHandler;
     }
 
-    public void setContentHandler(ContentHandler contentHandler) {
+    public void setContentHandler(final ContentHandler contentHandler) {
         this.contentHandler = contentHandler;
     }
 
@@ -84,7 +84,7 @@ public class PlainTextXMLReader implements XMLReader {
         return contentHandler;
     }
 
-    public void setErrorHandler(ErrorHandler errorHandler) {
+    public void setErrorHandler(final ErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
     }
 
@@ -92,7 +92,7 @@ public class PlainTextXMLReader implements XMLReader {
         return errorHandler;
     }
 
-    public void parse(InputSource inputSource) throws IOException, SAXException {
+    public void parse(final InputSource inputSource) throws IOException, SAXException {
         contentHandler.startDocument();
         contentHandler.startElement("http://www.w3.org/1999/xhtml", "pre", "pre", new AttributesImpl());
 
@@ -100,7 +100,7 @@ public class PlainTextXMLReader implements XMLReader {
         do {
             line = text.readLine();
             if (line == null) break;
-            char[] chars = (line + "\n").toCharArray();
+            final char[] chars = (line + "\n").toCharArray();
             contentHandler.characters(chars, 0, chars.length);
         } while (line != null);
 
@@ -108,7 +108,7 @@ public class PlainTextXMLReader implements XMLReader {
         contentHandler.endDocument();
     }
 
-    public void parse(String s) throws IOException, SAXException {
+    public void parse(final String s) throws IOException, SAXException {
         throw new SAXNotRecognizedException(s);
     }
 }

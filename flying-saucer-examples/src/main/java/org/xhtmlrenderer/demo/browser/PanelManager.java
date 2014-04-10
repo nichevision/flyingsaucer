@@ -43,13 +43,13 @@ import java.util.logging.Level;
  */
 public class PanelManager extends DelegatingUserAgent {
     private int index = -1;
-    private ArrayList history = new ArrayList();
+    private final ArrayList history = new ArrayList();
 
 
     /**
      * {@inheritdoc}.
      */
-    public String resolveURI(String uri) {
+    public String resolveURI(final String uri) {
         final String burl = getBaseURL();
 
         URL ref = null;
@@ -58,7 +58,7 @@ public class PanelManager extends DelegatingUserAgent {
         if (uri.trim().equals("")) return burl; //jar URLs don't resolve this right
 
         if (uri.startsWith("demo:")) {
-            DemoMarker marker = new DemoMarker();
+            final DemoMarker marker = new DemoMarker();
             String short_url = uri.substring(5);
             if (!short_url.startsWith("/")) {
                 short_url = "/" + short_url;
@@ -66,7 +66,7 @@ public class PanelManager extends DelegatingUserAgent {
             ref = marker.getClass().getResource(short_url);
             Uu.p("ref = " + ref);
         } else if (uri.startsWith("demoNav:")) {
-            DemoMarker marker = new DemoMarker();
+            final DemoMarker marker = new DemoMarker();
             String short_url = uri.substring("demoNav:".length());
             if (!short_url.startsWith("/")) {
                 short_url = "/" + short_url;
@@ -86,7 +86,7 @@ public class PanelManager extends DelegatingUserAgent {
                     base = new URL(burl);
                 }
                 ref = new URL(base, uri);
-            } catch (MalformedURLException e) {
+            } catch (final MalformedURLException e) {
                 Uu.p("URI/URL is malformed: " + burl + " or " + uri);
             }
         }
@@ -105,17 +105,17 @@ public class PanelManager extends DelegatingUserAgent {
         if (uri != null && uri.startsWith("file:")) {
             File file = null;
             try {
-                StringBuffer sbURI = GeneralUtil.htmlEscapeSpace(uri);
+                final StringBuffer sbURI = GeneralUtil.htmlEscapeSpace(uri);
 
                 XRLog.general("Encoded URI: " + sbURI);
                 file = new File(new URI(sbURI.toString()));
-            } catch (URISyntaxException
+            } catch (final URISyntaxException
                     e) {
                 XRLog.exception("Invalid file URI " + uri, e);
                 return getNotFoundDocument(uri);
             }
             if (file.isDirectory()) {
-                String dirlist = DirectoryLister.list(file);
+                final String dirlist = DirectoryLister.list(file);
                 return HTMLResource.load(new StringReader(dirlist));
             }
         }
@@ -123,10 +123,10 @@ public class PanelManager extends DelegatingUserAgent {
         URLConnection uc = null;
         InputStream inputStream = null;
         try {
-        	StreamResource strm = new StreamResource(uri);
+        	final StreamResource strm = new StreamResource(uri);
         	strm.connect();
         	uc = strm.getUrlConnection();
-            String contentType = uc.getContentType();
+            final String contentType = uc.getContentType();
 
             XRLog.load(Level.INFO, "Content-Type = " + contentType);
 
@@ -141,21 +141,21 @@ public class PanelManager extends DelegatingUserAgent {
                 inputStream = strm.bufferedStream();
                 xr = HTMLResource.load(inputStream, uri);
             } else if (contentType.startsWith("image")) {
-                String doc = "<img src='" + uri + "'/>";
+                final String doc = "<img src='" + uri + "'/>";
                 xr = HTMLResource.load(doc);
             } else {
                 inputStream = strm.bufferedStream();
                 xr = HTMLResource.load(inputStream, uri);
             }
-        } catch (MalformedURLException e) {
+        } catch (final MalformedURLException e) {
             XRLog.exception("bad URL given: " + uri, e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             XRLog.exception("IO problem for " + uri, e);
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // swallow
                 }
             }
@@ -174,12 +174,12 @@ public class PanelManager extends DelegatingUserAgent {
 	 *
 	 * @return An XMLResource containing XML which about the failure.
 	 */
-	private HTMLResource getNotFoundDocument(String uri) {
+	private HTMLResource getNotFoundDocument(final String uri) {
         HTMLResource xr;
 
         // URI may contain & symbols which can "break" the XHTML we're creating
-        String cleanUri = GeneralUtil.escapeHTML(uri);
-        String notFound = "<html><h1>Document not found</h1><p>Could not access URI <pre>" + cleanUri + "</pre></p></html>";
+        final String cleanUri = GeneralUtil.escapeHTML(uri);
+        final String notFound = "<html><h1>Document not found</h1><p>Could not access URI <pre>" + cleanUri + "</pre></p></html>";
 
         xr = HTMLResource.load(new StringReader(notFound));
         return xr;
@@ -197,7 +197,7 @@ public class PanelManager extends DelegatingUserAgent {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setBaseURL (String url) {
+	public void setBaseURL (final String url) {
 		String burl = super.getBaseURL();
 		if(burl !=null &&  burl.startsWith("error:")) burl = null;
         
@@ -208,11 +208,11 @@ public class PanelManager extends DelegatingUserAgent {
 
 		// setBaseURL is called by view when document is loaded
         if (index >= 0) {
-            String historic = (String) history.get(index);
+            final String historic = (String) history.get(index);
             if (historic.equals(burl)) return; //moved in history
         }
         index++;
-        for (int i = index; i < history.size(); history.remove(i)) ;
+        for (final int i = index; i < history.size(); history.remove(i)) ;
         history.add(index, burl);
     }
 

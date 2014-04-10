@@ -127,7 +127,7 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 	 * @param root	 PARAM
 	 * @param listener PARAM
 	 */
-	public BrowserPanel(BrowserStartup root, BrowserPanelListener listener) {
+	public BrowserPanel(final BrowserStartup root, final BrowserPanelListener listener) {
 		super();
 		this.root = root;
 		this.listener = listener;
@@ -146,12 +146,12 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 
 		url = new JTextField();
 		url.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
+			public void focusGained(final FocusEvent e) {
 				super.focusGained(e);
 				url.selectAll();
 			}
 
-			public void focusLost(FocusEvent e) {
+			public void focusLost(final FocusEvent e) {
 				super.focusLost(e);
 				url.select(0, 0);
 			}
@@ -161,7 +161,7 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 		manager = new PanelManager();
         view = new ScalableXHTMLPanel(manager);
         manager.setRepaintListener(view);
-        ImageResourceLoader irl = new ImageResourceLoader();
+        final ImageResourceLoader irl = new ImageResourceLoader();
         irl.setRepaintListener(view);
         manager.setImageResourceLoader(irl);
         view.getSharedContext().setReplacedElementFactory(new SwingReplacedElementFactory(view, irl));
@@ -179,7 +179,7 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 
 		initToolbar();
 
-		int text_width = 200;
+		final int text_width = 200;
 		view.setPreferredSize(new Dimension(text_width, text_width));
 
 		setLayout(new BorderLayout());
@@ -201,11 +201,11 @@ public class BrowserPanel extends JPanel implements DocumentListener {
     }
 
 	private void loadCustomFonts() {
-		SharedContext rc = view.getSharedContext();
+		final SharedContext rc = view.getSharedContext();
 		try {
 			rc.setFontMapping("Fuzz", Font.createFont(Font.TRUETYPE_FONT,
 					new DemoMarker().getClass().getResourceAsStream("/demos/fonts/fuzz.ttf")));
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			Uu.p(ex);
 		}
 	}
@@ -214,8 +214,8 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 	 * Description of the Method
 	 */
 	public void createLayout() {
-		GridBagLayout gbl = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagLayout gbl = new GridBagLayout();
+		final GridBagConstraints c = new GridBagConstraints();
 		setLayout(gbl);
 
 		c.gridx = 0;
@@ -310,7 +310,7 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 	 * Description of the Method
 	 */
 	public void goForward() {
-		String uri = manager.getForward();
+		final String uri = manager.getForward();
 		view.setDocument(uri);
 		updateButtons();
 	}
@@ -319,7 +319,7 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 	 * Description of the Method
 	 */
 	public void goBack() {
-		String uri = manager.getBack();
+		final String uri = manager.getBack();
 		view.setDocument(uri);
 		updateButtons();
 	}
@@ -354,24 +354,24 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 			if (listener != null) {
 				listener.pageLoadSuccess(url_text, view.getDocumentTitle());
 			}
-		} catch (XRRuntimeException ex) {
+		} catch (final XRRuntimeException ex) {
 			XRLog.general(Level.SEVERE, "Runtime exception", ex);
             setStatus("Can't load document");
             handlePageLoadFailed(url_text, ex);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
 			XRLog.general(Level.SEVERE, "Could not load page for display.", ex);
 			ex.printStackTrace();
 		}
 	}
 	
-	public void exportToPdf( String path )
+	public void exportToPdf( final String path )
 	{
 		try {
 			PDFRenderer.renderToPDF(manager.getBaseURL(), path, PdfWriter.VERSION_1_7);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (DocumentException e) {
+		} catch (final DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
@@ -412,11 +412,11 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 //       }
 	}
 
-    private void handlePageLoadFailed(String url_text, XRRuntimeException ex) {
+    private void handlePageLoadFailed(final String url_text, final XRRuntimeException ex) {
         final HTMLResource xr;
         final String rootCause = getRootCause(ex);
         final String msg = GeneralUtil.escapeHTML(addLineBreaks(rootCause, 80));
-        String notFound =
+        final String notFound =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
         "<!DOCTYPE html PUBLIC \" -//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
                 "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n" +
@@ -438,8 +438,8 @@ public class BrowserPanel extends JPanel implements DocumentListener {
         });
    }
 
-    private String addLineBreaks(String _text, int maxLineLength) {
-        StringBuffer broken = new StringBuffer(_text.length() + 10);
+    private String addLineBreaks(final String _text, final int maxLineLength) {
+        final StringBuffer broken = new StringBuffer(_text.length() + 10);
         boolean needBreak = false;
         for (int i = 0; i < _text.length(); i++) {
             if (i > 0 && i % maxLineLength == 0) needBreak = true;
@@ -457,7 +457,7 @@ public class BrowserPanel extends JPanel implements DocumentListener {
         return broken.toString();  
     }
 
-    private String getRootCause(Exception ex) {
+    private String getRootCause(final Exception ex) {
         // FIXME
         Throwable cause = ex;
         while (cause != null) {
@@ -483,7 +483,7 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 	 *
 	 * @param txt The new status value
 	 */
-	public void setStatus(String txt) {
+	public void setStatus(final String txt) {
 		status.text.setText(txt);
 	}
 
@@ -506,12 +506,12 @@ public class BrowserPanel extends JPanel implements DocumentListener {
 	}
 
 
-	public void onLayoutException(Throwable t) {
+	public void onLayoutException(final Throwable t) {
         // TODO: clean
         t.printStackTrace();
 	}
 
-	public void onRenderException(Throwable t) {
+	public void onRenderException(final Throwable t) {
         // TODO: clean
 		t.printStackTrace();
 	}

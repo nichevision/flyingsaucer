@@ -13,12 +13,12 @@ import java.awt.print.PrinterJob;
 public class PrintAction extends AbstractAction {
     protected BrowserStartup root;
 
-    public PrintAction(BrowserStartup root, ImageIcon icon) {
+    public PrintAction(final BrowserStartup root, final ImageIcon icon) {
         super("Print", icon);
         this.root = root;
     }
 
-    public void actionPerformed(ActionEvent evt) {
+    public void actionPerformed(final ActionEvent evt) {
         Uu.p("printing");
         final PrinterJob printJob = PrinterJob.getPrinterJob();
         printJob.setPrintable(new XHTMLPrintable(root.panel.view));
@@ -30,7 +30,7 @@ public class PrintAction extends AbstractAction {
                         Uu.p("starting printing");
                         printJob.print();
                         Uu.p("done printing");
-                    } catch (PrinterException ex) {
+                    } catch (final PrinterException ex) {
                         Uu.p(ex);
                     }
                 }

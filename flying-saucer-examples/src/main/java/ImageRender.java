@@ -38,26 +38,26 @@ public class ImageRender {
 	 * @param args see desc
 	 * @throws java.io.IOException if source could not be read, or if image path is invalid
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(final String[] args) throws IOException {
 		if (args.length != 1) {
 			usage("Incorrect argument list.");
 		}
-		String url = args[0];
+		final String url = args[0];
 		if (url.indexOf("://") == -1) {
 			// maybe it's a file
-			File f = new File(url);
+			final File f = new File(url);
 			if (f.exists()) {
-				Java2DRenderer renderer = new Java2DRenderer(f, 1024);
+				final Java2DRenderer renderer = new Java2DRenderer(f, 1024);
 				renderer.setBufferedImageType(BufferedImage.TYPE_INT_RGB);
-				BufferedImage image = renderer.getImage();
+				final BufferedImage image = renderer.getImage();
 
-				FSImageWriter imageWriter = new FSImageWriter();
+				final FSImageWriter imageWriter = new FSImageWriter();
 				String path = f.getAbsolutePath();
 				path = path.substring(0, path.lastIndexOf("."));
 				imageWriter.write(image, path + ".png");
 
 				// compare to old
-				BufferedImage img = Graphics2DRenderer.renderToImageAutoSize(f.toURI().toURL().toExternalForm(), 1024, BufferedImage.TYPE_INT_ARGB);
+				final BufferedImage img = Graphics2DRenderer.renderToImageAutoSize(f.toURI().toURL().toExternalForm(), 1024, BufferedImage.TYPE_INT_ARGB);
 				ImageIO.write(img, "png", new File(path + "-G2DR.png"));
 
 			} else {
@@ -71,7 +71,7 @@ public class ImageRender {
 	/**
 	 * prints out usage information, with optional error message
 	 */
-	private static void usage(String err) {
+	private static void usage(final String err) {
 		if (err != null && err.length() > 0) {
 			System.err.println("==>" + err);
 		}

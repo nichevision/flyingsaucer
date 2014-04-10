@@ -70,13 +70,13 @@ public class AboutBox extends JDialog implements Runnable {
      * @param text PARAM
      * @param url  PARAM
      */
-    public AboutBox(String text, String url) {
+    public AboutBox(final String text, final String url) {
         super();
         Uu.p("starting the about box");
         setTitle(text);
-        XHTMLPanel panel = new XHTMLPanel(new DemoUserAgent());
-        int w = 400;
-        int h = 500;
+        final XHTMLPanel panel = new XHTMLPanel(new DemoUserAgent());
+        final int w = 400;
+        final int h = 500;
         panel.setPreferredSize(new Dimension(w, h));
 
         scroll = new JScrollPane(panel);
@@ -89,7 +89,7 @@ public class AboutBox extends JDialog implements Runnable {
         close_button = new JButton("Close");
         getContentPane().add(close_button, "South");
         close_button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(final ActionEvent evt) {
                 setVisible(false);
                 go = false;
             }
@@ -97,12 +97,12 @@ public class AboutBox extends JDialog implements Runnable {
 
         try {
             loadPage(url, panel);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Uu.p(ex);
         }
         pack();
         setSize(w, h);
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screen.width - w) / 2, (screen.height - h) / 2);
     }
 
@@ -112,12 +112,12 @@ public class AboutBox extends JDialog implements Runnable {
      * @param url_text PARAM
      * @param panel    PARAM
      */
-    public void loadPage(String url_text, XHTMLPanel panel) throws MalformedURLException {
+    public void loadPage(final String url_text, final XHTMLPanel panel) throws MalformedURLException {
 URL ref = null;
 
 if (url_text.startsWith("demo:")) {
     Uu.p("starts with demo");
-    DemoMarker marker = new DemoMarker();
+    final DemoMarker marker = new DemoMarker();
     Uu.p("url text = " + url_text);
     String short_url = url_text.substring(5);
     if (!short_url.startsWith("/")) {
@@ -153,10 +153,10 @@ Uu.p("url_text = " + url_text);
         while (go) {
             try {
                 Thread.sleep(100);
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 Uu.p(ex);
             }
-            JScrollBar sb = scroll.getVerticalScrollBar();
+            final JScrollBar sb = scroll.getVerticalScrollBar();
             sb.setValue(sb.getValue() + 1);
         }
     }
@@ -166,7 +166,7 @@ Uu.p("url_text = " + url_text);
      *
      * @param vis The new visible value
      */
-    public void setVisible(boolean vis) {
+    public void setVisible(final boolean vis) {
         super.setVisible(vis);
         if (vis == true) {
             startScrolling();
@@ -178,17 +178,17 @@ Uu.p("url_text = " + url_text);
      *
      * @param args The command line arguments
      */
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("About Box Test");
+    public static void main(final String[] args) {
+        final JFrame frame = new JFrame("About Box Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JButton launch = new JButton("Show About Box");
+        final JButton launch = new JButton("Show About Box");
         frame.getContentPane().add(launch);
         frame.pack();
         frame.setVisible(true);
 
         launch.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                AboutBox ab = new AboutBox("About Flying Saucer", "demo:demos/index.xhtml");
+            public void actionPerformed(final ActionEvent evt) {
+                final AboutBox ab = new AboutBox("About Flying Saucer", "demo:demos/index.xhtml");
                 ab.setVisible(true);
             }
         });

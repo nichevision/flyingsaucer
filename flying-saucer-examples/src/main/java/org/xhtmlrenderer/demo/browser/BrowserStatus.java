@@ -39,7 +39,7 @@ public class BrowserStatus extends JPanel {
             public void run() {
                 while (true) {
                     try {
-                        Runtime rt = Runtime.getRuntime();
+                        final Runtime rt = Runtime.getRuntime();
                         long used = rt.totalMemory() - rt.freeMemory();
                         long total = rt.totalMemory();
 
@@ -53,7 +53,7 @@ public class BrowserStatus extends JPanel {
                             }
                         });
                         Thread.sleep(5000);
-                    } catch (InterruptedException e) {
+                    } catch (final InterruptedException e) {
                         break;
                     }
                 }

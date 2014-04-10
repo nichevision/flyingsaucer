@@ -95,7 +95,7 @@ public class BrowserMenuBar extends JMenuBar {
      *
      * @param root PARAM
      */
-    public BrowserMenuBar(BrowserStartup root) {
+    public BrowserMenuBar(final BrowserStartup root) {
         this.root = root;
     }
 
@@ -124,7 +124,7 @@ public class BrowserMenuBar extends JMenuBar {
         view.add(root.actions.refresh);
         view.add(root.actions.reload);
         view.add(new JSeparator());
-        JMenu text_size = new JMenu("Text Size");
+        final JMenu text_size = new JMenu("Text Size");
         text_size.setMnemonic('T');
         text_size.add(root.actions.increase_font);
         text_size.add(root.actions.decrease_font);
@@ -157,12 +157,12 @@ public class BrowserMenuBar extends JMenuBar {
         view.add(view_source);
         */
 
-        JMenu zoom = new JMenu("Zoom");
+        final JMenu zoom = new JMenu("Zoom");
         zoom.setMnemonic('Z');
-        ScaleFactor[] factors = this.initializeScales();
-        ButtonGroup zoomGroup = new ButtonGroup();
-        for (ScaleFactor factor : factors) {
-            JRadioButtonMenuItem item = new JRadioButtonMenuItem(new ZoomAction(panel, factor));
+        final ScaleFactor[] factors = this.initializeScales();
+        final ButtonGroup zoomGroup = new ButtonGroup();
+        for (final ScaleFactor factor : factors) {
+            final JRadioButtonMenuItem item = new JRadioButtonMenuItem(new ZoomAction(panel, factor));
 
             if (factor.isNotZoomed()) item.setSelected(true);
 
@@ -187,14 +187,14 @@ public class BrowserMenuBar extends JMenuBar {
 
         populateDemoList();
 
-        for (String string : allDemos.keySet()) {
-            String s = (String) string;
+        for (final String string : allDemos.keySet()) {
+            final String s = (String) string;
             demos.add(new LoadAction(s, allDemos.get(s)));
         }
 
         add(demos);
 
-        JMenu debugShow = new JMenu("Show");
+        final JMenu debugShow = new JMenu("Show");
         debug.add(debugShow);
         debugShow.setMnemonic('S');
 
@@ -203,8 +203,8 @@ public class BrowserMenuBar extends JMenuBar {
         debugShow.add(new JCheckBoxMenuItem(new InlineBoxesAction()));
         debugShow.add(new JCheckBoxMenuItem(new FontMetricsAction()));
 
-        JMenu anti = new JMenu("Anti Aliasing");
-        ButtonGroup anti_level = new ButtonGroup();
+        final JMenu anti = new JMenu("Anti Aliasing");
+        final ButtonGroup anti_level = new ButtonGroup();
         addLevel(anti, anti_level, "None", -1);
         addLevel(anti, anti_level, "Low", 25).setSelected(true);
         addLevel(anti, anti_level, "Medium", 12);
@@ -214,11 +214,11 @@ public class BrowserMenuBar extends JMenuBar {
 
         debug.add(new ShowDOMInspectorAction());
         debug.add(new AbstractAction("Validation Console") {
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(final ActionEvent evt) {
                 if (root.validation_console == null) {
                     root.validation_console = new JFrame("Validation Console");
-                    JFrame frame = root.validation_console;
-                    JTextArea jta = new JTextArea();
+                    final JFrame frame = root.validation_console;
+                    final JTextArea jta = new JTextArea();
 
                     root.error_handler.setTextArea(jta);
 
@@ -228,10 +228,10 @@ public class BrowserMenuBar extends JMenuBar {
 
                     frame.getContentPane().setLayout(new BorderLayout());
                     frame.getContentPane().add(new JScrollPane(jta), "Center");
-                    JButton close = new JButton("Close");
+                    final JButton close = new JButton("Close");
                     frame.getContentPane().add(close, "South");
                     close.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
+                        public void actionPerformed(final ActionEvent evt) {
                             root.validation_console.setVisible(false);
                         }
                     });
@@ -253,50 +253,50 @@ public class BrowserMenuBar extends JMenuBar {
     }
 
     private void populateDemoList() {
-        List<String> demoList = new ArrayList<String>();
-        URL url = BrowserMenuBar.class.getResource("/demos/file-list.txt");
+        final List<String> demoList = new ArrayList<String>();
+        final URL url = BrowserMenuBar.class.getResource("/demos/file-list.txt");
         InputStream is = null;
         LineNumberReader lnr = null;
         if (url != null) {
             try {
                 is = url.openStream();
-                InputStreamReader reader = new InputStreamReader(is);
+                final InputStreamReader reader = new InputStreamReader(is);
                 lnr = new LineNumberReader(reader);
                 try {
                     String line;
                     while ((line = lnr.readLine()) != null) {
                         demoList.add(line);
                     }
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
                 } finally {
                     try {
                         lnr.close();
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         // swallow
                     }
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             } finally {
                 if (is != null) {
                     try {
                         is.close();
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         // swallow
                     }
                 }
             }
 
-            for (String s : demoList) {
-                String s1[] = s.split(",");
+            for (final String s : demoList) {
+                final String s1[] = s.split(",");
                 allDemos.put(s1[0], s1[1]);
             }
         }
     }
 
-    private JRadioButtonMenuItem addLevel(JMenu menu, ButtonGroup group, String title, int level) {
-        JRadioButtonMenuItem item = new JRadioButtonMenuItem(new AntiAliasedAction(title, level));
+    private JRadioButtonMenuItem addLevel(final JMenu menu, final ButtonGroup group, final String title, final int level) {
+        final JRadioButtonMenuItem item = new JRadioButtonMenuItem(new AntiAliasedAction(title, level));
         group.add(item);
         menu.add(item);
         return item;
@@ -308,17 +308,17 @@ public class BrowserMenuBar extends JMenuBar {
      */
     public void createActions() {
         if (Configuration.isTrue("xr.use.listeners", true)) {
-            List<FSMouseListener> l = root.panel.view.getMouseTrackingListeners();
-            for (FSMouseListener listener : l) {
+            final List<FSMouseListener> l = root.panel.view.getMouseTrackingListeners();
+            for (final FSMouseListener listener : l) {
                 if ( listener instanceof LinkListener ) {
                     root.panel.view.removeMouseTrackingListener(listener);
                 }
             }
 
             root.panel.view.addMouseTrackingListener(new LinkListener() {
-               public void linkClicked(BasicPanel panel, String uri) {
+               public void linkClicked(final BasicPanel panel, final String uri) {
                    if (uri.startsWith("demoNav")) {
-                       String pg = uri.split(":")[1];
+                       final String pg = uri.split(":")[1];
                        if (pg.equals("back")) {
                            navigateToPriorDemo();
                        } else {
@@ -333,7 +333,7 @@ public class BrowserMenuBar extends JMenuBar {
     }
 
     private ScaleFactor[] initializeScales() {
-        ScaleFactor[] scales = new ScaleFactor[11];
+        final ScaleFactor[] scales = new ScaleFactor[11];
         int i = 0;
         scales[i++] = new ScaleFactor(1.0d, "Normal (100%)");
         scales[i++] = new ScaleFactor(2.0d, "200%");
@@ -377,7 +377,7 @@ public class BrowserMenuBar extends JMenuBar {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             if (inspectorFrame == null) {
                 inspectorFrame = new JFrame("DOM Tree Inspector");
             }
@@ -415,7 +415,7 @@ public class BrowserMenuBar extends JMenuBar {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             root.panel.view.getSharedContext().setDebug_draw_boxes(!root.panel.view.getSharedContext().debugDrawBoxes());
             root.panel.view.repaint();
         }
@@ -440,7 +440,7 @@ public class BrowserMenuBar extends JMenuBar {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             root.panel.view.getSharedContext().setDebug_draw_line_boxes(!root.panel.view.getSharedContext().debugDrawLineBoxes());
             root.panel.view.repaint();
         }
@@ -465,7 +465,7 @@ public class BrowserMenuBar extends JMenuBar {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             root.panel.view.getSharedContext().setDebug_draw_inline_boxes(!root.panel.view.getSharedContext().debugDrawInlineBoxes());
             root.panel.view.repaint();
         }
@@ -485,7 +485,7 @@ public class BrowserMenuBar extends JMenuBar {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             root.panel.view.getSharedContext().setDebug_draw_font_metrics(!root.panel.view.getSharedContext().debugDrawFontMetrics());
             root.panel.view.repaint();
         }
@@ -502,15 +502,15 @@ public class BrowserMenuBar extends JMenuBar {
         /**
          * Invoked when an action occurs.
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             navigateToNextDemo();
         }
     }
 
     public void navigateToNextDemo() {
         String nextPage = null;
-        for (Iterator<String> iter = allDemos.keySet().iterator(); iter.hasNext();) {
-            String s = iter.next();
+        for (final Iterator<String> iter = allDemos.keySet().iterator(); iter.hasNext();) {
+            final String s = iter.next();
             if (s.equals(lastDemoOpened)) {
                 if (iter.hasNext()) {
                     nextPage = iter.next();
@@ -520,14 +520,14 @@ public class BrowserMenuBar extends JMenuBar {
         }
         if (nextPage == null) {
             // go to first page
-            Iterator<String> iter = allDemos.keySet().iterator();
+            final Iterator<String> iter = allDemos.keySet().iterator();
             nextPage = iter.next();
         }
 
         try {
             root.panel.loadPage(allDemos.get(nextPage));
             lastDemoOpened = nextPage;
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Uu.p(ex);
         }
     }
@@ -543,15 +543,15 @@ public class BrowserMenuBar extends JMenuBar {
         /**
          * Invoked when an action occurs.
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             navigateToPriorDemo();
         }
     }
 
     public void navigateToPriorDemo() {
         String priorPage = null;
-        for (Iterator<String> iter = allDemos.keySet().iterator(); iter.hasNext();) {
-            String s = iter.next();
+        for (final Iterator<String> iter = allDemos.keySet().iterator(); iter.hasNext();) {
+            final String s = iter.next();
             if (s.equals(lastDemoOpened)) {
                 break;
             }
@@ -559,7 +559,7 @@ public class BrowserMenuBar extends JMenuBar {
         }
         if (priorPage == null) {
             // go to last page
-            Iterator<String> iter = allDemos.keySet().iterator();
+            final Iterator<String> iter = allDemos.keySet().iterator();
             while (iter.hasNext()) {
                 priorPage = iter.next();
             }
@@ -568,7 +568,7 @@ public class BrowserMenuBar extends JMenuBar {
         try {
             root.panel.loadPage(allDemos.get(priorPage));
             lastDemoOpened = priorPage;
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Uu.p(ex);
         }
     }
@@ -584,7 +584,7 @@ public class BrowserMenuBar extends JMenuBar {
          */
         protected String url;
 
-        private String pageName;
+        private final String pageName;
 
         /**
          * Constructor for the LoadAction object
@@ -592,7 +592,7 @@ public class BrowserMenuBar extends JMenuBar {
          * @param name PARAM
          * @param url  PARAM
          */
-        public LoadAction(String name, String url) {
+        public LoadAction(final String name, final String url) {
             super(name);
             pageName = name;
             this.url = url;
@@ -603,11 +603,11 @@ public class BrowserMenuBar extends JMenuBar {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             try {
                 root.panel.loadPage(url);
                 lastDemoOpened = pageName;
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 Uu.p(ex);
             }
         }
@@ -617,12 +617,12 @@ public class BrowserMenuBar extends JMenuBar {
     class AntiAliasedAction extends AbstractAction {
         int fontSizeThreshold;
 
-        AntiAliasedAction(String text, int fontSizeThreshold) {
+        AntiAliasedAction(final String text, final int fontSizeThreshold) {
             super(text);
             this.fontSizeThreshold = fontSizeThreshold;
         }
 
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             root.panel.view.getSharedContext().getTextRenderer().setSmoothingThreshold(fontSizeThreshold);
             root.panel.view.repaint();
         }
@@ -637,11 +637,11 @@ public class BrowserMenuBar extends JMenuBar {
  * @author empty
  */
 class EmptyAction extends AbstractAction {
-    public EmptyAction(String name, Icon icon) {
+    public EmptyAction(final String name, final Icon icon) {
         this(name, "", icon);
     }
 
-    public EmptyAction(String name, String shortDesc, Icon icon) {
+    public EmptyAction(final String name, final String shortDesc, final Icon icon) {
         super(name, icon);
         putValue(Action.SHORT_DESCRIPTION, shortDesc);
     }
@@ -652,7 +652,7 @@ class EmptyAction extends AbstractAction {
      * @param name  PARAM
      * @param accel PARAM
      */
-    public EmptyAction(String name, int accel) {
+    public EmptyAction(final String name, final int accel) {
         this(name);
         putValue(Action.ACCELERATOR_KEY,
                 KeyStroke.getKeyStroke(accel,
@@ -664,7 +664,7 @@ class EmptyAction extends AbstractAction {
      *
      * @param name PARAM
      */
-    public EmptyAction(String name) {
+    public EmptyAction(final String name) {
         super(name);
     }
 
@@ -673,6 +673,6 @@ class EmptyAction extends AbstractAction {
      *
      * @param evt PARAM
      */
-    public void actionPerformed(ActionEvent evt) {
+    public void actionPerformed(final ActionEvent evt) {
     }
 }

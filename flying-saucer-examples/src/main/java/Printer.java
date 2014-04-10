@@ -54,12 +54,12 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
     /**
      * the base directory of the templates
      */
-    private String base;
+    private final String base;
 
     /**
      * the logging mechanism log4j
      */
-    private Logger log;
+    private final Logger log;
 
     /**
      * the tread that runs after initialization
@@ -72,7 +72,7 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
     private Java2DRenderer j2dr;
 
     private final File file;
-    private UserAgentCallback uac;
+    private final UserAgentCallback uac;
 
     /**
      * the constructor of the cameventprinter: starts logging and starts the
@@ -80,7 +80,7 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
      *
      * @param file
      */
-    public Printer(File file) {
+    public Printer(final File file) {
         this.file = file;
         log = LogManager.getLogManager().getLogger(Printer.class.getName());
         // initialization of the template path
@@ -109,7 +109,7 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
      * we're running now
      */
     public void run() {
-        File file = new File(base + template);
+        final File file = new File(base + template);
         try {
             if (file.exists()) {
                 // load the xml template here
@@ -124,14 +124,14 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
                 log.fine("--------------------------------");
 
                 // we want to use printing
-                DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
+                final DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
 
-                PrintRequestAttributeSet attrs = new HashPrintRequestAttributeSet();
+                final PrintRequestAttributeSet attrs = new HashPrintRequestAttributeSet();
                 attrs.add(OrientationRequested.PORTRAIT);
                 attrs.add(PrintQuality.HIGH);
                 attrs.add(new JobName(file.getName() + ".rio", null));
 
-                PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+                final PrintService service = PrintServiceLookup.lookupDefaultPrintService();
 
                 // maybe we want to show the printer choice dialog
 
@@ -142,16 +142,16 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
 
                 if (service != null) {
                     log.info("printer selected : " + service.getName());
-                    DocPrintJob job = service.createPrintJob();
+                    final DocPrintJob job = service.createPrintJob();
                     job.addPrintJobListener(this);
-                    PrintJobAttributeSet atts = job.getAttributes();
-                    Attribute[] arr = atts.toArray();
+                    final PrintJobAttributeSet atts = job.getAttributes();
+                    final Attribute[] arr = atts.toArray();
                     for (int i = 0; i < arr.length; i++) {
                         log.fine("arr[" + i + "]= " + arr[0].getName());
                     }
 
-                    Doc sdoc = new SimpleDoc(this, flavor, null);
-                    SharedContext ctx = new SharedContext(uac);
+                    final Doc sdoc = new SimpleDoc(this, flavor, null);
+                    final SharedContext ctx = new SharedContext(uac);
                     ctx.setBaseURL(base);
 
                     // print the doc as specified
@@ -164,7 +164,7 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
             } else {
                 log.severe("file " + file.getName() + " doesn't exist");
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.log(Level.SEVERE, "error loading file " + file.getName(), e);
             e.printStackTrace();
         }
@@ -175,10 +175,10 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
     /**
      * The main function is made for debugging this application separately only.
      */
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
         System.out.println("test program for template printing");
         if (args.length > 0) {
-            File file = new File(args[0]);
+            final File file = new File(args[0]);
             System.out.println("printing file: " + file.getName());
             if (file.exists()) {
                 // this will be the standard future use of this class: fire and
@@ -202,15 +202,15 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
         log.info("document loaded");
     }
 
-    public void onLayoutException(Throwable t) {
+    public void onLayoutException(final Throwable t) {
 
     }
 
-    public void onRenderException(Throwable t) {
+    public void onRenderException(final Throwable t) {
 
     }
 
-    public int print(Graphics graphics, PageFormat pf, int pi)
+    public int print(final Graphics graphics, final PageFormat pf, final int pi)
             throws PrinterException {
         log.info("print");
 
@@ -218,7 +218,7 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
             if (j2dr == null) {
 
                 j2dr = new Java2DRenderer(file, 1024);
-                SharedContext context = j2dr.getSharedContext();
+                final SharedContext context = j2dr.getSharedContext();
                 context.setPrint(true);
                 context.setInteractive(false);
                 context.setDPI(72f);
@@ -228,33 +228,33 @@ public class Printer implements Runnable, DocumentListener, Printable, PrintJobL
             }
 
             return Printable.PAGE_EXISTS;
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             log.log(Level.SEVERE, "error while printing: ", ex);
             return Printable.NO_SUCH_PAGE;
         }
     }
 
-    public void printDataTransferCompleted(PrintJobEvent pje) {
+    public void printDataTransferCompleted(final PrintJobEvent pje) {
         log.info("print data transfer completed");
     }
 
-    public void printJobCanceled(PrintJobEvent pje) {
+    public void printJobCanceled(final PrintJobEvent pje) {
         log.info("print job cancelled");
     }
 
-    public void printJobCompleted(PrintJobEvent pje) {
+    public void printJobCompleted(final PrintJobEvent pje) {
         log.info("print job completed");
     }
 
-    public void printJobFailed(PrintJobEvent pje) {
+    public void printJobFailed(final PrintJobEvent pje) {
         log.severe("print job failed");
     }
 
-    public void printJobNoMoreEvents(PrintJobEvent pje) {
+    public void printJobNoMoreEvents(final PrintJobEvent pje) {
         log.info("print job no more events");
     }
 
-    public void printJobRequiresAttention(PrintJobEvent pje) {
+    public void printJobRequiresAttention(final PrintJobEvent pje) {
         log.info("print job requires attention");
     }
 }

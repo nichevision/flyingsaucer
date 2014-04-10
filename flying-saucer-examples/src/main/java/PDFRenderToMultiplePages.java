@@ -31,7 +31,7 @@ import java.io.OutputStream;
  * This sample shows how to create a single PDF document from multiple input documents.
  */
 public class PDFRenderToMultiplePages {
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         OutputStream os = null;
         try {
             // create some simple, fake documents; nothing special about these, anything that Flying Saucer
@@ -45,7 +45,7 @@ public class PDFRenderToMultiplePages {
             final File outputFile = File.createTempFile("FlyingSacuer.PDFRenderToMultiplePages", ".pdf");
             os = new FileOutputStream(outputFile);
 
-            ITextRenderer renderer = new ITextRenderer();
+            final ITextRenderer renderer = new ITextRenderer();
 
             // we need to create the target PDF
             // we'll create one page per input string, but we call layout for the first
@@ -69,12 +69,12 @@ public class PDFRenderToMultiplePages {
             if (os != null) {
                 try {
                     os.close();
-                } catch (IOException e) { /*ignore*/ }
+                } catch (final IOException e) { /*ignore*/ }
             }
         }
     }
 
-    private static String newPageHtml(int pageNo, String color) {
+    private static String newPageHtml(final int pageNo, final String color) {
         return "<html style='color: " + color + "' >" +
                 "    Page" + pageNo +
                 "</html>";

@@ -40,15 +40,15 @@ import java.awt.event.ActionEvent;
 public class FontScaleJPanelRender {
     private String fileName;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         try {
             new FontScaleJPanelRender().run(args);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
 
-    private void run(String[] args) {
+    private void run(final String[] args) {
         loadAndCheckArgs(args);
 
         // Create a JPanel subclass to render the page
@@ -59,7 +59,7 @@ public class FontScaleJPanelRender {
         // are a variety of overloads for setDocument().
         try {
             panel.setDocument(new File(fileName));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
@@ -67,38 +67,38 @@ public class FontScaleJPanelRender {
         // a regular JScrollPane here, or our FSScrollPane.
         // FSScrollPane is already set up to move the correct
         // amount when scrolling 1 line or 1 page
-        FSScrollPane scroll = new FSScrollPane(panel);
+        final FSScrollPane scroll = new FSScrollPane(panel);
 
-        JFrame frame = new JFrame("Flying Saucer: " + panel.getDocumentTitle());
+        final JFrame frame = new JFrame("Flying Saucer: " + panel.getDocumentTitle());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(BorderLayout.CENTER, scroll);
 
         panel.setFontScalingFactor(1.15F);
         panel.setMinFontScale(0.01F);
         panel.setMaxFontScale(12F);
-        JButton smaller = new JButton("F-");
+        final JButton smaller = new JButton("F-");
         smaller.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(final ActionEvent event) {
                 panel.decrementFontSize();
                 System.out.println("decremented");
             }
         });
-        JButton def = new JButton("F0");
+        final JButton def = new JButton("F0");
         def.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(final ActionEvent event) {
                 panel.resetFontSize();
 
                 System.out.println("reset");
             }
         });
-        JButton larger = new JButton("F+");
+        final JButton larger = new JButton("F+");
         larger.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(final ActionEvent event) {
                 panel.incrementFontSize();
                 System.out.println("incremented");
             }
         });
-        JPanel top = new JPanel(new FlowLayout());
+        final JPanel top = new JPanel(new FlowLayout());
         top.add(smaller);
         top.add(def);
         top.add(larger);
@@ -110,11 +110,11 @@ public class FontScaleJPanelRender {
         frame.setVisible(true);
     }
 
-    private void loadAndCheckArgs(String[] args) {
+    private void loadAndCheckArgs(final String[] args) {
         if (args.length == 0) {
             throw new IllegalArgumentException("Enter a file or URI.");
         }
-        String name = args[0];
+        final String name = args[0];
         if (! new File(name).exists()) {
             throw new IllegalArgumentException("File " + name + " does not exist.");
         }

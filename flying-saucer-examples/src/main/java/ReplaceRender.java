@@ -40,15 +40,15 @@ import java.awt.event.ActionEvent;
 public class ReplaceRender {
     private String fileName;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         try {
             new ReplaceRender().run(args);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
 
-    private void run(String[] args) {
+    private void run(final String[] args) {
         loadAndCheckArgs(args);
 
         // Create a JPanel subclass to render the page
@@ -59,7 +59,7 @@ public class ReplaceRender {
         // are a variety of overloads for setDocument().
         try {
             panel.setDocument(new File(fileName));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
@@ -67,13 +67,13 @@ public class ReplaceRender {
         // a regular JScrollPane here, or our FSScrollPane.
         // FSScrollPane is already set up to move the correct
         // amount when scrolling 1 line or 1 page
-        FSScrollPane scroll = new FSScrollPane(panel);
+        final FSScrollPane scroll = new FSScrollPane(panel);
 
-        JFrame frame = new JFrame("Flying Saucer: " + panel.getDocumentTitle());
+        final JFrame frame = new JFrame("Flying Saucer: " + panel.getDocumentTitle());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(scroll, BorderLayout.CENTER);
         frame.getContentPane().add(new JButton(new AbstractAction() {
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(final ActionEvent event) {
                 System.out.println("\n\n\nRELOAD\n\n\n");
                 panel.setDocument(panel.getDocument(), panel.getSharedContext().getBaseURL());
             }
@@ -84,18 +84,18 @@ public class ReplaceRender {
     }
 
     private XHTMLPanel setupPanel() {
-        XHTMLPanel panel = new XHTMLPanel();
-        DelegatingReplacedElementFactory delegatingFactory = new DelegatingReplacedElementFactory();
+        final XHTMLPanel panel = new XHTMLPanel();
+        final DelegatingReplacedElementFactory delegatingFactory = new DelegatingReplacedElementFactory();
         delegatingFactory.addReplacer(new SwingImageReplacer());
         panel.getSharedContext().setReplacedElementFactory(delegatingFactory);
         return panel;
     }
 
-    private void loadAndCheckArgs(String[] args) {
+    private void loadAndCheckArgs(final String[] args) {
         if (args.length == 0) {
             throw new IllegalArgumentException("Enter a file or URI.");
         }
-        String name = args[0];
+        final String name = args[0];
         if (! new File(name).exists()) {
             throw new IllegalArgumentException("File " + name + " does not exist.");
         }

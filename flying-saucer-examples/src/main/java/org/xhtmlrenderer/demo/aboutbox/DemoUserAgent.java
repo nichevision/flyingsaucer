@@ -54,15 +54,15 @@ import org.xhtmlrenderer.util.XRLog;
 public class DemoUserAgent implements UserAgentCallback {
     private String baseUrl;
     private int index = -1;
-    private ArrayList history = new ArrayList();
+    private final ArrayList history = new ArrayList();
     protected StylesheetCache _styleCache = new StylesheetCache();
     /**
      * an LRU cache
      */
-    private int imageCacheCapacity = 16;
-    private java.util.LinkedHashMap imageCache =
+    private final int imageCacheCapacity = 16;
+    private final java.util.LinkedHashMap imageCache =
             new java.util.LinkedHashMap(imageCacheCapacity, 0.75f, true) {
-                protected boolean removeEldestEntry(java.util.Map.Entry eldest) {
+                protected boolean removeEldestEntry(final java.util.Map.Entry eldest) {
                     return size() > imageCacheCapacity;
                 }
             };
@@ -71,12 +71,12 @@ public class DemoUserAgent implements UserAgentCallback {
         InputStream is = null;
         uri = resolveURI(uri);
         try {
-            URLConnection uc = new URL(uri).openConnection();
+            final URLConnection uc = new URL(uri).openConnection();
             uc.connect();
             is = uc.getInputStream();
-        } catch (MalformedURLException e) {
+        } catch (final MalformedURLException e) {
             XRLog.exception("bad URL given: " + uri, e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             XRLog.exception("IO problem for " + uri, e);
         }
         return new CSSResource(is);
@@ -90,20 +90,20 @@ public class DemoUserAgent implements UserAgentCallback {
         if (ir == null) {
             InputStream is = null;
             try {
-                URLConnection uc = new URL(uri).openConnection();
+                final URLConnection uc = new URL(uri).openConnection();
                 uc.connect();
                 is = uc.getInputStream();
-            } catch (MalformedURLException e1) {
+            } catch (final MalformedURLException e1) {
                 XRLog.exception("bad URL given: " + uri, e1);
-            } catch (IOException e11) {
+            } catch (final IOException e11) {
                 XRLog.exception("IO problem for " + uri, e11);
             }
             if (is != null) {
                 try {
-                    BufferedImage img = ImageIO.read(is);
+                    final BufferedImage img = ImageIO.read(is);
                     ir = new ImageResource(uri, AWTFSImage.createImage(img));
                     imageCache.put(uri, ir);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     XRLog.exception("Can't read image file; unexpected problem for URI '" + uri + "'", e);
                 }
             }
@@ -112,14 +112,14 @@ public class DemoUserAgent implements UserAgentCallback {
         return ir;
     }
     
-    public byte[] getBinaryResource(String uri) {
+    public byte[] getBinaryResource(final String uri) {
         InputStream is = null;
         try {
-            URL url = new URL(uri);
-            URLConnection conn = url.openConnection();
+            final URL url = new URL(uri);
+            final URLConnection conn = url.openConnection();
             is = conn.getInputStream();
-            ByteArrayOutputStream result = new ByteArrayOutputStream();
-            byte[] buf = new byte[10240];
+            final ByteArrayOutputStream result = new ByteArrayOutputStream();
+            final byte[] buf = new byte[10240];
             int i;
             while ( (i = is.read(buf)) != -1) {
                 result.write(buf, 0, i);
@@ -128,13 +128,13 @@ public class DemoUserAgent implements UserAgentCallback {
             is = null;
             
             return result.toByteArray();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return null;
         } finally {
             if (is != null) {
                 try {
                     is.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }
@@ -147,31 +147,31 @@ public class DemoUserAgent implements UserAgentCallback {
             File file = null;
             try {
                 file = new File(new URI(uri));
-            } catch (URISyntaxException e) {
+            } catch (final URISyntaxException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
         HTMLResource xr = null;
         InputStream inputStream = null;
         try {
-            URLConnection uc = new URL(uri).openConnection();
+            final URLConnection uc = new URL(uri).openConnection();
             uc.connect();
             // TODO: String contentType = uc.getContentType(); Maybe should popup a choice when content/unknown!
             inputStream = uc.getInputStream();
             xr = HTMLResource.load(inputStream, uri);
-        } catch (MalformedURLException e) {
+        } catch (final MalformedURLException e) {
             XRLog.exception("bad URL given: " + uri, e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             XRLog.exception("IO problem for " + uri, e);
         } finally {
             if ( inputStream != null ) try {
                 inputStream.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // swallow
             }
         }
         if (xr == null) {
-            String notFound = "<h1>Document not found</h1>";
+            final String notFound = "<h1>Document not found</h1>";
             xr = HTMLResource.load(new StringReader(notFound));
         }
         return xr;
@@ -183,25 +183,25 @@ public class DemoUserAgent implements UserAgentCallback {
         return history.contains(uri);
     }
 
-    public void setBaseURL(String url) {
+    public void setBaseURL(final String url) {
         baseUrl = resolveURI(url);
         if (baseUrl == null) baseUrl = "error:FileNotFound";
         //setBaseURL is called by view when document is loaded
         if (index >= 0) {
-            String historic = (String) history.get(index);
+            final String historic = (String) history.get(index);
             if (historic.equals(baseUrl)) return;//moved in history
         }
         index++;
-        for (int i = index; i < history.size(); history.remove(i)) ;
+        for (final int i = index; i < history.size(); history.remove(i)) ;
         history.add(index, baseUrl);
     }
 
-    public String resolveURI(String uri) {
+    public String resolveURI(final String uri) {
         URL ref = null;
         if (uri == null) return baseUrl;
         if (uri.trim().equals("")) return baseUrl;//jar URLs don't resolve this right
         if (uri.startsWith("demo:")) {
-            DemoMarker marker = new DemoMarker();
+            final DemoMarker marker = new DemoMarker();
             String short_url = uri.substring(5);
             if (!short_url.startsWith("/")) {
                 short_url = "/" + short_url;
@@ -218,7 +218,7 @@ public class DemoUserAgent implements UserAgentCallback {
                     ref = new URL(base, uri);
                 }
 
-            } catch (MalformedURLException e) {
+            } catch (final MalformedURLException e) {
                 e.printStackTrace();
             }
         }

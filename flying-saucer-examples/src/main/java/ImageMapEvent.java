@@ -26,7 +26,7 @@ public class ImageMapEvent {
     private final MouseAdapter mouseAdapter;
     private final String value;
 
-    public ImageMapEvent(MouseAdapter mouseAdapter, String value) {
+    public ImageMapEvent(final MouseAdapter mouseAdapter, final String value) {
         this.mouseAdapter = mouseAdapter;
         this.value = value;
     }
