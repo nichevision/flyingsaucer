@@ -42,7 +42,7 @@ public class XHTMLPrintable implements Printable {
      *
      * @param panel the XHTMLPanel to print
      */
-    public XHTMLPrintable(XHTMLPanel panel) {
+    public XHTMLPrintable(final XHTMLPanel panel) {
         this.panel = panel;
     }
 
@@ -51,10 +51,10 @@ public class XHTMLPrintable implements Printable {
      * <p>The implementation of the <i>print</i> method
      * from the @see java.awt.print.Printable interface.
      */
-    public int print(Graphics g, PageFormat pf, int page) {
+    public int print(final Graphics g, final PageFormat pf, final int page) {
         try {
 
-            Graphics2D g2 = (Graphics2D) g;
+            final Graphics2D g2 = (Graphics2D) g;
             
             if (g2r == null) {
                 g2r = new Graphics2DRenderer();
@@ -77,7 +77,7 @@ public class XHTMLPrintable implements Printable {
             g2r.getPanel().paintPage(g2, page);
             
             return Printable.PAGE_EXISTS;
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Uu.p(ex);
             return Printable.NO_SUCH_PAGE;
         }

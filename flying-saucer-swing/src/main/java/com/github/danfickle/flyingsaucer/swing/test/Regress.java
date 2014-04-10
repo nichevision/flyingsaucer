@@ -78,13 +78,13 @@ public class Regress {
     // count failed in this run
     private int failedCount;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         final File sourceDir = getArgSourceDir(args);
         final File outputDir = sourceDir;
         final int width = 1024;
 
         System.out.println("Running regression against files in " + sourceDir);
-        Regress regress = new Regress(sourceDir, outputDir, width);
+        final Regress regress = new Regress(sourceDir, outputDir, width);
         regress.snapshot();
         System.out.println("Ran regressions against " + regress.getFileCount() + " files in source directory; " + regress.getFailedCount() + " failed to generate");
     }
@@ -96,7 +96,7 @@ public class Regress {
      * @param outputDir directory to write to
      * @param width     width to constrain layou to
      */
-    public Regress(File sourceDir, File outputDir, int width) {
+    public Regress(final File sourceDir, final File outputDir, final int width) {
         this.sourceDir = sourceDir;
         this.outputDir = outputDir;
         this.width = width;
@@ -124,9 +124,9 @@ public class Regress {
         failedCount = 0;
         final boolean wasLogging = enableLogging(false);
         try {
-            Iterator<File> iter = listInputFiles(sourceDir);
+            final Iterator<File> iter = listInputFiles(sourceDir);
             while (iter.hasNext()) {
-                File file = iter.next();
+                final File file = iter.next();
                 saveBoxModel(file, outputDir, width);
                 saveImage(file, outputDir, width);
             }
@@ -135,18 +135,18 @@ public class Regress {
         }
     }
 
-    private void saveImage(File page, File outputDir, int width) throws IOException {
+    private void saveImage(final File page, final File outputDir, final int width) throws IOException {
         try {
-            Java2DRenderer j2d = new Java2DRenderer(page, width);
+            final Java2DRenderer j2d = new Java2DRenderer(page, width);
 
             // this renders and returns the image, which is stored in the J2R; will not
             // be re-rendered, calls to getImage() return the same instance
-            BufferedImage img = j2d.getImage();
+            final BufferedImage img = j2d.getImage();
 
             // write it out, full size, PNG
             // FSImageWriter instance can be reused for different ../images,
             // defaults to PNG
-            FSImageWriter imageWriter = new FSImageWriter();
+            final FSImageWriter imageWriter = new FSImageWriter();
             final File outputFile = new File(outputDir, page.getName() + ".png");
             if (outputFile.exists() && !outputFile.delete()) {
                 throw new RuntimeException(
@@ -154,41 +154,41 @@ public class Regress {
                                 outputFile.getAbsolutePath()
                 );
             }
-            String fileName = outputFile.getPath();
+            final String fileName = outputFile.getPath();
             imageWriter.write(img, fileName);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.err.println("Could not render input file to image, skipping: " + page + " err: " + e.getMessage());
         }
     }
 
-    private void saveBoxModel(File page, File outputDir, int width) throws IOException {
-        BoxRenderer renderer = new BoxRenderer(page, width);
+    private void saveBoxModel(final File page, final File outputDir, final int width) throws IOException {
+        final BoxRenderer renderer = new BoxRenderer(page, width);
         Box box;
         try {
             box = renderer.render();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.err.println("Could not render input file, skipping: " + page + " err: " + e.getMessage());
             failedCount++;
             return;
         }
-        LayoutContext layoutContext = renderer.getLayoutContext();
-        String inputFileName = page.getName();
+        final LayoutContext layoutContext = renderer.getLayoutContext();
+        final String inputFileName = page.getName();
         writeToFile(outputDir, inputFileName + RENDER_SFX, box.dump(layoutContext, "", Box.DUMP_RENDER));
         writeToFile(outputDir, inputFileName + LAYOUT_SFX, box.dump(layoutContext, "", Box.DUMP_LAYOUT));
         fileCount++;
     }
 
-    private void writeToFile(File outputDir, String fileName, String output) throws IOException {
+    private void writeToFile(final File outputDir, final String fileName, final String output) throws IOException {
         final File outputFile = new File(outputDir, fileName);
         if (outputFile.exists() && !outputFile.delete()) {
             throw new RuntimeException(
                     "On rendering, could not delete new output file (.delete failed) " + outputFile.getAbsolutePath()
             );
         }
-        FileOutputStream fos = new FileOutputStream(outputFile);
+        final FileOutputStream fos = new FileOutputStream(outputFile);
         try {
-            OutputStreamWriter fw = new OutputStreamWriter(fos, "UTF-8");
-            PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+            final OutputStreamWriter fw = new OutputStreamWriter(fos, "UTF-8");
+            final PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
             try {
                 pw.print(output);
                 pw.print(LINE_SEPARATOR);
@@ -196,28 +196,28 @@ public class Regress {
             } finally {
                 try {
                     pw.close();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     // swallow
                 }
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();  
         } finally {
             try {
                 fos.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // swallow
             }
         }
     }
 
     @SuppressWarnings("unused")
-	private static File getArgOutputZipFile(String[] args) throws IOException {
+	private static File getArgOutputZipFile(final String[] args) throws IOException {
         if (args.length < 2) {
             usageAndExit("Need file name which will contain rendered files as a Zip.");
         }
-        String path = args[1];
-        File file = new File(path);
+        final String path = args[1];
+        final File file = new File(path);
         final File parentFile = file.getAbsoluteFile().getParentFile();
         if (!parentFile.exists()) {
             usageAndExit("Output directory not found: " + parentFile.getPath());
@@ -231,12 +231,12 @@ public class Regress {
         return file;
     }
 
-    private static File getArgSourceDir(String[] args) {
+    private static File getArgSourceDir(final String[] args) {
         if (args.length < 1) {
             usageAndExit("Need directory name containing input files to render.");
         }
-        String sourceDirPath = args[0];
-        File sourceDir = new File(sourceDirPath);
+        final String sourceDirPath = args[0];
+        final File sourceDir = new File(sourceDirPath);
         if (!sourceDir.exists()) {
             usageAndExit("Source directory not found: " + sourceDirPath);
         }
@@ -251,15 +251,15 @@ public class Regress {
     }
 
     private Iterator<File> listInputFiles(final File sourceDir) {
-        File[] f = sourceDir.listFiles(new FilenameFilter() {
-            public boolean accept(File file, String s) {
+        final File[] f = sourceDir.listFiles(new FilenameFilter() {
+            public boolean accept(final File file, final String s) {
                 return EXTENSIONS.contains(s.substring(s.lastIndexOf(".") + 1));
             }
         });
         return Arrays.asList(f).iterator();
     }
 
-    private static void usageAndExit(String msg) {
+    private static void usageAndExit(final String msg) {
         System.err.println(msg);
         System.exit(-1);
     }

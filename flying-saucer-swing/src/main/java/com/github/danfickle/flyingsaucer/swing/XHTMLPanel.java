@@ -113,7 +113,7 @@ public class XHTMLPanel extends BasicPanel {
      *
      * @param uac The custom UserAgentCallback implementation.
      */
-    public XHTMLPanel(UserAgentCallback uac) {
+    public XHTMLPanel(final UserAgentCallback uac) {
         super(uac);
         setupListeners();
     }
@@ -124,7 +124,7 @@ public class XHTMLPanel extends BasicPanel {
             addMouseTrackingListener(new LinkListener());
             addMouseTrackingListener(new CursorListener());
             setFormSubmissionListener(new FormSubmissionListener() {
-                public void submit(String query) {
+                public void submit(final String query) {
                     XHTMLPanel.this.setDocumentRelative(query);
                 }
             });
@@ -151,7 +151,7 @@ public class XHTMLPanel extends BasicPanel {
      *
      * @param uri
      */
-    public void setDocument(String uri) {
+    public void setDocument(final String uri) {
         setDocument(loadDocument(uri), uri);
     }
 
@@ -161,7 +161,7 @@ public class XHTMLPanel extends BasicPanel {
      *
      * @param doc The document to render.
      */
-    public void setDocument(Document doc) {
+    public void setDocument(final Document doc) {
         setDocument(doc, "");
     }
 
@@ -172,7 +172,7 @@ public class XHTMLPanel extends BasicPanel {
      * @param doc The new document value
      * @param url The new document value
      */
-    public void setDocument(Document doc, String url) {
+    public void setDocument(final Document doc, final String url) {
         resetListeners();
         setDocument(doc, url, new HtmlNamespaceHandler());
     }
@@ -185,7 +185,7 @@ public class XHTMLPanel extends BasicPanel {
      * @param url    The URL used to resolve relative path references.
      */
     // TODO: should throw more specific exception (PWW 25/07/2006)
-    public void setDocument(InputStream stream, String url)
+    public void setDocument(final InputStream stream, final String url)
             throws Exception {
         resetListeners();
         setDocument(stream, url, new HtmlNamespaceHandler());
@@ -199,11 +199,11 @@ public class XHTMLPanel extends BasicPanel {
      *             will be resolved based on the file's parent directory.
      */
     // TODO: should throw more specific exception (PWW 25/07/2006)
-    public void setDocument(File file)
+    public void setDocument(final File file)
             throws Exception {
         resetListeners();
-        File parent = file.getAbsoluteFile().getParentFile();
-        String parentURL = ( parent == null ? "" : parent.toURI().toURL().toExternalForm());
+        final File parent = file.getAbsoluteFile().getParentFile();
+        final String parentURL = ( parent == null ? "" : parent.toURI().toURL().toExternalForm());
         setDocument(
                 loadDocument(file.toURI().toURL().toExternalForm()),
                 parentURL
@@ -219,7 +219,7 @@ public class XHTMLPanel extends BasicPanel {
      *
      * @param ctx A new RenderingContext to use for rendering.
      */
-    public void setSharedContext(SharedContext ctx) {
+    public void setSharedContext(final SharedContext ctx) {
         super.setSharedContext(ctx);
     }
 
@@ -231,7 +231,7 @@ public class XHTMLPanel extends BasicPanel {
      * results in a scaled font of 12pt. The default scaling factor is
      * 1.2F.
      */
-    public void setFontScalingFactor(float scaling) {
+    public void setFontScalingFactor(final float scaling) {
         fontScalingFactor = scaling;
     }
 
@@ -252,7 +252,7 @@ public class XHTMLPanel extends BasicPanel {
      * specified in the document's styling instructions.
      */
     public void resetFontSize() {
-        SharedContext rc = getSharedContext();
+        final SharedContext rc = getSharedContext();
         rc.getTextRenderer().setFontScale(1.0F);
         setDocument(getDocument());
     }
@@ -273,9 +273,9 @@ public class XHTMLPanel extends BasicPanel {
      * Applies a change in scale for fonts using the rendering context's text
      * renderer.
      */
-    private void scaleFont(float scaleBy) {
-        SharedContext rc = getSharedContext();
-        float fs = rc.getTextRenderer().getFontScale() * scaleBy;
+    private void scaleFont(final float scaleBy) {
+        final SharedContext rc = getSharedContext();
+        final float fs = rc.getTextRenderer().getFontScale() * scaleBy;
         if (fs < minFontScale || fs > maxFontScale) return;
         rc.getTextRenderer().setFontScale(fs);
         setDocument(getDocument());
@@ -299,7 +299,7 @@ public class XHTMLPanel extends BasicPanel {
      * Sets the maximum font scaling that may be applied, e.g. 3 times assigned font size. Calling incrementFontSize()
      * after this scale has been reached doesn't have an effect.
      */
-    public void setMaxFontScale(float f) {
+    public void setMaxFontScale(final float f) {
         maxFontScale = f;
     }
 
@@ -307,7 +307,7 @@ public class XHTMLPanel extends BasicPanel {
      * Sets the minimum font scaling that may be applied, e.g. 3 times assigned font size. Calling decrementFontSize()
      * after this scale has been reached doesn't have an effect.
      */
-    public void setMinFontScale(float f) {
+    public void setMinFontScale(final float f) {
         minFontScale = f;
     }
 }

@@ -99,7 +99,7 @@ public class RootPanel extends JPanel implements ComponentListener,
 
     private volatile LayoutContext layoutContext;
 
-    public void setDocument(Document doc, String url, NamespaceHandler nsh) {
+    public void setDocument(final Document doc, final String url, final NamespaceHandler nsh) {
 		fireDocumentStarted();
 		resetScrollPosition();
         setRootBox(null);
@@ -112,7 +112,7 @@ public class RootPanel extends JPanel implements ComponentListener,
             getSharedContext().getCss().flushAllStyleSheets();
         }
 
-        ContentStore store = new ContentStore(doc);
+        final ContentStore store = new ContentStore(doc);
 
         getSharedContext().reset();
         getSharedContext().setBaseURL(url);
@@ -128,16 +128,16 @@ public class RootPanel extends JPanel implements ComponentListener,
     @SuppressWarnings("unused")
 	private void requestBGImages(final Box box) {
         if (box.getChildCount() == 0) return;
-        Iterator<Box> ci = box.getChildIterator();
+        final Iterator<Box> ci = box.getChildIterator();
         while (ci.hasNext()) {
             final Box cb = (Box) ci.next();
-            CalculatedStyle style = cb.getStyle();
+            final CalculatedStyle style = cb.getStyle();
             if (!style.isIdent(CSSName.BACKGROUND_IMAGE, IdentValue.NONE)) {
-                String uri = style.getStringProperty(CSSName.BACKGROUND_IMAGE);
+                final String uri = style.getStringProperty(CSSName.BACKGROUND_IMAGE);
                 XRLog.load(Level.FINE, "Greedily loading background property " + uri);
                 try {
                     getSharedContext().getUac().getImageResource(uri);
-                } catch (Exception ex) {
+                } catch (final Exception ex) {
                     // swallow
                 }
             }
@@ -160,7 +160,7 @@ public class RootPanel extends JPanel implements ComponentListener,
      * @param scrollPane the enclosing {@link JScrollPane} or <tt>null</tt> if
      *                   the panel is no longer enclosed in a {@link JScrollPane}.
      */
-    protected void setEnclosingScrollPane(JScrollPane scrollPane) {
+    protected void setEnclosingScrollPane(final JScrollPane scrollPane) {
         // if a scrollpane is already installed we remove it.
         if (enclosingScrollPane != null) {
             enclosingScrollPane.removeComponentListener(this);
@@ -186,7 +186,7 @@ public class RootPanel extends JPanel implements ComponentListener,
         if (enclosingScrollPane != null) {
             return enclosingScrollPane.getViewportBorderBounds();
         } else {
-            Dimension dim = getSize();
+            final Dimension dim = getSize();
             return new Rectangle(0, 0, dim.width, dim.height);
         }
     }
@@ -198,9 +198,9 @@ public class RootPanel extends JPanel implements ComponentListener,
     public void addNotify() {
         super.addNotify();
         XRLog.general(Level.FINE, "add notify called");
-        Container p = getParent();
+        final Container p = getParent();
         if (p instanceof JViewport) {
-            Container vp = p.getParent();
+            final Container vp = p.getParent();
             if (vp instanceof JScrollPane) {
                 setEnclosingScrollPane((JScrollPane) vp);
             }
@@ -228,14 +228,14 @@ public class RootPanel extends JPanel implements ComponentListener,
 
     boolean layoutInProgress = false;
 
-    public RenderingContext newRenderingContext(Graphics2D g) {
+    public RenderingContext newRenderingContext(final Graphics2D g) {
         XRLog.layout(Level.FINEST, "new context begin");
 
         getSharedContext().setCanvas(this);
 
         XRLog.layout(Level.FINEST, "new context end");
 
-        RenderingContext result = getSharedContext().newRenderingContextInstance();
+        final RenderingContext result = getSharedContext().newRenderingContextInstance();
         result.setFontContext(new Java2DFontContext(g));
         result.setOutputDevice(new Java2DOutputDevice(g));
 
@@ -249,16 +249,16 @@ public class RootPanel extends JPanel implements ComponentListener,
         return result;
     }
 
-    protected LayoutContext newLayoutContext(Graphics2D g) {
+    protected LayoutContext newLayoutContext(final Graphics2D g) {
         XRLog.layout(Level.FINEST, "new context begin");
 
         getSharedContext().setCanvas(this);
 
         XRLog.layout(Level.FINEST, "new context end");
 
-        LayoutContext result = getSharedContext().newLayoutContextInstance();
+        final LayoutContext result = getSharedContext().newLayoutContextInstance();
 
-        Graphics2D layoutGraphics =
+        final Graphics2D layoutGraphics =
             g.getDeviceConfiguration().createCompatibleImage(1, 1).createGraphics();
         result.setFontContext(new Java2DFontContext(layoutGraphics));
 
@@ -267,7 +267,7 @@ public class RootPanel extends JPanel implements ComponentListener,
         return result;
     }
 
-    private Rectangle getInitialExtents(LayoutContext c) {
+    private Rectangle getInitialExtents(final LayoutContext c) {
         if (! c.isPrint()) {
             Rectangle extents = getScreenExtents();
 
@@ -278,7 +278,7 @@ public class RootPanel extends JPanel implements ComponentListener,
 
             return extents;
         } else {
-            PageBox first = Layer.createPageBox(c, "first");
+            final PageBox first = Layer.createPageBox(c, "first");
             return new Rectangle(0, 0,
                     first.getContentWidth(c), first.getContentHeight(c));
         }
@@ -287,19 +287,19 @@ public class RootPanel extends JPanel implements ComponentListener,
     public Rectangle getScreenExtents() {
         Rectangle extents;
         if (enclosingScrollPane != null) {
-            Rectangle bnds = enclosingScrollPane.getViewportBorderBounds();
+            final Rectangle bnds = enclosingScrollPane.getViewportBorderBounds();
             extents = new Rectangle(0, 0, bnds.width, bnds.height);
             //Uu.p("bnds = " + bnds);
         } else {
             extents = new Rectangle(getWidth(), getHeight());//200, 200 ) );
-            Insets insets = getInsets();
+            final Insets insets = getInsets();
             extents.width -= insets.left + insets.right;
             extents.height -= insets.top + insets.bottom;
         }
         return extents;
     }
 
-    public void doDocumentLayout(Graphics g) {
+    public void doDocumentLayout(final Graphics g) {
         try {
             this.removeAll();
             if (g == null) {
@@ -309,12 +309,12 @@ public class RootPanel extends JPanel implements ComponentListener,
                 return;
             }
 
-            LayoutContext c = newLayoutContext((Graphics2D) g);
+            final LayoutContext c = newLayoutContext((Graphics2D) g);
             synchronized (this) {
                 this.layoutContext = c;
             }
 
-            long start = System.currentTimeMillis();
+            final long start = System.currentTimeMillis();
 
             BlockBox root = (BlockBox)getRootBox();
             if (root != null && isNeedRelayout()) {
@@ -330,7 +330,7 @@ public class RootPanel extends JPanel implements ComponentListener,
 
             root.layout(c);
 
-            long end = System.currentTimeMillis();
+            final long end = System.currentTimeMillis();
 
             XRLog.layout(Level.INFO, "Layout took " + (end - start) + "ms");
 
@@ -349,7 +349,7 @@ public class RootPanel extends JPanel implements ComponentListener,
 
             XRLog.layout(Level.FINEST, "after layout: " + root);
 
-            Dimension intrinsic_size = root.getLayer().getPaintingDimension(c);
+            final Dimension intrinsic_size = root.getLayer().getPaintingDimension(c);
 
             if (c.isPrint()) {
                 root.getLayer().trimEmptyPages(c, intrinsic_size.height);
@@ -397,9 +397,9 @@ public class RootPanel extends JPanel implements ComponentListener,
                     }
                 });
             }*/
-        } catch (ThreadDeath t) {
+        } catch (final ThreadDeath t) {
             throw t;
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             if (documentListeners.size() > 0) {
                 fireOnLayoutException(t);
             } else {
@@ -416,17 +416,17 @@ public class RootPanel extends JPanel implements ComponentListener,
         }
     }
 
-    private void initFontFromComponent(BlockBox root) {
+    private void initFontFromComponent(final BlockBox root) {
         if (isDefaultFontFromComponent()) {
-            CalculatedStyle style = root.getStyle();
-            PropertyValue fontFamilyProp = new PropertyValueImp(CSSPrimitiveUnit.CSS_STRING, getFont().getFamily(),
+            final CalculatedStyle style = root.getStyle();
+            final PropertyValue fontFamilyProp = new PropertyValueImp(CSSPrimitiveUnit.CSS_STRING, getFont().getFamily(),
                     getFont().getFamily());
             fontFamilyProp.setStringArrayValue(new String[] { fontFamilyProp.getStringValue() });
             style.setDefaultValue(CSSName.FONT_FAMILY, new StringValue(CSSName.FONT_FAMILY, fontFamilyProp));
             style.setDefaultValue(CSSName.FONT_SIZE, new LengthValue(style, CSSName.FONT_SIZE,
                     new PropertyValueImp(CSSPrimitiveUnit.CSS_PX, getFont().getSize(), Integer
                             .toString(getFont().getSize()))));
-            Color c = getForeground();
+            final Color c = getForeground();
             style.setDefaultValue(CSSName.COLOR, new ColorValue(CSSName.COLOR,
                     new PropertyValueImp(new FSRGBColor(c.getRed(), c.getGreen(), c.getBlue()))));
 
@@ -441,48 +441,48 @@ public class RootPanel extends JPanel implements ComponentListener,
     }
 
 	protected void fireDocumentStarted() {
-		Iterator<DocumentListener> it = this.documentListeners.keySet().iterator();
+		final Iterator<DocumentListener> it = this.documentListeners.keySet().iterator();
 		while (it.hasNext()) {
-			DocumentListener list = (DocumentListener) it.next();
+			final DocumentListener list = (DocumentListener) it.next();
             try {
                 list.documentStarted();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 XRLog.load(Level.WARNING, "Document listener threw an exception; continuing processing", e);
             }
         }
 	}
 
     protected void fireDocumentLoaded() {
-        Iterator<DocumentListener> it = this.documentListeners.keySet().iterator();
+        final Iterator<DocumentListener> it = this.documentListeners.keySet().iterator();
         while (it.hasNext()) {
-            DocumentListener list = (DocumentListener) it.next();
+            final DocumentListener list = (DocumentListener) it.next();
             try {
                 list.documentLoaded();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 XRLog.load(Level.WARNING, "Document listener threw an exception; continuing processing", e);
             }
         }
     }
 
-    protected void fireOnLayoutException(Throwable t) {
-        Iterator<DocumentListener> it = this.documentListeners.keySet().iterator();
+    protected void fireOnLayoutException(final Throwable t) {
+        final Iterator<DocumentListener> it = this.documentListeners.keySet().iterator();
         while (it.hasNext()) {
-            DocumentListener list = (DocumentListener) it.next();
+            final DocumentListener list = (DocumentListener) it.next();
             try {
                 list.onLayoutException(t);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 XRLog.load(Level.WARNING, "Document listener threw an exception; continuing processing", e);
             }
         }
     }
 
-    protected void fireOnRenderException(Throwable t) {
-        Iterator<DocumentListener> it = this.documentListeners.keySet().iterator();
+    protected void fireOnRenderException(final Throwable t) {
+        final Iterator<DocumentListener> it = this.documentListeners.keySet().iterator();
         while (it.hasNext()) {
-            DocumentListener list = (DocumentListener) it.next();
+            final DocumentListener list = (DocumentListener) it.next();
             try {
                 list.onRenderException(t);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 XRLog.load(Level.WARNING, "Document listener threw an exception; continuing processing", e);
             }
         }
@@ -510,34 +510,34 @@ public class RootPanel extends JPanel implements ComponentListener,
 
     public Element focus_element = null;
 
-    public boolean isHover(Element e) {
+    public boolean isHover(final Element e) {
         if (e == hovered_element) {
             return true;
         }
         return false;
     }
 
-    public boolean isActive(Element e) {
+    public boolean isActive(final Element e) {
         if (e == active_element) {
             return true;
         }
         return false;
     }
 
-    public boolean isFocus(Element e) {
+    public boolean isFocus(final Element e) {
         if (e == focus_element) {
             return true;
         }
         return false;
     }
 
-    public void componentHidden(ComponentEvent e) {
+    public void componentHidden(final ComponentEvent e) {
     }
 
-    public void componentMoved(ComponentEvent e) {
+    public void componentMoved(final ComponentEvent e) {
     }
 
-    public void componentResized(ComponentEvent e) {
+    public void componentResized(final ComponentEvent e) {
         Uu.p("componentResized() " + this.getSize());
         Uu.p("viewport = " + enclosingScrollPane.getViewport().getSize());
         if (! getSharedContext().isPrint() && isExtentsHaveChanged()) {
@@ -552,7 +552,7 @@ public class RootPanel extends JPanel implements ComponentListener,
         }
     }
 
-    public void componentShown(ComponentEvent e) {
+    public void componentShown(final ComponentEvent e) {
     }
 
     public double getLayoutWidth() {
@@ -571,7 +571,7 @@ public class RootPanel extends JPanel implements ComponentListener,
         return rootBox;
     }
 
-    public synchronized void setRootBox(Box rootBox) {
+    public synchronized void setRootBox(final Box rootBox) {
         this.rootBox = rootBox;
     }
 
@@ -579,12 +579,12 @@ public class RootPanel extends JPanel implements ComponentListener,
         return getRootBox() == null ? null : getRootBox().getLayer();
     }
 
-    public Box find(MouseEvent e) {
+    public Box find(final MouseEvent e) {
         return find(e.getX(), e.getY());
     }
 
-    public Box find(int x, int y) {
-        Layer l = getRootLayer();
+    public Box find(final int x, final int y) {
+        final Layer l = getRootLayer();
         if (l != null) {
             return l.find(layoutContext, x, y, false);
         }
@@ -603,7 +603,7 @@ public class RootPanel extends JPanel implements ComponentListener,
         if (rootBox == null) {
             return true;
         } else {
-            Rectangle oldExtents = ((ViewportBox)rootBox.getContainingBlock()).getExtents();
+            final Rectangle oldExtents = ((ViewportBox)rootBox.getContainingBlock()).getExtents();
             if (! oldExtents.equals(getScreenExtents())) {
                 return true;
             } else {
@@ -616,7 +616,7 @@ public class RootPanel extends JPanel implements ComponentListener,
         return needRelayout;
     }
 
-    protected synchronized void setNeedRelayout(boolean needRelayout) {
+    protected synchronized void setNeedRelayout(final boolean needRelayout) {
         this.needRelayout = needRelayout;
     }
 
@@ -654,7 +654,7 @@ public class RootPanel extends JPanel implements ComponentListener,
                                     repaintRequestPending = false;
                                 }
                             });
-                        } catch (InterruptedException e) {
+                        } catch (final InterruptedException e) {
                             // swallow
                         }
                     }
@@ -670,7 +670,7 @@ public class RootPanel extends JPanel implements ComponentListener,
         return defaultFontFromComponent;
     }
 
-    public void setDefaultFontFromComponent(boolean defaultFontFromComponent) {
+    public void setDefaultFontFromComponent(final boolean defaultFontFromComponent) {
         this.defaultFontFromComponent = defaultFontFromComponent;
     }
 }

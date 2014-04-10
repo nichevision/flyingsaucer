@@ -55,13 +55,13 @@ public class HTMLTest extends JFrame {
      *
      * @param args PARAM
      */
-    public HTMLTest(String[] args) {
+    public HTMLTest(final String[] args) {
         super(BASE_TITLE);
         panel = new XHTMLPanel();
-        int width = 360;
-        int height = 500;
+        final int width = 360;
+        final int height = 500;
         panel.setPreferredSize(new Dimension(width, height));
-        JScrollPane scroll = new JScrollPane(panel);
+        final JScrollPane scroll = new JScrollPane(panel);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scroll.setPreferredSize(new Dimension(width, height));
@@ -74,24 +74,24 @@ public class HTMLTest extends JFrame {
 
         getContentPane().add("Center", scroll);
 
-        JMenuBar mb = new JMenuBar();
-        JMenu file = new JMenu("File");
+        final JMenuBar mb = new JMenuBar();
+        final JMenu file = new JMenu("File");
         mb.add(file);
         file.setMnemonic('F');
         file.add(new QuitAction());
 
-        JMenu view = new JMenu("View");
+        final JMenu view = new JMenu("View");
         mb.add(view);
         view.setMnemonic('V');
         view.add(new RefreshPageAction());
         view.add(new ReloadPageAction());
 
 
-        JMenu debug = new JMenu("Debug");
+        final JMenu debug = new JMenu("Debug");
         mb.add(debug);
         debug.setMnemonic('D');
 
-        JMenu debugShow = new JMenu("Show");
+        final JMenu debugShow = new JMenu("Show");
         debug.add(debugShow);
         debugShow.setMnemonic('S');
 
@@ -101,7 +101,7 @@ public class HTMLTest extends JFrame {
         debugShow.add(new JCheckBoxMenuItem(new FontMetricsAction()));
 
 
-        JMenu anti = new JMenu("Anti Aliasing");
+        final JMenu anti = new JMenu("Anti Aliasing");
         anti.add(new JCheckBoxMenuItem(new AntiAliasedAction("None", -1)));
         anti.add(new JCheckBoxMenuItem(new AntiAliasedAction("Low (Default)", 25)));
         anti.add(new JCheckBoxMenuItem(new AntiAliasedAction("Medium", 12)));
@@ -127,11 +127,11 @@ public class HTMLTest extends JFrame {
      * @param display The feature to be added to the FileLoadAction attribute
      * @param file    The feature to be added to the FileLoadAction attribute
      */
-    public void addFileLoadAction(JMenu menu, String display, final String file) {
+    public void addFileLoadAction(final JMenu menu, final String display, final String file) {
         menu.add(new AbstractAction(display) {
             private static final long serialVersionUID = 1L;
 
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(final ActionEvent evt) {
                 loadDocument(file);
             }
         });
@@ -146,7 +146,7 @@ public class HTMLTest extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    long st = System.currentTimeMillis();
+                    final long st = System.currentTimeMillis();
 
                     URL url = null;
                     if (uri.startsWith("http://"))
@@ -157,12 +157,12 @@ public class HTMLTest extends JFrame {
                     System.err.println("loading " + url.toString() + "!");
                     panel.setDocument(url.toExternalForm());
 
-                    long el = System.currentTimeMillis() - st;
+                    final long el = System.currentTimeMillis() - st;
                     XRLog.general("loadDocument(" + url.toString() + ") in " + el + "ms, render may take longer");
                     HTMLTest.this.setTitle(BASE_TITLE + "-  " +
                             panel.getDocumentTitle() + "  " +
                             "(" + url.toString() + ")");
-                } catch (Exception ex) {
+                } catch (final Exception ex) {
                     Uu.p(ex);
                 }
                 panel.repaint();
@@ -176,7 +176,7 @@ public class HTMLTest extends JFrame {
      * @param args The command line arguments
      * @throws Exception Throws
      */
-    public static void main(String[] args)
+    public static void main(final String[] args)
             throws Exception {
 
 
@@ -234,7 +234,7 @@ public class HTMLTest extends JFrame {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             panel.getSharedContext().setDebug_draw_boxes(!panel.getSharedContext().debugDrawBoxes());
             panel.repaint();
         }
@@ -261,7 +261,7 @@ public class HTMLTest extends JFrame {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             panel.getSharedContext().setDebug_draw_line_boxes(!panel.getSharedContext().debugDrawLineBoxes());
             panel.repaint();
         }
@@ -288,7 +288,7 @@ public class HTMLTest extends JFrame {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             panel.getSharedContext().setDebug_draw_inline_boxes(!panel.getSharedContext().debugDrawInlineBoxes());
             panel.repaint();
         }
@@ -310,7 +310,7 @@ public class HTMLTest extends JFrame {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             panel.getSharedContext().setDebug_draw_font_metrics(!panel.getSharedContext().debugDrawFontMetrics());
             panel.repaint();
         }
@@ -321,12 +321,12 @@ public class HTMLTest extends JFrame {
 
         int fontSizeThreshold;
 
-        AntiAliasedAction(String text, int fontSizeThreshold) {
+        AntiAliasedAction(final String text, final int fontSizeThreshold) {
             super(text);
             this.fontSizeThreshold = fontSizeThreshold;
         }
 
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             panel.getSharedContext().getTextRenderer().setSmoothingThreshold(fontSizeThreshold);
             panel.repaint();
         }
@@ -362,7 +362,7 @@ public class HTMLTest extends JFrame {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             if (inspectorFrame == null) {
                 inspectorFrame = new JFrame("DOM Tree Inspector");
             }
@@ -406,7 +406,7 @@ public class HTMLTest extends JFrame {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             // TODO
             System.out.println("Refresh Page triggered");
         }
@@ -436,7 +436,7 @@ public class HTMLTest extends JFrame {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             // TODO
             System.out.println("Reload Page triggered");
         }

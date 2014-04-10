@@ -39,7 +39,7 @@ public class HoverListener extends DefaultFSMouseListener {
     /**
      * {@inheritDoc}
      */
-    public void onMouseOut(BasicPanel panel, Box box) {
+    public void onMouseOut(final BasicPanel panel, final Box box) {
         // Since we keep track of the most recently hovered element, we do not
         // need to explicitly handle mouseout events.  This way we only try to
         // restyle elements that were actually hoverable to begin with.
@@ -48,8 +48,8 @@ public class HoverListener extends DefaultFSMouseListener {
     /**
      * {@inheritDoc}
      */
-    public void onMouseOver(BasicPanel panel, Box box) {
-        LayoutContext c = panel.getLayoutContext();
+    public void onMouseOver(final BasicPanel panel, final Box box) {
+        final LayoutContext c = panel.getLayoutContext();
 
         if (c == null) {
             return;
@@ -57,7 +57,7 @@ public class HoverListener extends DefaultFSMouseListener {
 
         boolean needRepaint = false;
 
-        Element currentlyHovered = getHoveredElement(c.getCss(), box);
+        final Element currentlyHovered = getHoveredElement(c.getCss(), box);
 
         if (currentlyHovered == panel.hovered_element) {
             return;
@@ -73,7 +73,7 @@ public class HoverListener extends DefaultFSMouseListener {
             needRepaint = true;
             _previouslyHovered.restyle(c);
 
-            PaintingInfo paintInfo = _previouslyHovered.getPaintingInfo();
+            final PaintingInfo paintInfo = _previouslyHovered.getPaintingInfo();
 
             if (paintInfo == null) {
                 targetedRepaint = false;
@@ -86,11 +86,11 @@ public class HoverListener extends DefaultFSMouseListener {
 
         if (currentlyHovered != null) {
             needRepaint = true;
-            Box target = box.getRestyleTarget();
+            final Box target = box.getRestyleTarget();
             target.restyle(c);
 
             if (targetedRepaint) {
-                PaintingInfo paintInfo = target.getPaintingInfo();
+                final PaintingInfo paintInfo = target.getPaintingInfo();
 
                 if (paintInfo == null) {
                     targetedRepaint = false;
@@ -116,7 +116,7 @@ public class HoverListener extends DefaultFSMouseListener {
     }
     
     // look up the Element that corresponds to the Box we are hovering over
-    private Element getHoveredElement(StyleReference style, Box ib) {
+    private Element getHoveredElement(final StyleReference style, final Box ib) {
         if (ib == null) {
             return null;
         }
@@ -124,7 +124,7 @@ public class HoverListener extends DefaultFSMouseListener {
         Element element = ib.getElement();
 
         while (element != null && !style.isHoverStyled(element)) {
-            Node node = element.parentNode();
+            final Node node = element.parentNode();
             if (node instanceof Element) {
                 element = (Element) node;
             } else {

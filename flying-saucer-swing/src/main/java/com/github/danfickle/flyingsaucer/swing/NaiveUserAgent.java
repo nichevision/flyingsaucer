@@ -70,7 +70,7 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
 
     protected StylesheetCache _styleCache = new StylesheetCache();
     
-    private int _imageCacheCapacity;
+    private final int _imageCacheCapacity;
     private String _baseURL;
 
     /**
@@ -99,7 +99,7 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
      */
     public void shrinkImageCache() {
         int ovr = _imageCache.size() - _imageCacheCapacity;
-        Iterator<String> it = _imageCache.keySet().iterator();
+        final Iterator<String> it = _imageCache.keySet().iterator();
         while (it.hasNext() && ovr-- > 0) {
             it.next();
             it.remove();
@@ -125,11 +125,11 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
         uri = resolveURI(uri);
         try {
             is = new URL(uri).openStream();
-        } catch (java.net.MalformedURLException e) {
+        } catch (final java.net.MalformedURLException e) {
             XRLog.exception("bad URL given: " + uri, e);
-        } catch (java.io.FileNotFoundException e) {
+        } catch (final java.io.FileNotFoundException e) {
             XRLog.exception("item at URI " + uri + " not found");
-        } catch (java.io.IOException e) {
+        } catch (final java.io.IOException e) {
             XRLog.exception("IO problem for " + uri, e);
         }
         return is;
@@ -143,7 +143,7 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
      * @param uri Location of the CSS source.
      * @return A CSSResource containing the parsed CSS.
      */
-    public CSSResource getCSSResource(String uri) {
+    public CSSResource getCSSResource(final String uri) {
         return new CSSResource(resolveAndOpenStream(uri));
     }
 
@@ -158,30 +158,30 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
     public ImageResource getImageResource(String uri) {
         ImageResource ir;
         if (ImageUtil.isEmbeddedBase64Image(uri)) {
-            BufferedImage image = ImageUtil.loadEmbeddedBase64Image(uri);
+            final BufferedImage image = ImageUtil.loadEmbeddedBase64Image(uri);
             ir = createImageResource(null, image);
         } else {
             uri = resolveURI(uri);
             ir = _imageCache.get(uri);
             //TODO: check that cached image is still valid
             if (ir == null) {
-                InputStream is = resolveAndOpenStream(uri);
+                final InputStream is = resolveAndOpenStream(uri);
                 if (is != null) {
                     try {
-                        BufferedImage img = ImageIO.read(is);
+                        final BufferedImage img = ImageIO.read(is);
                         if (img == null) {
                             throw new IOException("ImageIO.read() returned null");
                         }
                         ir = createImageResource(uri, img);
                         _imageCache.put(uri, ir);
-                    } catch (FileNotFoundException e) {
+                    } catch (final FileNotFoundException e) {
                         XRLog.exception("Can't read image file; image at URI '" + uri + "' not found");
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         XRLog.exception("Can't read image file; unexpected problem for URI '" + uri + "'", e);
                     } finally {
                         try {
                             is.close();
-                        } catch (IOException e) {
+                        } catch (final IOException e) {
                             // ignore
                         }
                     }
@@ -202,7 +202,7 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
      *
      * @return An ImageResource containing the image.
      */
-    protected ImageResource createImageResource(String uri, Image img) {
+    protected ImageResource createImageResource(final String uri, final Image img) {
         return new ImageResource(uri, AWTFSImage.createImage(img));
     }
 
@@ -214,8 +214,8 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
      * @param uri Location of the XML source.
      * @return An XMLResource containing the image.
      */
-    public HTMLResource getXMLResource(String uri) {
-        InputStream inputStream = resolveAndOpenStream(uri);
+    public HTMLResource getXMLResource(final String uri) {
+        final InputStream inputStream = resolveAndOpenStream(uri);
         HTMLResource xmlResource;
         try {
             xmlResource = HTMLResource.load(inputStream, uri);
@@ -223,7 +223,7 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
             if (inputStream != null) {
                 try {
                     inputStream.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // swallow
                 }
             }
@@ -231,11 +231,11 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
         return xmlResource;
     }
 
-    public byte[] getBinaryResource(String uri) {
+    public byte[] getBinaryResource(final String uri) {
         InputStream is = resolveAndOpenStream(uri);
         try {
-            ByteArrayOutputStream result = new ByteArrayOutputStream();
-            byte[] buf = new byte[10240];
+            final ByteArrayOutputStream result = new ByteArrayOutputStream();
+            final byte[] buf = new byte[10240];
             int i;
             while ((i = is.read(buf)) != -1) {
                 result.write(buf, 0, i);
@@ -244,13 +244,13 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
             is = null;
 
             return result.toByteArray();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return null;
         } finally {
             if (is != null) {
                 try {
                     is.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }
@@ -264,7 +264,7 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
      * @return Always false; visits are not tracked in the NaiveUserAgent.
      */
     @Override
-    public boolean isVisited(String uri) {
+    public boolean isVisited(final String uri) {
         return false;
     }
 
@@ -274,7 +274,7 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
      * @param url A URI which anchors other, possibly relative URIs.
      */
     @Override
-    public void setBaseURL(String url) {
+    public void setBaseURL(final String url) {
         _baseURL = url;
     }
 
@@ -287,17 +287,17 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
      * @return A URI as String, resolved, or null if there was an exception (for example if the URI is malformed).
      */
     @Override
-    public String resolveURI(String uri) {
+    public String resolveURI(final String uri) {
         if (uri == null) return null;
         String ret = null;
         if (_baseURL == null) {//first try to set a base URL
             try {
-                URL result = new URL(uri);
+                final URL result = new URL(uri);
                 setBaseURL(result.toExternalForm());
-            } catch (MalformedURLException e) {
+            } catch (final MalformedURLException e) {
                 try {
                     setBaseURL(new File(".").toURI().toURL().toExternalForm());
-                } catch (Exception e1) {
+                } catch (final Exception e1) {
                     XRLog.exception("The default NaiveUserAgent doesn't know how to resolve the base URL for " + uri);
                     return null;
                 }
@@ -306,12 +306,12 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
         // test if the URI is valid; if not, try to assign the base url as its parent
         try {
             return new URL(uri).toString();
-        } catch (MalformedURLException e) {
+        } catch (final MalformedURLException e) {
             XRLog.load(uri + " is not a URL; may be relative. Testing using parent URL " + _baseURL);
             try {
-                URL result = new URL(new URL(_baseURL), uri);
+                final URL result = new URL(new URL(_baseURL), uri);
                 ret = result.toString();
-            } catch (MalformedURLException e1) {
+            } catch (final MalformedURLException e1) {
                 XRLog.exception("The default NaiveUserAgent cannot resolve the URL " + uri + " with base URL " + _baseURL);
             }
         }
@@ -335,10 +335,10 @@ public class NaiveUserAgent implements UserAgentCallback, DocumentListener {
     public void documentLoaded() { /* ignore*/ }
 
     @Override
-    public void onLayoutException(Throwable t) { /* ignore*/ }
+    public void onLayoutException(final Throwable t) { /* ignore*/ }
 
     @Override
-    public void onRenderException(Throwable t) { /* ignore*/ }
+    public void onRenderException(final Throwable t) { /* ignore*/ }
 
 	@Override
 	public StylesheetCache getStylesheetCache() {

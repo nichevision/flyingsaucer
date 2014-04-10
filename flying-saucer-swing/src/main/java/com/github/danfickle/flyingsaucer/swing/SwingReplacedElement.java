@@ -27,10 +27,10 @@ import org.xhtmlrenderer.extend.ReplacedElement;
 import org.xhtmlrenderer.layout.LayoutContext;
 
 public class SwingReplacedElement implements ReplacedElement {
-    private JComponent _component;
+    private final JComponent _component;
     private Dimension intrinsicSize;
     
-    public SwingReplacedElement(JComponent component) {
+    public SwingReplacedElement(final JComponent component) {
         _component = component;
     }
     
@@ -38,7 +38,7 @@ public class SwingReplacedElement implements ReplacedElement {
         return _component;
     }
 
-    public void setIntrinsicSize(Dimension intrinsicSize){
+    public void setIntrinsicSize(final Dimension intrinsicSize){
         this.intrinsicSize = intrinsicSize;
     }
     
@@ -50,7 +50,7 @@ public class SwingReplacedElement implements ReplacedElement {
         return intrinsicSize == null ? _component.getSize().width : intrinsicSize.width;
     }
     
-    public void setLocation(int x, int y) {
+    public void setLocation(final int x, final int y) {
         _component.setLocation(x, y);
     }
     
@@ -58,7 +58,7 @@ public class SwingReplacedElement implements ReplacedElement {
         return _component.getLocation();
     }
     
-    public void detach(LayoutContext c) {
+    public void detach(final LayoutContext c) {
         if (c.isInteractive()) {
             ((RootPanel)c.getCanvas()).remove(getJComponent());
         }

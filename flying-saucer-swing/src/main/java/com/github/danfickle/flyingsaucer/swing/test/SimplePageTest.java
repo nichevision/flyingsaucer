@@ -8,10 +8,10 @@ import org.xhtmlrenderer.util.Uu;
 
 public class SimplePageTest {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         long total = 0;
-        int cnt = 1;
-        String demosDir = "d:/java/javanet/xhtmlrenderer/demos/browser/xhtml/new";
+        final int cnt = 1;
+        final String demosDir = "d:/java/javanet/xhtmlrenderer/demos/browser/xhtml/new";
         String page = demosDir + "/dead-simple-page.xhtml";
         if ( args.length == 1 ) {
             page = demosDir + "/" + args[0];
@@ -20,15 +20,15 @@ public class SimplePageTest {
         //String page = demosDir + "/splash/splash.html";
         System.out.println("Testing with page " + page);
         for (int i = 0; i < cnt; i++) {
-            Date start = new Date();
+            final Date start = new Date();
             Graphics2DRenderer.renderToImage(new File(page).toURL().toExternalForm(),
                     700, 700);
-            Date end = new Date();
-            long diff = (end.getTime() - start.getTime());
+            final Date end = new Date();
+            final long diff = (end.getTime() - start.getTime());
             Uu.p("ms = " + diff);
             if (i > 4) total += diff;
         }
-        long avg = total / cnt;
+        final long avg = total / cnt;
         System.out.println("average : " + avg);
     }
 }

@@ -36,7 +36,7 @@ public class LinkListener extends DefaultFSMouseListener {
      * @param panel the panel on which the listener is attached
      * @param uri the URI to navigate to
      */
-    public void linkClicked(BasicPanel panel, String uri) {
+    public void linkClicked(final BasicPanel panel, final String uri) {
         panel.setDocumentRelative(uri);
     }
 
@@ -47,18 +47,18 @@ public class LinkListener extends DefaultFSMouseListener {
      * @param panel the panel where the mouse button has been released.
      * @param box the box on which the mouse cursor is currently located
      */
-    public void onMouseUp(BasicPanel panel, Box box) {
+    public void onMouseUp(final BasicPanel panel, final Box box) {
         checkForLink(panel, box);
     }
 
     // tests whether the element associated with the Box has an associated URI (e.g. is an anchor), and if so, calls
     // back to the panel to navigate to that URI
-    private void checkForLink(BasicPanel panel, Box box) {
+    private void checkForLink(final BasicPanel panel, final Box box) {
         if (box == null || box.getElement() == null) {
             return;
         }
 
-        String uri = findLink(panel, box.getElement());
+        final String uri = findLink(panel, box.getElement());
 
         if (uri != null) {
             linkClicked(panel, uri);
@@ -67,7 +67,7 @@ public class LinkListener extends DefaultFSMouseListener {
 
     // looks to see if the given element has a link URI associated with it; if so, returns the URI as a string, if
     // not, returns null
-    private String findLink(BasicPanel panel, Element e) {
+    private String findLink(final BasicPanel panel, final Element e) {
         String uri = null;
 
         for (Node node = e; node instanceof Element; node = node.parent()) {

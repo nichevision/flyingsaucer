@@ -41,8 +41,8 @@ import org.xhtmlrenderer.render.Box;
  * acting. 
  */
 public class MouseTracker extends MouseInputAdapter {
-    private BasicPanel _panel;
-    private Map<FSMouseListener, FSMouseListener> _handlers;
+    private final BasicPanel _panel;
+    private final Map<FSMouseListener, FSMouseListener> _handlers;
     private Box _last;
     private boolean _enabled;
 
@@ -50,7 +50,7 @@ public class MouseTracker extends MouseInputAdapter {
      * Instantiates a MouseTracker to listen to mouse events for the given panel.
      * @param panel the panel for which mouse events should be delegated.
      */
-    public MouseTracker(BasicPanel panel) {
+    public MouseTracker(final BasicPanel panel) {
         _panel = panel;
         _handlers = new LinkedHashMap<FSMouseListener, FSMouseListener>();
     }
@@ -60,7 +60,7 @@ public class MouseTracker extends MouseInputAdapter {
      *
      * @param l the listener
      */
-    public void addListener(FSMouseListener l) {
+    public void addListener(final FSMouseListener l) {
         if (l == null) {
             return;
         }
@@ -82,7 +82,7 @@ public class MouseTracker extends MouseInputAdapter {
      *
      * @param l the listener to remove
      */
-    public void removeListener(FSMouseListener l) {
+    public void removeListener(final FSMouseListener l) {
         if (l == null) {
             return;
         }
@@ -110,42 +110,42 @@ public class MouseTracker extends MouseInputAdapter {
     /**
      * {@inheritDoc}
      */
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(final MouseEvent e) {
         handleMouseMotion(_panel.find(e));
     }
 
     /**
      * {@inheritDoc}
      */
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(final MouseEvent e) {
         handleMouseMotion(_panel.find(e));
     }
 
     /**
      * {@inheritDoc}
      */
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(final MouseEvent e) {
         handleMouseMotion(_panel.find(e));
     }
 
     /**
      * {@inheritDoc}
      */
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(final MouseEvent e) {
         handleMouseUp(_panel.find(e));
     }
     
     /**
      * {@inheritDoc}
      */
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent e) {
         fireMousePressed(e);
     }
     
     /**
      * {@inheritDoc}
      */
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(final MouseEvent e) {
         fireMouseDragged(e);
     }
 
@@ -154,14 +154,14 @@ public class MouseTracker extends MouseInputAdapter {
      */
     public void reset() {
         _last = null;
-        Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
+        final Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
         while (iterator.hasNext()) {
             iterator.next().reset();
         }
     }
 
     // handles delegation of mouse events to listeners
-    private void handleMouseMotion(Box box) {
+    private void handleMouseMotion(final Box box) {
         if (box == null || box.equals(_last)) {
             return;
         }
@@ -176,7 +176,7 @@ public class MouseTracker extends MouseInputAdapter {
     }
 
 
-    private void handleMouseUp(Box box) {
+    private void handleMouseUp(final Box box) {
         if (box == null) {
             return;
         }
@@ -185,40 +185,40 @@ public class MouseTracker extends MouseInputAdapter {
     }
     
     // delegates onMouseOver() to all listeners
-    private void fireMouseOver(Box box) {
-        Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
+    private void fireMouseOver(final Box box) {
+        final Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
         while (iterator.hasNext()) {
             iterator.next().onMouseOver(_panel, box);
         }
     }
 
     // delegates onMouseOut() to all listeners
-    private void fireMouseOut(Box box) {
-        Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
+    private void fireMouseOut(final Box box) {
+        final Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
         while (iterator.hasNext()) {
             iterator.next().onMouseOut(_panel, box);
         }
     }
     
     // delegates onMouseUp() to all listeners
-    private void fireMouseUp(Box box) {
-        Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
+    private void fireMouseUp(final Box box) {
+        final Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
         while (iterator.hasNext()) {
             iterator.next().onMouseUp(_panel, box);
         }
     }
     
     // delegates onMousePressed() to all listeners
-    private void fireMousePressed(MouseEvent e) {
-        Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
+    private void fireMousePressed(final MouseEvent e) {
+        final Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
         while (iterator.hasNext()) {
             iterator.next().onMousePressed(_panel, e);
         }
     }
     
     // delegates onMouseDragged() to all listeners
-    private void fireMouseDragged(MouseEvent e) {
-        Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
+    private void fireMouseDragged(final MouseEvent e) {
+        final Iterator<FSMouseListener> iterator = _handlers.keySet().iterator();
         while (iterator.hasNext()) {
             iterator.next().onMouseDragged(_panel, e);
         }

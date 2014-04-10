@@ -16,16 +16,16 @@ import java.util.Map;
  * ReferenceComparison runs a comparison of rendering a set of source XHTML files against a 
  */
 public class ReferenceComparison {
-    private int width;
-    private boolean isVerbose;
+    private final int width;
+    private final boolean isVerbose;
     private static final String LINE_SEPARATOR = "\n";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException {
         // TODO: check args
-        ReferenceComparison rc = new ReferenceComparison(1024, false);
-        File source = new File(args[0]);
-        File reference = new File(args[1]);
-        File failed = new File(args[2]);
+        final ReferenceComparison rc = new ReferenceComparison(1024, false);
+        final File source = new File(args[0]);
+        final File reference = new File(args[1]);
+        final File failed = new File(args[2]);
         rc.compareDirectory(source, reference, failed);
     }
 
@@ -35,25 +35,25 @@ public class ReferenceComparison {
      * @param width width at which pages should be rendered
      * @param verbose
      */
-    public ReferenceComparison(int width, boolean verbose) {
+    public ReferenceComparison(final int width, final boolean verbose) {
         this.width = width;
         this.isVerbose = verbose;
     }
 
-    public void compareDirectory(File sourceDirectory, File referenceDir, File failedDirectory) throws IOException {
+    public void compareDirectory(final File sourceDirectory, final File referenceDir, final File failedDirectory) throws IOException {
         checkDirectories(sourceDirectory, referenceDir, failedDirectory);
         log("Starting comparison using width " + width);
         IOUtil.deleteAllFiles(failedDirectory);
 
-        boolean wasEnabled = enableLogging(false);
+        final boolean wasEnabled = enableLogging(false);
         try {
-            Iterator<File> fileIt = listSourceFiles(sourceDirectory);
-            CompareStatistics stats = new CompareStatistics();
+            final Iterator<File> fileIt = listSourceFiles(sourceDirectory);
+            final CompareStatistics stats = new CompareStatistics();
             while (fileIt.hasNext()) {
-                File file = (File) fileIt.next();
+                final File file = (File) fileIt.next();
                 try {
                     compareFile(file, referenceDir, failedDirectory, stats);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     stats.failedIOException(e);
                 }
             }
@@ -70,7 +70,7 @@ public class ReferenceComparison {
         return orgVal;
     }
 
-    private void checkDirectories(File sourceDirectory, File referenceDir, File failedDirectory) {
+    private void checkDirectories(final File sourceDirectory, final File referenceDir, final File failedDirectory) {
         if (!sourceDirectory.exists() || !sourceDirectory.isDirectory()) {
             throw new IllegalArgumentException("Source dir. doesn't exist, or not a directory: " + sourceDirectory);
         }
@@ -93,37 +93,37 @@ public class ReferenceComparison {
         return isVerbose;
     }
 
-    private Iterator<File> listSourceFiles(File sourceDirectory) {
+    private Iterator<File> listSourceFiles(final File sourceDirectory) {
         return Arrays.asList(
                 sourceDirectory.listFiles(new FilenameFilter() {
-                    public boolean accept(File file, String s) {
+                    public boolean accept(final File file, final String s) {
                         return Regress.EXTENSIONS.contains(s.substring(s.lastIndexOf(".") + 1));
                     }
                 })
         ).iterator();
     }
 
-    public void compareFile(File source, File referenceDir, File failedDirectory, CompareStatistics stat) throws IOException {
+    public void compareFile(final File source, final File referenceDir, final File failedDirectory, final CompareStatistics stat) throws IOException {
         log("Comparing " + source.getPath());
         stat.checking(source);
         // TODO: reuse code from Regress
-        BoxRenderer renderer = new BoxRenderer(source, width);
+        final BoxRenderer renderer = new BoxRenderer(source, width);
         Box box;
         try {
             log("rendering");
             box = renderer.render();
             log("rendered");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             stat.failedToRender(e);
             storeFailed(failedDirectory, source);
             log("Could not render input file, skipping: " + source + " err: " + e.getMessage());
             return;
         }
-        LayoutContext layoutContext = renderer.getLayoutContext();
-        String inputFileName = source.getName();
-        String refRendered = trimTrailingLS(readReference(referenceDir, inputFileName, Regress.RENDER_SFX));
-        String rendered = trimTrailingLS(box.dump(layoutContext, "", Box.DUMP_RENDER));
+        final LayoutContext layoutContext = renderer.getLayoutContext();
+        final String inputFileName = source.getName();
+        final String refRendered = trimTrailingLS(readReference(referenceDir, inputFileName, Regress.RENDER_SFX));
+        final String rendered = trimTrailingLS(box.dump(layoutContext, "", Box.DUMP_RENDER));
         if (!compareLines(refRendered, rendered, stat)) {
             storeFailed(failedDirectory, new File(referenceDir, inputFileName), Regress.RENDER_SFX, rendered);
         }
@@ -142,7 +142,7 @@ public class ReferenceComparison {
         return s;
     }
 
-    private void storeFailed(File failedDirectory, File refFile, String suffix, String compareTo) {
+    private void storeFailed(final File failedDirectory, final File refFile, final String suffix, final String compareTo) {
         copyToFailed(failedDirectory, refFile, "");
         copyToFailed(failedDirectory, refFile, Regress.PNG_SFX);
         copyToFailed(failedDirectory, refFile, suffix);
@@ -150,49 +150,49 @@ public class ReferenceComparison {
         OutputStreamWriter fw = null;
         try {
             fw = new OutputStreamWriter(new FileOutputStream(new File(failedDirectory, refFile.getName() + ".err" + suffix)), "UTF-8");
-            BufferedWriter bw = new BufferedWriter(fw);
+            final BufferedWriter bw = new BufferedWriter(fw);
             try {
                 bw.write(compareTo);
                 bw.flush();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new RuntimeException("unexpected IO exception on writing 'failed' info for test.", e);
             } finally {
                 try {
                     bw.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // swallow
                 }
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException("unexpected IO exception on writing 'failed' info for test.", e);
         } finally {
             if (fw != null) {
                 try {
                     fw.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // swallow
                 }
             }
         }
     }
 
-    private void copyToFailed(File failedDirectory, File refFile, String suffix) {
+    private void copyToFailed(final File failedDirectory, final File refFile, final String suffix) {
         File source = new File(failedDirectory, refFile.getName() + suffix);
         if (!source.exists()) {
             source = new File(refFile.getAbsoluteFile().getParentFile(), refFile.getName() + suffix);
             try {
                 IOUtil.copyFile(source, failedDirectory);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 System.err.println("Failed to copy file (reference) " + source + " to failed directory, err " + e.getMessage());
             }
 
         }
     }
 
-    private boolean compareLines(String refText, String text, CompareStatistics statistics) throws IOException {
+    private boolean compareLines(final String refText, final String text, final CompareStatistics statistics) throws IOException {
         log("running comparison");
-        LineNumberReader lnrRef = new LineNumberReader(new StringReader(refText));
-        LineNumberReader lnrOther = new LineNumberReader(new StringReader(text));
+        final LineNumberReader lnrRef = new LineNumberReader(new StringReader(refText));
+        final LineNumberReader lnrOther = new LineNumberReader(new StringReader(text));
         String lineRef;
         String lineOther;
         while ((lineRef = lnrRef.readLine()) != null) {
@@ -213,18 +213,18 @@ public class ReferenceComparison {
         return true;
     }
 
-    private void storeFailed(File failedDirectory, File sourceFile) {
+    private void storeFailed(final File failedDirectory, final File sourceFile) {
         try {
             IOUtil.copyFile(sourceFile, failedDirectory);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             System.err.println("Failed to copy file to failed directory: " + sourceFile + ", err: " + e.getMessage());
         }
     }
 
-    private String readReference(File referenceDir, String input, String sfx) throws IOException {
+    private String readReference(final File referenceDir, final String input, final String sfx) throws IOException {
         BufferedReader rdr = null;
         StringBuffer sb;
-        File f = new File(referenceDir, input + sfx);
+        final File f = new File(referenceDir, input + sfx);
         rdr = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
         try {
             String line;
@@ -236,7 +236,7 @@ public class ReferenceComparison {
         } finally {
             try {
                 rdr.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // swallow
             }
         }
@@ -252,13 +252,13 @@ public class ReferenceComparison {
     private static class CompareStatistics {
         private File currentFile;
         private static final Result OK = new ResultOK();
-        private Map<File, Result> files;
+        private final Map<File, Result> files;
 
         public CompareStatistics() {
             files = new HashMap<>();
         }
 
-        public void failedToRender(Exception e) {
+        public void failedToRender(final Exception e) {
             files.put(currentFile, new RenderFailed(e));
         }
 
@@ -266,7 +266,7 @@ public class ReferenceComparison {
             files.put(currentFile, new RefIsLonger());
         }
 
-        public void failedDontMatch(String lineRef, String lineOther) {
+        public void failedDontMatch(final String lineRef, final String lineOther) {
             files.put(currentFile, new LineMismatch(lineRef, lineOther));
         }
 
@@ -274,7 +274,7 @@ public class ReferenceComparison {
             files.put(currentFile, new OtherIsLonger());
         }
 
-        public void failedIOException(IOException e) {
+        public void failedIOException(final IOException e) {
             files.put(currentFile, new FailedIO(e));
         }
 
@@ -283,7 +283,7 @@ public class ReferenceComparison {
             return files.get(currentFile) instanceof FailedResult;
         }
 
-        public void checking(File source) {
+        public void checking(final File source) {
             currentFile = source;
             files.put(currentFile, OK);
         }
@@ -295,8 +295,8 @@ public class ReferenceComparison {
 
         public void report() {
             int failed = 0;
-            for (File file : files.keySet()) {
-                Result result = (Result) files.get(file);
+            for (final File file : files.keySet()) {
+                final Result result = (Result) files.get(file);
 
                 if (result instanceof FailedResult) {
                     failed++;
@@ -309,17 +309,17 @@ public class ReferenceComparison {
         private static class RenderFailed implements Result {
             private final Exception exception;
 
-            public RenderFailed(Exception exception) {
+            public RenderFailed(final Exception exception) {
                 this.exception = exception;
             }
 
-            public String describe(File file) {
+            public String describe(final File file) {
                 return "FAIL: Render operation threw exception for " + file.getName() + ", err " + exception.getMessage();
             }
         }
 
         private static class RefIsLonger implements FailedResult {
-            public String describe(File file) {
+            public String describe(final File file) {
                 return "FAIL: reference is longer (more lines): " + file.getName();
             }
         }
@@ -328,18 +328,18 @@ public class ReferenceComparison {
             private final String lineRef;
             private final String lineOther;
 
-            public LineMismatch(String lineRef, String lineOther) {
+            public LineMismatch(final String lineRef, final String lineOther) {
                 this.lineRef = lineRef;
                 this.lineOther = lineOther;
             }
 
-            public String describe(File file) {
+            public String describe(final File file) {
                 return "FAIL: line content doesn't match for " + file.getName() + LINE_SEPARATOR + "ref: " + lineRef + LINE_SEPARATOR + "other: " + lineOther;
             }
         }
 
         private static class OtherIsLonger implements FailedResult {
-            public String describe(File file) {
+            public String describe(final File file) {
                 return "FAIL: new rendered output is longer (more lines): " +  file.getName();
             }
         }
@@ -347,11 +347,11 @@ public class ReferenceComparison {
         private static class FailedIO implements FailedResult {
             private final IOException exception;
 
-            public FailedIO(IOException e) {
+            public FailedIO(final IOException e) {
                 this.exception = e;
             }
 
-            public String describe(File file) {
+            public String describe(final File file) {
                 return "FAIL: IOException when comparing: " + file + " (err: " + exception.getMessage();
             }
         }
@@ -362,7 +362,7 @@ public class ReferenceComparison {
         private interface FailedResult extends Result {}
 
         private static class ResultOK implements Result {
-            public String describe(File file) {
+            public String describe(final File file) {
                 return "OK: " + file.getName();
             }
         }

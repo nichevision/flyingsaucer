@@ -60,7 +60,7 @@ public class XLayout /*extends CustomBlockLayout*/ {
      * @param elem PARAM
      * @return The intrinsicDimensions value
      */
-    public Dimension getIntrinsicDimensions(LayoutContext c, Element elem) {
+    public Dimension getIntrinsicDimensions(final LayoutContext c, final Element elem) {
         return new Dimension(50, 50);
     }
 
