@@ -18,10 +18,10 @@ import com.lowagie.text.pdf.RandomAccessFileOrArray;
  * <a href="http://sourceforge.net/projects/itext/">http://sourceforge.net/projects/itext/</a> for license information.
  */
 public class TrueTypeUtil {
-    private static IdentValue guessStyle(BaseFont font) {
-        String[][] names = font.getFullFontName();
-        for (String[] name : names) {
-            String lower = name[3].toLowerCase();
+    private static IdentValue guessStyle(final BaseFont font) {
+        final String[][] names = font.getFullFontName();
+        for (final String[] name : names) {
+            final String lower = name[3].toLowerCase();
             if (lower.indexOf("italic") != -1) {
                 return IdentValue.ITALIC;
             } else if (lower.indexOf("oblique") != -1) {
@@ -32,14 +32,14 @@ public class TrueTypeUtil {
         return IdentValue.NORMAL;
     }
 
-    public static String[] getFamilyNames(BaseFont font) {
-        String names[][] = font.getFamilyFontName();
+    public static String[] getFamilyNames(final BaseFont font) {
+        final String names[][] = font.getFamilyFontName();
         if (names.length == 1) {
             return new String[] { names[0][3] };
         }
 
-        List<String> result = new ArrayList<String>();
-        for (String[] name : names) {
+        final List<String> result = new ArrayList<String>();
+        for (final String[] name : names) {
             if ((name[0].equals("1") && name[1].equals("0")) ||
                     name[2].equals("1033")) {
                 result.add(name[3]);
@@ -49,13 +49,13 @@ public class TrueTypeUtil {
     }
 
     // HACK No accessor
-    private static Map<?, ?> extractTables(BaseFont font)
+    private static Map<?, ?> extractTables(final BaseFont font)
             throws SecurityException, NoSuchFieldException, IllegalArgumentException,
                     IllegalAccessException {
         Class<?> current = font.getClass();
         while (current != null) {
             if (current.getName().endsWith(".TrueTypeFont")) {
-                Field f = current.getDeclaredField("tables");
+                final Field f = current.getDeclaredField("tables");
                 f.setAccessible(true);
                 return (Map<?, ?>)f.get(font);
             }
@@ -66,8 +66,8 @@ public class TrueTypeUtil {
         throw new NoSuchFieldException("Could not find tables field");
     }
 
-    private static String getTTCName(String name) {
-        int idx = name.toLowerCase().indexOf(".ttc,");
+    private static String getTTCName(final String name) {
+        final int idx = name.toLowerCase().indexOf(".ttc,");
         if (idx < 0) {
             return name;
         } else {
@@ -75,7 +75,7 @@ public class TrueTypeUtil {
         }
     }
 
-    public static void populateDescription(String path, BaseFont font, FontDescription descr)
+    public static void populateDescription(final String path, final BaseFont font, final FontDescription descr)
             throws IOException, NoSuchFieldException, IllegalAccessException, DocumentException {
         RandomAccessFileOrArray rf = null;
         try {
@@ -86,14 +86,14 @@ public class TrueTypeUtil {
             if (rf != null) {
                 try {
                     rf.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }
         }
     }
 
-    public static void populateDescription(String path, byte[] contents, BaseFont font, FontDescription descr)
+    public static void populateDescription(final String path, final byte[] contents, final BaseFont font, final FontDescription descr)
             throws IOException, NoSuchFieldException, IllegalAccessException, DocumentException {
         RandomAccessFileOrArray rf = null;
         try {
@@ -104,17 +104,17 @@ public class TrueTypeUtil {
             if (rf != null) {
                 try {
                     rf.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }
         }
     }
 
-    private static RandomAccessFileOrArray populateDescription0(String path,
-            BaseFont font, FontDescription descr, RandomAccessFileOrArray rf)
+    private static RandomAccessFileOrArray populateDescription0(final String path,
+            final BaseFont font, final FontDescription descr, RandomAccessFileOrArray rf)
                throws NoSuchFieldException, IllegalAccessException, DocumentException, IOException {
-        Map<?, ?> tables = extractTables(font);
+        final Map<?, ?> tables = extractTables(font);
 
         descr.setStyle(guessStyle(font));
 

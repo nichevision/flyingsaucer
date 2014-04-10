@@ -23,27 +23,27 @@ public class EmptyReplacedElement extends AbstractFormField
 {
   private static final String FIELD_TYPE = "Hidden";
 
-  private int _width;
-  private int _height;
+  private final int _width;
+  private final int _height;
 
   private Point _location = new Point(0, 0);
 
-  public EmptyReplacedElement(int width, int height)
+  public EmptyReplacedElement(final int width, final int height)
   {
     _width = width;
     _height = height;
   }
 
-  public void paint(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box)
+  public void paint(final RenderingContext c, final ITextOutputDevice outputDevice, final BlockBox box)
   {
-    PdfContentByte cb = outputDevice.getCurrentPage();
+    final PdfContentByte cb = outputDevice.getCurrentPage();
 
-    PdfWriter writer = outputDevice.getWriter();
+    final PdfWriter writer = outputDevice.getWriter();
 
-    PdfAcroForm acroForm = writer.getAcroForm();
-    Element elem = box.getElement();
-    String name = getFieldName(outputDevice, elem);
-    String value = getValue(elem);
+    final PdfAcroForm acroForm = writer.getAcroForm();
+    final Element elem = box.getElement();
+    final String name = getFieldName(outputDevice, elem);
+    final String value = getValue(elem);
     acroForm.addHiddenField(name, value);
 
 
@@ -64,7 +64,7 @@ public class EmptyReplacedElement extends AbstractFormField
     return _location;
   }
 
-  public void setLocation(int x, int y)
+  public void setLocation(final int x, final int y)
   {
     _location = new Point(0, 0);
   }
@@ -74,7 +74,7 @@ public class EmptyReplacedElement extends AbstractFormField
     return FIELD_TYPE;
   }
 
-  public void detach(LayoutContext c)
+  public void detach(final LayoutContext c)
   {
   }
 

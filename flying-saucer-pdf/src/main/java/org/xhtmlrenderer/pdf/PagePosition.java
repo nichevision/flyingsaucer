@@ -31,7 +31,7 @@ public class PagePosition {
         return _pageNo;
     }
     
-    public void setPageNo(int pageNo) {
+    public void setPageNo(final int pageNo) {
         _pageNo = pageNo;
     }
     
@@ -39,7 +39,7 @@ public class PagePosition {
         return _x;
     }
     
-    public void setX(float x) {
+    public void setX(final float x) {
         _x = x;
     }
     
@@ -47,7 +47,7 @@ public class PagePosition {
         return _width;
     }
     
-    public void setWidth(float width) {
+    public void setWidth(final float width) {
         _width = width;
     }
     
@@ -55,7 +55,7 @@ public class PagePosition {
         return _y;
     }
     
-    public void setY(float y) {
+    public void setY(final float y) {
         _y = y;
     }
     
@@ -63,7 +63,7 @@ public class PagePosition {
         return _height;
     }
     
-    public void setHeight(float height) {
+    public void setHeight(final float height) {
         _height = height;
     }
 
@@ -71,7 +71,7 @@ public class PagePosition {
         return _id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         _id = id;
     }
 }

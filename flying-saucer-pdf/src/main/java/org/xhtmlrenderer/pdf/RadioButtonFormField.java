@@ -40,24 +40,24 @@ import com.lowagie.text.pdf.PdfWriter;
 public class RadioButtonFormField extends AbstractFormField {
     private static final String FIELD_TYPE = "RadioButton";
     
-    private ITextReplacedElementFactory _factory;
-    private Box _box;
+    private final ITextReplacedElementFactory _factory;
+    private final Box _box;
     
     protected String getFieldType() {
         return FIELD_TYPE;
     }
     
     public RadioButtonFormField(
-            ITextReplacedElementFactory factory, LayoutContext c, BlockBox box, int cssWidth, int cssHeight) {
+            final ITextReplacedElementFactory factory, final LayoutContext c, final BlockBox box, final int cssWidth, final int cssHeight) {
         _factory = factory;
         _box = box;
         
         initDimensions(c, box, cssWidth, cssHeight);
     }
 
-    public void paint(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box) {
-        String fieldName = getFieldName(outputDevice, box.getElement());
-        List<RadioButtonFormField> radioBoxes = _factory.getRadioButtons(fieldName);
+    public void paint(final RenderingContext c, final ITextOutputDevice outputDevice, final BlockBox box) {
+        final String fieldName = getFieldName(outputDevice, box.getElement());
+        final List<RadioButtonFormField> radioBoxes = _factory.getRadioButtons(fieldName);
         
         // iText wants all radio buttons in a group added at once across all pages
         
@@ -66,18 +66,18 @@ public class RadioButtonFormField extends AbstractFormField {
             return;
         }
         
-        PdfContentByte cb = outputDevice.getCurrentPage();
-        PdfWriter writer = outputDevice.getWriter();
+        final PdfContentByte cb = outputDevice.getCurrentPage();
+        final PdfWriter writer = outputDevice.getWriter();
         
-        PdfFormField group = PdfFormField.createRadioButton(writer, true);
+        final PdfFormField group = PdfFormField.createRadioButton(writer, true);
         group.setFieldName(fieldName);
         
-        RadioButtonFormField checked = getChecked(radioBoxes);
+        final RadioButtonFormField checked = getChecked(radioBoxes);
         if (checked != null) {
             group.setValueAsString(getValue(checked.getBox().getElement()));
         }
         
-        for (RadioButtonFormField fieldElem : radioBoxes) {
+        for (final RadioButtonFormField fieldElem : radioBoxes) {
             createField(c, outputDevice, cb, writer, group, fieldElem, checked);            
         }
         
@@ -86,9 +86,9 @@ public class RadioButtonFormField extends AbstractFormField {
         _factory.remove(fieldName);
     }
     
-    private RadioButtonFormField getChecked(List<RadioButtonFormField> fields) {
+    private RadioButtonFormField getChecked(final List<RadioButtonFormField> fields) {
         RadioButtonFormField result = null;
-        for (RadioButtonFormField f : fields) {
+        for (final RadioButtonFormField f : fields) {
             if (isChecked(f.getBox().getElement())) {
                 result = f;
             }
@@ -97,22 +97,22 @@ public class RadioButtonFormField extends AbstractFormField {
         return result;
     }
 
-    private void createField(RenderingContext c,
-            ITextOutputDevice outputDevice, PdfContentByte cb,
-            PdfWriter writer, PdfFormField group, 
-            RadioButtonFormField fieldElem, RadioButtonFormField checked) {
-        Box box = fieldElem.getBox();
+    private void createField(final RenderingContext c,
+            final ITextOutputDevice outputDevice, final PdfContentByte cb,
+            final PdfWriter writer, final PdfFormField group, 
+            final RadioButtonFormField fieldElem, final RadioButtonFormField checked) {
+        final Box box = fieldElem.getBox();
         
-        Element e = box.getElement();
-        String onValue = getValue(e);
+        final Element e = box.getElement();
+        final String onValue = getValue(e);
         
-        float width = outputDevice.getDeviceLength(fieldElem.getWidth());
-        float height = outputDevice.getDeviceLength(fieldElem.getHeight());
+        final float width = outputDevice.getDeviceLength(fieldElem.getWidth());
+        final float height = outputDevice.getDeviceLength(fieldElem.getHeight());
 
-        PdfFormField field = PdfFormField.createEmpty(writer);
+        final PdfFormField field = PdfFormField.createEmpty(writer);
 
-        FSColor color = box.getStyle().getColor();
-        FSColor darker = box.getEffBackgroundColor(c).darkenColor();
+        final FSColor color = box.getStyle().getColor();
+        final FSColor darker = box.getEffBackgroundColor(c).darkenColor();
         createAppearances(cb, field, onValue, width, height, true, color, darker);
         createAppearances(cb, field, onValue, width, height, false, color, darker);
 
@@ -122,8 +122,8 @@ public class RadioButtonFormField extends AbstractFormField {
         
         // XXX createTargetArea already looks up the page, but hopefully a document
         // won't have enough radio buttons to matter
-        Rectangle bounds = box.getContentAreaEdge(box.getAbsX(), box.getAbsY(), c);
-        PageBox page = c.getRootLayer().getPage(c, bounds.y);
+        final Rectangle bounds = box.getContentAreaEdge(box.getAbsX(), box.getAbsY(), c);
+        final PageBox page = c.getRootLayer().getPage(c, bounds.y);
         field.setPlaceInPage(page.getPageNo()+1);
 
         field.setBorderStyle(new PdfBorderDictionary(0.0f, 0));
@@ -138,15 +138,15 @@ public class RadioButtonFormField extends AbstractFormField {
     }
 
     private void createAppearances(
-            PdfContentByte cb, PdfFormField field,
-            String onValue, float width, float height, 
-            boolean normal, FSColor color, FSColor darker) {
+            final PdfContentByte cb, final PdfFormField field,
+            final String onValue, final float width, final float height, 
+            final boolean normal, final FSColor color, final FSColor darker) {
         // XXX Should cache this by width and height, but they're small so
         // don't bother for now...      
-        PdfAppearance tpOff = cb.createAppearance(width, height);
-        PdfAppearance tpOn = cb.createAppearance(width, height);     
+        final PdfAppearance tpOff = cb.createAppearance(width, height);
+        final PdfAppearance tpOn = cb.createAppearance(width, height);     
         
-        float diameter = Math.min(width, height);
+        final float diameter = Math.min(width, height);
         
         setStrokeColor(tpOff, color);
         setStrokeColor(tpOn, color);
@@ -156,7 +156,7 @@ public class RadioButtonFormField extends AbstractFormField {
             setStrokeColor(tpOn, darker);
         }
         
-        float strokeWidth = Math.max(1.0f, reduce(diameter));
+        final float strokeWidth = Math.max(1.0f, reduce(diameter));
         
         tpOff.setLineWidth(strokeWidth);
         tpOn.setLineWidth(strokeWidth);
@@ -189,11 +189,11 @@ public class RadioButtonFormField extends AbstractFormField {
         }
     }
     
-    private float reduce(float value) {
+    private float reduce(final float value) {
         return Math.min(value, Math.max(1.0f, 0.05f*value));
     }  
     
-    public void detach(LayoutContext c) {
+    public void detach(final LayoutContext c) {
         super.detach(c);
         
         _factory.remove(_box.getElement());

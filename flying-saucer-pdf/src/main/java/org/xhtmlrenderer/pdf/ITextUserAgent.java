@@ -43,14 +43,14 @@ public class ITextUserAgent extends NaiveUserAgent {
 
     private final ITextOutputDevice _outputDevice;
 
-    public ITextUserAgent(ITextOutputDevice outputDevice) {
+    public ITextUserAgent(final ITextOutputDevice outputDevice) {
         super(IMAGE_CACHE_CAPACITY);
         _outputDevice = outputDevice;
     }
 
-    private byte[] readStream(InputStream is) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream(is.available());
-        byte[] buf = new byte[10240];
+    private byte[] readStream(final InputStream is) throws IOException {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream(is.available());
+        final byte[] buf = new byte[10240];
         int i;
         while ((i = is.read(buf)) != -1) {
             out.write(buf, 0, i);
@@ -67,29 +67,29 @@ public class ITextUserAgent extends NaiveUserAgent {
             uri = resolveURI(uri);
             resource = _imageCache.get(uri);
             if (resource == null) {
-                InputStream is = resolveAndOpenStream(uri);
+                final InputStream is = resolveAndOpenStream(uri);
                 if (is != null) {
                     try {
-                        URL url = new URL(uri);
+                        final URL url = new URL(uri);
                         if (url.getPath() != null && url.getPath().toLowerCase().endsWith(".pdf")) {
-                            PdfReader reader = _outputDevice.getReader(url);
-                            PDFAsImage image = new PDFAsImage(url);
-                            Rectangle rect = reader.getPageSizeWithRotation(1);
+                            final PdfReader reader = _outputDevice.getReader(url);
+                            final PDFAsImage image = new PDFAsImage(url);
+                            final Rectangle rect = reader.getPageSizeWithRotation(1);
                             image.setInitialWidth(rect.getWidth() * _outputDevice.getDotsPerPoint());
                             image.setInitialHeight(rect.getHeight() * _outputDevice.getDotsPerPoint());
                             resource = new ImageResource(uri, image);
                         } else {
-                            Image image = Image.getInstance(readStream(is));
+                            final Image image = Image.getInstance(readStream(is));
                             scaleToOutputResolution(image);
                             resource = new ImageResource(uri, new ITextFSImage(image));
                         }
                         _imageCache.put(uri, resource);
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         XRLog.exception("Can't read image file; unexpected problem for URI '" + uri + "'", e);
                     } finally {
                         try {
                             is.close();
-                        } catch (IOException e) {
+                        } catch (final IOException e) {
                             // ignore
                         }
                     }
@@ -107,18 +107,18 @@ public class ITextUserAgent extends NaiveUserAgent {
     
     private ImageResource loadEmbeddedBase64ImageResource(final String uri) {
         try {
-            byte[] buffer = ImageUtil.getEmbeddedBase64Image(uri);
-            Image image = Image.getInstance(buffer);
+            final byte[] buffer = ImageUtil.getEmbeddedBase64Image(uri);
+            final Image image = Image.getInstance(buffer);
             scaleToOutputResolution(image);
             return new ImageResource(null, new ITextFSImage(image));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             XRLog.exception("Can't read XHTML embedded image.", e);
         }
         return new ImageResource(null, null);
     }
 
-    private void scaleToOutputResolution(Image image) {
-        float factor = _sharedContext.getDotsPerPixel();
+    private void scaleToOutputResolution(final Image image) {
+        final float factor = _sharedContext.getDotsPerPixel();
         if (factor != 1.0f) {
             image.scaleAbsolute(image.getPlainWidth() * factor, image.getPlainHeight() * factor);
         }
@@ -128,7 +128,7 @@ public class ITextUserAgent extends NaiveUserAgent {
         return _sharedContext;
     }
 
-    public void setSharedContext(SharedContext sharedContext) {
+    public void setSharedContext(final SharedContext sharedContext) {
         _sharedContext = sharedContext;
     }
 }

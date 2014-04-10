@@ -141,17 +141,17 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
     private Area _clip;
 
     private SharedContext _sharedContext;
-    private float _dotsPerPoint;
+    private final float _dotsPerPoint;
 
     private PdfWriter _writer;
 
-    private Map<URI, PdfReader> _readerCache = new HashMap<URI, PdfReader>();
+    private final Map<URI, PdfReader> _readerCache = new HashMap<URI, PdfReader>();
 
     private PdfDestination _defaultDestination;
 
-    private List<Bookmark> _bookmarks = new ArrayList<Bookmark>();
+    private final List<Bookmark> _bookmarks = new ArrayList<Bookmark>();
 
-    private List<Metadata> _metadata = new ArrayList<Metadata>();
+    private final List<Metadata> _metadata = new ArrayList<Metadata>();
 
     private Box _root;
 
@@ -163,11 +163,11 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
     
     private boolean haveOpacity = false;
 
-    public ITextOutputDevice(float dotsPerPoint) {
+    public ITextOutputDevice(final float dotsPerPoint) {
         _dotsPerPoint = dotsPerPoint;
     }
 
-    public void setWriter(PdfWriter writer) {
+    public void setWriter(final PdfWriter writer) {
         _writer = writer;
     }
 
@@ -179,7 +179,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return ++_nextFormFieldIndex;
     }
 
-    public void initializePage(PdfContentByte currentPage, float height) {
+    public void initializePage(final PdfContentByte currentPage, final float height) {
         _currentPage = currentPage;
         _pageHeight = height;
 
@@ -206,21 +206,21 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         _currentPage.restoreState();
     }
 
-    public void paintReplacedElement(RenderingContext c, BlockBox box) {
-        ITextReplacedElement element = (ITextReplacedElement) box.getReplacedElement();
+    public void paintReplacedElement(final RenderingContext c, final BlockBox box) {
+        final ITextReplacedElement element = (ITextReplacedElement) box.getReplacedElement();
         element.paint(c, this, box);
     }
 
-    public void paintBackground(RenderingContext c, Box box) {
+    public void paintBackground(final RenderingContext c, final Box box) {
         super.paintBackground(c, box);
 
         processLink(c, box);
     }
 
-    private com.lowagie.text.Rectangle calcTotalLinkArea(RenderingContext c, Box box) {
+    private com.lowagie.text.Rectangle calcTotalLinkArea(final RenderingContext c, final Box box) {
         Box current = box;
         while (true) {
-            Box prev = current.getPreviousSibling();
+            final Box prev = current.getPreviousSibling();
             if (prev == null || prev.getElement() != box.getElement()) {
                 break;
             }
@@ -240,22 +240,22 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return result;
     }
 
-    private com.lowagie.text.Rectangle add(com.lowagie.text.Rectangle r1, com.lowagie.text.Rectangle r2) {
-        float llx = Math.min(r1.getLeft(), r2.getLeft());
-        float urx = Math.max(r1.getRight(), r2.getRight());
-        float lly = Math.min(r1.getBottom(), r2.getBottom());
-        float ury = Math.max(r1.getTop(), r2.getTop());
+    private com.lowagie.text.Rectangle add(final com.lowagie.text.Rectangle r1, final com.lowagie.text.Rectangle r2) {
+        final float llx = Math.min(r1.getLeft(), r2.getLeft());
+        final float urx = Math.max(r1.getRight(), r2.getRight());
+        final float lly = Math.min(r1.getBottom(), r2.getBottom());
+        final float ury = Math.max(r1.getTop(), r2.getTop());
 
         return new com.lowagie.text.Rectangle(llx, lly, urx, ury);
     }
 
-    private String createRectKey(com.lowagie.text.Rectangle rect) {
+    private String createRectKey(final com.lowagie.text.Rectangle rect) {
         return rect.getLeft() + ":" + rect.getBottom() + ":" + rect.getRight() + ":" + rect.getTop();
     }
 
-    private com.lowagie.text.Rectangle checkLinkArea(RenderingContext c, Box box) {
-        com.lowagie.text.Rectangle targetArea = calcTotalLinkArea(c, box);
-        String key = createRectKey(targetArea);
+    private com.lowagie.text.Rectangle checkLinkArea(final RenderingContext c, final Box box) {
+        final com.lowagie.text.Rectangle targetArea = calcTotalLinkArea(c, box);
+        final String key = createRectKey(targetArea);
         if (_linkTargetAreas.contains(key)) {
             return null;
         }
@@ -263,17 +263,17 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return targetArea;
     }
 
-    private void processLink(RenderingContext c, Box box) {
-        Element elem = box.getElement();
+    private void processLink(final RenderingContext c, final Box box) {
+        final Element elem = box.getElement();
         if (elem != null) {
-            NamespaceHandler handler = _sharedContext.getNamespaceHandler();
-            String uri = handler.getLinkUri(elem);
+            final NamespaceHandler handler = _sharedContext.getNamespaceHandler();
+            final String uri = handler.getLinkUri(elem);
             if (uri != null) {
                 if (uri.length() > 1 && uri.charAt(0) == '#') {
-                    String anchor = uri.substring(1);
-                    Box target = _sharedContext.getBoxById(anchor);
+                    final String anchor = uri.substring(1);
+                    final Box target = _sharedContext.getBoxById(anchor);
                     if (target != null) {
-                        PdfDestination dest = createDestination(c, target);
+                        final PdfDestination dest = createDestination(c, target);
 
                         if (dest != null) {
                             PdfAction action = new PdfAction();
@@ -284,7 +284,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
                                 action.put(PdfName.D, dest);
                             }
 
-                            com.lowagie.text.Rectangle targetArea = checkLinkArea(c, box);
+                            final com.lowagie.text.Rectangle targetArea = checkLinkArea(c, box);
                             if (targetArea == null) {
                                 return;
                             }
@@ -292,7 +292,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
                             targetArea.setBorder(0);
                             targetArea.setBorderWidth(0);
 
-                            PdfAnnotation annot = new PdfAnnotation(_writer, targetArea.getLeft(), targetArea.getBottom(),
+                            final PdfAnnotation annot = new PdfAnnotation(_writer, targetArea.getLeft(), targetArea.getBottom(),
                                     targetArea.getRight(), targetArea.getTop(), action);
                             annot.put(PdfName.SUBTYPE, PdfName.LINK);
                             annot.setBorderStyle(new PdfBorderDictionary(0.0f, 0));
@@ -301,13 +301,13 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
                         }
                     }
                 } else if (uri.indexOf("://") != -1) {
-                    PdfAction action = new PdfAction(uri);
+                    final PdfAction action = new PdfAction(uri);
 
-                    com.lowagie.text.Rectangle targetArea = checkLinkArea(c, box);
+                    final com.lowagie.text.Rectangle targetArea = checkLinkArea(c, box);
                     if (targetArea == null) {
                         return;
                     }
-                    PdfAnnotation annot = new PdfAnnotation(_writer, targetArea.getLeft(), targetArea.getBottom(), targetArea.getRight(),
+                    final PdfAnnotation annot = new PdfAnnotation(_writer, targetArea.getLeft(), targetArea.getBottom(), targetArea.getRight(),
                             targetArea.getTop(), action);
                     annot.put(PdfName.SUBTYPE, PdfName.LINK);
 
@@ -319,11 +319,11 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         }
     }
 
-    public com.lowagie.text.Rectangle createLocalTargetArea(RenderingContext c, Box box) {
+    public com.lowagie.text.Rectangle createLocalTargetArea(final RenderingContext c, final Box box) {
         return createLocalTargetArea(c, box, false);
     }
 
-    private com.lowagie.text.Rectangle createLocalTargetArea(RenderingContext c, Box box, boolean useAggregateBounds) {
+    private com.lowagie.text.Rectangle createLocalTargetArea(final RenderingContext c, final Box box, final boolean useAggregateBounds) {
         Rectangle bounds;
         if (useAggregateBounds && box.getPaintingInfo() != null) {
             bounds = box.getPaintingInfo().getAggregateBounds();
@@ -331,44 +331,44 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             bounds = box.getContentAreaEdge(box.getAbsX(), box.getAbsY(), c);
         }
 
-        Point2D docCorner = new Point2D.Double(bounds.x, bounds.y + bounds.height);
-        Point2D pdfCorner = new Point.Double();
+        final Point2D docCorner = new Point2D.Double(bounds.x, bounds.y + bounds.height);
+        final Point2D pdfCorner = new Point.Double();
         _transform.transform(docCorner, pdfCorner);
         pdfCorner.setLocation(pdfCorner.getX(), normalizeY((float) pdfCorner.getY()));
 
-        com.lowagie.text.Rectangle result = new com.lowagie.text.Rectangle((float) pdfCorner.getX(), (float) pdfCorner.getY(),
+        final com.lowagie.text.Rectangle result = new com.lowagie.text.Rectangle((float) pdfCorner.getX(), (float) pdfCorner.getY(),
                 (float) pdfCorner.getX() + getDeviceLength(bounds.width), (float) pdfCorner.getY() + getDeviceLength(bounds.height));
         return result;
     }
 
-    public com.lowagie.text.Rectangle createTargetArea(RenderingContext c, Box box) {
-        PageBox current = c.getPage();
-        boolean inCurrentPage = box.getAbsY() > current.getTop() && box.getAbsY() < current.getBottom();
+    public com.lowagie.text.Rectangle createTargetArea(final RenderingContext c, final Box box) {
+        final PageBox current = c.getPage();
+        final boolean inCurrentPage = box.getAbsY() > current.getTop() && box.getAbsY() < current.getBottom();
 
         if (inCurrentPage || box.isContainedInMarginBox()) {
             return createLocalTargetArea(c, box);
         } else {
-            Rectangle bounds = box.getContentAreaEdge(box.getAbsX(), box.getAbsY(), c);
-            PageBox page = _root.getLayer().getPage(c, bounds.y);
+            final Rectangle bounds = box.getContentAreaEdge(box.getAbsX(), box.getAbsY(), c);
+            final PageBox page = _root.getLayer().getPage(c, bounds.y);
 
-            float bottom = getDeviceLength(page.getBottom() - (bounds.y + bounds.height)
+            final float bottom = getDeviceLength(page.getBottom() - (bounds.y + bounds.height)
                     + page.getMarginBorderPadding(c, CalculatedStyle.BOTTOM));
-            float left = getDeviceLength(page.getMarginBorderPadding(c, CalculatedStyle.LEFT) + bounds.x);
+            final float left = getDeviceLength(page.getMarginBorderPadding(c, CalculatedStyle.LEFT) + bounds.x);
 
-            com.lowagie.text.Rectangle result = new com.lowagie.text.Rectangle(left, bottom, left + getDeviceLength(bounds.width), bottom
+            final com.lowagie.text.Rectangle result = new com.lowagie.text.Rectangle(left, bottom, left + getDeviceLength(bounds.width), bottom
                     + getDeviceLength(bounds.height));
             return result;
         }
     }
 
-    public float getDeviceLength(float length) {
+    public float getDeviceLength(final float length) {
         return length / _dotsPerPoint;
     }
 
-    private PdfDestination createDestination(RenderingContext c, Box box) {
+    private PdfDestination createDestination(final RenderingContext c, final Box box) {
         PdfDestination result = null;
 
-        PageBox page = _root.getLayer().getPage(c, getPageRefY(box));
+        final PageBox page = _root.getLayer().getPage(c, getPageRefY(box));
         if (page != null) {
             int distanceFromTop = page.getMarginBorderPadding(c, CalculatedStyle.TOP);
             distanceFromTop += box.getAbsY() + box.getMargin(c).top() - page.getTop();
@@ -379,14 +379,14 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return result;
     }
 
-    public void drawBorderLine(Rectangle bounds, int side, int lineWidth, boolean solid) {
-        float x = bounds.x;
-        float y = bounds.y;
-        float w = bounds.width;
-        float h = bounds.height;
+    public void drawBorderLine(final Rectangle bounds, final int side, final int lineWidth, final boolean solid) {
+        final float x = bounds.x;
+        final float y = bounds.y;
+        final float w = bounds.width;
+        final float h = bounds.height;
 
-        float adj = solid ? (float) lineWidth / 2 : 0;
-        float adj2 = lineWidth % 2 != 0 ? 0.5f : 0f;
+        final float adj = solid ? (float) lineWidth / 2 : 0;
+        final float adj2 = lineWidth % 2 != 0 ? 0.5f : 0f;
 
         Line2D.Float line = null;
 
@@ -413,37 +413,37 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         draw(line);
     }
 
-    public void setColor(FSColor color) {
+    public void setColor(final FSColor color) {
         if (color instanceof FSRGBColor) {
-            FSRGBColor rgb = (FSRGBColor) color;
+            final FSRGBColor rgb = (FSRGBColor) color;
             _color = new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue(), (int) (rgb.getAlpha() * 255));
         } else if (color instanceof FSCMYKColor) {
-            FSCMYKColor cmyk = (FSCMYKColor) color;
+            final FSCMYKColor cmyk = (FSCMYKColor) color;
             _color = new CMYKColor(cmyk.getCyan(), cmyk.getMagenta(), cmyk.getYellow(), cmyk.getBlack());
         } else {
             throw new RuntimeException("internal error: unsupported color class " + color.getClass().getName());
         }
     }
 
-    protected void drawLine(int x1, int y1, int x2, int y2) {
-        Line2D line = new Line2D.Double(x1, y1, x2, y2);
+    protected void drawLine(final int x1, final int y1, final int x2, final int y2) {
+        final Line2D line = new Line2D.Double(x1, y1, x2, y2);
         draw(line);
     }
 
-    public void drawRect(int x, int y, int width, int height) {
+    public void drawRect(final int x, final int y, final int width, final int height) {
         draw(new Rectangle(x, y, width, height));
     }
 
-    public void drawOval(int x, int y, int width, int height) {
-        Ellipse2D oval = new Ellipse2D.Float(x, y, width, height);
+    public void drawOval(final int x, final int y, final int width, final int height) {
+        final Ellipse2D oval = new Ellipse2D.Float(x, y, width, height);
         draw(oval);
     }
 
-    public void fill(Shape s) {
+    public void fill(final Shape s) {
         followPath(s, FILL);
     }
 
-    public void fillRect(int x, int y, int width, int height) {
+    public void fillRect(final int x, final int y, final int width, final int height) {
         if (ROUND_RECT_DIMENSIONS_DOWN) {
             fill(new Rectangle(x, y, width - 1, height - 1));
         } else {
@@ -451,28 +451,28 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         }
     }
 
-    public void fillOval(int x, int y, int width, int height) {
-        Ellipse2D oval = new Ellipse2D.Float(x, y, width, height);
+    public void fillOval(final int x, final int y, final int width, final int height) {
+        final Ellipse2D oval = new Ellipse2D.Float(x, y, width, height);
         fill(oval);
     }
 
-    public void translate(double tx, double ty) {
+    public void translate(final double tx, final double ty) {
         _transform.translate(tx, ty);
     }
 
-    public Object getRenderingHint(Key key) {
+    public Object getRenderingHint(final Key key) {
         return null;
     }
 
-    public void setRenderingHint(Key key, Object value) {
+    public void setRenderingHint(final Key key, final Object value) {
     }
 
-    public void setFont(FSFont font) {
+    public void setFont(final FSFont font) {
         _font = ((ITextFSFont) font);
     }
 
-    private AffineTransform normalizeMatrix(AffineTransform current) {
-        double[] mx = new double[6];
+    private AffineTransform normalizeMatrix(final AffineTransform current) {
+        final double[] mx = new double[6];
         AffineTransform result = new AffineTransform();
         result.getMatrix(mx);
         mx[3] = -1;
@@ -482,37 +482,37 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return result;
     }
 
-    public void drawString(String s, float x, float y, JustificationInfo info) {
+    public void drawString(String s, final float x, final float y, final JustificationInfo info) {
         if (Configuration.isTrue("xr.renderer.replace-missing-characters", false)) {
             s = replaceMissingCharacters(s);
         }
         if (s.length() == 0)
             return;
-        PdfContentByte cb = _currentPage;
+        final PdfContentByte cb = _currentPage;
         ensureFillColor();
-        AffineTransform at = (AffineTransform) getTransform().clone();
+        final AffineTransform at = (AffineTransform) getTransform().clone();
         at.translate(x, y);
-        AffineTransform inverse = normalizeMatrix(at);
-        AffineTransform flipper = AffineTransform.getScaleInstance(1, -1);
+        final AffineTransform inverse = normalizeMatrix(at);
+        final AffineTransform flipper = AffineTransform.getScaleInstance(1, -1);
         inverse.concatenate(flipper);
         inverse.scale(_dotsPerPoint, _dotsPerPoint);
-        double[] mx = new double[6];
+        final double[] mx = new double[6];
         inverse.getMatrix(mx);
         cb.beginText();
         // Check if bold or italic need to be emulated
         boolean resetMode = false;
-        FontDescription desc = _font.getFontDescription();
-        float fontSize = _font.getSize2D() / _dotsPerPoint;
+        final FontDescription desc = _font.getFontDescription();
+        final float fontSize = _font.getSize2D() / _dotsPerPoint;
         cb.setFontAndSize(desc.getFont(), fontSize);
         float b = (float) mx[1];
         float c = (float) mx[2];
-        FontSpecification fontSpec = getFontSpecification();
+        final FontSpecification fontSpec = getFontSpecification();
         if (fontSpec != null) {
-            int need = ITextFontResolver.convertWeightToInt(fontSpec.fontWeight);
-            int have = desc.getWeight();
+            final int need = ITextFontResolver.convertWeightToInt(fontSpec.fontWeight);
+            final int have = desc.getWeight();
             if (need > have) {
                 cb.setTextRenderingMode(PdfContentByte.TEXT_RENDER_MODE_FILL_STROKE);
-                float lineWidth = fontSize * 0.04f; // 4% of font size
+                final float lineWidth = fontSize * 0.04f; // 4% of font size
                 cb.setLineWidth(lineWidth);
                 resetMode = true;
             }
@@ -525,7 +525,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         if (info == null) {
             cb.showText(s);
         } else {
-            PdfTextArray array = makeJustificationArray(s, info);
+            final PdfTextArray array = makeJustificationArray(s, info);
             cb.showText(array);
         }
         if (resetMode) {
@@ -535,9 +535,9 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         cb.endText();
     }
 
-    private String replaceMissingCharacters(String string) {
-        char[] charArr = string.toCharArray();
-        char replacementCharacter = Configuration.valueAsChar("xr.renderer.missing-character-replacement", '#');
+    private String replaceMissingCharacters(final String string) {
+        final char[] charArr = string.toCharArray();
+        final char replacementCharacter = Configuration.valueAsChar("xr.renderer.missing-character-replacement", '#');
 
         // first check to see if the replacement character even exists in the
         // given font. If not, then do nothing.
@@ -561,11 +561,11 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return String.valueOf(charArr);
     }
 
-    private PdfTextArray makeJustificationArray(String s, JustificationInfo info) {
-        PdfTextArray array = new PdfTextArray();
-        int len = s.length();
+    private PdfTextArray makeJustificationArray(final String s, final JustificationInfo info) {
+        final PdfTextArray array = new PdfTextArray();
+        final int len = s.length();
         for (int i = 0; i < len; i++) {
-            char c = s.charAt(i);
+            final char c = s.charAt(i);
             array.add(Character.toString(c));
             if (i != len - 1) {
                 float offset;
@@ -602,8 +602,8 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return _currentPage;
     }
 
-    private void followPath(Shape s, int drawType) {
-        PdfContentByte cb = _currentPage;
+    private void followPath(Shape s, final int drawType) {
+        final PdfContentByte cb = _currentPage;
         if (s == null)
             return;
 
@@ -628,11 +628,11 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         } else {
             points = s.getPathIterator(_transform);
         }
-        float[] coords = new float[6];
+        final float[] coords = new float[6];
         int traces = 0;
         while (!points.isDone()) {
             ++traces;
-            int segtype = points.currentSegment(coords);
+            final int segtype = points.currentSegment(coords);
             normalizeY(coords);
             switch (segtype) {
             case PathIterator.SEG_CLOSE:
@@ -682,24 +682,24 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         }
     }
 
-    private float normalizeY(float y) {
+    private float normalizeY(final float y) {
         return _pageHeight - y;
     }
 
-    private void normalizeY(float[] coords) {
+    private void normalizeY(final float[] coords) {
         coords[1] = normalizeY(coords[1]);
         coords[3] = normalizeY(coords[3]);
         coords[5] = normalizeY(coords[5]);
     }
 
-    private void setStrokeDiff(Stroke newStroke, Stroke oldStroke) {
-        PdfContentByte cb = _currentPage;
+    private void setStrokeDiff(final Stroke newStroke, final Stroke oldStroke) {
+        final PdfContentByte cb = _currentPage;
         if (newStroke == oldStroke)
             return;
         if (!(newStroke instanceof BasicStroke))
             return;
-        BasicStroke nStroke = (BasicStroke) newStroke;
-        boolean oldOk = (oldStroke instanceof BasicStroke);
+        final BasicStroke nStroke = (BasicStroke) newStroke;
+        final boolean oldOk = (oldStroke instanceof BasicStroke);
         BasicStroke oStroke = null;
         if (oldOk)
             oStroke = (BasicStroke) oldStroke;
@@ -748,12 +748,12 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             makeDash = true;
         }
         if (makeDash) {
-            float dash[] = nStroke.getDashArray();
+            final float dash[] = nStroke.getDashArray();
             if (dash == null)
                 cb.setLiteral("[]0 d\n");
             else {
                 cb.setLiteral('[');
-                int lim = dash.length;
+                final int lim = dash.length;
                 for (int k = 0; k < lim; ++k) {
                     cb.setLiteral(dash[k]);
                     cb.setLiteral(' ');
@@ -765,17 +765,17 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         }
     }
 
-    public void setStroke(Stroke s) {
+    public void setStroke(final Stroke s) {
         _originalStroke = s;
         this._stroke = transformStroke(s);
     }
 
-    private Stroke transformStroke(Stroke stroke) {
+    private Stroke transformStroke(final Stroke stroke) {
         if (!(stroke instanceof BasicStroke))
             return stroke;
-        BasicStroke st = (BasicStroke) stroke;
-        float scale = (float) Math.sqrt(Math.abs(_transform.getDeterminant()));
-        float dash[] = st.getDashArray();
+        final BasicStroke st = (BasicStroke) stroke;
+        final float scale = (float) Math.sqrt(Math.abs(_transform.getDeterminant()));
+        final float dash[] = st.getDashArray();
         if (dash != null) {
             for (int k = 0; k < dash.length; ++k) {
               dash[k] *= scale;
@@ -801,13 +801,13 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
     public Shape getClip() {
         try {
             return _transform.createInverse().createTransformedShape(_clip);
-        } catch (NoninvertibleTransformException e) {
+        } catch (final NoninvertibleTransformException e) {
             return null;
         }
     }
 
     public void setClip(Shape s) {
-        PdfContentByte cb = _currentPage;
+        final PdfContentByte cb = _currentPage;
         cb.restoreState();
         cb.saveState();
         if (s != null)
@@ -827,60 +827,60 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return _originalStroke;
     }
 
-    public void drawImage(FSImage fsImage, int x, int y) {
+    public void drawImage(final FSImage fsImage, final int x, final int y) {
         if (fsImage instanceof PDFAsImage) {
             drawPDFAsImage((PDFAsImage) fsImage, x, y);
         } else {
-            Image image = ((ITextFSImage) fsImage).getImage();
+            final Image image = ((ITextFSImage) fsImage).getImage();
 
             if (fsImage.getHeight() <= 0 || fsImage.getWidth() <= 0) {
                 return;
             }
 
-            AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+            final AffineTransform at = AffineTransform.getTranslateInstance(x, y);
             at.translate(0, fsImage.getHeight());
             at.scale(fsImage.getWidth(), fsImage.getHeight());
 
-            AffineTransform inverse = normalizeMatrix(_transform);
-            AffineTransform flipper = AffineTransform.getScaleInstance(1, -1);
+            final AffineTransform inverse = normalizeMatrix(_transform);
+            final AffineTransform flipper = AffineTransform.getScaleInstance(1, -1);
             inverse.concatenate(at);
             inverse.concatenate(flipper);
 
-            double[] mx = new double[6];
+            final double[] mx = new double[6];
             inverse.getMatrix(mx);
 
             try {
                 _currentPage.addImage(image, (float) mx[0], (float) mx[1], (float) mx[2], (float) mx[3], (float) mx[4], (float) mx[5]);
-            } catch (DocumentException e) {
+            } catch (final DocumentException e) {
                 throw new XRRuntimeException(e.getMessage(), e);
             }
         }
     }
 
-    private void drawPDFAsImage(PDFAsImage image, int x, int y) {
-        URL url = image.getURL();
+    private void drawPDFAsImage(final PDFAsImage image, final int x, final int y) {
+        final URL url = image.getURL();
         PdfReader reader = null;
 
         try {
             reader = getReader(url);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XRRuntimeException("Could not load " + url + ": " + e.getMessage(), e);
-        } catch (URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             throw new XRRuntimeException("Could not load " + url + ": " + e.getMessage(), e);
         }
 
-        PdfImportedPage page = getWriter().getImportedPage(reader, 1);
+        final PdfImportedPage page = getWriter().getImportedPage(reader, 1);
 
-        AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+        final AffineTransform at = AffineTransform.getTranslateInstance(x, y);
         at.translate(0, image.getHeightAsFloat());
         at.scale(image.getWidthAsFloat(), image.getHeightAsFloat());
 
-        AffineTransform inverse = normalizeMatrix(_transform);
-        AffineTransform flipper = AffineTransform.getScaleInstance(1, -1);
+        final AffineTransform inverse = normalizeMatrix(_transform);
+        final AffineTransform flipper = AffineTransform.getScaleInstance(1, -1);
         inverse.concatenate(at);
         inverse.concatenate(flipper);
 
-        double[] mx = new double[6];
+        final double[] mx = new double[6];
         inverse.getMatrix(mx);
 
         mx[0] = image.scaleWidth();
@@ -891,8 +891,8 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         _currentPage.saveState();
     }
 
-    public PdfReader getReader(URL url) throws IOException, URISyntaxException {
-        URI uri = url.toURI();
+    public PdfReader getReader(final URL url) throws IOException, URISyntaxException {
+        final URI uri = url.toURI();
         PdfReader result = _readerCache.get(uri);
         if (result == null) {
             result = new PdfReader(url);
@@ -905,85 +905,85 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return _dotsPerPoint;
     }
 
-    public void start(Document doc) {
+    public void start(final Document doc) {
         loadBookmarks(doc);
         loadMetadata(doc);
     }
 
-    public void finish(RenderingContext c, Box root) {
+    public void finish(final RenderingContext c, final Box root) {
         writeOutline(c, root);
         writeNamedDestinations(c);
     }
 
-    private void writeOutline(RenderingContext c, Box root) {
+    private void writeOutline(final RenderingContext c, final Box root) {
         if (_bookmarks.size() > 0) {
             _writer.setViewerPreferences(PdfWriter.PageModeUseOutlines);
             writeBookmarks(c, root, _writer.getRootOutline(), _bookmarks);
         }
     }
 
-    private void writeBookmarks(RenderingContext c, Box root, PdfOutline parent, List<Bookmark> bookmarks) {
-        for (Bookmark bookmark : bookmarks) {
+    private void writeBookmarks(final RenderingContext c, final Box root, final PdfOutline parent, final List<Bookmark> bookmarks) {
+        for (final Bookmark bookmark : bookmarks) {
             writeBookmark(c, root, parent, bookmark);
         }
     }
 
-    private void writeNamedDestinations(RenderingContext c) {
-        Map<String, Box> idMap = getSharedContext().getIdMap();
+    private void writeNamedDestinations(final RenderingContext c) {
+        final Map<String, Box> idMap = getSharedContext().getIdMap();
         if ((idMap != null) && (!idMap.isEmpty())) {
-            PdfArray dests = new PdfArray();
+            final PdfArray dests = new PdfArray();
             try {
-                Iterator<Entry<String, Box>> it = idMap.entrySet().iterator();
+                final Iterator<Entry<String, Box>> it = idMap.entrySet().iterator();
                 while (it.hasNext()) {
-                    Entry<String, Box> entry = it.next();
+                    final Entry<String, Box> entry = it.next();
 
-                    Box targetBox = (Box) entry.getValue();
+                    final Box targetBox = (Box) entry.getValue();
 
                     if (targetBox.getStyle().isIdent(CSSName.FS_NAMED_DESTINATION, IdentValue.CREATE)) {
-                        String anchorName = (String) entry.getKey();
+                        final String anchorName = (String) entry.getKey();
                         dests.add(new PdfString(anchorName, PdfString.TEXT_UNICODE));
 
-                        PdfDestination dest = createDestination(c, targetBox);
+                        final PdfDestination dest = createDestination(c, targetBox);
                         if (dest != null) {
-                            PdfIndirectReference ref = _writer.addToBody(dest).getIndirectReference();
+                            final PdfIndirectReference ref = _writer.addToBody(dest).getIndirectReference();
                             dests.add(ref);
                         }
                     }
                 }
 
                 if (!dests.isEmpty()) {
-                    PdfDictionary nametree = new PdfDictionary();
+                    final PdfDictionary nametree = new PdfDictionary();
                     nametree.put(PdfName.NAMES, dests);
-                    PdfIndirectReference nameTreeRef = _writer.addToBody(nametree).getIndirectReference();
+                    final PdfIndirectReference nameTreeRef = _writer.addToBody(nametree).getIndirectReference();
 
-                    PdfDictionary names = new PdfDictionary();
+                    final PdfDictionary names = new PdfDictionary();
                     names.put(PdfName.DESTS, nameTreeRef);
-                    PdfIndirectReference destinationsRef = _writer.addToBody(names).getIndirectReference();
+                    final PdfIndirectReference destinationsRef = _writer.addToBody(names).getIndirectReference();
 
                     _writer.getExtraCatalog().put(PdfName.NAMES, destinationsRef);
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    private int getPageRefY(Box box) {
+    private int getPageRefY(final Box box) {
         if (box instanceof InlineLayoutBox) {
-            InlineLayoutBox iB = (InlineLayoutBox) box;
+            final InlineLayoutBox iB = (InlineLayoutBox) box;
             return iB.getAbsY() + iB.getBaseline();
         } else {
             return box.getAbsY();
         }
     }
 
-    private void writeBookmark(RenderingContext c, Box root, PdfOutline parent, Bookmark bookmark) {
-        String href = bookmark.getHRef();
+    private void writeBookmark(final RenderingContext c, final Box root, final PdfOutline parent, final Bookmark bookmark) {
+        final String href = bookmark.getHRef();
         PdfDestination target = null;
         if (href.length() > 0 && href.charAt(0) == '#') {
-            Box box = _sharedContext.getBoxById(href.substring(1));
+            final Box box = _sharedContext.getBoxById(href.substring(1));
             if (box != null) {
-                PageBox page = root.getLayer().getPage(c, getPageRefY(box));
+                final PageBox page = root.getLayer().getPage(c, getPageRefY(box));
                 int distanceFromTop = page.getMarginBorderPadding(c, CalculatedStyle.TOP);
                 distanceFromTop += box.getAbsY() - page.getTop();
                 target = new PdfDestination(PdfDestination.XYZ, 0, normalizeY(distanceFromTop / _dotsPerPoint), 0);
@@ -993,18 +993,18 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         if (target == null) {
             target = _defaultDestination;
         }
-        PdfOutline outline = new PdfOutline(parent, target, bookmark.getName());
+        final PdfOutline outline = new PdfOutline(parent, target, bookmark.getName());
         writeBookmarks(c, root, outline, bookmark.getChildren());
     }
 
-    private void loadBookmarks(Document doc) {
-        Element head = doc.head();
+    private void loadBookmarks(final Document doc) {
+        final Element head = doc.head();
         if (head != null) {
-            Element bookmarks = JsoupUtil.firstChild(head.select("bookmarks"));
+            final Element bookmarks = JsoupUtil.firstChild(head.select("bookmarks"));
             if (bookmarks != null) {
-                Elements l = bookmarks.select("bookmark");
+                final Elements l = bookmarks.select("bookmark");
                 if (l != null) {
-                    for (Element e : l) {
+                    for (final Element e : l) {
                         loadBookmark(null, e);
                     }
                 }
@@ -1012,16 +1012,16 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         }
     }
 
-    private void loadBookmark(Bookmark parent, Element bookmark) {
-        Bookmark us = new Bookmark(bookmark.attr("name"), bookmark.attr("href"));
+    private void loadBookmark(final Bookmark parent, final Element bookmark) {
+        final Bookmark us = new Bookmark(bookmark.attr("name"), bookmark.attr("href"));
         if (parent == null) {
             _bookmarks.add(us);
         } else {
             parent.addChild(us);
         }
-        Elements l = bookmark.select("bookmark");
+        final Elements l = bookmark.select("bookmark");
         if (l != null) {
-            for (Element e : l) {
+            for (final Element e : l) {
                 loadBookmark(us, e);
             }
         }
@@ -1036,7 +1036,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         public Bookmark() {
         }
 
-        public Bookmark(String name, String href) {
+        public Bookmark(final String name, final String href) {
             _name = name;
             _HRef = href;
         }
@@ -1045,7 +1045,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             return _HRef;
         }
 
-        public void setHRef(String href) {
+        public void setHRef(final String href) {
             _HRef = href;
         }
 
@@ -1053,11 +1053,11 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             return _name;
         }
 
-        public void setName(String name) {
+        public void setName(final String name) {
             _name = name;
         }
 
-        public void addChild(Bookmark child) {
+        public void addChild(final Bookmark child) {
             if (_children == null) {
                 _children = new ArrayList<Bookmark>();
             }
@@ -1081,9 +1081,9 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
      *            the name of the metadata element to add.
      * @return the content value for this metadata.
      */
-    public void addMetadata(String name, String value) {
+    public void addMetadata(final String name, final String value) {
         if ((name != null) && (value != null)) {
-            Metadata m = new Metadata(name, value);
+            final Metadata m = new Metadata(name, value);
             _metadata.add(m);
         }
     }
@@ -1098,9 +1098,9 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
      * @return the content value of the first found metadata element; otherwise
      *         null.
      */
-    public String getMetadataByName(String name) {
+    public String getMetadataByName(final String name) {
         if (name != null) {
-            for (Metadata m : _metadata) {
+            for (final Metadata m : _metadata) {
                 if ((m != null) && m.getName().equalsIgnoreCase(name)) {
                     return m.getContent();
                 }
@@ -1119,10 +1119,10 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
      * @return an ArrayList with matching content values; otherwise an empty
      *         list.
      */
-    public ArrayList<String> getMetadataListByName(String name) {
-        ArrayList<String> result = new ArrayList<String>();
+    public ArrayList<String> getMetadataListByName(final String name) {
+        final ArrayList<String> result = new ArrayList<String>();
         if (name != null) {
-            for (Metadata m : _metadata) {
+            for (final Metadata m : _metadata) {
                 if ((m != null) && m.getName().equalsIgnoreCase(name)) {
                     result.add(m.getContent());
                 }
@@ -1139,16 +1139,16 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
      * @param doc
      *            the Document level node of the parsed xhtml file.
      */
-    private void loadMetadata(Document doc) {
-        Element head = doc.head();
+    private void loadMetadata(final Document doc) {
+        final Element head = doc.head();
         if (head != null) {
-            Elements l = head.select("meta");
+            final Elements l = head.select("meta");
             if (l != null) {
-                for (Element e : l) {
-                    String name = e.attr("name");
+                for (final Element e : l) {
+                    final String name = e.attr("name");
                     if (name != null) { // ignore non-name metadata data
-                        String content = e.attr("content");
-                        Metadata m = new Metadata(name, content);
+                        final String content = e.attr("content");
+                        final Metadata m = new Metadata(name, content);
                         _metadata.add(m);
                     }
                 }
@@ -1156,10 +1156,10 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             // If there is no title meta data attribute, use the document title.
             String title = getMetadataByName("title");
             if (title == null) {
-                Element t = JsoupUtil.firstChild(head.select("title"));
+                final Element t = JsoupUtil.firstChild(head.select("title"));
                 if (t != null) {
                     title = t.text().trim();
-                    Metadata m = new Metadata("title", title);
+                    final Metadata m = new Metadata("title", title);
                     _metadata.add(m);
                 }
             }
@@ -1177,12 +1177,12 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
      * @return the new content value for this metadata (null to remove all
      *         instances).
      */
-    public void setMetadata(String name, String value) {
+    public void setMetadata(final String name, final String value) {
         if (name != null) {
             boolean remove = (value == null); // removing all instances of name?
             int free = -1; // first open slot in array
             for (int i = 0, len = _metadata.size(); i < len; i++) {
-                Metadata m = _metadata.get(i);
+                final Metadata m = _metadata.get(i);
                 if (m != null) {
                     if (m.getName().equalsIgnoreCase(name)) {
                         if (!remove) {
@@ -1197,7 +1197,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
                 }
             }
             if (!remove) { // not found?
-                Metadata m = new Metadata(name, value);
+                final Metadata m = new Metadata(name, value);
                 if (free == -1) { // no open slots?
                     _metadata.add(m);
                 } else {
@@ -1213,7 +1213,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         private String _name;
         private String _content;
 
-        public Metadata(String name, String content) {
+        public Metadata(final String name, final String content) {
             _name = name;
             _content = content;
         }
@@ -1222,7 +1222,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             return _content;
         }
 
-        public void setContent(String content) {
+        public void setContent(final String content) {
             _content = content;
         }
 
@@ -1230,7 +1230,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
             return _name;
         }
 
-        public void setName(String name) {
+        public void setName(final String name) {
             _name = name;
         }
     }
@@ -1241,12 +1241,12 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return _sharedContext;
     }
 
-    public void setSharedContext(SharedContext sharedContext) {
+    public void setSharedContext(final SharedContext sharedContext) {
         _sharedContext = sharedContext;
         sharedContext.getCss().setSupportCMYKColors(true);
     }
 
-    public void setRoot(Box root) {
+    public void setRoot(final Box root) {
         _root = root;
     }
 
@@ -1254,11 +1254,11 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return _startPageNo;
     }
 
-    public void setStartPageNo(int startPageNo) {
+    public void setStartPageNo(final int startPageNo) {
         _startPageNo = startPageNo;
     }
 
-    public void drawSelection(RenderingContext c, InlineText inlineText) {
+    public void drawSelection(final RenderingContext c, final InlineText inlineText) {
         throw new UnsupportedOperationException();
     }
 
@@ -1270,18 +1270,18 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return true;
     }
 
-    public List<PagePosition> findPagePositionsByID(CssContext c, Pattern pattern) {
-        Map<String, Box> idMap = _sharedContext.getIdMap();
+    public List<PagePosition> findPagePositionsByID(final CssContext c, final Pattern pattern) {
+        final Map<String, Box> idMap = _sharedContext.getIdMap();
         if (idMap == null) {
             return Collections.EMPTY_LIST;
         }
 
-        List<PagePosition> result = new ArrayList<PagePosition>();
-        for (Entry<String, Box> entry : idMap.entrySet()) {
-            String id = (String) entry.getKey();
+        final List<PagePosition> result = new ArrayList<PagePosition>();
+        for (final Entry<String, Box> entry : idMap.entrySet()) {
+            final String id = (String) entry.getKey();
             if (pattern.matcher(id).find()) {
-                Box box = (Box) entry.getValue();
-                PagePosition pos = calcPDFPagePosition(c, id, box);
+                final Box box = (Box) entry.getValue();
+                final PagePosition pos = calcPDFPagePosition(c, id, box);
                 if (pos != null) {
                     result.add(pos);
                 }
@@ -1289,9 +1289,9 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         }
 
         Collections.sort(result, new Comparator() {
-            public int compare(Object arg0, Object arg1) {
-                PagePosition p1 = (PagePosition) arg0;
-                PagePosition p2 = (PagePosition) arg1;
+            public int compare(final Object arg0, final Object arg1) {
+                final PagePosition p1 = (PagePosition) arg0;
+                final PagePosition p2 = (PagePosition) arg1;
                 return p1.getPageNo() - p2.getPageNo();
             }
         });
@@ -1299,8 +1299,8 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         return result;
     }
 
-    private PagePosition calcPDFPagePosition(CssContext c, String id, Box box) {
-        PageBox page = _root.getLayer().getLastPage(c, box);
+    private PagePosition calcPDFPagePosition(final CssContext c, final String id, final Box box) {
+        final PageBox page = _root.getLayer().getLastPage(c, box);
         if (page == null) {
             return null;
         }
@@ -1310,7 +1310,7 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
         x /= _dotsPerPoint;
         y /= _dotsPerPoint;
 
-        PagePosition result = new PagePosition();
+        final PagePosition result = new PagePosition();
         result.setId(id);
         result.setPageNo(page.getPageNo());
         result.setX(x);
@@ -1322,35 +1322,35 @@ public class ITextOutputDevice extends AbstractOutputDevice implements OutputDev
     }
 
 	@Override
-	public void draw(Shape s) {
+	public void draw(final Shape s) {
 		followPath(s, STROKE);
 		
 	}
 
 	@Override
-	public void drawBorderLine(Shape bounds, int side, int width, boolean solid) {
+	public void drawBorderLine(final Shape bounds, final int side, final int width, final boolean solid) {
 		draw(bounds);
 		
 	}
 
 	@Override
-	public void drawLinearGradient(FSLinearGradient gradient, int x, int y,
-			int width, int height) 
+	public void drawLinearGradient(final FSLinearGradient gradient, final int x, final int y,
+			final int width, final int height) 
 	{
-		FSRGBColor start = (FSRGBColor) gradient.getStopPoints().get(0).getColor();
-		FSRGBColor end = (FSRGBColor) gradient.getStopPoints().get(gradient.getStopPoints().size() - 1).getColor();
-		Color s = new Color(start.getRed(), start.getGreen(), start.getBlue());
-		Color e = new Color(end.getRed(), end.getGreen(), end.getBlue());
-		PdfShading shader = PdfShading.simpleAxial(_writer, x, y, x + width, y + height, s, e);
+		final FSRGBColor start = (FSRGBColor) gradient.getStopPoints().get(0).getColor();
+		final FSRGBColor end = (FSRGBColor) gradient.getStopPoints().get(gradient.getStopPoints().size() - 1).getColor();
+		final Color s = new Color(start.getRed(), start.getGreen(), start.getBlue());
+		final Color e = new Color(end.getRed(), end.getGreen(), end.getBlue());
+		final PdfShading shader = PdfShading.simpleAxial(_writer, x, y, x + width, y + height, s, e);
 		_currentPage.setShadingFill(new PdfShadingPattern(shader));
 		_currentPage.paintShading(shader);
 	}
 
 	@Override
-	public void setOpacity(float opacity) {
+	public void setOpacity(final float opacity) {
 		if (opacity != 1f || haveOpacity)
 		{
-			PdfGState gs = new PdfGState();
+			final PdfGState gs = new PdfGState();
 			gs.setBlendMode(PdfGState.BM_NORMAL);
 			gs.setFillOpacity(opacity);
 			_currentPage.setGState(gs);
