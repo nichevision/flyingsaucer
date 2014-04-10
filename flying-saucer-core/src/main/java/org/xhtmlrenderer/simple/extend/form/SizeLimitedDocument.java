@@ -31,9 +31,9 @@ class SizeLimitedDocument extends PlainDocument
 {
     private static final long serialVersionUID = 1L;
 
-    private int _maximumLength;
+    private final int _maximumLength;
     
-    public SizeLimitedDocument(int maximumLength) {
+    public SizeLimitedDocument(final int maximumLength) {
         _maximumLength = maximumLength;
     }
     
@@ -41,7 +41,7 @@ class SizeLimitedDocument extends PlainDocument
         return _maximumLength;
     }
 
-    public void insertString(int offset, String str, AttributeSet attr)
+    public void insertString(final int offset, final String str, final AttributeSet attr)
         throws BadLocationException {
         if (str == null) {
             return;

@@ -22,11 +22,11 @@ public class RectPropertySet {
     }
 
     public RectPropertySet(
-            CSSName cssName,
-            float top,
-            float right,
-            float bottom,
-            float left
+            final CSSName cssName,
+            final float top,
+            final float right,
+            final float bottom,
+            final float left
     ) {
         this();
         this._top = top;
@@ -36,14 +36,14 @@ public class RectPropertySet {
     }
 
     public static RectPropertySet newInstance(
-            CalculatedStyle style,
-            CSSName shortHandProperty,
-            CSSName.CSSSideProperties sideProperties,
-            float cbWidth,
-            CssContext ctx
+            final CalculatedStyle style,
+            final CSSName shortHandProperty,
+            final CSSName.CSSSideProperties sideProperties,
+            final float cbWidth,
+            final CssContext ctx
     ) {
         // HACK isLengthValue is part of margin auto hack
-        RectPropertySet rect =
+        final RectPropertySet rect =
                 new RectPropertySet(
                         shortHandProperty,
                         ! style.isLengthOrNumber(sideProperties.top) ? 0 : style.getFloatPropertyProportionalHeight(sideProperties.top, cbWidth, ctx),
@@ -86,24 +86,24 @@ public class RectPropertySet {
         return _left + _right;
     }
 
-    public void setTop(float _top) {
+    public void setTop(final float _top) {
         this._top = _top;
     }
 
-    public void setRight(float _right) {
+    public void setRight(final float _right) {
         this._right = _right;
     }
 
-    public void setBottom(float _bottom) {
+    public void setBottom(final float _bottom) {
         this._bottom = _bottom;
     }
 
-    public void setLeft(float _left) {
+    public void setLeft(final float _left) {
         this._left = _left;
     }
 
     public RectPropertySet copyOf() {
-        RectPropertySet newRect = new RectPropertySet();
+        final RectPropertySet newRect = new RectPropertySet();
         newRect._top = _top;
         newRect._right = _right;
         newRect._bottom = _bottom;

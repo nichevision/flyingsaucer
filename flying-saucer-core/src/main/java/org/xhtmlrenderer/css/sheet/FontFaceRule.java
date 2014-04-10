@@ -30,11 +30,11 @@ public class FontFaceRule implements RulesetContainer {
     private Ruleset _ruleset;
     private CalculatedStyle _calculatedStyle;
 
-    public FontFaceRule(CSSOrigin origin) {
+    public FontFaceRule(final CSSOrigin origin) {
         _origin = origin;
     }
 
-    public void addContent(Ruleset ruleset) {
+    public void addContent(final Ruleset ruleset) {
         if (_ruleset != null) {
             throw new XRRuntimeException("Ruleset can only be set once");
         }
@@ -45,7 +45,7 @@ public class FontFaceRule implements RulesetContainer {
         return _origin;
     }
 
-    public void setOrigin(CSSOrigin origin) {
+    public void setOrigin(final CSSOrigin origin) {
         _origin = origin;
     }
 
@@ -59,7 +59,7 @@ public class FontFaceRule implements RulesetContainer {
     }
 
     public boolean hasFontFamily() {
-        for (PropertyDeclaration decl : _ruleset.getPropertyDeclarations()) {
+        for (final PropertyDeclaration decl : _ruleset.getPropertyDeclarations()) {
             if (decl.getPropertyName().equals("font-family")) {
                 return true;
             }

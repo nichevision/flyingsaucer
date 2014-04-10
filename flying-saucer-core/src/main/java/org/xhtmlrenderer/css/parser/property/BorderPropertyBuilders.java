@@ -39,22 +39,22 @@ public class BorderPropertyBuilders {
     private static abstract class BorderSidePropertyBuilder implements PropertyBuilder {
         protected abstract CSSName[][] getProperties();
         
-        private void addAll(List<PropertyDeclaration> result, CSSName[] properties, PropertyValue value, CSSOrigin origin, boolean important) {
-            for (CSSName property : properties) {
+        private void addAll(final List<PropertyDeclaration> result, final CSSName[] properties, final PropertyValue value, final CSSOrigin origin, final boolean important) {
+            for (final CSSName property : properties) {
                 result.add(new PropertyDeclaration(
                         property, value, important, origin));
             }
         }
         
         public List<PropertyDeclaration> buildDeclarations(
-                CSSName cssName, List<PropertyValue> values, CSSOrigin origin, boolean important, boolean inheritAllowed) {
-            CSSName[][] props = getProperties();
+                final CSSName cssName, final List<PropertyValue> values, final CSSOrigin origin, final boolean important, final boolean inheritAllowed) {
+            final CSSName[][] props = getProperties();
             
-            List<PropertyDeclaration> result = new ArrayList<PropertyDeclaration>(3);
+            final List<PropertyDeclaration> result = new ArrayList<PropertyDeclaration>(3);
             
             if (values.size() == 1 && 
                 (values.get(0)).getCssValueTypeN() == CSSValueType.CSS_INHERIT) {
-                PropertyValue value = values.get(0);
+                final PropertyValue value = values.get(0);
                 addAll(result, props[0], value, origin, important);
                 addAll(result, props[1], value, origin, important);
                 addAll(result, props[2], value, origin, important);
@@ -66,10 +66,10 @@ public class BorderPropertyBuilders {
                 boolean haveBorderColor = false;
                 boolean haveBorderWidth = false;
                 
-                for (PropertyValue value : values) {
+                for (final PropertyValue value : values) {
                     checkInheritAllowed(value, false);
                     boolean matched = false;
-                    PropertyValue borderWidth = convertToBorderWidth(value);
+                    final PropertyValue borderWidth = convertToBorderWidth(value);
                     if (borderWidth != null) {
                         if (haveBorderWidth) {
                             throw new CSSParseException("A border width cannot be set twice", -1);
@@ -88,7 +88,7 @@ public class BorderPropertyBuilders {
                         addAll(result, props[1], value, origin, important);
                     }
                     
-                    PropertyValue borderColor = convertToBorderColor(value);
+                    final PropertyValue borderColor = convertToBorderColor(value);
                     if (borderColor != null) {
                         if (haveBorderColor) {
                             throw new CSSParseException("A border color cannot be set twice", -1);
@@ -119,12 +119,12 @@ public class BorderPropertyBuilders {
             }
         }
         
-        private boolean isBorderStyle(PropertyValue value) {
+        private boolean isBorderStyle(final PropertyValue value) {
             if (value.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_IDENT) {
                 return false;
             }
             
-            IdentValue ident = IdentValue.fsValueOf(value.getCssText());
+            final IdentValue ident = IdentValue.fsValueOf(value.getCssText());
             if (ident == null) {
                 return false;
             }
@@ -132,8 +132,8 @@ public class BorderPropertyBuilders {
             return PrimitivePropertyBuilders.BORDER_STYLES.contains(ident);
         }
         
-        private PropertyValue convertToBorderWidth(PropertyValue value) {
-        	CSSPrimitiveUnit type = value.getPrimitiveTypeN();
+        private PropertyValue convertToBorderWidth(final PropertyValue value) {
+        	final CSSPrimitiveUnit type = value.getPrimitiveTypeN();
             if (type != CSSPrimitiveUnit.CSS_IDENT && ! isLength(value)) {
                 return null;
             }
@@ -141,7 +141,7 @@ public class BorderPropertyBuilders {
             if (isLength(value)) {
                 return value;
             } else {
-                IdentValue ident = IdentValue.fsValueOf(value.getStringValue());
+                final IdentValue ident = IdentValue.fsValueOf(value.getStringValue());
                 if (ident == null) {
                     return null;
                 }
@@ -154,8 +154,8 @@ public class BorderPropertyBuilders {
             }
         } 
         
-        private PropertyValue convertToBorderColor(PropertyValue value) {
-        	CSSPrimitiveUnit type = value.getPrimitiveTypeN();
+        private PropertyValue convertToBorderColor(final PropertyValue value) {
+        	final CSSPrimitiveUnit type = value.getPrimitiveTypeN();
             if (type != CSSPrimitiveUnit.CSS_IDENT && type != CSSPrimitiveUnit.CSS_RGBCOLOR) {
                 return null;
             }
@@ -163,12 +163,12 @@ public class BorderPropertyBuilders {
             if (type == CSSPrimitiveUnit.CSS_RGBCOLOR) {
                 return value;
             } else {
-                FSRGBColor color = Conversions.getColor(value.getStringValue());
+                final FSRGBColor color = Conversions.getColor(value.getStringValue());
                 if (color != null) {
                     return new PropertyValueImp(color);
                 }
                 
-                IdentValue ident = IdentValue.fsValueOf(value.getCssText());
+                final IdentValue ident = IdentValue.fsValueOf(value.getCssText());
                 if (ident == null || ident != IdentValue.TRANSPARENT) {
                     return null;
                 }

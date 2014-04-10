@@ -35,7 +35,7 @@ public class XRRuntimeException extends RuntimeException {
      *
      * @param msg  Reason the exception is being thrown.
      */
-    public XRRuntimeException( String msg ) {
+    public XRRuntimeException( final String msg ) {
         super( msg );
         log( msg );
     }
@@ -47,7 +47,7 @@ public class XRRuntimeException extends RuntimeException {
      * @param cause  Throwable that caused this exception to be thrown (e.g.
      *      IOException.
      */
-    public XRRuntimeException( String msg, Throwable cause ) {
+    public XRRuntimeException( final String msg, final Throwable cause ) {
         super( msg, cause );
         log( msg, cause );
     }
@@ -57,7 +57,7 @@ public class XRRuntimeException extends RuntimeException {
      *
      * @param msg  Message for the log.
      */
-    private void log( String msg ) {
+    private void log( final String msg ) {
         XRLog.exception( "Unhandled exception. " + msg );
     }
 
@@ -69,7 +69,7 @@ public class XRRuntimeException extends RuntimeException {
      * @param cause  Throwable that caused this exception to be thrown (e.g.
      *      IOException.
      */
-    private void log( String msg, Throwable cause ) {
+    private void log( final String msg, final Throwable cause ) {
         XRLog.exception( "Unhandled exception. " + msg, cause );
     }
 }

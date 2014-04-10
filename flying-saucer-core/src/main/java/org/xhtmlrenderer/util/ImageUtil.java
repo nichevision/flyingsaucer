@@ -57,8 +57,8 @@ public class ImageUtil {
      * @param image the image
      * @param bgColor the color
      */
-    public static void clearImage(BufferedImage image, Color bgColor) {
-        Graphics2D g2d = (Graphics2D) image.getGraphics();
+    public static void clearImage(final BufferedImage image, final Color bgColor) {
+        final Graphics2D g2d = (Graphics2D) image.getGraphics();
         g2d.setColor(bgColor);
         g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
         g2d.dispose();
@@ -69,23 +69,23 @@ public class ImageUtil {
      *
      * @param image the image
      */
-    public static void clearImage(BufferedImage image) {
+    public static void clearImage(final BufferedImage image) {
         clearImage(image, Color.WHITE);
     }
 
-    public static BufferedImage makeCompatible(BufferedImage bimg) {
+    public static BufferedImage makeCompatible(final BufferedImage bimg) {
         BufferedImage cimg = null;
         if (GraphicsEnvironment.isHeadless()) {
             cimg = createCompatibleBufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getTransparency());
         } else {
-            GraphicsConfiguration gc = getGraphicsConfiguration();
+            final GraphicsConfiguration gc = getGraphicsConfiguration();
             if (bimg.getColorModel().equals(gc.getColorModel())) {
                 return bimg;
             }
             cimg = gc.createCompatibleImage(bimg.getWidth(), bimg.getHeight(), bimg.getTransparency());
         }
 
-        Graphics cg = cimg.getGraphics();
+        final Graphics cg = cimg.getGraphics();
         cg.drawImage(bimg, 0, 0, null);
         cg.dispose();
         return cimg;
@@ -108,17 +108,17 @@ public class ImageUtil {
      *               in non-headless more.
      * @return A BufferedImage compatible with the screen (best fit).
      */
-    public static BufferedImage createCompatibleBufferedImage(int width, int height, int biType) {
+    public static BufferedImage createCompatibleBufferedImage(final int width, final int height, final int biType) {
         BufferedImage bimage = null;
 
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         if (ge.isHeadlessInstance()) {
             bimage = new BufferedImage(width, height, biType);
         } else {
-            GraphicsConfiguration gc = getGraphicsConfiguration();
+            final GraphicsConfiguration gc = getGraphicsConfiguration();
 
             // TODO: check type using image type - can be sniffed; see Filthy Rich Clients
-            int type = (biType == BufferedImage.TYPE_INT_ARGB || biType == BufferedImage.TYPE_INT_ARGB_PRE ?
+            final int type = (biType == BufferedImage.TYPE_INT_ARGB || biType == BufferedImage.TYPE_INT_ARGB_PRE ?
 					Transparency.TRANSLUCENT : Transparency.OPAQUE);
 
             bimage = gc.createCompatibleImage(width, height, type);
@@ -128,9 +128,9 @@ public class ImageUtil {
     }
 
     private static GraphicsConfiguration getGraphicsConfiguration() {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gs = ge.getDefaultScreenDevice();
-        GraphicsConfiguration gc = gs.getDefaultConfiguration();
+        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        final GraphicsDevice gs = ge.getDefaultScreenDevice();
+        final GraphicsConfiguration gc = gs.getDefaultConfiguration();
         return gc;
     }
 
@@ -144,7 +144,7 @@ public class ImageUtil {
      * @param height Target height for the image
      * @return A BufferedImage compatible with the screen (best fit) supporting transparent pixels.
      */
-    public static BufferedImage createCompatibleBufferedImage(int width, int height) {
+    public static BufferedImage createCompatibleBufferedImage(final int width, final int height) {
         return createCompatibleBufferedImage(width, height, Transparency.BITMASK);
     }
 
@@ -164,7 +164,7 @@ public class ImageUtil {
      * @param orgImage The image to scale
      * @return The scaled image instance.
      */
-    public static BufferedImage getScaledInstance(ScalingOptions opt, BufferedImage orgImage) {
+    public static BufferedImage getScaledInstance(final ScalingOptions opt, final BufferedImage orgImage) {
         int w = orgImage.getWidth(null);
         int h = orgImage.getHeight(null);
 
@@ -175,7 +175,7 @@ public class ImageUtil {
         w = (opt.getTargetWidth() <= 0 ? w : opt.getTargetWidth());
         h = (opt.getTargetHeight() <= 0 ? h : opt.getTargetHeight());
 
-        Scaler scaler = qual.get(opt.getDownscalingHint());
+        final Scaler scaler = qual.get(opt.getDownscalingHint());
         opt.setTargetWidth(w);
         opt.setTargetHeight(h);
 
@@ -200,10 +200,10 @@ public class ImageUtil {
      * @param targetHeight The target height in pixels
      * @return The scaled image instance.
      */
-    public static BufferedImage getScaledInstance(BufferedImage orgImage, int targetWidth, int targetHeight) {
-        String downscaleQuality = Configuration.valueFor("xr.image.scale", DownscaleQuality.HIGH_QUALITY.toString());
-        DownscaleQuality quality = DownscaleQuality.valueOf(downscaleQuality);
-        ScalingOptions opt = new ScalingOptions(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB, quality);
+    public static BufferedImage getScaledInstance(final BufferedImage orgImage, final int targetWidth, final int targetHeight) {
+        final String downscaleQuality = Configuration.valueFor("xr.image.scale", DownscaleQuality.HIGH_QUALITY.toString());
+        final DownscaleQuality quality = DownscaleQuality.valueOf(downscaleQuality);
+        final ScalingOptions opt = new ScalingOptions(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB, quality);
 
         return getScaledInstance(opt, orgImage);
     }
@@ -218,15 +218,15 @@ public class ImageUtil {
      *                   not check for duplicate dimensions.
      * @return List of buffered images in the given dimensions.
      */
-    public static java.util.List<BufferedImage> scaleMultiple(ScalingOptions opt, BufferedImage img, java.util.List<Dimension> dimensions) {
-        java.util.List<BufferedImage> scaledImages = new ArrayList<BufferedImage>(dimensions.size());
+    public static java.util.List<BufferedImage> scaleMultiple(final ScalingOptions opt, final BufferedImage img, final java.util.List<Dimension> dimensions) {
+        final java.util.List<BufferedImage> scaledImages = new ArrayList<BufferedImage>(dimensions.size());
 
-        Iterator<Dimension> iter = dimensions.iterator();
+        final Iterator<Dimension> iter = dimensions.iterator();
         while (iter.hasNext()) {
-            Dimension dim = (Dimension) iter.next();
+            final Dimension dim = (Dimension) iter.next();
             opt.setTargetDimensions(dim);
 
-            BufferedImage scaled = getScaledInstance(opt, img);
+            final BufferedImage scaled = getScaledInstance(opt, img);
 
             scaledImages.add(scaled);
         }
@@ -242,25 +242,25 @@ public class ImageUtil {
      *               {@link java.awt.image.BufferedImage#BufferedImage(int,int,int)}
      * @return BufferedImage with same content.
      */
-    public static BufferedImage convertToBufferedImage(Image awtImg, int type) {
+    public static BufferedImage convertToBufferedImage(final Image awtImg, final int type) {
         BufferedImage bimg;
         if (awtImg instanceof BufferedImage) {
             bimg = (BufferedImage) awtImg;
         } else {
             bimg = createCompatibleBufferedImage(awtImg.getWidth(null), awtImg.getHeight(null), type);
-            Graphics2D g = bimg.createGraphics();
+            final Graphics2D g = bimg.createGraphics();
             g.drawImage(awtImg, 0, 0, null, null);
             g.dispose();
         }
         return bimg;
     }
 
-    public static BufferedImage createTransparentImage(int width, int height) {
-        BufferedImage bi = createCompatibleBufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = bi.createGraphics();
+    public static BufferedImage createTransparentImage(final int width, final int height) {
+        final BufferedImage bi = createCompatibleBufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        final Graphics2D g2d = bi.createGraphics();
 
         // Make all filled pixels transparent
-        Color transparent = new Color(0, 0, 0, 0);
+        final Color transparent = new Color(0, 0, 0, 0);
         g2d.setColor(transparent);
         g2d.setComposite(AlphaComposite.Src);
         g2d.fillRect(0, 0, width, height);
@@ -274,7 +274,7 @@ public class ImageUtil {
      * @param uri URI of the image
      * @return A boolean
      */
-    public static boolean isEmbeddedBase64Image(String uri) {
+    public static boolean isEmbeddedBase64Image(final String uri) {
         return (uri != null && uri.startsWith("data:image/"));
     }
     
@@ -284,10 +284,10 @@ public class ImageUtil {
      * @param imageDataUri URI of the embedded image
      * @return The binary content
      */
-    public static byte[] getEmbeddedBase64Image(String imageDataUri) {
-        int b64Index = imageDataUri.indexOf("base64,");
+    public static byte[] getEmbeddedBase64Image(final String imageDataUri) {
+        final int b64Index = imageDataUri.indexOf("base64,");
         if (b64Index != -1) {
-            String b64encoded = imageDataUri.substring(b64Index + "base64,".length());
+            final String b64encoded = imageDataUri.substring(b64Index + "base64,".length());
             return DatatypeConverter.parseBase64Binary(b64encoded);
         } else {
             XRLog.load(Level.SEVERE, "Embedded XHTML images must be encoded in base 64.");
@@ -301,13 +301,13 @@ public class ImageUtil {
      * @param imageDataUri URI of the embedded image
      * @return The BufferedImage
      */
-    public static BufferedImage loadEmbeddedBase64Image(String imageDataUri) {
+    public static BufferedImage loadEmbeddedBase64Image(final String imageDataUri) {
         try {
-            byte[] buffer = getEmbeddedBase64Image(imageDataUri);
+            final byte[] buffer = getEmbeddedBase64Image(imageDataUri);
             if (buffer != null) {
                 return ImageIO.read(new ByteArrayInputStream(buffer));
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             XRLog.exception("Can't read XHTML embedded image", ex);
         }
         return null;
@@ -347,7 +347,7 @@ public class ImageUtil {
     	FastScaler
     	{
     		@Override
-			public BufferedImage getScaledInstance(BufferedImage img, ScalingOptions opt) 
+			public BufferedImage getScaledInstance(final BufferedImage img, final ScalingOptions opt) 
 			{
 				return Scalr.resize(img, Scalr.Method.SPEED,  Scalr.Mode.FIT_EXACT, opt.getTargetWidth(), opt.getTargetHeight());
     		}
@@ -355,7 +355,7 @@ public class ImageUtil {
     	StandardScaler
     	{
 			@Override
-			public BufferedImage getScaledInstance(BufferedImage img, ScalingOptions opt) 
+			public BufferedImage getScaledInstance(final BufferedImage img, final ScalingOptions opt) 
 			{
 				return Scalr.resize(img, Scalr.Method.AUTOMATIC,  Scalr.Mode.FIT_EXACT, opt.getTargetWidth(), opt.getTargetHeight());
 			}
@@ -363,7 +363,7 @@ public class ImageUtil {
     	BalancedScaler
     	{
 			@Override
-			public BufferedImage getScaledInstance(BufferedImage img, ScalingOptions opt) 
+			public BufferedImage getScaledInstance(final BufferedImage img, final ScalingOptions opt) 
 			{
 				return Scalr.resize(img, Scalr.Method.BALANCED,  Scalr.Mode.FIT_EXACT, opt.getTargetWidth(), opt.getTargetHeight());
 			}
@@ -372,7 +372,7 @@ public class ImageUtil {
     	{
 
 			@Override
-			public BufferedImage getScaledInstance(BufferedImage img, ScalingOptions opt)
+			public BufferedImage getScaledInstance(final BufferedImage img, final ScalingOptions opt)
 			{
 				return Scalr.resize(img, Scalr.Method.QUALITY,  Scalr.Mode.FIT_EXACT, opt.getTargetWidth(), opt.getTargetHeight());
 			}

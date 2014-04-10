@@ -41,9 +41,9 @@ public abstract class CounterPropertyBuilder implements PropertyBuilder {
     
     // XXX returns a PropertyValue of type VALUE_TYPE_LIST, but the List contains
     // CounterData objects and not PropertyValue objects
-    public List<PropertyDeclaration> buildDeclarations(CSSName cssName, List<PropertyValue> values, CSSOrigin origin, boolean important, boolean inheritAllowed) {
+    public List<PropertyDeclaration> buildDeclarations(final CSSName cssName, final List<PropertyValue> values, final CSSOrigin origin, final boolean important, final boolean inheritAllowed) {
         if (values.size() == 1) {
-            PropertyValue value = (PropertyValue)values.get(0);
+            final PropertyValue value = (PropertyValue)values.get(0);
             
             checkInheritAllowed(value, inheritAllowed);
             
@@ -53,7 +53,7 @@ public abstract class CounterPropertyBuilder implements PropertyBuilder {
                 if (value.getCssText().equals("none")) {
                     return Collections.singletonList(new PropertyDeclaration(cssName, value, important, origin));
                 } else {
-                    CounterData data = new CounterData(
+                    final CounterData data = new CounterData(
                             value.getStringValue(),
                             getDefaultValue());
                     
@@ -65,16 +65,16 @@ public abstract class CounterPropertyBuilder implements PropertyBuilder {
             
             throw new CSSParseException("The syntax of the " + cssName + " property is invalid", -1);
         } else {
-            List<CounterData> result = new ArrayList<CounterData>();
+            final List<CounterData> result = new ArrayList<CounterData>();
             for (int i = 0; i < values.size(); i++) {
-                PropertyValue value = (PropertyValue)values.get(i);
+                final PropertyValue value = (PropertyValue)values.get(i);
                 
                 if (value.getPrimitiveTypeN() == CSSPrimitiveUnit.CSS_IDENT) {
-                    String name = value.getStringValue();
+                    final String name = value.getStringValue();
                     int cValue = getDefaultValue();
                     
                     if (i < values.size() - 1) {
-                        PropertyValue next = (PropertyValue)values.get(i+1);
+                        final PropertyValue next = (PropertyValue)values.get(i+1);
                         if (next.getPrimitiveTypeN() == CSSPrimitiveUnit.CSS_NUMBER) {
                             checkNumberIsInteger(cssName, next);
                             
@@ -94,7 +94,7 @@ public abstract class CounterPropertyBuilder implements PropertyBuilder {
         }
     }
     
-    private void checkNumberIsInteger(CSSName cssName, PropertyValue value) {
+    private void checkNumberIsInteger(final CSSName cssName, final PropertyValue value) {
         if ((int)value.getFloatValue() !=
                     Math.round(value.getFloatValue())) {
             throw new CSSParseException("The value " + value.getFloatValue() + " in " + 

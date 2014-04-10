@@ -63,7 +63,7 @@ public class ImageRenderer {
 	 *
 	 * @throws java.io.IOException if the input URL, or output path location is invalid
 	 */
-	public static BufferedImage renderToImage(String url, String path, int width) throws IOException {
+	public static BufferedImage renderToImage(final String url, final String path, final int width) throws IOException {
 		return renderImageToOutput(url, new FSImageWriter(), path, width);
 	}
 
@@ -77,7 +77,7 @@ public class ImageRenderer {
 	 *
 	 * @throws java.io.IOException if the input URL, or output path location is invalid
 	 */
-	public static BufferedImage renderToImage(String url, String path, int width, int height) throws IOException {
+	public static BufferedImage renderToImage(final String url, final String path, final int width, final int height) throws IOException {
 		return renderImageToOutput(url, new FSImageWriter(), path, width);
 	}
 
@@ -91,7 +91,7 @@ public class ImageRenderer {
 	 *
 	 * @throws java.io.IOException if the input URL, or output path location is invalid
 	 */
-	public static BufferedImage renderToImage(File inFile, String path, int width) throws IOException {
+	public static BufferedImage renderToImage(final File inFile, final String path, final int width) throws IOException {
 		return renderToImage(inFile.toURI().toURL().toExternalForm(), path, width);
 	}
 
@@ -106,7 +106,7 @@ public class ImageRenderer {
 	 *
 	 * @throws java.io.IOException if the input URL, or output path location is invalid
 	 */
-	public static BufferedImage renderToImage(File inFile, String path, int width, int height) throws IOException {
+	public static BufferedImage renderToImage(final File inFile, final String path, final int width, final int height) throws IOException {
 		return renderToImage(inFile.toURI().toURL().toExternalForm(), path, width, height);
 	}
 
@@ -119,13 +119,13 @@ public class ImageRenderer {
 	 * @param path
 	 * @param width
 	 */
-	public static BufferedImage renderImageToOutput(String url, FSImageWriter fsw, String path, int width)
+	public static BufferedImage renderImageToOutput(final String url, final FSImageWriter fsw, final String path, final int width)
 			throws IOException {
 
 		BufferedImage image;
 		OutputStream os = null;
 		try {
-			Java2DRenderer renderer = new Java2DRenderer(url, url, width);
+			final Java2DRenderer renderer = new Java2DRenderer(url, url, width);
 
 			os = new BufferedOutputStream(new FileOutputStream(path));
 
@@ -137,7 +137,7 @@ public class ImageRenderer {
 			if (os != null) {
 				try {
 					os.close();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					// ignore
 				}
 			}
@@ -151,14 +151,14 @@ public class ImageRenderer {
 	 * @param args see desc
 	 * @throws java.io.IOException if source could not be read, or if image path is invalid
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(final String[] args) throws IOException {
 		if (args.length != 1) {
 			usage("Incorrect argument list.");
 		}
-		String url = args[0];
+		final String url = args[0];
 		if (url.indexOf("://") == -1) {
 			// maybe it's a file
-			File f = new File(url);
+			final File f = new File(url);
 			if (f.exists()) {
 				String output = f.getAbsolutePath();
 				output = output.substring(0, output.lastIndexOf(".")) + ".png";
@@ -168,7 +168,7 @@ public class ImageRenderer {
 				usage("File to render is not found: " + url);
 			}
 		} else {
-			File out = File.createTempFile("fs", ".png");
+			final File out = File.createTempFile("fs", ".png");
 			System.out.println("Saving image to " + out.getAbsolutePath());
 			renderToImage(url, out.getAbsolutePath(), DEFAULT_WIDTH);
 		}
@@ -177,7 +177,7 @@ public class ImageRenderer {
 	/**
 	 * prints out usage information, with optional error message
 	 */
-	private static void usage(String err) {
+	private static void usage(final String err) {
 		if (err != null && err.length() > 0) {
 			System.err.println("==>" + err);
 		}

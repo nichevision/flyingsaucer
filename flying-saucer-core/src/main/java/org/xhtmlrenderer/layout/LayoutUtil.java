@@ -35,8 +35,8 @@ import org.xhtmlrenderer.render.MarkerData;
 public class LayoutUtil {
 
     public static void layoutAbsolute(
-            LayoutContext c, LineBox currentLine, BlockBox box) {
-        MarkerData markerData = c.getCurrentMarkerData();
+            final LayoutContext c, final LineBox currentLine, final BlockBox box) {
+        final MarkerData markerData = c.getCurrentMarkerData();
         c.setCurrentMarkerData(null);
 
         if (box.getStyle().isFixed()) {
@@ -59,11 +59,11 @@ public class LayoutUtil {
     }
 
     public static FloatLayoutResult layoutFloated(
-            final LayoutContext c, LineBox currentLine, BlockBox block,
-            int avail, List<FloatLayoutResult> pendingFloats) {
-        FloatLayoutResult result = new FloatLayoutResult();
+            final LayoutContext c, final LineBox currentLine, final BlockBox block,
+            final int avail, final List<FloatLayoutResult> pendingFloats) {
+        final FloatLayoutResult result = new FloatLayoutResult();
 
-        MarkerData markerData = c.getCurrentMarkerData();
+        final MarkerData markerData = c.getCurrentMarkerData();
         c.setCurrentMarkerData(null);
 
         block.setContainingBlock(currentLine.getParent());
@@ -78,7 +78,7 @@ public class LayoutUtil {
 
         block.calcInitialFloatedCanvasLocation(c);
 
-        int initialY = block.getY();
+        final int initialY = block.getY();
 
         block.layout(c);
 
@@ -103,8 +103,8 @@ public class LayoutUtil {
     }
 
     private static void positionFloatOnPage(
-            final LayoutContext c, LineBox currentLine, BlockBox block,
-            boolean movedVertically) {
+            final LayoutContext c, final LineBox currentLine, final BlockBox block,
+            final boolean movedVertically) {
         boolean clearedPage = false;
         int clearDelta = 0;
 

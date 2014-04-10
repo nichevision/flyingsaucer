@@ -23,7 +23,7 @@ public class BoxRange {
     private final int _start;
     private final int _end;
     
-    public BoxRange(int start, int end) {
+    public BoxRange(final int start, final int end) {
         _start = start;
         _end = end;
     }

@@ -26,9 +26,9 @@ import org.xhtmlrenderer.css.parser.PropertyValue;
 import org.xhtmlrenderer.css.style.DerivedValue;
 
 public class ListValue extends DerivedValue {
-    private List<?> _values;
+    private final List<?> _values;
     
-    public ListValue(CSSName name, PropertyValue value) {
+    public ListValue(final CSSName name, final PropertyValue value) {
         super(name, value.getPrimitiveTypeN(), value.getCssText(), value.getCssText());
         
         _values = value.getValues();
@@ -43,10 +43,10 @@ public class ListValue extends DerivedValue {
             return new String[0];
         }
         
-        String[] arr = new String[_values.size()];
+        final String[] arr = new String[_values.size()];
         int i = 0;
         
-        for (Object value : _values) {
+        for (final Object value : _values) {
             arr[i++] = value.toString();
         }
         

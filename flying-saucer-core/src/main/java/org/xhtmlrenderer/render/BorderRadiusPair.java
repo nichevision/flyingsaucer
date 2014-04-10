@@ -5,7 +5,7 @@ public class BorderRadiusPair {
 	private final float _left;
 	private final float _right;
 	
-	public BorderRadiusPair(float l, float r) {
+	public BorderRadiusPair(final float l, final float r) {
 		this._left = l;
 		this._right = r;
 	}
@@ -13,7 +13,7 @@ public class BorderRadiusPair {
 		return _left > 0 || _right > 0;
 	}
 
-	public float getMaxLeft(float max) {
+	public float getMaxLeft(final float max) {
 
 		if (_left > max - _left)
 			return max / 2;
@@ -21,7 +21,7 @@ public class BorderRadiusPair {
 		return _left;
 	}
 
-	public float getMaxRight(float max) {
+	public float getMaxRight(final float max) {
 
 		if (_right > max - _right)
             return max / 2;

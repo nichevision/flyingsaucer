@@ -216,7 +216,7 @@ public enum IdentValue implements FSDerivedValue
 
     private static final Map<String, IdentValue> ALL_IDENT_VALUES = new HashMap<>(values().length);
 
-    private IdentValue(String ident) 
+    private IdentValue(final String ident) 
     {
         this.ident = ident;
         this.fsId = this.ordinal();
@@ -240,19 +240,19 @@ public enum IdentValue implements FSDerivedValue
      * @param ident The identifier to retrieve the Singleton IdentValue for.
      * @return see desc.
      */
-    public static IdentValue getByIdentString(String ident) {
-        IdentValue val = ALL_IDENT_VALUES.get(ident);
+    public static IdentValue getByIdentString(final String ident) {
+        final IdentValue val = ALL_IDENT_VALUES.get(ident);
         if (val == null) {
             throw new XRRuntimeException("Ident named " + ident + " has no IdentValue instance assigned to it.");
         }
         return val;
     }
 
-    public static boolean looksLikeIdent(String ident) {
+    public static boolean looksLikeIdent(final String ident) {
         return ALL_IDENT_VALUES.containsKey(ident);
     }
 
-    public static IdentValue fsValueOf(String ident) {
+    public static IdentValue fsValueOf(final String ident) {
         return ALL_IDENT_VALUES.get(ident);
     }
 
@@ -261,7 +261,7 @@ public enum IdentValue implements FSDerivedValue
     }
 
     static {
-    	for (IdentValue id : values())
+    	for (final IdentValue id : values())
     	{
     		ALL_IDENT_VALUES.put(id.ident, id);
     	}
@@ -288,9 +288,9 @@ public enum IdentValue implements FSDerivedValue
     }
 
     @Override
-    public float getFloatProportionalTo(CSSName cssName,
-                                        float baseValue,
-                                        CssContext ctx) {
+    public float getFloatProportionalTo(final CSSName cssName,
+                                        final float baseValue,
+                                        final CssContext ctx) {
         throw new XRRuntimeException("Ident value (" + toString() + ") is never a length; wrong class used for derived value.");
     }
 

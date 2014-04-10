@@ -25,19 +25,19 @@ import java.util.List;
 import org.xhtmlrenderer.css.sheet.StylesheetInfo.CSSOrigin;
 
 public class MediaRule implements RulesetContainer {
-    private List<String> _mediaTypes = new ArrayList<String>();
-    private List<Ruleset> _contents = new ArrayList<Ruleset>();
-    private CSSOrigin _origin;
+    private final List<String> _mediaTypes = new ArrayList<String>();
+    private final List<Ruleset> _contents = new ArrayList<Ruleset>();
+    private final CSSOrigin _origin;
     
-    public MediaRule(CSSOrigin origin) {
+    public MediaRule(final CSSOrigin origin) {
         _origin = origin;
     }
     
-    public void addMedium(String medium) {
+    public void addMedium(final String medium) {
         _mediaTypes.add(medium);
     }
     
-    public boolean matches(String medium) {
+    public boolean matches(final String medium) {
         if (medium.equalsIgnoreCase("all") || _mediaTypes.contains("all")) {
             return true;
         } else {
@@ -45,7 +45,7 @@ public class MediaRule implements RulesetContainer {
         }
     }
     
-    public void addContent(Ruleset ruleset) {
+    public void addContent(final Ruleset ruleset) {
         _contents.add(ruleset);
     }
     

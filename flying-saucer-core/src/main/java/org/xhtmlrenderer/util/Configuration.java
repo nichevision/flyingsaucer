@@ -121,7 +121,7 @@ public class Configuration {
                 String val;
                 try {
                     val = System.getProperty("show-config");
-                } catch (SecurityException ex) {
+                } catch (final SecurityException ex) {
                     // this may happen if running in a sandbox; not a problem
                     val = null;
                 }
@@ -129,33 +129,33 @@ public class Configuration {
                 if (val != null) {
                     logLevel = LoggerUtil.parseLogLevel(val, Level.OFF);
                 }
-            } catch (SecurityException e) {
+            } catch (final SecurityException e) {
                 // may be thrown in a sandbox; OK
                 System.err.println(e.getLocalizedMessage());
             }
             loadDefaultProperties();
 
-            String sysOverrideFile = getSystemPropertyOverrideFileName();
+            final String sysOverrideFile = getSystemPropertyOverrideFileName();
             if (sysOverrideFile != null) {
                 loadOverrideProperties(sysOverrideFile);
             } else {
-                String userHomeOverrideFileName = getUserHomeOverrideFileName();
+                final String userHomeOverrideFileName = getUserHomeOverrideFileName();
                 if (userHomeOverrideFileName != null) {
                     loadOverrideProperties(userHomeOverrideFileName);
                 }
             }
             loadSystemProperties();
             logAfterLoad();
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             handleUnexpectedExceptionOnInit(e);
             throw e;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             handleUnexpectedExceptionOnInit(e);
             throw new RuntimeException(e);
         }
     }
 
-    private void handleUnexpectedExceptionOnInit(Exception e) {
+    private void handleUnexpectedExceptionOnInit(final Exception e) {
         System.err.println("Could not initialize configuration for Flying Saucer library. Message is: " + e.getMessage());
         e.printStackTrace();
     }
@@ -169,13 +169,13 @@ public class Configuration {
      *
      * @param logger Logger used for Configuration-related messages
      */
-    public static void setConfigLogger(Logger logger) {
-        Configuration config = instance();
+    public static void setConfigLogger(final Logger logger) {
+        final Configuration config = instance();
         config.configLogger = logger;
         if (config.startupLogRecords != null) {
-            Iterator iter = config.startupLogRecords.iterator();
+            final Iterator iter = config.startupLogRecords.iterator();
             while (iter.hasNext()) {
-                LogRecord lr = (LogRecord) iter.next();
+                final LogRecord lr = (LogRecord) iter.next();
                 logger.log(lr.getLevel(), lr.getMessage());
             }
             config.startupLogRecords = null;
@@ -188,7 +188,7 @@ public class Configuration {
      * @param level the logging level to record the message at
      * @param msg the message to log
      */
-    private void println(Level level, String msg) {
+    private void println(final Level level, final String msg) {
         if (logLevel != Level.OFF) {
             if (configLogger == null) {
                 startupLogRecords.add(new LogRecord(level, msg));
@@ -203,7 +203,7 @@ public class Configuration {
      *
      * @param msg message to log
      */
-    private void info(String msg) {
+    private void info(final String msg) {
         if (logLevel.intValue() <= Level.INFO.intValue()) {
             println(Level.INFO, msg);
         }
@@ -214,7 +214,7 @@ public class Configuration {
      *
      * @param msg message to log
      */
-    private void warning(String msg) {
+    private void warning(final String msg) {
         if (logLevel.intValue() <= Level.WARNING.intValue()) {
             println(Level.WARNING, msg);
         }
@@ -226,7 +226,7 @@ public class Configuration {
      * @param msg message to log
      * @param th  the exception to report
      */
-    private void warning(String msg, Throwable th) {
+    private void warning(final String msg, final Throwable th) {
         warning(msg);
         th.printStackTrace();
     }
@@ -236,7 +236,7 @@ public class Configuration {
      *
      * @param msg message to log
      */
-    private void fine(String msg) {
+    private void fine(final String msg) {
         if (logLevel.intValue() <= Level.FINE.intValue()) {
             println(Level.FINE, msg);
         }
@@ -247,7 +247,7 @@ public class Configuration {
      *
      * @param msg message to log
      */
-    private void finer(String msg) {
+    private void finer(final String msg) {
         if (logLevel.intValue() <= Level.FINER.intValue()) {
             println(Level.FINER, msg);
         }
@@ -259,7 +259,7 @@ public class Configuration {
      */
     private void loadDefaultProperties() {
         try {
-            InputStream readStream = GeneralUtil.openStreamFromClasspath(new DefaultCSSMarker(), SF_FILE_NAME);
+            final InputStream readStream = GeneralUtil.openStreamFromClasspath(new DefaultCSSMarker(), SF_FILE_NAME);
 
             if (readStream == null) {
                 System.err.println("WARNING: Flying Saucer: No configuration files found in classpath using URL: " + SF_FILE_NAME + ", resorting to hard-coded fallback properties.");
@@ -272,9 +272,9 @@ public class Configuration {
                     readStream.close();
                 }
             }
-        } catch (RuntimeException rex) {
+        } catch (final RuntimeException rex) {
             throw rex;
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new RuntimeException("Could not load properties file for configuration.",
                     ex);
         }
@@ -287,55 +287,55 @@ public class Configuration {
      *
      * @param uri Path to the file, or classpath URL, where properties are defined.
      */
-    private void loadOverrideProperties(String uri) {
+    private void loadOverrideProperties(final String uri) {
         try {
-            File f = new File(uri);
-            Properties temp = new Properties();
+            final File f = new File(uri);
+            final Properties temp = new Properties();
             if (f.exists()) {
                 info("Found config override file " + f.getAbsolutePath());
                 try {
-                    InputStream readStream = new BufferedInputStream(new FileInputStream(f));
+                    final InputStream readStream = new BufferedInputStream(new FileInputStream(f));
                     try {
                         temp.load(readStream);
                     } finally {
                         readStream.close();
                     }
-                } catch (IOException iex) {
+                } catch (final IOException iex) {
                     warning("Error while loading override properties file; skipping.", iex);
                     return;
                 }
             } else {
                 InputStream in = null;
                 try {
-					URL url = new URL(uri);
+					final URL url = new URL(uri);
 					in = new BufferedInputStream(url.openStream());
 					info("Found config override URI " + uri);
 					temp.load(in);
-				} catch (MalformedURLException e) {
+				} catch (final MalformedURLException e) {
                     warning("URI for override properties is malformed, skipping: " + uri);
                     return;
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     warning("Overridden properties could not be loaded from URI: " + uri, e);
                     return;
                 } finally {
                     if (in != null ) try {
                         in.close();
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         // swallow
                     }
                 }
             }
 
-            Enumeration elem = this.properties.keys();
-            List lp = Collections.list(elem);
+            final Enumeration elem = this.properties.keys();
+            final List lp = Collections.list(elem);
             Collections.sort(lp);
             Iterator iter = lp.iterator();
 
             // override existing properties
             int cnt = 0;
             while (iter.hasNext()) {
-                String key = (String) iter.next();
-                String val = temp.getProperty(key);
+                final String key = (String) iter.next();
+                final String val = temp.getProperty(key);
                 if (val != null) {
                     this.properties.setProperty(key, val);
                     finer("  " + key + " -> " + val);
@@ -345,14 +345,14 @@ public class Configuration {
             finer("Configuration: " + cnt + " properties overridden from secondary properties file.");
             // and add any new properties we don't already know about (needed for custom logging
             // configuration)
-            Enumeration allRead = temp.keys();
-            List ap = Collections.list(allRead);
+            final Enumeration allRead = temp.keys();
+            final List ap = Collections.list(allRead);
             Collections.sort(ap);
             iter = ap.iterator();
             cnt = 0;
             while (iter.hasNext()) {
-                String key = (String) iter.next();
-                String val = temp.getProperty(key);
+                final String key = (String) iter.next();
+                final String val = temp.getProperty(key);
                 if (val != null) {
                     this.properties.setProperty(key, val);
                     finer("  (+)" + key + " -> " + val);
@@ -360,7 +360,7 @@ public class Configuration {
                 }
             }
             finer("Configuration: " + cnt + " properties added from secondary properties file.");
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             // can happen in a sandbox environment
             System.err.println(e.getLocalizedMessage());
         }
@@ -369,7 +369,7 @@ public class Configuration {
     private String getSystemPropertyOverrideFileName() {
         try {
             return System.getProperty("xr.conf");
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             // can happen in sandbox
             return null;
         }
@@ -378,7 +378,7 @@ public class Configuration {
     private String getUserHomeOverrideFileName() {
         try {
             return System.getProperty("user.home") + File.separator + ".flyingsaucer" + File.separator + "local.xhtmlrenderer.conf";
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             // can happen in a sandbox
             return null;
         }
@@ -389,26 +389,26 @@ public class Configuration {
      * optional. See class documentation.
      */
     private void loadSystemProperties() {
-        Enumeration elem = properties.keys();
-        List lp = Collections.list(elem);
+        final Enumeration elem = properties.keys();
+        final List lp = Collections.list(elem);
         Collections.sort(lp);
-        Iterator iter = lp.iterator();
+        final Iterator iter = lp.iterator();
         fine("Overriding loaded configuration from System properties.");
         int cnt = 0;
         while (iter.hasNext()) {
-            String key = (String) iter.next();
+            final String key = (String) iter.next();
             if (!key.startsWith("xr.")) {
                 continue;
             }
 
             try {
-                String val = System.getProperty(key);
+                final String val = System.getProperty(key);
                 if (val != null) {
                     properties.setProperty(key, val);
                     finer("  Overrode value for " + key);
                     cnt++;
                 }
-            } catch (SecurityException e) {
+            } catch (final SecurityException e) {
                 // skip, this will happen in WebStart
             }
         }
@@ -420,7 +420,7 @@ public class Configuration {
             final Enumeration keys = sysProps.keys();
             cnt = 0;
             while (keys.hasMoreElements()) {
-                String key = (String) keys.nextElement();
+                final String key = (String) keys.nextElement();
                 if (key.startsWith("xr.") && !this.properties.containsKey(key)) {
                     final Object val = sysProps.get(key);
                     this.properties.put(key, val);
@@ -428,7 +428,7 @@ public class Configuration {
                     cnt++;
                 }
             }
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             // skip, this will happen in webstart or sandbox
         }
         fine("Configuration: " + cnt + " FS properties added from System properties.");
@@ -438,15 +438,15 @@ public class Configuration {
      * Writes a log of loaded properties to the plumbing.init Logger.
      */
     private void logAfterLoad() {
-        Enumeration elem = properties.keys();
-        List lp = Collections.list(elem);
+        final Enumeration elem = properties.keys();
+        final List lp = Collections.list(elem);
         Collections.sort(lp);
-        Iterator iter = lp.iterator();
+        final Iterator iter = lp.iterator();
         finer("Configuration contains " + properties.size() + " keys.");
         finer("List of configuration properties, after override:");
         while (iter.hasNext()) {
-            String key = (String) iter.next();
-            String val = properties.getProperty(key);
+            final String key = (String) iter.next();
+            final String val = properties.getProperty(key);
             finer("  " + key + " = " + val);
         }
         finer("Properties list complete.");
@@ -459,18 +459,18 @@ public class Configuration {
      * @param key Name of the property.
      * @return Value assigned to the key, as a String.
      */
-    public static String valueFor(String key) {
-        Configuration conf = instance();
-        String val = conf.properties.getProperty(key);
+    public static String valueFor(final String key) {
+        final Configuration conf = instance();
+        final String val = conf.properties.getProperty(key);
         if (val == null) {
             conf.warning("CONFIGURATION: no value found for key " + key);
         }
         return val;
     }
 
-	public static boolean hasValue(String key) {
-        Configuration conf = instance();
-        String val = conf.properties.getProperty(key);
+	public static boolean hasValue(final String key) {
+        final Configuration conf = instance();
+        final String val = conf.properties.getProperty(key);
         return val != null;
 	}
 
@@ -484,8 +484,8 @@ public class Configuration {
      * @param defaultVal PARAM
      * @return Value assigned to the key, as a String.
      */
-    public static int valueAsByte(String key, byte defaultVal) {
-        String val = valueFor(key);
+    public static int valueAsByte(final String key, final byte defaultVal) {
+        final String val = valueFor(key);
         if (val == null) {
             return defaultVal;
         }
@@ -493,7 +493,7 @@ public class Configuration {
         byte bval;
         try {
             bval = Byte.valueOf(val).byteValue();
-        } catch (NumberFormatException nex) {
+        } catch (final NumberFormatException nex) {
             XRLog.exception("Property '" + key + "' was requested as a byte, but " +
                     "value of '" + val + "' is not a byte. Check configuration.");
             bval = defaultVal;
@@ -511,8 +511,8 @@ public class Configuration {
      * @param defaultVal PARAM
      * @return Value assigned to the key, as a String.
      */
-    public static int valueAsShort(String key, short defaultVal) {
-        String val = valueFor(key);
+    public static int valueAsShort(final String key, final short defaultVal) {
+        final String val = valueFor(key);
         if (val == null) {
             return defaultVal;
         }
@@ -520,7 +520,7 @@ public class Configuration {
         short sval;
         try {
             sval = Short.valueOf(val).shortValue();
-        } catch (NumberFormatException nex) {
+        } catch (final NumberFormatException nex) {
             XRLog.exception("Property '" + key + "' was requested as a short, but " +
                     "value of '" + val + "' is not a short. Check configuration.");
             sval = defaultVal;
@@ -538,8 +538,8 @@ public class Configuration {
      * @param defaultVal PARAM
      * @return Value assigned to the key, as a String.
      */
-    public static int valueAsInt(String key, int defaultVal) {
-        String val = valueFor(key);
+    public static int valueAsInt(final String key, final int defaultVal) {
+        final String val = valueFor(key);
         if (val == null) {
             return defaultVal;
         }
@@ -547,7 +547,7 @@ public class Configuration {
         int ival;
         try {
             ival = Integer.valueOf(val).intValue();
-        } catch (NumberFormatException nex) {
+        } catch (final NumberFormatException nex) {
             XRLog.exception("Property '" + key + "' was requested as an integer, but " +
                     "value of '" + val + "' is not an integer. Check configuration.");
             ival = defaultVal;
@@ -566,8 +566,8 @@ public class Configuration {
      * @param defaultVal PARAM
      * @returnValue assigned to the key, as a character
      */
-    public static char valueAsChar(String key, char defaultVal) {
-        String val = valueFor(key);
+    public static char valueAsChar(final String key, final char defaultVal) {
+        final String val = valueFor(key);
         if (val == null) {
             return defaultVal;
         }
@@ -590,8 +590,8 @@ public class Configuration {
      * @param defaultVal PARAM
      * @return Value assigned to the key, as a String.
      */
-    public static long valueAsLong(String key, long defaultVal) {
-        String val = valueFor(key);
+    public static long valueAsLong(final String key, final long defaultVal) {
+        final String val = valueFor(key);
         if (val == null) {
             return defaultVal;
         }
@@ -599,7 +599,7 @@ public class Configuration {
         long lval;
         try {
             lval = Long.valueOf(val).longValue();
-        } catch (NumberFormatException nex) {
+        } catch (final NumberFormatException nex) {
             XRLog.exception("Property '" + key + "' was requested as a long, but " +
                     "value of '" + val + "' is not a long. Check configuration.");
             lval = defaultVal;
@@ -617,8 +617,8 @@ public class Configuration {
      * @param defaultVal PARAM
      * @return Value assigned to the key, as a String.
      */
-    public static float valueAsFloat(String key, float defaultVal) {
-        String val = valueFor(key);
+    public static float valueAsFloat(final String key, final float defaultVal) {
+        final String val = valueFor(key);
         if (val == null) {
             return defaultVal;
         }
@@ -626,7 +626,7 @@ public class Configuration {
         float fval;
         try {
             fval = Float.valueOf(val).floatValue();
-        } catch (NumberFormatException nex) {
+        } catch (final NumberFormatException nex) {
             XRLog.exception("Property '" + key + "' was requested as a float, but " +
                     "value of '" + val + "' is not a float. Check configuration.");
             fval = defaultVal;
@@ -644,8 +644,8 @@ public class Configuration {
      * @param defaultVal PARAM
      * @return Value assigned to the key, as a String.
      */
-    public static double valueAsDouble(String key, double defaultVal) {
-        String val = valueFor(key);
+    public static double valueAsDouble(final String key, final double defaultVal) {
+        final String val = valueFor(key);
         if (val == null) {
             return defaultVal;
         }
@@ -653,7 +653,7 @@ public class Configuration {
         double dval;
         try {
             dval = Double.valueOf(val).doubleValue();
-        } catch (NumberFormatException nex) {
+        } catch (final NumberFormatException nex) {
             XRLog.exception("Property '" + key + "' was requested as a double, but " +
                     "value of '" + val + "' is not a double. Check configuration.");
             dval = defaultVal;
@@ -670,8 +670,8 @@ public class Configuration {
      * @param defaultVal PARAM
      * @return Value assigned to the key, as a String.
      */
-    public static String valueFor(String key, String defaultVal) {
-        Configuration conf = instance();
+    public static String valueFor(final String key, final String defaultVal) {
+        final Configuration conf = instance();
         String val = conf.properties.getProperty(key);
         val = (val == null ? defaultVal : val);
         if (val == null) {
@@ -687,12 +687,12 @@ public class Configuration {
      * @param prefix Prefix to filter on. No regex.
      * @return Returns Iterator, see description.
      */
-    public static Iterator keysByPrefix(String prefix) {
-        Configuration conf = instance();
-        Iterator iter = conf.properties.keySet().iterator();
-        List l = new ArrayList();
+    public static Iterator keysByPrefix(final String prefix) {
+        final Configuration conf = instance();
+        final Iterator iter = conf.properties.keySet().iterator();
+        final List l = new ArrayList();
         while (iter.hasNext()) {
-            String key = (String) iter.next();
+            final String key = (String) iter.next();
             if (key.startsWith(prefix)) {
                 l.add(key);
             }
@@ -706,7 +706,7 @@ public class Configuration {
      *
      * @param args Ignored
      */
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
         try {
             System.out.println("byte: " + String.valueOf(Configuration.valueAsByte("xr.test-config-byte", (byte) 15)));
             System.out.println("short: " + String.valueOf(Configuration.valueAsShort("xr.test-config-short", (short) 20)));
@@ -715,7 +715,7 @@ public class Configuration {
             System.out.println("float: " + String.valueOf(Configuration.valueAsFloat("xr.test-config-float", 45.5F)));
             System.out.println("double: " + String.valueOf(Configuration.valueAsDouble("xr.test-config-double", 50.75D)));
             System.out.println("boolean: " + String.valueOf(Configuration.isTrue("xr.test-config-boolean", false)));
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -730,8 +730,8 @@ public class Configuration {
      * @param defaultVal PARAM
      * @return Value assigned to the key, as a String.
      */
-    public static boolean isTrue(String key, boolean defaultVal) {
-        String val = valueFor(key);
+    public static boolean isTrue(final String key, final boolean defaultVal) {
+        final String val = valueFor(key);
         if (val == null) {
             return defaultVal;
         }
@@ -755,7 +755,7 @@ public class Configuration {
      * @param defaultVal PARAM
      * @return Value assigned to the key, as a String.
      */
-    public static boolean isFalse(String key, boolean defaultVal) {
+    public static boolean isFalse(final String key, final boolean defaultVal) {
         return !isTrue(key, defaultVal);
     }
 
@@ -779,19 +779,19 @@ public class Configuration {
      * @param defaultValue Returned in case of error.
      * @return Value of the constant, or defaultValue in case of error.
      */
-    public static Object valueFromClassConstant(String key, Object defaultValue) {
-        Configuration conf = instance();
-        String val = valueFor(key);
+    public static Object valueFromClassConstant(final String key, final Object defaultValue) {
+        final Configuration conf = instance();
+        final String val = valueFor(key);
         if ( val == null ) {
             return defaultValue;
         }
-        int idx = val.lastIndexOf(".");
+        final int idx = val.lastIndexOf(".");
         String klassname;
         String cnst;
         try {
             klassname = val.substring(0, idx);
             cnst = val.substring(idx + 1);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (final IndexOutOfBoundsException e) {
             conf.warning("Property key " + key + " for object value constant is not properly formatted; " +
                     "should be FQN<dot>constant, is " + val);
             return defaultValue;
@@ -799,22 +799,22 @@ public class Configuration {
         Class klass;
         try {
             klass = Class.forName(klassname);
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
             conf.warning("Property for object value constant " + key + " is not a FQN: " + klassname);
             return defaultValue;
         }
 
         Object cnstVal;
         try {
-            Field fld = klass.getDeclaredField(cnst);
+            final Field fld = klass.getDeclaredField(cnst);
             try {
                 cnstVal = fld.get(klass);
-            } catch (IllegalAccessException e) {
+            } catch (final IllegalAccessException e) {
                 conf.warning("Property for object value constant " + key + ", field is not public: " + klassname +
                         "." + cnst);
                 return defaultValue;
             }
-        } catch (NoSuchFieldException e) {
+        } catch (final NoSuchFieldException e) {
             conf.warning("Property for object value constant " + key + " is not a FQN: " + klassname);
             return defaultValue;
         }
@@ -827,7 +827,7 @@ public class Configuration {
      * with a completely empty configuration instance.
      */
     private Properties newFallbackProperties() {
-        Properties props = new Properties();
+        final Properties props = new Properties();
         props.setProperty("xr.css.user-agent-default-css", "/resources/css/");
         props.setProperty("xr.test.files.hamlet", "/demos/browser/xhtml/hamlet.xhtml");
         props.setProperty("xr.simple-log-format", "{1} {2}:: {5}");

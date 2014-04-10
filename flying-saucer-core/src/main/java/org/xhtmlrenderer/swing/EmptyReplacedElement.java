@@ -25,17 +25,17 @@ import org.xhtmlrenderer.extend.ReplacedElement;
 import org.xhtmlrenderer.layout.LayoutContext;
 
 public class EmptyReplacedElement implements ReplacedElement {
-    private int _width;
-    private int _height;
+    private final int _width;
+    private final int _height;
     
     private Point _location = new Point(0, 0);
     
-    public EmptyReplacedElement(int width, int height) {
+    public EmptyReplacedElement(final int width, final int height) {
         _width = width;
         _height = height;
     }
     
-    public void detach(LayoutContext c) {
+    public void detach(final LayoutContext c) {
     }
 
     public int getIntrinsicHeight() {
@@ -54,7 +54,7 @@ public class EmptyReplacedElement implements ReplacedElement {
         return false;
     }
 
-    public void setLocation(int x, int y) {
+    public void setLocation(final int x, final int y) {
         _location = new Point(0, 0);
     }
 

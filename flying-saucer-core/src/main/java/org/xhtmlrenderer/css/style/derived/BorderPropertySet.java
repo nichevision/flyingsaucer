@@ -60,11 +60,11 @@ public class BorderPropertySet extends RectPropertySet
         this._rightColor = null;
     }
     
-    public BorderPropertySet(BorderPropertySet r,
-            float top,
-            float right,
-            float bottom,
-            float left
+    public BorderPropertySet(final BorderPropertySet r,
+            final float top,
+            final float right,
+            final float bottom,
+            final float left
     ) {
         this._top = top;
         this._right = right;
@@ -93,10 +93,10 @@ public class BorderPropertySet extends RectPropertySet
     }
     
     public BorderPropertySet(
-           CollapsedBorderValue top,
-           CollapsedBorderValue right,
-           CollapsedBorderValue bottom,
-           CollapsedBorderValue left
+           final CollapsedBorderValue top,
+           final CollapsedBorderValue right,
+           final CollapsedBorderValue bottom,
+           final CollapsedBorderValue left
     ) {
         this._top =  top.width();
         this._right = right.width();
@@ -125,8 +125,8 @@ public class BorderPropertySet extends RectPropertySet
     }
 
     private BorderPropertySet(
-            CalculatedStyle style,
-            CssContext ctx
+            final CalculatedStyle style,
+            final CssContext ctx
     ) {
         _top = ( style.isIdent(CSSName.BORDER_TOP_STYLE, IdentValue.NONE) ||
                  style.isIdent(CSSName.BORDER_TOP_STYLE, IdentValue.HIDDEN)  
@@ -155,10 +155,10 @@ public class BorderPropertySet extends RectPropertySet
         _bottomStyle = style.getIdent(CSSName.BORDER_BOTTOM_STYLE);
         _leftStyle = style.getIdent(CSSName.BORDER_LEFT_STYLE);
         
-        BorderRadiusCorner blCorner = style.getBorderRadiusCorner(CSSName.BORDER_BOTTOM_LEFT_RADIUS);
-        BorderRadiusCorner brCorner = style.getBorderRadiusCorner(CSSName.BORDER_BOTTOM_RIGHT_RADIUS);
-        BorderRadiusCorner tlCorner = style.getBorderRadiusCorner(CSSName.BORDER_TOP_LEFT_RADIUS);
-        BorderRadiusCorner trCorner = style.getBorderRadiusCorner(CSSName.BORDER_TOP_RIGHT_RADIUS);
+        final BorderRadiusCorner blCorner = style.getBorderRadiusCorner(CSSName.BORDER_BOTTOM_LEFT_RADIUS);
+        final BorderRadiusCorner brCorner = style.getBorderRadiusCorner(CSSName.BORDER_BOTTOM_RIGHT_RADIUS);
+        final BorderRadiusCorner tlCorner = style.getBorderRadiusCorner(CSSName.BORDER_TOP_LEFT_RADIUS);
+        final BorderRadiusCorner trCorner = style.getBorderRadiusCorner(CSSName.BORDER_TOP_RIGHT_RADIUS);
 
         if (blCorner == BorderRadiusCorner.ZERO)
         {
@@ -257,9 +257,9 @@ public class BorderPropertySet extends RectPropertySet
         }
     }
 
-    private BorderPropertySet(BorderPropertySet r,
-			FSColor top, FSColor bottom, FSColor left,
-			FSColor right)
+    private BorderPropertySet(final BorderPropertySet r,
+			final FSColor top, final FSColor bottom, final FSColor left,
+			final FSColor right)
     {
         this._top = r._top;
         this._right = r._right;
@@ -305,7 +305,7 @@ public class BorderPropertySet extends RectPropertySet
     
     public boolean isRoundedRectStandard()
     {
-    	FSColor startc = _leftColor;
+    	final FSColor startc = _leftColor;
     	
     	if (startc == null &&
     		(_rightColor != null ||
@@ -319,7 +319,7 @@ public class BorderPropertySet extends RectPropertySet
     		(!startc.equals(_topColor))))
     		return false;
     	
-    	float start = _bottomLeft1;
+    	final float start = _bottomLeft1;
     	
     	if ((_bottomLeft2 != start) ||
     		(_bottomRight1 != start) ||
@@ -330,14 +330,14 @@ public class BorderPropertySet extends RectPropertySet
     		(_topRight2 != start))
     		return false;
     	
-    	float startw = _left;
+    	final float startw = _left;
     	
     	if ((_right != startw) ||
     		(_bottom != startw) ||
     		(_top != startw))
     		return false;
     	
-    	IdentValue starts = _leftStyle;
+    	final IdentValue starts = _leftStyle;
     	
     	if ((_rightStyle != starts) ||
     		(_bottomStyle != starts) ||
@@ -393,9 +393,9 @@ public class BorderPropertySet extends RectPropertySet
      * @param style
      * @return Returns
      */
-    public BorderPropertySet lighten(IdentValue style) 
+    public BorderPropertySet lighten(final IdentValue style) 
     {
-        BorderPropertySet bc = new BorderPropertySet(this,
+        final BorderPropertySet bc = new BorderPropertySet(this,
         		_topColor.lightenColor(),
         		_bottomColor.lightenColor(),
         		_leftColor.lightenColor(),
@@ -411,8 +411,8 @@ public class BorderPropertySet extends RectPropertySet
      * @param style
      * @return Returns
      */
-    public BorderPropertySet darken(IdentValue style) {
-        BorderPropertySet bc = new BorderPropertySet(this,
+    public BorderPropertySet darken(final IdentValue style) {
+        final BorderPropertySet bc = new BorderPropertySet(this,
         		_topColor.darkenColor(),
         		_bottomColor.darkenColor(),
         		_leftColor.darkenColor(),
@@ -423,8 +423,8 @@ public class BorderPropertySet extends RectPropertySet
     }
 
     public static BorderPropertySet newInstance(
-            CalculatedStyle style,
-            CssContext ctx
+            final CalculatedStyle style,
+            final CssContext ctx
     ) {
         return new BorderPropertySet(style, ctx);
     }

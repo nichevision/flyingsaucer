@@ -41,24 +41,24 @@ import java.util.Set;
 public class AWTFontResolver implements FontResolver
 {
 	// Contains actual instances of fonts at the correct size, weight, etc.
-	private Map<String, Font> _instanceHash = new HashMap<>();
+	private final Map<String, Font> _instanceHash = new HashMap<>();
 
 	// Contains the root fonts that are loaded. That is Font.PLAIN, etc.
-	private Map<String, Font> _availableFontsHash = new HashMap<>();
+	private final Map<String, Font> _availableFontsHash = new HashMap<>();
 
 	// Contains a set of avaialable font families.
-	private Set<String> _availableFontsSet = new HashSet<>();
+	private final Set<String> _availableFontsSet = new HashSet<>();
     
     public AWTFontResolver() {
         init();
     }
     
     private void init() {
-        GraphicsEnvironment gfx = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        String[] availableFonts = gfx.getAvailableFontFamilyNames();
+        final GraphicsEnvironment gfx = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        final String[] availableFonts = gfx.getAvailableFontFamilyNames();
         
         // preload the font map with the font names as keys in a set.
-        for (String availableFont : availableFonts) {
+        for (final String availableFont : availableFonts) {
             _availableFontsSet.add(availableFont);
         }
 
@@ -72,12 +72,12 @@ public class AWTFontResolver implements FontResolver
         init();
     }
 
-    private FSFont resolveFont(SharedContext ctx, String[] families, float size, IdentValue weight, IdentValue style, IdentValue variant) {
+    private FSFont resolveFont(final SharedContext ctx, final String[] families, final float size, final IdentValue weight, final IdentValue style, final IdentValue variant) {
         // Try to create a font for each font family provided as CSS
     	// can specify fallback fonts.
         if (families != null) {
-            for (String family : families) {
-                Font font = resolveFont(ctx, family, size, weight, style, variant);
+            for (final String family : families) {
+                final Font font = resolveFont(ctx, family, size, weight, style, variant);
                 if (font != null) {
                     return new AWTFSFont(font);
                 }
@@ -90,7 +90,7 @@ public class AWTFontResolver implements FontResolver
             family = "Serif";
         }
 
-        Font fnt = createFont(ctx, (Font) _availableFontsHash.get(family), size, weight, style, variant);
+        final Font fnt = createFont(ctx, (Font) _availableFontsHash.get(family), size, weight, style, variant);
         _instanceHash.put(getFontInstanceHashName(ctx, family, size, weight, style, variant), fnt);
         return new AWTFSFont(fnt);
     }
@@ -98,11 +98,11 @@ public class AWTFontResolver implements FontResolver
     /**
      * This allows the user to replace one font family with another.
      */
-    public void setFontMapping(String name, Font font) {
+    public void setFontMapping(final String name, final Font font) {
         _availableFontsHash.put(name, font.deriveFont(1f));
     }
 
-    protected static Font createFont(SharedContext ctx, Font rootFont, float size, IdentValue weight, IdentValue style, IdentValue variant) {
+    protected static Font createFont(final SharedContext ctx, final Font rootFont, float size, final IdentValue weight, final IdentValue style, final IdentValue variant) {
         int fontFlags = Font.PLAIN;
         if (weight != null &&
                 (weight == IdentValue.BOLD ||
@@ -130,7 +130,7 @@ public class AWTFontResolver implements FontResolver
         return fnt;
     }
 
-    protected Font resolveFont(SharedContext ctx, String font, float size, IdentValue weight, IdentValue style, IdentValue variant) {
+    protected Font resolveFont(final SharedContext ctx, String font, final float size, final IdentValue weight, final IdentValue style, final IdentValue variant) {
         // Strip off the "s if they are there
         if (font.startsWith("\"")) {
             font = font.substring(1);
@@ -151,7 +151,7 @@ public class AWTFontResolver implements FontResolver
         if (ciEquals(font, "SansSerif") && style == IdentValue.ITALIC) font = "Serif";
 
         // assemble a font instance hash name
-        String fontInstanceName = getFontInstanceHashName(ctx, font, size, weight, style, variant);
+        final String fontInstanceName = getFontInstanceHashName(ctx, font, size, weight, style, variant);
 
         // check if the font instance exists in the hash table
         if (_instanceHash.containsKey(fontInstanceName)) {
@@ -165,14 +165,14 @@ public class AWTFontResolver implements FontResolver
         	if (!_availableFontsSet.contains(font))
         		return null;
 
-        	Font rootFont = new Font(font, Font.PLAIN, 1);
+        	final Font rootFont = new Font(font, Font.PLAIN, 1);
             _availableFontsHash.put(font, rootFont);
         }
         
-        Font value = _availableFontsHash.get(font);
+        final Font value = _availableFontsHash.get(font);
 
         // now that we have a root font, we need to create the correct version of it
-        Font fnt = createFont(ctx, value, size, weight, style, variant);
+        final Font fnt = createFont(ctx, value, size, weight, style, variant);
 
         // add the font to the hash so we don't have to do this again
         _instanceHash.put(fontInstanceName, fnt);
@@ -182,11 +182,11 @@ public class AWTFontResolver implements FontResolver
     /*
      * Gets a hash key containing name, size, weight, style, etc.
      */
-    protected static String getFontInstanceHashName(SharedContext ctx, String name, float size, IdentValue weight, IdentValue style, IdentValue variant) {
+    protected static String getFontInstanceHashName(final SharedContext ctx, final String name, final float size, final IdentValue weight, final IdentValue style, final IdentValue variant) {
         return name + "-" + (size * ctx.getTextRenderer().getFontScale()) + "-" + weight + "-" + style + "-" + variant;
     }
 
-    public FSFont resolveFont(SharedContext renderingContext, FontSpecification spec) {
+    public FSFont resolveFont(final SharedContext renderingContext, final FontSpecification spec) {
         return resolveFont(renderingContext, spec.families, spec.size, spec.fontWeight, spec.fontStyle, spec.variant);
     }
 }

@@ -25,7 +25,7 @@ public class FSCMYKColor implements FSColor {
     private final float _yellow;
     private final float _black;
     
-    public FSCMYKColor(float c, float m, float y, float k) {
+    public FSCMYKColor(final float c, final float m, final float y, final float k) {
         if (c < 0 || c > 1) {
             throw new IllegalArgumentException();
         }

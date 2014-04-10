@@ -194,15 +194,15 @@ public class Conversions {
         BORDER_WIDTHS.put("thick", new PropertyValueImp(CSSPrimitiveUnit.CSS_PX, 3.0f, "3px"));
     }
     
-    public static FSRGBColor getColor(String ident) {
+    public static FSRGBColor getColor(final String ident) {
         return COLORS.get(ident);
     }
     
-    public static IdentValue getNumericFontWeight(float weight) {
+    public static IdentValue getNumericFontWeight(final float weight) {
         return NUMERIC_FONT_WEIGHTS.get(new Float(weight));
     }
     
-    public static PropertyValue getBorderWidth(String ident) {
+    public static PropertyValue getBorderWidth(final String ident) {
         return BORDER_WIDTHS.get(ident);
     }
     

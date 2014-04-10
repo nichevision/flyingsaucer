@@ -45,14 +45,14 @@ public class BorderPainter {
     	float y;
     }
     
-    private static void relLineTo(Path2D p, float x, float y, Position pos)
+    private static void relLineTo(final Path2D p, final float x, final float y, final Position pos)
     {
     	p.lineTo(x + pos.x, y + pos.y);
     	pos.x = x + pos.x;
     	pos.y = y + pos.y;
     }
     
-    private static void relCurveTo(Path2D p, float p1, float p2, float p3, float p4, float p5, float p6, Position pos)
+    private static void relCurveTo(final Path2D p, final float p1, final float p2, final float p3, final float p4, final float p5, final float p6, final Position pos)
     {
     	p.curveTo(p1 + pos.x, p2 + pos.y, p3 + pos.x, p4 + pos.y, p5 + pos.x, p6 + pos.y);
     	pos.x = p5 + pos.x;
@@ -63,7 +63,7 @@ public class BorderPainter {
      * Simple rounded rect.
      * From: http://cairographics.org/cookbook/roundedrectangles/
      */
-    private static void roundedRect(Path2D cr, float x, float y, float w, float h, float radiusX, float radiusY)
+    private static void roundedRect(final Path2D cr, final float x, final float y, final float w, final float h, float radiusX, float radiusY)
     {
         if (radiusX > w - radiusX)
             radiusX = w / 2;
@@ -71,10 +71,10 @@ public class BorderPainter {
             radiusY = h / 2;
 
         // approximate (quite close) the arc using a bezier curve
-        float c1 = (float) (ARC_TO_BEZIER * radiusX);
-        float c2 = (float) (ARC_TO_BEZIER * radiusY);
+        final float c1 = (float) (ARC_TO_BEZIER * radiusX);
+        final float c2 = (float) (ARC_TO_BEZIER * radiusY);
 
-        Position pos = new Position();
+        final Position pos = new Position();
         
         cr.moveTo(x + radiusX, y);
 
@@ -100,8 +100,8 @@ public class BorderPainter {
      * @param xOffset for determining starting point for patterns
      */
     public static void paint(
-            Rectangle bounds, int sides, BorderPropertySet border, 
-            RenderingContext ctx, int xOffset, boolean bevel) 
+            final Rectangle bounds, int sides, final BorderPropertySet border, 
+            final RenderingContext ctx, final int xOffset, final boolean bevel) 
     {
     	if ((sides & BorderPainter.TOP) == BorderPainter.TOP && border.noTop()) {
             sides -= BorderPainter.TOP;
@@ -116,7 +116,7 @@ public class BorderPainter {
             sides -= BorderPainter.RIGHT;
         }
         
-        OutputDevice dev = ctx.getOutputDevice();
+        final OutputDevice dev = ctx.getOutputDevice();
         
     	if (border.isSquareRectStandard() &&
     		sides == BorderPainter.ALL &&
@@ -161,7 +161,7 @@ public class BorderPainter {
         		border.leftStyle() == IdentValue.SOLID &&
         		border.left() == 1)
     	{
-    		Path2D path = new Path2D.Float();
+    		final Path2D path = new Path2D.Float();
     		roundedRect(path, bounds.x, bounds.y, bounds.width, bounds.height, border.radiusTopLeftOne(), border.radiusTopLeftTwo());
     		dev.setStroke(new BasicStroke(1.0f));
     		dev.setColor(border.leftColor());
@@ -174,8 +174,8 @@ public class BorderPainter {
     	}
     }
 
-    private static Rectangle shrinkRect(final Rectangle rect, final BorderPropertySet border, int sides) {
-        Rectangle r2 = new Rectangle();
+    private static Rectangle shrinkRect(final Rectangle rect, final BorderPropertySet border, final int sides) {
+        final Rectangle r2 = new Rectangle();
         r2.x = rect.x + ((sides & BorderPainter.LEFT) == 0 ? 0 : (int) border.left());
         r2.width = rect.width - ((sides & BorderPainter.LEFT) == 0 ? 0 : (int) border.left()) - ((sides & BorderPainter.RIGHT) == 0 ? 0 : (int) border.right());
         r2.y = rect.y + ((sides & BorderPainter.TOP) == 0 ? 0 : (int) border.top());
@@ -183,11 +183,11 @@ public class BorderPainter {
         return r2;
     }
 
-    private static void paintBorderSide(OutputDevice outputDevice, 
+    private static void paintBorderSide(final OutputDevice outputDevice, 
             final BorderPropertySet border, final Rectangle bounds, final int sides, 
-            int currentSide, final IdentValue borderSideStyle, int xOffset, boolean bevel) {
+            final int currentSide, final IdentValue borderSideStyle, final int xOffset, final boolean bevel) {
         if (borderSideStyle == IdentValue.RIDGE || borderSideStyle == IdentValue.GROOVE) {
-            BorderPropertySet bd2 = new BorderPropertySet(border, (border.top() / 2),
+            final BorderPropertySet bd2 = new BorderPropertySet(border, (border.top() / 2),
                     (border.right() / 2),
                     (border.bottom() / 2),
                     (border.left() / 2));
@@ -238,15 +238,15 @@ public class BorderPainter {
         }
     }
     
-    private static DoubleBorderInfo calcDoubleBorderInfo(int width) {
-        DoubleBorderInfo result = new DoubleBorderInfo();
+    private static DoubleBorderInfo calcDoubleBorderInfo(final int width) {
+        final DoubleBorderInfo result = new DoubleBorderInfo();
         if (width == 1) {
             result.setOuter(1);
         } else if (width == 2) {
             result.setOuter(1);
             result.setInner(1);
         } else {
-            int extra = width % 3;
+            final int extra = width % 3;
             switch (extra) {
                 case 0:
                     result.setOuter(width / 3);
@@ -269,22 +269,22 @@ public class BorderPainter {
     }
 
     private static void paintDoubleBorder(
-            OutputDevice outputDevice, BorderPropertySet border, 
-            Rectangle bounds, int sides, int currentSide, boolean bevel) {
-        DoubleBorderInfo topBorderInfo = calcDoubleBorderInfo((int)border.top());
-        DoubleBorderInfo rightBorderInfo = calcDoubleBorderInfo((int)border.right());
-        DoubleBorderInfo bottomBorderInfo = calcDoubleBorderInfo((int)border.bottom());
-        DoubleBorderInfo leftBorderInfo = calcDoubleBorderInfo((int)border.left());
+            final OutputDevice outputDevice, final BorderPropertySet border, 
+            final Rectangle bounds, final int sides, final int currentSide, final boolean bevel) {
+        final DoubleBorderInfo topBorderInfo = calcDoubleBorderInfo((int)border.top());
+        final DoubleBorderInfo rightBorderInfo = calcDoubleBorderInfo((int)border.right());
+        final DoubleBorderInfo bottomBorderInfo = calcDoubleBorderInfo((int)border.bottom());
+        final DoubleBorderInfo leftBorderInfo = calcDoubleBorderInfo((int)border.left());
         
-        BorderPropertySet outer = new BorderPropertySet(border,
+        final BorderPropertySet outer = new BorderPropertySet(border,
                 topBorderInfo.getOuter(), rightBorderInfo.getOuter(), 
                 bottomBorderInfo.getOuter(), leftBorderInfo.getOuter());
         
-        BorderPropertySet center = new BorderPropertySet(border,
+        final BorderPropertySet center = new BorderPropertySet(border,
                 topBorderInfo.getCenter(), rightBorderInfo.getCenter(), 
                 bottomBorderInfo.getCenter(), leftBorderInfo.getCenter());
         
-        BorderPropertySet inner = new BorderPropertySet(border,
+        final BorderPropertySet inner = new BorderPropertySet(border,
                 topBorderInfo.getInner(), rightBorderInfo.getInner(), 
                 bottomBorderInfo.getInner(), leftBorderInfo.getInner());
 
@@ -301,7 +301,7 @@ public class BorderPainter {
      */
     private static Polygon getBorderSidePolygon(
             final Rectangle bounds, final BorderPropertySet border, final int sides, 
-            int currentSide, boolean bevel) {
+            final int currentSide, final boolean bevel) {
         int rightCorner = 0;
         int leftCorner = 0;
         int topCorner = 0;
@@ -357,11 +357,11 @@ public class BorderPainter {
     /**
      * @param xOffset     for inline borders, to determine dash_phase of top and bottom
      */
-    private static void paintPatternedRect(OutputDevice outputDevice, 
+    private static void paintPatternedRect(final OutputDevice outputDevice, 
             final Rectangle bounds, final BorderPropertySet border, 
             final BorderPropertySet color, final float[] pattern, 
-            final int sides, final int currentSide, int xOffset) {
-        Stroke old_stroke = outputDevice.getStroke();
+            final int sides, final int currentSide, final int xOffset) {
+        final Stroke old_stroke = outputDevice.getStroke();
 
         if (currentSide == BorderPainter.TOP) {
             outputDevice.setColor(color.topColor());
@@ -388,10 +388,10 @@ public class BorderPainter {
         outputDevice.setStroke(old_stroke);
     }
 
-    private static void paintBorderSidePolygon(OutputDevice outputDevice, 
+    private static void paintBorderSidePolygon(final OutputDevice outputDevice, 
             final Rectangle bounds, final BorderPropertySet border, 
             final BorderPropertySet high, final BorderPropertySet low, 
-            final int sides, int currentSide, boolean bevel) {
+            final int sides, final int currentSide, final boolean bevel) {
         if (currentSide == BorderPainter.TOP) {
             paintSolid(outputDevice, bounds, border, high, sides, currentSide, bevel);
         } else if (currentSide == BorderPainter.BOTTOM) {
@@ -403,11 +403,11 @@ public class BorderPainter {
         }
     }
 
-    private static void paintSolid(OutputDevice outputDevice, 
+    private static void paintSolid(final OutputDevice outputDevice, 
             final Rectangle bounds, final BorderPropertySet border, 
-            final BorderPropertySet bcolor, final int sides, int currentSide,
-            boolean bevel) {
-        Polygon poly = getBorderSidePolygon(bounds, border, sides, currentSide, bevel);
+            final BorderPropertySet bcolor, final int sides, final int currentSide,
+            final boolean bevel) {
+        final Polygon poly = getBorderSidePolygon(bounds, border, sides, currentSide, bevel);
 
         if (currentSide == BorderPainter.TOP) {
             outputDevice.setColor(bcolor.topColor());
@@ -456,7 +456,7 @@ public class BorderPainter {
             return _center;
         }
         
-        public void setCenter(int center) {
+        public void setCenter(final int center) {
             _center = center;
         }
         
@@ -464,7 +464,7 @@ public class BorderPainter {
             return _inner;
         }
         
-        public void setInner(int inner) {
+        public void setInner(final int inner) {
             _inner = inner;
         }
         
@@ -472,13 +472,13 @@ public class BorderPainter {
             return _outer;
         }
         
-        public void setOuter(int outer) {
+        public void setOuter(final int outer) {
             _outer = outer;
         }
     }
 
-	public static Shape generateBorderBounds(Rectangle bounds,
-			BorderPropertySet border, boolean inside) {
+	public static Shape generateBorderBounds(final Rectangle bounds,
+			final BorderPropertySet border, final boolean inside) {
 
 		if (!border.hasBorderRadius())
 		{
@@ -488,7 +488,7 @@ public class BorderPainter {
 	    		border.leftStyle() == IdentValue.SOLID &&
 	    		border.left() == 1)
 		{
-			Path2D path = new Path2D.Float();
+			final Path2D path = new Path2D.Float();
 			roundedRect(path, bounds.x , bounds.y, bounds.width, bounds.height, border.radiusTopLeftOne(), border.radiusTopLeftTwo());
 			return path;
 		}

@@ -68,7 +68,7 @@ public class StylesheetInfo {
      * @param m  a single media identifier
      * @return   true if the stylesheet referenced applies to the medium
      */
-    public boolean appliesToMedia(String m) {
+    public boolean appliesToMedia(final String m) {
         return m.toLowerCase().equals("all") || 
             mediaTypes.contains("all") || mediaTypes.contains(m.toLowerCase());
     }
@@ -78,7 +78,7 @@ public class StylesheetInfo {
      *
      * @param uri  The new uri value
      */
-    public void setUri( String uri ) {
+    public void setUri( final String uri ) {
         this.uri = uri;
     }
 
@@ -87,20 +87,20 @@ public class StylesheetInfo {
      *
      * @param media  The new media value
      */
-    public void setMedia( String media ) {
-        String[] mediaTypes = media.split(",");
-        List<String> l = new ArrayList<String>(mediaTypes.length);
-        for (String mediaType : mediaTypes) {
+    public void setMedia( final String media ) {
+        final String[] mediaTypes = media.split(",");
+        final List<String> l = new ArrayList<String>(mediaTypes.length);
+        for (final String mediaType : mediaTypes) {
             l.add(mediaType.trim().toLowerCase());
         }
         this.mediaTypes = l;
     }
     
-    public void setMedia(List<String> mediaTypes) {
+    public void setMedia(final List<String> mediaTypes) {
         this.mediaTypes = mediaTypes;
     }
     
-    public void addMedium(String medium) {
+    public void addMedium(final String medium) {
         mediaTypes.add(medium);
     }
 
@@ -109,7 +109,7 @@ public class StylesheetInfo {
      *
      * @param origin  The new origin value
      */
-    public void setOrigin( CSSOrigin origin ) {
+    public void setOrigin( final CSSOrigin origin ) {
         this.origin = origin;
     }
 
@@ -118,7 +118,7 @@ public class StylesheetInfo {
      *
      * @param type  The new type value
      */
-    public void setType( String type ) {
+    public void setType( final String type ) {
         this.type = type;
     }
 
@@ -127,7 +127,7 @@ public class StylesheetInfo {
      *
      * @param title  The new title value
      */
-    public void setTitle( String title ) {
+    public void setTitle( final String title ) {
         this.title = title;
     }
 
@@ -136,7 +136,7 @@ public class StylesheetInfo {
      *
      * @param stylesheet  The new stylesheet value
      */
-    public void setStylesheet( Stylesheet stylesheet ) {
+    public void setStylesheet( final Stylesheet stylesheet ) {
         this.stylesheet = stylesheet;
     }
 
@@ -198,7 +198,7 @@ public class StylesheetInfo {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(final String content) {
         this.content = content;
     }
     

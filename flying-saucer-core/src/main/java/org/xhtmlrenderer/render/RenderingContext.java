@@ -52,15 +52,15 @@ public class RenderingContext implements CssContext {
      * <p/>
      * needs a new instance every run
      */
-    public RenderingContext(SharedContext sharedContext) {
+    public RenderingContext(final SharedContext sharedContext) {
         this.sharedContext = sharedContext;
     }
 
-    public void setContext(SharedContext sharedContext) {
+    public void setContext(final SharedContext sharedContext) {
         this.sharedContext = sharedContext;
     }
 
-    public void setBaseURL(String url) {
+    public void setBaseURL(final String url) {
         sharedContext.setBaseURL(url);
     }
 
@@ -84,11 +84,11 @@ public class RenderingContext implements CssContext {
         return sharedContext.getDotsPerPixel();
     }    
     
-    public float getFontSize2D(FontSpecification font) {
+    public float getFontSize2D(final FontSpecification font) {
         return sharedContext.getFont(font).getSize2D();
     }
 
-    public float getXHeight(FontSpecification parentFont) {
+    public float getXHeight(final FontSpecification parentFont) {
         return sharedContext.getXHeight(getFontContext(), parentFont);
     }
 
@@ -113,7 +113,7 @@ public class RenderingContext implements CssContext {
         return sharedContext.getFontResolver();
     }
     
-    public FSFont getFont(FontSpecification font) {
+    public FSFont getFont(final FontSpecification font) {
         return sharedContext.getFont(font);
     }
 
@@ -135,7 +135,7 @@ public class RenderingContext implements CssContext {
     }
     
     public Rectangle getViewportRectangle() {
-        Rectangle result = new Rectangle(getFixedRectangle());
+        final Rectangle result = new Rectangle(getFixedRectangle());
         result.y *= -1;
         
         return result;
@@ -169,7 +169,7 @@ public class RenderingContext implements CssContext {
         return outputDevice;
     }
 
-    public void setOutputDevice(OutputDevice outputDevice) {
+    public void setOutputDevice(final OutputDevice outputDevice) {
         this.outputDevice = outputDevice;
     }
 
@@ -177,11 +177,11 @@ public class RenderingContext implements CssContext {
         return fontContext;
     }
 
-    public void setFontContext(FontContext fontContext) {
+    public void setFontContext(final FontContext fontContext) {
         this.fontContext = fontContext;
     }
 
-    public void setPage(int pageNo, PageBox page) {
+    public void setPage(final int pageNo, final PageBox page) {
         this.pageNo = pageNo;
         this.page = page;
     }
@@ -190,7 +190,7 @@ public class RenderingContext implements CssContext {
         return pageCount;
     }
 
-    public void setPageCount(int pageCount) {
+    public void setPageCount(final int pageCount) {
         this.pageCount = pageCount;
     }
 
@@ -206,7 +206,7 @@ public class RenderingContext implements CssContext {
         return sharedContext.getCss();
     }
     
-    public FSFontMetrics getFSFontMetrics(FSFont font) {
+    public FSFontMetrics getFSFontMetrics(final FSFont font) {
         return getTextRenderer().getFSFontMetrics(getFontContext(), font, "");
     }
     
@@ -214,7 +214,7 @@ public class RenderingContext implements CssContext {
         return rootLayer;
     }
 
-    public void setRootLayer(Layer rootLayer) {
+    public void setRootLayer(final Layer rootLayer) {
         this.rootLayer = rootLayer;
     }
 
@@ -222,11 +222,11 @@ public class RenderingContext implements CssContext {
         return initialPageNo;
     }
 
-    public void setInitialPageNo(int initialPageNo) {
+    public void setInitialPageNo(final int initialPageNo) {
         this.initialPageNo = initialPageNo;
     }    
 
-    public Box getBoxById(String id) {
+    public Box getBoxById(final String id) {
         return sharedContext.getBoxById(id);
     }
 }

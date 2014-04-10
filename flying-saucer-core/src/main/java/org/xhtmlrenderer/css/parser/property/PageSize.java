@@ -100,7 +100,7 @@ public class PageSize {
     private PropertyValue _pageWidth;
     private PropertyValue _pageHeight;
     
-    private PageSize(PropertyValue width, PropertyValue height) {
+    private PageSize(final PropertyValue width, final PropertyValue height) {
         _pageWidth = width;
         _pageHeight = height;
     }
@@ -116,7 +116,7 @@ public class PageSize {
         return _pageWidth;
     }
     
-    public static PageSize getPageSize(String pageSize) {
+    public static PageSize getPageSize(final String pageSize) {
         return SIZE_MAP.get(pageSize);
     }
 }

@@ -35,7 +35,7 @@ import java.util.Locale;
  */
 public class GeneralUtil {
 
-	public static boolean ciEquals(String a, String b)
+	public static boolean ciEquals(final String a, final String b)
 	{
 		if (a == null)
 			return b == null;
@@ -59,29 +59,29 @@ public class GeneralUtil {
      * @param resource PARAM
      * @return Returns
      */
-    public static InputStream openStreamFromClasspath(Object obj, String resource) {
+    public static InputStream openStreamFromClasspath(final Object obj, final String resource) {
         InputStream readStream = null;
         try {
-            ClassLoader loader = obj.getClass().getClassLoader();
+            final ClassLoader loader = obj.getClass().getClassLoader();
             if (loader == null) {
                 readStream = ClassLoader.getSystemResourceAsStream(resource);
             } else {
                 readStream = loader.getResourceAsStream(resource);
             }
             if (readStream == null) {
-                URL stream = resource.getClass().getResource(resource);
+                final URL stream = resource.getClass().getResource(resource);
                 if (stream != null) readStream = stream.openStream();
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             XRLog.exception("Could not open stream from CLASSPATH: " + resource, ex);
         }
         return readStream;
     }
 
-    public static URL getURLFromClasspath(Object obj, String resource) {
+    public static URL getURLFromClasspath(final Object obj, final String resource) {
         URL url = null;
         try {
-            ClassLoader loader = obj.getClass().getClassLoader();
+            final ClassLoader loader = obj.getClass().getClassLoader();
             if (loader == null) {
                 url = ClassLoader.getSystemResource(resource);
             } else {
@@ -90,7 +90,7 @@ public class GeneralUtil {
             if (url == null) {
                 url = resource.getClass().getResource(resource);
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             XRLog.exception("Could not get URL from CLASSPATH: " + resource, ex);
         }
         return url;
@@ -102,15 +102,15 @@ public class GeneralUtil {
      *
      * @param ex PARAM
      */
-    public static void dumpShortException(Exception ex) {
+    public static void dumpShortException(final Exception ex) {
         String s = ex.getMessage();
         if (s == null || s.trim().equals("null")) {
             s = "{no ex. message}";
         }
         System.out.println(s + ", " + ex.getClass());
-        StackTraceElement[] stes = ex.getStackTrace();
+        final StackTraceElement[] stes = ex.getStackTrace();
         for (int i = 0; i < stes.length && i < 5; i++) {
-            StackTraceElement ste = stes[i];
+            final StackTraceElement ste = stes[i];
             System.out.println("  " + ste.getClassName() + "." + ste.getMethodName() + "(ln " + ste.getLineNumber() + ")");
         }
     }
@@ -142,17 +142,17 @@ public class GeneralUtil {
      * @return see desc
      */
     public static String trackBack(int cnt) {
-        Exception ex = new Exception();
+        final Exception ex = new Exception();
         StringBuffer sb = new StringBuffer();
-        List<String> list = new ArrayList<String>(cnt);
-        StackTraceElement[] stes = ex.getStackTrace();
+        final List<String> list = new ArrayList<String>(cnt);
+        final StackTraceElement[] stes = ex.getStackTrace();
         if (cnt >= stes.length) {
             cnt = stes.length - 1;
         }
 
         // >= 1 to not include this method
         for (int i = cnt; i >= 1; i--) {
-            StackTraceElement ste = stes[i];
+            final StackTraceElement ste = stes[i];
             sb.append(GeneralUtil.classNameOnly(ste.getClassName()));
             sb.append(".");
             sb.append(ste.getMethodName());
@@ -161,11 +161,11 @@ public class GeneralUtil {
             sb = new StringBuffer();
         }
 
-        Iterator<String> iter = list.iterator();
-        StringBuffer padding = new StringBuffer("");
-        StringBuffer trackback = new StringBuffer();
+        final Iterator<String> iter = list.iterator();
+        final StringBuffer padding = new StringBuffer("");
+        final StringBuffer trackback = new StringBuffer();
         while (iter.hasNext()) {
-            String s = iter.next();
+            final String s = iter.next();
             trackback.append(padding).append(s).append("\n");
             padding.append("   ");
         }
@@ -179,7 +179,7 @@ public class GeneralUtil {
      * @param o PARAM
      * @return Returns
      */
-    public static String classNameOnly(Object o) {
+    public static String classNameOnly(final Object o) {
         String s = "[null object ref]";
         if (o != null) {
             s = classNameOnly(o.getClass().getName());
@@ -193,7 +193,7 @@ public class GeneralUtil {
      * @param cname PARAM
      * @return Returns
      */
-    public static String classNameOnly(String cname) {
+    public static String classNameOnly(final String cname) {
         String s = "[null object ref]";
         if (cname != null) {
             s = cname.substring(cname.lastIndexOf('.') + 1);
@@ -207,7 +207,7 @@ public class GeneralUtil {
      * @param o PARAM
      * @return Returns
      */
-    public static String paddedHashCode(Object o) {
+    public static String paddedHashCode(final Object o) {
         String s = "0000000000";
         if (o != null) {
             s = PADDED_HASH_FORMAT.format(o.hashCode());
@@ -220,14 +220,14 @@ public class GeneralUtil {
             if (System.getProperty("os.name").toLowerCase().startsWith("mac os x")) {
                 return true;
             }
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             System.err.println(e.getLocalizedMessage());
         }
         return false;
     }
 
-    public static StringBuffer htmlEscapeSpace(String uri) {
-        StringBuffer sbURI = new StringBuffer((int) (uri.length() * 1.5));
+    public static StringBuffer htmlEscapeSpace(final String uri) {
+        final StringBuffer sbURI = new StringBuffer((int) (uri.length() * 1.5));
         char ch;
         for (int i = 0; i < uri.length(); ++i) {
             ch = uri.charAt(i);
@@ -251,13 +251,13 @@ public class GeneralUtil {
      * @return String containing contents read from the stream
      * @throws IOException if the stream could not be read
      */
-    public static String inputStreamToString(InputStream is) throws IOException {
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-        StringWriter sw = new StringWriter();
-        char c[] = new char[1024];
+    public static String inputStreamToString(final InputStream is) throws IOException {
+        final InputStreamReader isr = new InputStreamReader(is);
+        final BufferedReader br = new BufferedReader(isr);
+        final StringWriter sw = new StringWriter();
+        final char c[] = new char[1024];
         while (true) {
-            int n = br.read(c, 0, c.length);
+            final int n = br.read(c, 0, c.length);
             if (n < 0) break;
             sw.write(c, 0, n);
         }
@@ -265,14 +265,14 @@ public class GeneralUtil {
         return sw.toString();
     }
 
-    public static void writeStringToFile(String content, String encoding, String fileName)
+    public static void writeStringToFile(final String content, final String encoding, final String fileName)
             throws IOException {
-        File f = new File(fileName);
-        FileOutputStream fos = new FileOutputStream(f);
+        final File f = new File(fileName);
+        final FileOutputStream fos = new FileOutputStream(f);
         try {
-            OutputStreamWriter osw = new OutputStreamWriter(fos, encoding);
-            BufferedWriter bw = new BufferedWriter(osw);
-            PrintWriter pw = new PrintWriter(bw);
+            final OutputStreamWriter osw = new OutputStreamWriter(fos, encoding);
+            final BufferedWriter bw = new BufferedWriter(osw);
+            final PrintWriter pw = new PrintWriter(bw);
             try {
                 pw.print(content);
                 pw.flush();
@@ -280,16 +280,16 @@ public class GeneralUtil {
             } finally {
                 try {
                     pw.close();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     // ignore
                 }
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw e;
         } finally {
             try {
                 fos.close();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 // ignore
             }
         }
@@ -306,16 +306,16 @@ public class GeneralUtil {
      *         is null, empty, white-space only, contains only non-numeric
      *         characters, or simply evaluates to 0 after parsing (e.g. "0")
      */
-    public static int parseIntRelaxed(String s) {
+    public static int parseIntRelaxed(final String s) {
         // An edge-case short circuit...
         if (s == null || s.length() == 0 || s.trim().length() == 0) {
             return 0;
         }
 
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
 
         for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
+            final char c = s.charAt(i);
 
             if (Character.isDigit(c)) {
                 buffer.append(c);
@@ -334,7 +334,7 @@ public class GeneralUtil {
 
         try {
             return Integer.parseInt(buffer.toString());
-        } catch (NumberFormatException exception) {
+        } catch (final NumberFormatException exception) {
             // The only way we get here now is if s > Integer.MAX_VALUE
             return Integer.MAX_VALUE;
         }
@@ -350,14 +350,14 @@ public class GeneralUtil {
      * @param s The String which may contain characters to escape.
      * @return The string with the characters as HTML entities.
      */
-    public static String escapeHTML(String s){
+    public static String escapeHTML(final String s){
     	if (s == null) {
     		return "";
     	}
-        StringBuffer sb = new StringBuffer();
-        int n = s.length();
+        final StringBuffer sb = new StringBuffer();
+        final int n = s.length();
         for (int i = 0; i < n; i++) {
-            char c = s.charAt(i);
+            final char c = s.charAt(i);
             switch (c) {
                 case '<':
                     sb.append("&lt;");

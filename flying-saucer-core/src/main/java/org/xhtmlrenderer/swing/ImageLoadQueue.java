@@ -87,7 +87,7 @@ class ImageLoadQueue {
                     " requested item, but queue is shutting down; returning kill switch.");
             return KILL_SWITCH;
         } else {
-            ImageLoadItem item = _loadQueue.removeLast();
+            final ImageLoadItem item = _loadQueue.removeLast();
 
             XRLog.general(Level.FINE, "Thread " + Thread.currentThread().getName() +
                     " pulled item " + item._uri + " from queue, " + (_loadQueue.size() - 1) + " remaining");
@@ -119,7 +119,7 @@ class ImageLoadQueue {
      * @return true if the item, retrieved from the queue via {@link #getTask()}, is a kill switch, meaning the worker
      *         that retrieved it should stop polling.
      */
-    public static boolean isKillSwitch(Object queueItem) {
+    public static boolean isKillSwitch(final Object queueItem) {
         return queueItem == KILL_SWITCH;
     }
 

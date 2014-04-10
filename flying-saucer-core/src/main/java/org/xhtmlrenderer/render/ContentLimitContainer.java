@@ -27,12 +27,12 @@ import org.xhtmlrenderer.layout.LayoutContext;
 public class ContentLimitContainer {
     private ContentLimitContainer _parent;
     
-    private int _initialPageNo;
-    private List<ContentLimit> _contentLimits = new ArrayList<ContentLimit>();
+    private final int _initialPageNo;
+    private final List<ContentLimit> _contentLimits = new ArrayList<ContentLimit>();
     
     private PageBox _lastPage;
     
-    public ContentLimitContainer(LayoutContext c, int startAbsY) {
+    public ContentLimitContainer(final LayoutContext c, final int startAbsY) {
         _initialPageNo = getPage(c, startAbsY).getPageNo();
     }
 
@@ -44,18 +44,18 @@ public class ContentLimitContainer {
         return _initialPageNo + _contentLimits.size() - 1;
     }
     
-    public ContentLimit getContentLimit(int pageNo) {
+    public ContentLimit getContentLimit(final int pageNo) {
         return getContentLimit(pageNo, false);
     }
 
-    private ContentLimit getContentLimit(int pageNo, boolean addAsNeeded) {
+    private ContentLimit getContentLimit(final int pageNo, final boolean addAsNeeded) {
         if (addAsNeeded) {
             while (_contentLimits.size() < (pageNo - _initialPageNo + 1)) {
                 _contentLimits.add(new ContentLimit());
             }
         }
         
-        int target = pageNo - _initialPageNo;
+        final int target = pageNo - _initialPageNo;
         if (target >= 0 && target < _contentLimits.size()) {
             return _contentLimits.get(pageNo - _initialPageNo);
         } else {
@@ -63,31 +63,31 @@ public class ContentLimitContainer {
         }
     }
     
-    public void updateTop(LayoutContext c, int absY) {
-        PageBox page = getPage(c, absY);
+    public void updateTop(final LayoutContext c, final int absY) {
+        final PageBox page = getPage(c, absY);
         
         getContentLimit(page.getPageNo(), true).updateTop(absY);
         
-        ContentLimitContainer parent = getParent();
+        final ContentLimitContainer parent = getParent();
         if (parent != null) {
             parent.updateTop(c, absY);
         }
     }
     
-    public void updateBottom(LayoutContext c, int absY) {
-        PageBox page = getPage(c, absY);
+    public void updateBottom(final LayoutContext c, final int absY) {
+        final PageBox page = getPage(c, absY);
         
         getContentLimit(page.getPageNo(), true).updateBottom(absY);
         
-        ContentLimitContainer parent = getParent();
+        final ContentLimitContainer parent = getParent();
         if (parent != null) {
             parent.updateBottom(c, absY);
         }
     }
 
-    public PageBox getPage(LayoutContext c, int absY) {
+    public PageBox getPage(final LayoutContext c, final int absY) {
         PageBox page;
-        PageBox last = getLastPage();
+        final PageBox last = getLastPage();
         if (last != null && absY >= last.getTop() && absY < last.getBottom()) {
             page = last;
         } else {
@@ -105,7 +105,7 @@ public class ContentLimitContainer {
         return c._lastPage;
     }
     
-    private void setLastPage(PageBox page) {
+    private void setLastPage(final PageBox page) {
         ContentLimitContainer c = this;
         while (c.getParent() != null) {
             c = c.getParent();
@@ -117,7 +117,7 @@ public class ContentLimitContainer {
         return _parent;
     }
 
-    public void setParent(ContentLimitContainer parent) {
+    public void setParent(final ContentLimitContainer parent) {
         _parent = parent;
     }
     

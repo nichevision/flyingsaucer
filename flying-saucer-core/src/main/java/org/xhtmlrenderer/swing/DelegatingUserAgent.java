@@ -51,7 +51,7 @@ import java.io.InputStream;
  * @author Torbjoern Gannholm
  */
 public class DelegatingUserAgent implements UserAgentCallback, DocumentListener {
-    private UriResolver _uriResolver;
+    private final UriResolver _uriResolver;
     private ImageResourceLoader _imageResourceLoader;
     protected StylesheetCache _styleCache = new StylesheetCache();
 
@@ -62,7 +62,7 @@ public class DelegatingUserAgent implements UserAgentCallback, DocumentListener 
         this._uriResolver = new UriResolver();
     }
 
-    public void setImageResourceLoader(ImageResourceLoader loader) {
+    public void setImageResourceLoader(final ImageResourceLoader loader) {
         _imageResourceLoader = loader;
     }
 
@@ -87,7 +87,7 @@ public class DelegatingUserAgent implements UserAgentCallback, DocumentListener 
      * @param uri PARAM
      * @return The stylesheet value
      */
-    protected InputStream resolveAndOpenStream(String uri) {
+    protected InputStream resolveAndOpenStream(final String uri) {
         return IOUtil.openStreamAtUrl(_uriResolver.resolve(uri));
     }
 
@@ -99,7 +99,7 @@ public class DelegatingUserAgent implements UserAgentCallback, DocumentListener 
      * @param uri Location of the CSS source.
      * @return A CSSResource containing the parsed CSS.
      */
-    public CSSResource getCSSResource(String uri) {
+    public CSSResource getCSSResource(final String uri) {
         return new CSSResource(resolveAndOpenStream(uri));
     }
 
@@ -111,7 +111,7 @@ public class DelegatingUserAgent implements UserAgentCallback, DocumentListener 
      * @param uri Location of the image source.
      * @return An ImageResource containing the image.
      */
-    public ImageResource getImageResource(String uri) {
+    public ImageResource getImageResource(final String uri) {
         return _imageResourceLoader.get(resolveURI(uri));
     }
 
@@ -123,35 +123,35 @@ public class DelegatingUserAgent implements UserAgentCallback, DocumentListener 
      * @param uri Location of the XML source.
      * @return An XMLResource containing the image.
      */
-    public HTMLResource getXMLResource(String uri) {
-        String ruri = _uriResolver.resolve(uri);
-        StreamResource sr = new StreamResource(ruri);
+    public HTMLResource getXMLResource(final String uri) {
+        final String ruri = _uriResolver.resolve(uri);
+        final StreamResource sr = new StreamResource(ruri);
         try {
             sr.connect();
-            BufferedInputStream bis = sr.bufferedStream();
+            final BufferedInputStream bis = sr.bufferedStream();
             return HTMLResource.load(bis, sr.getFinalUri());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return null;
         } finally {
             sr.close();
         }
     }
 
-    public byte[] getBinaryResource(String uri) {
-        String ruri = _uriResolver.resolve(uri);
-        StreamResource sr = new StreamResource(ruri);
+    public byte[] getBinaryResource(final String uri) {
+        final String ruri = _uriResolver.resolve(uri);
+        final StreamResource sr = new StreamResource(ruri);
         try {
             sr.connect();
-            BufferedInputStream bis = sr.bufferedStream();
-            ByteArrayOutputStream result = new ByteArrayOutputStream(sr.hasStreamLength() ? sr.streamLength() : 4 * 1024);
-            byte[] buf = new byte[10240];
+            final BufferedInputStream bis = sr.bufferedStream();
+            final ByteArrayOutputStream result = new ByteArrayOutputStream(sr.hasStreamLength() ? sr.streamLength() : 4 * 1024);
+            final byte[] buf = new byte[10240];
             int i;
             while ((i = bis.read(buf)) != -1) {
                 result.write(buf, 0, i);
             }
 
             return result.toByteArray();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return null;
         } finally {
             sr.close();
@@ -165,7 +165,7 @@ public class DelegatingUserAgent implements UserAgentCallback, DocumentListener 
      * @param uri A URI which might have been visited.
      * @return Always false; visits are not tracked in the NaiveUserAgent.
      */
-    public boolean isVisited(String uri) {
+    public boolean isVisited(final String uri) {
         return false;
     }
 
@@ -174,7 +174,7 @@ public class DelegatingUserAgent implements UserAgentCallback, DocumentListener 
      *
      * @param uri A URI which anchors other, possibly relative URIs.
      */
-    public void setBaseURL(String uri) {
+    public void setBaseURL(final String uri) {
         _uriResolver.setBaseUri(uri);
     }
 
@@ -185,7 +185,7 @@ public class DelegatingUserAgent implements UserAgentCallback, DocumentListener 
      * @param uri A URI, possibly relative.
      * @return A URI as String, resolved, or null if there was an exception (for example if the URI is malformed).
      */
-    public String resolveURI(String uri) {
+    public String resolveURI(final String uri) {
         return _uriResolver.resolve(uri);
     }
 
@@ -203,11 +203,11 @@ public class DelegatingUserAgent implements UserAgentCallback, DocumentListener 
 
     public void documentLoaded() { /* ignore*/ }
 
-    public void onLayoutException(Throwable t) { /* ignore*/ }
+    public void onLayoutException(final Throwable t) { /* ignore*/ }
 
-    public void onRenderException(Throwable t) { /* ignore*/ }
+    public void onRenderException(final Throwable t) { /* ignore*/ }
 
-    public void setRepaintListener(RepaintListener listener) {
+    public void setRepaintListener(final RepaintListener listener) {
         //_imageResourceLoader.setRepaintListener(listener);
     }
 

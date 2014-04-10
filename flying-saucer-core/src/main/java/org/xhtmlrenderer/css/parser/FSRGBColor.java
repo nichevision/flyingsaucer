@@ -30,11 +30,11 @@ public class FSRGBColor implements FSColor {
     private final int _blue;
     private final float _alpha;
 
-    public FSRGBColor(int red, int green, int blue) {
+    public FSRGBColor(final int red, final int green, final int blue) {
     	this(red, green, blue, 1);
     }
     
-    public FSRGBColor(int red, int green, int blue, float alpha) {
+    public FSRGBColor(final int red, final int green, final int blue, final float alpha) {
         if (red < 0 || red > 255) {
             throw new IllegalArgumentException();
         }
@@ -54,7 +54,7 @@ public class FSRGBColor implements FSColor {
         _alpha = alpha;
     }
 
-    public FSRGBColor(int color) {
+    public FSRGBColor(final int color) {
         this(((color & 0xff0000) >> 16),((color & 0x00ff00) >> 8), color & 0xff);
     }
 
@@ -84,8 +84,8 @@ public class FSRGBColor implements FSColor {
 		}
     }
     
-    private String toString(int color) {
-        String result = Integer.toHexString(color);
+    private String toString(final int color) {
+        final String result = Integer.toHexString(color);
         if (result.length() == 1) {
             return "0" + result;
         } else {
@@ -94,11 +94,11 @@ public class FSRGBColor implements FSColor {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof FSRGBColor)) return false;
 
-        FSRGBColor that = (FSRGBColor) o;
+        final FSRGBColor that = (FSRGBColor) o;
 
         if (_blue != that._blue) return false;
         if (_green != that._green) return false;
@@ -119,36 +119,36 @@ public class FSRGBColor implements FSColor {
 
     @Override
     public FSColor lightenColor() {
-        float[] hsb = RGBtoHSB(getRed(), getGreen(), getBlue(), null);
-        float hBase = hsb[0];
-        float sBase = hsb[1];
-        float bBase = hsb[2];
+        final float[] hsb = RGBtoHSB(getRed(), getGreen(), getBlue(), null);
+        final float hBase = hsb[0];
+        final float sBase = hsb[1];
+        final float bBase = hsb[2];
         
-        float hLighter = hBase;
-        float sLighter = 0.35f*bBase*sBase;
-        float bLighter = 0.6999f + 0.3f*bBase;
+        final float hLighter = hBase;
+        final float sLighter = 0.35f*bBase*sBase;
+        final float bLighter = 0.6999f + 0.3f*bBase;
         
-        int[] rgb = HSBtoRGB(hLighter, sLighter, bLighter);
+        final int[] rgb = HSBtoRGB(hLighter, sLighter, bLighter);
         return new FSRGBColor(rgb[0], rgb[1], rgb[2]);
     }
     
     @Override
     public FSColor darkenColor() {
-        float[] hsb = RGBtoHSB(getRed(), getGreen(), getBlue(), null);
-        float hBase = hsb[0];
-        float sBase = hsb[1];
-        float bBase = hsb[2];
+        final float[] hsb = RGBtoHSB(getRed(), getGreen(), getBlue(), null);
+        final float hBase = hsb[0];
+        final float sBase = hsb[1];
+        final float bBase = hsb[2];
         
-        float hDarker = hBase;
-        float sDarker = sBase;
-        float bDarker = 0.56f*bBase;
+        final float hDarker = hBase;
+        final float sDarker = sBase;
+        final float bDarker = 0.56f*bBase;
         
-        int[] rgb = HSBtoRGB(hDarker, sDarker, bDarker);
+        final int[] rgb = HSBtoRGB(hDarker, sDarker, bDarker);
         return new FSRGBColor(rgb[0], rgb[1], rgb[2]);
     }
     
     // Taken from java.awt.Color to avoid dependency on it
-    private static float[] RGBtoHSB(int r, int g, int b, float[] hsbvals) {
+    private static float[] RGBtoHSB(final int r, final int g, final int b, float[] hsbvals) {
         float hue, saturation, brightness;
         if (hsbvals == null) {
             hsbvals = new float[3];
@@ -168,9 +168,9 @@ public class FSRGBColor implements FSColor {
         if (saturation == 0)
             hue = 0;
         else {
-            float redc = ((float) (cmax - r)) / ((float) (cmax - cmin));
-            float greenc = ((float) (cmax - g)) / ((float) (cmax - cmin));
-            float bluec = ((float) (cmax - b)) / ((float) (cmax - cmin));
+            final float redc = ((float) (cmax - r)) / ((float) (cmax - cmin));
+            final float greenc = ((float) (cmax - g)) / ((float) (cmax - cmin));
+            final float bluec = ((float) (cmax - b)) / ((float) (cmax - cmin));
             if (r == cmax)
                 hue = bluec - greenc;
             else if (g == cmax)
@@ -188,16 +188,16 @@ public class FSRGBColor implements FSColor {
     }
     
     // Taken from java.awt.Color to avoid dependency on it
-    private static int[] HSBtoRGB(float hue, float saturation, float brightness) {
+    private static int[] HSBtoRGB(final float hue, final float saturation, final float brightness) {
         int r = 0, g = 0, b = 0;
         if (saturation == 0) {
             r = g = b = (int) (brightness * 255.0f + 0.5f);
         } else {
-            float h = (hue - (float) Math.floor(hue)) * 6.0f;
-            float f = h - (float) java.lang.Math.floor(h);
-            float p = brightness * (1.0f - saturation);
-            float q = brightness * (1.0f - saturation * f);
-            float t = brightness * (1.0f - (saturation * (1.0f - f)));
+            final float h = (hue - (float) Math.floor(hue)) * 6.0f;
+            final float f = h - (float) java.lang.Math.floor(h);
+            final float p = brightness * (1.0f - saturation);
+            final float q = brightness * (1.0f - saturation * f);
+            final float t = brightness * (1.0f - (saturation * (1.0f - f)));
             switch ((int) h) {
                 case 0:
                     r = (int) (brightness * 255.0f + 0.5f);

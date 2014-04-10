@@ -74,7 +74,7 @@ public class SharedContext {
     private StylesheetInfo defaultStylesheet;
     private boolean lookedUpDefaultStylesheet;
     private Locale localeTextBreaker = Locale.US;
-    private Locale localeErrorMessages = Locale.US;
+    private final Locale localeErrorMessages = Locale.US;
 
     public static final ThreadLocal<ResourceBundle> ERRS = new ThreadLocal<>();    
     public static final ThreadLocal<Set<String>> USER_ERRORS = new ThreadLocal<>();
@@ -121,14 +121,14 @@ public class SharedContext {
     /**
      * Constructor for the Context object
      */
-    public SharedContext(UserAgentCallback uac) {
+    public SharedContext(final UserAgentCallback uac) {
     	this();
     	
     	font_resolver = new AWTFontResolver();
         replacedElementFactory = new ReplacedElementFactory() {
 			
 			@Override
-			public void setFormSubmissionListener(FormSubmissionListener listener) {
+			public void setFormSubmissionListener(final FormSubmissionListener listener) {
 				// TODO Auto-generated method stub
 				
 			}
@@ -140,14 +140,14 @@ public class SharedContext {
 			}
 			
 			@Override
-			public void remove(Element e) {
+			public void remove(final Element e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public ReplacedElement createReplacedElement(LayoutContext c, BlockBox box,
-					UserAgentCallback uac, int cssWidth, int cssHeight) {
+			public ReplacedElement createReplacedElement(final LayoutContext c, final BlockBox box,
+					final UserAgentCallback uac, final int cssWidth, final int cssHeight) {
 				// TODO Auto-generated method stub
 				return null;
 			}
@@ -159,7 +159,7 @@ public class SharedContext {
         setTextRenderer(new Java2DTextRenderer());
         try {
             setDPI(Toolkit.getDefaultToolkit().getScreenResolution());
-        } catch (HeadlessException e) {
+        } catch (final HeadlessException e) {
             setDPI(DEFAULT_DPI);
         }
     }
@@ -168,7 +168,7 @@ public class SharedContext {
     /**
      * Constructor for the Context object
      */
-    public SharedContext(UserAgentCallback uac, FontResolver fr, ReplacedElementFactory ref, TextRenderer tr, float dpi) {
+    public SharedContext(final UserAgentCallback uac, final FontResolver fr, final ReplacedElementFactory ref, final TextRenderer tr, final float dpi) {
     	this();
     	
     	font_resolver = fr;
@@ -181,17 +181,17 @@ public class SharedContext {
         setDPI(dpi);
     }
 
-    public void setFormSubmissionListener(FormSubmissionListener fsl) {
+    public void setFormSubmissionListener(final FormSubmissionListener fsl) {
         replacedElementFactory.setFormSubmissionListener(fsl);
     }
 
     public LayoutContext newLayoutContextInstance() {
-        LayoutContext c = new LayoutContext(this);
+        final LayoutContext c = new LayoutContext(this);
         return c;
     }
 
     public RenderingContext newRenderingContextInstance() {
-        RenderingContext c = new RenderingContext(this);
+        final RenderingContext c = new RenderingContext(this);
         return c;
     }
 
@@ -299,19 +299,19 @@ public class SharedContext {
         return debug_draw_font_metrics;
     }
 
-    public void setDebug_draw_boxes(boolean debug_draw_boxes) {
+    public void setDebug_draw_boxes(final boolean debug_draw_boxes) {
         this.debug_draw_boxes = debug_draw_boxes;
     }
 
-    public void setDebug_draw_line_boxes(boolean debug_draw_line_boxes) {
+    public void setDebug_draw_line_boxes(final boolean debug_draw_line_boxes) {
         this.debug_draw_line_boxes = debug_draw_line_boxes;
     }
 
-    public void setDebug_draw_inline_boxes(boolean debug_draw_inline_boxes) {
+    public void setDebug_draw_inline_boxes(final boolean debug_draw_inline_boxes) {
         this.debug_draw_inline_boxes = debug_draw_inline_boxes;
     }
 
-    public void setDebug_draw_font_metrics(boolean debug_draw_font_metrics) {
+    public void setDebug_draw_font_metrics(final boolean debug_draw_font_metrics) {
         this.debug_draw_font_metrics = debug_draw_font_metrics;
     }
 
@@ -324,7 +324,7 @@ public class SharedContext {
         return css;
     }
 
-    public void setCss(StyleReference css) {
+    public void setCss(final StyleReference css) {
         this.css = css;
     }
 
@@ -332,11 +332,11 @@ public class SharedContext {
         return canvas;
     }
 
-    public void setCanvas(FSCanvas canvas) {
+    public void setCanvas(final FSCanvas canvas) {
         this.canvas = canvas;
     }
 
-    public void set_TempCanvas(Rectangle rect) {
+    public void set_TempCanvas(final Rectangle rect) {
         this.temp_canvas = rect;
     }
 
@@ -346,7 +346,7 @@ public class SharedContext {
         if (getCanvas() == null) {
             return this.temp_canvas;
         } else {
-            Rectangle rect = getCanvas().getFixedRectangle();
+            final Rectangle rect = getCanvas().getFixedRectangle();
             rect.translate(getCanvas().getX(), getCanvas().getY());
             return rect;
         }
@@ -354,7 +354,7 @@ public class SharedContext {
 
     private NamespaceHandler namespaceHandler;
 
-    public void setNamespaceHandler(NamespaceHandler nh) {
+    public void setNamespaceHandler(final NamespaceHandler nh) {
         namespaceHandler = nh;
     }
 
@@ -362,21 +362,21 @@ public class SharedContext {
         return namespaceHandler;
     }
 
-    public void addBoxId(String id, Box box) {
+    public void addBoxId(final String id, final Box box) {
         if (idMap == null) {
             idMap = new HashMap<String, Box>();
         }
         idMap.put(id, box);
     }
 
-    public Box getBoxById(String id) {
+    public Box getBoxById(final String id) {
         if (idMap == null) {
             idMap = new HashMap<String, Box>();
         }
         return idMap.get(id);
     }
 
-    public void removeBoxId(String id) {
+    public void removeBoxId(final String id) {
         if (idMap != null) {
             idMap.remove(id);
         }
@@ -392,7 +392,7 @@ public class SharedContext {
      *
      * @param text_renderer The new textRenderer value
      */
-    public void setTextRenderer(TextRenderer text_renderer) {
+    public void setTextRenderer(final TextRenderer text_renderer) {
         this.text_renderer = text_renderer;
     }// = "screen";
 
@@ -406,7 +406,7 @@ public class SharedContext {
      *
      * @param media The new media value
      */
-    public void setMedia(String media) {
+    public void setMedia(final String media) {
         this.media = media;
     }
 
@@ -423,8 +423,8 @@ public class SharedContext {
         return uac;
     }
 
-    public void setUserAgentCallback(UserAgentCallback userAgentCallback) {
-        StyleReference styleReference = getCss();
+    public void setUserAgentCallback(final UserAgentCallback userAgentCallback) {
+        final StyleReference styleReference = getCss();
         if (styleReference != null) {
             styleReference.setUserAgentCallback(userAgentCallback);
         }
@@ -450,7 +450,7 @@ public class SharedContext {
      *
      * @param dpi The new dPI value
      */
-    public void setDPI(float dpi) {
+    public void setDPI(final float dpi) {
         this.dpi = dpi;
         this.mm_per_dot = (CM__PER__IN * MM__PER__CM) / dpi;
     }
@@ -464,16 +464,16 @@ public class SharedContext {
         return this.mm_per_dot;
     }
 
-    public FSFont getFont(FontSpecification spec) {
+    public FSFont getFont(final FontSpecification spec) {
         return getFontResolver().resolveFont(this, spec);
     }
 
     //strike-through offset should always be half of the height of lowercase x...
     //and it is defined even for fonts without 'x'!
-    public float getXHeight(FontContext fontContext, FontSpecification fs) {
-        FSFont font = getFontResolver().resolveFont(this, fs);
-        FSFontMetrics fm = getTextRenderer().getFSFontMetrics(fontContext, font, " ");
-        float sto = fm.getStrikethroughOffset();
+    public float getXHeight(final FontContext fontContext, final FontSpecification fs) {
+        final FSFont font = getFontResolver().resolveFont(this, fs);
+        final FSFontMetrics fm = getTextRenderer().getFSFontMetrics(fontContext, font, " ");
+        final float sto = fm.getStrikethroughOffset();
         return fm.getAscent() - 2 * Math.abs(sto) + fm.getStrikethroughThickness();
     }
 
@@ -491,7 +491,7 @@ public class SharedContext {
      *
      * @param url The new baseURL value
      */
-    public void setBaseURL(String url) {
+    public void setBaseURL(final String url) {
         uac.setBaseURL(url);
     }
 
@@ -527,7 +527,7 @@ public class SharedContext {
         return interactive;
     }
 
-    public void setInteractive(boolean interactive) {
+    public void setInteractive(final boolean interactive) {
         this.interactive = interactive;
     }
 
@@ -535,7 +535,7 @@ public class SharedContext {
         return print;
     }
 
-    public void setPrint(boolean print) {
+    public void setPrint(final boolean print) {
         this.print = print;
         if (print) {
             setMedia("print");
@@ -575,14 +575,14 @@ public class SharedContext {
     /*
      * add a new font mapping, or replace an existing one
      */
-    public void setFontMapping(String name, Font font) {
-        FontResolver resolver = getFontResolver();
+    public void setFontMapping(final String name, final Font font) {
+        final FontResolver resolver = getFontResolver();
         if (resolver instanceof AWTFontResolver) {
             ((AWTFontResolver)resolver).setFontMapping(name, font);
         }
     }
 
-    public void setFontResolver(FontResolver resolver) {
+    public void setFontResolver(final FontResolver resolver) {
         font_resolver = resolver;
     }
 
@@ -590,15 +590,15 @@ public class SharedContext {
         return dotsPerPixel;
     }
 
-    public void setDotsPerPixel(int pixelsPerDot) {
+    public void setDotsPerPixel(final int pixelsPerDot) {
         this.dotsPerPixel = pixelsPerDot;
     }
 
-    public CalculatedStyle getStyle(Element e) {
+    public CalculatedStyle getStyle(final Element e) {
         return getStyle(e, false);
     }
 
-    public CalculatedStyle getStyle(Element e, boolean restyle) {
+    public CalculatedStyle getStyle(final Element e, final boolean restyle) {
         if (styleMap == null) {
             styleMap = new HashMap<Element, CalculatedStyle>(1024, 0.75f);
         }
@@ -616,7 +616,7 @@ public class SharedContext {
         	}
         	else
         	{
-        		Node parent = e.parentNode();
+        		final Node parent = e.parentNode();
 
         		if (parent instanceof Document) {
         			parentCalculatedStyle = new EmptyStyle();
@@ -643,7 +643,7 @@ public class SharedContext {
         return replacedElementFactory;
     }
 
-    public void setReplacedElementFactory(ReplacedElementFactory ref) {
+    public void setReplacedElementFactory(final ReplacedElementFactory ref) {
         if (ref == null) {
             throw new NullPointerException("replacedElementFactory may not be null");
         }
@@ -654,8 +654,8 @@ public class SharedContext {
         this.replacedElementFactory = ref;
     }
 
-    public void removeElementReferences(Element e) {
-        String id = namespaceHandler.getID(e);
+    public void removeElementReferences(final Element e) {
+        final String id = namespaceHandler.getID(e);
         if (id != null && id.length() > 0) {
             removeBoxId(id);
         }
@@ -668,7 +668,7 @@ public class SharedContext {
         getReplacedElementFactory().remove(e);
 
         if (e.childNodeSize() > 0) {
-            for (Node child : e.childNodes())  {
+            for (final Node child : e.childNodes())  {
             	if (child instanceof Element) {
             		removeElementReferences((Element) child);
             	}
@@ -681,7 +681,7 @@ public class SharedContext {
 		return defaultStylesheet;
 	}
 
-	public void setDefaultStylesheet(StylesheetInfo defaultStylesheet) 
+	public void setDefaultStylesheet(final StylesheetInfo defaultStylesheet) 
 	{
 		this.defaultStylesheet = defaultStylesheet;
 	}
@@ -691,7 +691,7 @@ public class SharedContext {
 		return lookedUpDefaultStylesheet;
 	}
 
-	public void setLookedUpDefaultStylesheet(boolean lookedUpDefaultStylesheet)
+	public void setLookedUpDefaultStylesheet(final boolean lookedUpDefaultStylesheet)
 	{
 		this.lookedUpDefaultStylesheet = lookedUpDefaultStylesheet;
 	}
@@ -700,7 +700,7 @@ public class SharedContext {
 		return localeTextBreaker;
 	}
 
-	public void setLocale(Locale locale) {
+	public void setLocale(final Locale locale) {
 		this.localeTextBreaker = locale;
 	}
 }

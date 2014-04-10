@@ -36,7 +36,7 @@ public class TableColumn implements Styleable {
     public TableColumn() {
     }
     
-    public TableColumn(Element element, CalculatedStyle style) {
+    public TableColumn(final Element element, final CalculatedStyle style) {
         _element = element;
         _style = style;
     }
@@ -53,11 +53,11 @@ public class TableColumn implements Styleable {
         return _style;
     }
 
-    public void setElement(Element e) {
+    public void setElement(final Element e) {
         _element = e;
     }
 
-    public void setStyle(CalculatedStyle style) {
+    public void setStyle(final CalculatedStyle style) {
         _style = style;
     }
 
@@ -65,7 +65,7 @@ public class TableColumn implements Styleable {
         return _parent;
     }
 
-    public void setParent(TableColumn parent) {
+    public void setParent(final TableColumn parent) {
         _parent = parent;
     }
 }

@@ -19,7 +19,7 @@ public class FontSpecification {
     public IdentValue variant;
 
     public String toString() {
-        StringBuilder sb = new StringBuilder("Font specification: ");
+        final StringBuilder sb = new StringBuilder("Font specification: ");
         sb
                 .append(" families: " + Arrays.asList(families).toString())
                 .append(" size: " + size)

@@ -29,11 +29,11 @@ public class ContentLimit {
         return _top;
     }
     
-    public void setTop(int top) {
+    public void setTop(final int top) {
         _top = top;
     }
     
-    public void updateTop(int top) {
+    public void updateTop(final int top) {
         if (_top == UNDEFINED || top < _top) {
             _top = top;
         }
@@ -43,11 +43,11 @@ public class ContentLimit {
         return _bottom;
     }
     
-    public void setBottom(int bottom) {
+    public void setBottom(final int bottom) {
         _bottom = bottom;
     }
     
-    public void updateBottom(int bottom) {
+    public void updateBottom(final int bottom) {
         if (_bottom == UNDEFINED || bottom > _bottom) {
             _bottom = bottom;
         }

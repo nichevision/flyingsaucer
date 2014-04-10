@@ -29,9 +29,9 @@ import org.xhtmlrenderer.render.BlockBox;
  * XXX This class can go away
  */
 public class PersistentBFC {
-    private FloatManager _floatManager = new FloatManager();
+    private final FloatManager _floatManager = new FloatManager();
     
-    public PersistentBFC(BlockBox master, LayoutContext c) {
+    public PersistentBFC(final BlockBox master, final LayoutContext c) {
         master.setPersistentBFC(this);
         _floatManager.setMaster(master);
     }

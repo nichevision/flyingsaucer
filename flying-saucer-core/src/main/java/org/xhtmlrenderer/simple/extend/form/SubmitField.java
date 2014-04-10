@@ -32,12 +32,12 @@ import org.xhtmlrenderer.simple.extend.XhtmlForm;
 import org.xhtmlrenderer.util.XRLog;
 
 class SubmitField extends AbstractButtonField {
-    public SubmitField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public SubmitField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
 
     public JComponent create() {
-        JButton button = new JButton();
+        final JButton button = new JButton();
 
         String value;
         if (hasAttribute("value")) {
@@ -54,7 +54,7 @@ class SubmitField extends AbstractButtonField {
         button.setText(value);
 
         button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(final ActionEvent event) {
                 XRLog.layout("Submit pressed: Submit");
 
                 getParentForm().submit(getComponent());
@@ -64,7 +64,7 @@ class SubmitField extends AbstractButtonField {
         return button;
     }
     
-    public boolean includeInSubmission(JComponent source) {
+    public boolean includeInSubmission(final JComponent source) {
         return (source == getComponent());
     }
 

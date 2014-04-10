@@ -45,16 +45,16 @@ import org.xhtmlrenderer.simple.extend.XhtmlForm;
 import org.xhtmlrenderer.util.GeneralUtil;
 
 class SelectField extends FormField {
-    public SelectField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public SelectField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
 
     public JComponent create() {
-        List<NameValuePair> optionList = createList();
+        final List<NameValuePair> optionList = createList();
 
         // Either a select list or a drop down/combobox
         if (shouldRenderAsList()) {
-            JList<?> select = new JList<>(optionList.toArray());
+            final JList<?> select = new JList<>(optionList.toArray());
             applyComponentStyle(select);
 
             select.setCellRenderer(new CellRenderer());
@@ -81,7 +81,7 @@ class SelectField extends FormField {
 
             return new JScrollPane(select);
         } else {
-            JComboBox<?> select = new JComboBox<>(optionList.toArray());
+            final JComboBox<?> select = new JComboBox<>(optionList.toArray());
             applyComponentStyle(select);
 
             select.setEditable(false);
@@ -93,12 +93,12 @@ class SelectField extends FormField {
     }
     
     protected FormFieldState loadOriginalState() {
-        ArrayList<Integer> list = new ArrayList<Integer>();
+        final ArrayList<Integer> list = new ArrayList<Integer>();
         
-        Elements options = getElement().getElementsByTag("option");
+        final Elements options = getElement().getElementsByTag("option");
 
         for (int i = 0; i < options.size(); i++) {
-            Element option = (Element) options.get(i);
+            final Element option = (Element) options.get(i);
 
             if (option.hasAttr("selected") && option.attr("selected").equalsIgnoreCase("selected")) {
                 list.add(new Integer(i));
@@ -111,18 +111,20 @@ class SelectField extends FormField {
     protected void applyOriginalState() {
         if (shouldRenderAsList()) {
             @SuppressWarnings("unchecked")
+            final
 			JList<NameValuePair> select = (JList<NameValuePair>) ((JScrollPane) getComponent()).getViewport().getView();
 
             select.setSelectedIndices(getOriginalState().getSelectedIndices());
         } else {
             @SuppressWarnings("unchecked")
+            final
 			JComboBox<NameValuePair> select = (JComboBox<NameValuePair>) getComponent();
             
             // This looks strange, but basically since this is a single select, and
             // someone might have put selected="selected" on more than a single option
             // I believe that the correct play here is to select the _last_ option with
             // that attribute.
-            int [] indices = getOriginalState().getSelectedIndices();
+            final int [] indices = getOriginalState().getSelectedIndices();
             
             if (indices.length == 0) {
                 select.setSelectedIndex(0);
@@ -135,13 +137,14 @@ class SelectField extends FormField {
     protected String[] getFieldValues() {
         if (shouldRenderAsList()) {
             @SuppressWarnings("unchecked")
+            final
 			JList<NameValuePair> select = (JList<NameValuePair>) ((JScrollPane) getComponent()).getViewport().getView();
 
-            List<NameValuePair> selectedValues = select.getSelectedValuesList();
-            String [] submitValues = new String [selectedValues.size()];
+            final List<NameValuePair> selectedValues = select.getSelectedValuesList();
+            final String [] submitValues = new String [selectedValues.size()];
             
             for (int i = 0; i < selectedValues.size(); i++) {
-                NameValuePair pair = (NameValuePair) selectedValues.get(i);
+                final NameValuePair pair = (NameValuePair) selectedValues.get(i);
                 if (pair.getValue()!=null)
                     submitValues[i] = pair.getValue();
             }
@@ -149,9 +152,10 @@ class SelectField extends FormField {
             return submitValues;
         } else {
             @SuppressWarnings("unchecked")
+            final
 			JComboBox<NameValuePair> select = (JComboBox<NameValuePair>) getComponent();
             
-            NameValuePair selectedValue = (NameValuePair) select.getSelectedItem();
+            final NameValuePair selectedValue = (NameValuePair) select.getSelectedItem();
             
             if (selectedValue != null) {
                 if (selectedValue.getValue()!=null)
@@ -163,21 +167,21 @@ class SelectField extends FormField {
     }
 
     private List<NameValuePair> createList() {
-        List<NameValuePair> list = new ArrayList<NameValuePair>();        
+        final List<NameValuePair> list = new ArrayList<NameValuePair>();        
         addChildren(list, getElement(), 0);
         return list;
     }
 
-    private void addChildren(List<NameValuePair> list, Element e, int indent) {
-        List<Node> children = e.childNodes();
+    private void addChildren(final List<NameValuePair> list, final Element e, final int indent) {
+        final List<Node> children = e.childNodes();
         
         for (int i = 0; i < children.size(); i++) {
             if (!(children.get(i) instanceof Element)) continue;
-            Element child = (Element) children.get(i);
+            final Element child = (Element) children.get(i);
             
             if ("option".equals(child.nodeName())) {
                 // option tag, add it
-                String optionText = XhtmlForm.collectText(child);
+                final String optionText = XhtmlForm.collectText(child);
                 String optionValue = optionText;
                 
                 if (child.hasAttr("value")) {
@@ -188,7 +192,7 @@ class SelectField extends FormField {
                 
             } else if ("optgroup".equals(child.nodeName())) {
                 // optgroup tag, append heading and indent children
-                String titleText = child.attr("label");
+                final String titleText = child.attr("label");
                 list.add(new NameValuePair(titleText, null, indent));
                 addChildren(list, child, indent+1);
             }
@@ -201,7 +205,7 @@ class SelectField extends FormField {
         if (hasAttribute("multiple") && getAttribute("multiple").equalsIgnoreCase("true")) {
             result = true;
         } else if (hasAttribute("size")) {
-            int size = GeneralUtil.parseIntRelaxed(getAttribute("size"));
+            final int size = GeneralUtil.parseIntRelaxed(getAttribute("size"));
             
             if (size > 0) {
                 result = true;
@@ -222,11 +226,11 @@ class SelectField extends FormField {
      * children below headings.
      */
     private static class NameValuePair {
-        private String _name;
-        private String _value;
-        private int _indent;
+        private final String _name;
+        private final String _value;
+        private final int _indent;
 
-        public NameValuePair(String name, String value, int indent) {
+        public NameValuePair(final String name, final String value, final int indent) {
             _name = name;
             _value = value;
             _indent = indent;
@@ -258,15 +262,15 @@ class SelectField extends FormField {
      */
     @SuppressWarnings("serial")
 	private static class CellRenderer extends DefaultListCellRenderer {
-        public Component getListCellRendererComponent(JList<?> list, Object value,
-                int index, boolean isSelected, boolean cellHasFocus) {
-            NameValuePair pair = (NameValuePair)value;
+        public Component getListCellRendererComponent(final JList<?> list, final Object value,
+                final int index, final boolean isSelected, final boolean cellHasFocus) {
+            final NameValuePair pair = (NameValuePair)value;
             
             if (pair!=null && pair.getValue()==null) {
                 // render as heading as such
                 super.getListCellRendererComponent(list, value, index, false, false);
-                Font fold = getFont();
-                Font fnew = new Font(fold.getName(), Font.BOLD | Font.ITALIC, fold.getSize());
+                final Font fold = getFont();
+                final Font fnew = new Font(fold.getName(), Font.BOLD | Font.ITALIC, fold.getSize());
                 setFont(fnew);
             } else {
                 // other items as usuall
@@ -288,13 +292,14 @@ class SelectField extends FormField {
         private Object oldSelection = null;
         private int[] oldSelections = new int[0];
         
-        public void itemStateChanged(ItemEvent e) {
+        public void itemStateChanged(final ItemEvent e) {
             if (e.getStateChange() != ItemEvent.SELECTED)
                 return;
             // only for comboboxes
             if (! (e.getSource() instanceof JComboBox) )
                 return;
             @SuppressWarnings("unchecked")
+            final
 			JComboBox<NameValuePair> combo = (JComboBox<NameValuePair>)e.getSource();
             
             if (((NameValuePair)e.getItem()).getValue() == null) {
@@ -306,18 +311,19 @@ class SelectField extends FormField {
             }
         }
 
-        public void valueChanged(ListSelectionEvent e) {
+        public void valueChanged(final ListSelectionEvent e) {
             // only for lists
             if (! (e.getSource() instanceof JList) )
                 return;
             @SuppressWarnings("unchecked")
+            final
 			JList<NameValuePair> list = (JList<NameValuePair>) e.getSource();
-            ListModel<NameValuePair> model = list.getModel();
+            final ListModel<NameValuePair> model = list.getModel();
             
             // deselect all headings
             for (int i = e.getFirstIndex(); i <= e.getLastIndex(); i++) {
                 if (!list.isSelectedIndex(i)) continue;
-                NameValuePair pair = (NameValuePair) model.getElementAt(i);
+                final NameValuePair pair = (NameValuePair) model.getElementAt(i);
                 if ( pair!=null && pair.getValue() == null) {
                     // We have a heading, remove it. As this handler is called
                     // as a result of the resulting removal and we do process

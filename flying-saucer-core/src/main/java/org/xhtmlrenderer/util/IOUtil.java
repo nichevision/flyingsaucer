@@ -8,7 +8,7 @@ import java.net.URLConnection;
  * @author patrick
  */
 public class IOUtil {
-    public static File copyFile(File page, File outputDir) throws IOException {
+    public static File copyFile(final File page, final File outputDir) throws IOException {
         InputStream in = null;
         OutputStream out = null;
         try {
@@ -18,7 +18,7 @@ public class IOUtil {
             out = new BufferedOutputStream(new FileOutputStream(outputFile));
 
             // Transfer bytes from in to out
-            byte[] buf = new byte[1024];
+            final byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
@@ -31,14 +31,14 @@ public class IOUtil {
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // swallow
                 }
             }
             if (out != null) {
                 try {
                     out.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // swallow
                 }
             }
@@ -46,9 +46,9 @@ public class IOUtil {
     }
 
     public static void deleteAllFiles(final File dir) throws IOException {
-        File[] files = dir.listFiles();
+        final File[] files = dir.listFiles();
         for (int i = 0; i < files.length; i++) {
-            File file = files[i];
+            final File file = files[i];
             if (!file.delete()) {
                 throw new IOException("Cleanup directory " + dir + ", can't delete file " + file);
             }
@@ -60,7 +60,7 @@ public class IOUtil {
      * and reading from it. will return the stream, or null if unable to open or read or a timeout occurred. Does not
      * buffer the stream.
      */
-    public static InputStream openStreamAtUrl(String uri) {
+    public static InputStream openStreamAtUrl(final String uri) {
         InputStream is = null;
         try {
             final URLConnection uc = new URL(uri).openConnection();
@@ -81,11 +81,11 @@ public class IOUtil {
             uc.connect();
 
             is = uc.getInputStream();
-        } catch (java.net.MalformedURLException e) {
+        } catch (final java.net.MalformedURLException e) {
             XRLog.exception("bad URL given: " + uri, e);
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             XRLog.exception("item at URI " + uri + " not found");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             XRLog.exception("IO problem for " + uri, e);
         }
 

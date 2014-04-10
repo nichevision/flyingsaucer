@@ -32,7 +32,7 @@ class ImageLoadItem {
     final int _targetWidth;
     final int _targetHeight;
 
-    public ImageLoadItem(final ImageResourceLoader imageResourceLoader, String uri, MutableFSImage fsi, int width, int height) {
+    public ImageLoadItem(final ImageResourceLoader imageResourceLoader, final String uri, final MutableFSImage fsi, final int width, final int height) {
         this._imageResourceLoader = imageResourceLoader;
         this._uri = uri;
         this._mfsImage = fsi;

@@ -112,7 +112,7 @@ public class Java2DRenderer {
 	 * @param dotsPerPoint Layout XML at so many dots per point
 	 * @param dotsPerPixel Layout XML at so many dots per pixel
 	 */
-	private Java2DRenderer(float dotsPerPoint, int dotsPerPixel) {
+	private Java2DRenderer(final float dotsPerPoint, final int dotsPerPixel) {
 		this();
 		init(dotsPerPoint, dotsPerPixel);
 	}
@@ -125,7 +125,7 @@ public class Java2DRenderer {
 	 * @param baseurl The base url for the document, against which  relative paths are resolved.
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 */
-	public Java2DRenderer(String url, String baseUrl, int width, int height) {
+	public Java2DRenderer(final String url, final String baseUrl, final int width, final int height) {
 		// bypass scaling routines based on DPI -- see PDFRenderer and compare--dotsPerPoint is not implemented
 		// in all subordinate classes and interfaces for Java2D, so leaving it out
 		// leaving this constructor call here as a TODO
@@ -145,7 +145,7 @@ public class Java2DRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * @param height Target height, in pixels, for the image
 	 */
-	public Java2DRenderer(File file, int width, int height) throws IOException {
+	public Java2DRenderer(final File file, final int width, final int height) throws IOException {
 		this(file.toURI().toURL().toExternalForm(), width, height);
 	}
    
@@ -158,7 +158,7 @@ public class Java2DRenderer {
          * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
          * @param height Target height, in pixels, for the image.
          */
-        public Java2DRenderer(Document doc, int width, int height) {
+        public Java2DRenderer(final Document doc, final int width, final int height) {
             this(DEFAULT_DOTS_PER_POINT, DEFAULT_DOTS_PER_PIXEL);
             this.doc = doc;
             this.width = width;
@@ -175,7 +175,7 @@ public class Java2DRenderer {
          * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
          * @param height Target height, in pixels, for the image.
          */
-        public Java2DRenderer(Document doc, String baseUrl, int width, int height) {
+        public Java2DRenderer(final Document doc, final String baseUrl, final int width, final int height) {
             this(doc, width, height);
             this.sourceDocumentBase = baseUrl;
         }
@@ -188,7 +188,7 @@ public class Java2DRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * Heght is calculated based on content
 	 */
-	public Java2DRenderer(File file, int width) throws IOException {
+	public Java2DRenderer(final File file, final int width) throws IOException {
 		this(file.toURI().toURL().toExternalForm(), width);
 	}
 
@@ -201,7 +201,7 @@ public class Java2DRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * Heght is calculated based on content
 	 */
-	public Java2DRenderer(String url, int width) {
+	public Java2DRenderer(final String url, final int width) {
 		this(url, url, width, NO_HEIGHT);
 	}
 
@@ -214,7 +214,7 @@ public class Java2DRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * Heght is calculated based on content
 	 */
-	public Java2DRenderer(String url, String baseurl, int width) {
+	public Java2DRenderer(final String url, final String baseurl, final int width) {
 		this(url, baseurl, width, NO_HEIGHT);
 	}
 
@@ -227,7 +227,7 @@ public class Java2DRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * @param height Target height, in pixels, for the image
 	 */
-	public Java2DRenderer(String url, int width, int height) {
+	public Java2DRenderer(final String url, final int width, final int height) {
 		this(url, url, width, height);
 	}
 
@@ -239,7 +239,7 @@ public class Java2DRenderer {
 	 *
 	 * @param hints values to override in default rendering hints for Graphics2D we are rendering to
 	 */
-	public void setRenderingHints(Map<RenderingHints.Key, Object> hints) {
+	public void setRenderingHints(final Map<RenderingHints.Key, Object> hints) {
 		renderingHints = hints;
 	}
 
@@ -253,7 +253,7 @@ public class Java2DRenderer {
 	 * @param bufferedImageType the BufferedImage type to be used to create the image on which the document
 	 * will be rendered.
 	 */
-	public void setBufferedImageType(int bufferedImageType) {
+	public void setBufferedImageType(final int bufferedImageType) {
 		this.bufferedImageType = bufferedImageType;
 	}
 
@@ -284,12 +284,12 @@ public class Java2DRenderer {
 			height = this.height == -1 ? root.getHeight() : this.height;
 			outputImage = createBufferedImage(this.width, height);
 			outputDevice = new Java2DOutputDevice(outputImage);
-			Graphics2D newG = (Graphics2D) outputImage.getGraphics();
+			final Graphics2D newG = (Graphics2D) outputImage.getGraphics();
 			if ( renderingHints != null ) {
 				newG.addRenderingHints(renderingHints);
 			}
 
-			RenderingContext rc = sharedContext.newRenderingContextInstance();
+			final RenderingContext rc = sharedContext.newRenderingContextInstance();
 			rc.setFontContext(new Java2DFontContext(newG));
 			rc.setOutputDevice(outputDevice);
 			sharedContext.getTextRenderer().setup(rc.getFontContext());
@@ -312,13 +312,13 @@ public class Java2DRenderer {
 	 * @param height target height
 	 * @return new BI
 	 */
-	protected BufferedImage createBufferedImage(int width, int height) {
-		BufferedImage image = ImageUtil.createCompatibleBufferedImage(width, height, this.bufferedImageType);
+	protected BufferedImage createBufferedImage(final int width, final int height) {
+		final BufferedImage image = ImageUtil.createCompatibleBufferedImage(width, height, this.bufferedImageType);
 		ImageUtil.clearImage(image);
 		return image;
 	}
 
-	private void setDocument(Document doc, String url, NamespaceHandler nsh) {
+	private void setDocument(final Document doc, final String url, final NamespaceHandler nsh) {
 		this.doc = doc;
 
 		sharedContext.reset();
@@ -337,11 +337,11 @@ public class Java2DRenderer {
 		);
 	}
 
-	private void layout(int width) {
-		Rectangle rect = new Rectangle(0, 0, width, DEFAULT_HEIGHT);
+	private void layout(final int width) {
+		final Rectangle rect = new Rectangle(0, 0, width, DEFAULT_HEIGHT);
 		sharedContext.set_TempCanvas(rect);
-		LayoutContext c = newLayoutContext();
-		BlockBox root = BoxBuilder.createRootBox(c, doc);
+		final LayoutContext c = newLayoutContext();
+		final BlockBox root = BoxBuilder.createRootBox(c, doc);
 		root.setContainingBlock(new ViewportBox(rect));
 		root.layout(c);
 		this.root = root;
@@ -352,7 +352,7 @@ public class Java2DRenderer {
 	}
 
 	private LayoutContext newLayoutContext() {
-		LayoutContext result = sharedContext.newLayoutContextInstance();
+		final LayoutContext result = sharedContext.newLayoutContextInstance();
 		result.setFontContext(new Java2DFontContext(outputDevice.getGraphics()));
 
 		sharedContext.getTextRenderer().setup(result.getFontContext());
@@ -360,16 +360,16 @@ public class Java2DRenderer {
 		return result;
 	}
 
-	private void init(float dotsPerPoint, int dotsPerPixel) {
+	private void init(final float dotsPerPoint, final int dotsPerPixel) {
 		this.dotsPerPoint = dotsPerPoint;
 
 		outputImage = ImageUtil.createCompatibleBufferedImage(DEFAULT_DOTS_PER_POINT, DEFAULT_DOTS_PER_POINT);
 		outputDevice = new Java2DOutputDevice(outputImage);
 
-		UserAgentCallback userAgent = new NaiveUserAgent();
+		final UserAgentCallback userAgent = new NaiveUserAgent();
 		sharedContext = new SharedContext(userAgent);
 
-		AWTFontResolver fontResolver = new AWTFontResolver();
+		final AWTFontResolver fontResolver = new AWTFontResolver();
 		sharedContext.setFontResolver(fontResolver);
 
 		// TODO
@@ -385,15 +385,15 @@ public class Java2DRenderer {
 
 	private static final class NullUserInterface implements UserInterface {
 
-		public boolean isHover(Element e) {
+		public boolean isHover(final Element e) {
 			return false;
 		}
 
-		public boolean isActive(Element e) {
+		public boolean isActive(final Element e) {
 			return false;
 		}
 
-		public boolean isFocus(Element e) {
+		public boolean isFocus(final Element e) {
 			return false;
 		}
 	}

@@ -41,15 +41,15 @@ import static org.xhtmlrenderer.util.GeneralUtil.ciEquals;
 
 public class ContentFunctionFactory 
 {
-    private List<ContentFunction> _functions = new ArrayList<>(Arrays.asList(
+    private final List<ContentFunction> _functions = new ArrayList<>(Arrays.asList(
     		new PageCounterFunction(),
     		new PagesCounterFunction(),
     		new TargetCounterFunction(),
     		new LeaderFunction()));
     
-    public ContentFunction lookupFunction(LayoutContext c, FSFunction function) 
+    public ContentFunction lookupFunction(final LayoutContext c, final FSFunction function) 
     {
-        for (ContentFunction f : _functions) {
+        for (final ContentFunction f : _functions) {
             if (f.canHandle(c, function)) {
                 return f;
             }
@@ -57,7 +57,7 @@ public class ContentFunctionFactory
         return null;
     }
     
-    public void registerFunction(ContentFunction function) {
+    public void registerFunction(final ContentFunction function) {
         _functions.add(function);
     }
     
@@ -68,7 +68,7 @@ public class ContentFunctionFactory
         }
         
     	@Override
-        public String calculate(LayoutContext c, FSFunction function) {
+        public String calculate(final LayoutContext c, final FSFunction function) {
             return null;
         }
         
@@ -77,13 +77,13 @@ public class ContentFunctionFactory
             return "999";
         }
         
-        protected IdentValue getListStyleType(FSFunction function) 
+        protected IdentValue getListStyleType(final FSFunction function) 
         {
-            List<PropertyValue> parameters = function.getParameters();
+            final List<PropertyValue> parameters = function.getParameters();
 
             if (parameters.size() == 2) {
-                PropertyValue pValue = parameters.get(1);
-                IdentValue iValue = IdentValue.fsValueOf(pValue.getStringValue());
+                final PropertyValue pValue = parameters.get(1);
+                final IdentValue iValue = IdentValue.fsValueOf(pValue.getStringValue());
 
                 if (iValue != null)
                     return iValue;
@@ -92,9 +92,9 @@ public class ContentFunctionFactory
             return IdentValue.DECIMAL;
         }
         
-        protected boolean isCounter(FSFunction function, String counterName) {
+        protected boolean isCounter(final FSFunction function, final String counterName) {
             if (ciEquals(function.getName(), "counter")) {
-                List<PropertyValue> parameters = function.getParameters();
+                final List<PropertyValue> parameters = function.getParameters();
                 if (parameters.size() == 1 || parameters.size() == 2) {
                     PropertyValue param = parameters.get(0);
                     if (param.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_IDENT ||
@@ -119,26 +119,26 @@ public class ContentFunctionFactory
     
     private static class PageCounterFunction extends PageNumberFunction implements ContentFunction {
     	@Override
-    	public String calculate(RenderingContext c, FSFunction function, InlineText text) {
-            int value = c.getRootLayer().getRelativePageNo(c) + 1;
+    	public String calculate(final RenderingContext c, final FSFunction function, final InlineText text) {
+            final int value = c.getRootLayer().getRelativePageNo(c) + 1;
             return CounterFunction.createCounterText(getListStyleType(function), value);
         }
 
         @Override
-        public boolean canHandle(LayoutContext c, FSFunction function) {
+        public boolean canHandle(final LayoutContext c, final FSFunction function) {
             return c.isPrint() && isCounter(function, "page");
         }
     }
     
     private static class PagesCounterFunction extends PageNumberFunction implements ContentFunction {
     	@Override
-    	public String calculate(RenderingContext c, FSFunction function, InlineText text) {
-            int value = c.getRootLayer().getRelativePageCount(c);
+    	public String calculate(final RenderingContext c, final FSFunction function, final InlineText text) {
+            final int value = c.getRootLayer().getRelativePageCount(c);
             return CounterFunction.createCounterText(getListStyleType(function), value);
         }
 
     	@Override
-        public boolean canHandle(LayoutContext c, FSFunction function) {
+        public boolean canHandle(final LayoutContext c, final FSFunction function) {
             return c.isPrint() && isCounter(function, "pages");
         }
     }
@@ -154,13 +154,13 @@ public class ContentFunctionFactory
         }
     	
     	@Override
-        public String calculate(RenderingContext c, FSFunction function, InlineText text) {
-            String uri = text.getParent().getElement().attr("href");
+        public String calculate(final RenderingContext c, final FSFunction function, final InlineText text) {
+            final String uri = text.getParent().getElement().attr("href");
             if (uri != null && uri.startsWith("#")) {
-                String anchor = uri.substring(1);
-                Box target = c.getBoxById(anchor);
+                final String anchor = uri.substring(1);
+                final Box target = c.getBoxById(anchor);
                 if (target != null) {
-                    int pageNo = c.getRootLayer().getRelativePageNo(c, target.getAbsY());
+                    final int pageNo = c.getRootLayer().getRelativePageNo(c, target.getAbsY());
                     return CounterFunction.createCounterText(IdentValue.DECIMAL, pageNo + 1);
                 }
             }
@@ -168,7 +168,7 @@ public class ContentFunctionFactory
         }
 
     	@Override
-        public String calculate(LayoutContext c, FSFunction function) {
+        public String calculate(final LayoutContext c, final FSFunction function) {
             return null;
         }
         
@@ -178,11 +178,11 @@ public class ContentFunctionFactory
         }
 
     	@Override
-        public boolean canHandle(LayoutContext c, FSFunction function) {
+        public boolean canHandle(final LayoutContext c, final FSFunction function) {
             if (c.isPrint() && function.getName().equals("target-counter")) {
-                List<PropertyValue> parameters = function.getParameters();
+                final List<PropertyValue> parameters = function.getParameters();
                 if (parameters.size() == 2 || parameters.size() == 3) {
-                    FSFunction f = ((PropertyValue)parameters.get(0)).getFunction();
+                    final FSFunction f = ((PropertyValue)parameters.get(0)).getFunction();
                     if (f == null ||
                             f.getParameters().size() != 1 ||
                             ((PropertyValue)f.getParameters().get(0)).getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_IDENT ||
@@ -190,7 +190,7 @@ public class ContentFunctionFactory
                         return false;
                     }
 
-                    PropertyValue param = (PropertyValue)parameters.get(1);
+                    final PropertyValue param = (PropertyValue)parameters.get(1);
                     if (param.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_IDENT ||
                             ! param.getStringValue().equals("page")) {
                         return false;
@@ -215,17 +215,17 @@ public class ContentFunctionFactory
         }
 
     	@Override
-        public String calculate(RenderingContext c, FSFunction function, InlineText text) {
-            InlineLayoutBox iB = text.getParent();
-            LineBox lineBox = iB.getLineBox();
+        public String calculate(final RenderingContext c, final FSFunction function, final InlineText text) {
+            final InlineLayoutBox iB = text.getParent();
+            final LineBox lineBox = iB.getLineBox();
 
             // There might be a target-counter function after this function.
             // Because the leader should fill up the line, we need the correct
             // width and must first compute the target-counter function.
             boolean dynamic = false;
-            Iterator<Box> childIterator = lineBox.getChildIterator();
+            final Iterator<Box> childIterator = lineBox.getChildIterator();
             while (childIterator.hasNext()) {
-                Box child = (Box)childIterator.next();
+                final Box child = (Box)childIterator.next();
                 if (child == iB) {
                     dynamic = true;
                 } else if (dynamic && child instanceof InlineLayoutBox) {
@@ -233,12 +233,12 @@ public class ContentFunctionFactory
                 }
             }
             if (dynamic) {
-                int totalLineWidth = InlineBoxing.positionHorizontally(c, lineBox, 0);
+                final int totalLineWidth = InlineBoxing.positionHorizontally(c, lineBox, 0);
                 lineBox.setContentWidth(totalLineWidth);
             }
 
             // Get leader value and value width
-            PropertyValue param = function.getParameters().get(0);
+            final PropertyValue param = function.getParameters().get(0);
             String value = param.getStringValue();
             if (param.getPrimitiveTypeN() == CSSPrimitiveUnit.CSS_IDENT) {
                 if (value.equals("dotted")) {
@@ -253,30 +253,30 @@ public class ContentFunctionFactory
             // Compute value width using 100x string to get more precise width.
             // Otherwise there might be a small gap at the right side. This is
             // necessary because a TextRenderer usually use double/float for width.
-            StringBuffer tmp = new StringBuffer(100 * value.length());
+            final StringBuffer tmp = new StringBuffer(100 * value.length());
             for (int i = 0; i < 100; i++) {
                 tmp.append(value);
             }
-            float valueWidth = c.getTextRenderer().getWidth(c.getFontContext(),
+            final float valueWidth = c.getTextRenderer().getWidth(c.getFontContext(),
                     iB.getStyle().getFSFont(c), tmp.toString()) / 100f;
-            int spaceWidth = c.getTextRenderer().getWidth(c.getFontContext(),
+            final int spaceWidth = c.getTextRenderer().getWidth(c.getFontContext(),
                     iB.getStyle().getFSFont(c), " ");
 
             // compute leader width and necessary count of values
-            int leaderWidth = iB.getContainingBlockWidth() - iB.getLineBox().getWidth() + text.getWidth();
-            int count = (int) ((leaderWidth - (2 * spaceWidth)) / valueWidth);
+            final int leaderWidth = iB.getContainingBlockWidth() - iB.getLineBox().getWidth() + text.getWidth();
+            final int count = (int) ((leaderWidth - (2 * spaceWidth)) / valueWidth);
 
             // build leader string
-            StringBuffer buf = new StringBuffer(count * value.length() + 2);
+            final StringBuffer buf = new StringBuffer(count * value.length() + 2);
             buf.append(' ');
             for (int i = 0; i < count; i++) {
                 buf.append(value);
             }
             buf.append(' ');
-            String leaderString = buf.toString();
+            final String leaderString = buf.toString();
 
             // set left margin to ensure that the leader is right aligned (for TOC)
-            int leaderStringWidth = c.getTextRenderer().getWidth(c.getFontContext(),
+            final int leaderStringWidth = c.getTextRenderer().getWidth(c.getFontContext(),
                     iB.getStyle().getFSFont(c), leaderString);
             iB.setMarginLeft(c, leaderWidth - leaderStringWidth);
 
@@ -284,7 +284,7 @@ public class ContentFunctionFactory
         }
 
     	@Override
-        public String calculate(LayoutContext c, FSFunction function) {
+        public String calculate(final LayoutContext c, final FSFunction function) {
             return null;
         }
         
@@ -294,11 +294,11 @@ public class ContentFunctionFactory
         }
 
     	@Override
-        public boolean canHandle(LayoutContext c, FSFunction function) {
+        public boolean canHandle(final LayoutContext c, final FSFunction function) {
             if (c.isPrint() && function.getName().equals("leader")) {
-                List<PropertyValue> parameters = function.getParameters();
+                final List<PropertyValue> parameters = function.getParameters();
                 if (parameters.size() == 1) {
-                    PropertyValue param = (PropertyValue)parameters.get(0);
+                    final PropertyValue param = (PropertyValue)parameters.get(0);
                     if (param.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_STRING &&
                             (param.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_IDENT ||
                                 (!param.getStringValue().equals("dotted") &&

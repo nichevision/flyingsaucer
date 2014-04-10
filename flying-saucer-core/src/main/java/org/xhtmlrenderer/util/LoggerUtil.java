@@ -35,13 +35,13 @@ public class LoggerUtil {
      * @param cls  PARAM
      * @return     The debugLogger value
      */
-    public static Logger getDebugLogger( Class<?> cls ) {
-        Logger l = Logger.getLogger( cls.getName() );
+    public static Logger getDebugLogger( final Class<?> cls ) {
+        final Logger l = Logger.getLogger( cls.getName() );
         l.setLevel( Level.ALL );
         return l;
     }
 
-    public static Level parseLogLevel(String val, Level defaultLogLevel) {
+    public static Level parseLogLevel(final String val, final Level defaultLogLevel) {
         if ("ALL".equals(val)) {
             return Level.ALL;
         }

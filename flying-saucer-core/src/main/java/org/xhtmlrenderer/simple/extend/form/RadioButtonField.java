@@ -29,12 +29,12 @@ import org.xhtmlrenderer.render.BlockBox;
 import org.xhtmlrenderer.simple.extend.XhtmlForm;
 
 class RadioButtonField extends InputField {
-    public RadioButtonField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public RadioButtonField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
 
     public JComponent create() {
-        JToggleButton radio = new JRadioButton();
+        final JToggleButton radio = new JRadioButton();
 
         radio.setText("");
         radio.setOpaque(false);
@@ -57,13 +57,13 @@ class RadioButtonField extends InputField {
     }
 
     protected void applyOriginalState() {
-        JToggleButton button = (JToggleButton) getComponent();
+        final JToggleButton button = (JToggleButton) getComponent();
         
         button.setSelected(getOriginalState().isChecked());
     }
     
     protected String[] getFieldValues() {
-        JToggleButton button = (JToggleButton) getComponent();
+        final JToggleButton button = (JToggleButton) getComponent();
         
         if (button.isSelected()) {
             return new String [] {

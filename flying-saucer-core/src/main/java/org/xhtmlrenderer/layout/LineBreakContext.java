@@ -51,7 +51,7 @@ public class LineBreakContext {
         return _end;
     }
     
-    public void setEnd(int end) {
+    public void setEnd(final int end) {
         _end = end;
     }
     
@@ -59,7 +59,7 @@ public class LineBreakContext {
         return _master;
     }
     
-    public void setMaster(String master) {
+    public void setMaster(final String master) {
         _master = master;
     }
     
@@ -67,7 +67,7 @@ public class LineBreakContext {
         return _start;
     }
     
-    public void setStart(int start) {
+    public void setStart(final int start) {
         _start = start;
     }
     
@@ -83,7 +83,7 @@ public class LineBreakContext {
         return _unbreakable;
     }
 
-    public void setUnbreakable(boolean unbreakable) {
+    public void setUnbreakable(final boolean unbreakable) {
         _unbreakable = unbreakable;
     }
 
@@ -91,7 +91,7 @@ public class LineBreakContext {
         return _needsNewLine;
     }
 
-    public void setNeedsNewLine(boolean needsLineBreak) {
+    public void setNeedsNewLine(final boolean needsLineBreak) {
         _needsNewLine = needsLineBreak;
     }
 
@@ -99,7 +99,7 @@ public class LineBreakContext {
         return _width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(final int width) {
         _width = width;
     }
     
@@ -119,7 +119,7 @@ public class LineBreakContext {
         return _endsOnNL;
     }
 
-    public void setEndsOnNL(boolean b) {
+    public void setEndsOnNL(final boolean b) {
         _endsOnNL = b;
     }
 
@@ -127,7 +127,7 @@ public class LineBreakContext {
         return this._textNode;
     }
 
-    public void setTextNode(Node node) {
+    public void setTextNode(final Node node) {
         this._textNode = node;
     }
 }

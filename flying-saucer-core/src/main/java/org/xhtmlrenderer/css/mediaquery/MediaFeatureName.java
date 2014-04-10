@@ -42,7 +42,7 @@ public enum MediaFeatureName
 	
 	private final String cssName;
 	
-	private MediaFeatureName(String name)
+	private MediaFeatureName(final String name)
 	{
 		cssName = name;
 	}
@@ -57,13 +57,13 @@ public enum MediaFeatureName
 	
 	static 
 	{
-		for (MediaFeatureName nm : values())
+		for (final MediaFeatureName nm : values())
 		{
 			map.put(nm.cssName, nm);
 		}
 	}
 	
-	public static MediaFeatureName fsValueOf(String mediaFeatureStr)
+	public static MediaFeatureName fsValueOf(final String mediaFeatureStr)
 	{
 		return map.get(mediaFeatureStr);
 	}

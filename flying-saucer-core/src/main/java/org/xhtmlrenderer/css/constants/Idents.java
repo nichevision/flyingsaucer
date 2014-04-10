@@ -90,7 +90,7 @@ public final class Idents {
     private final static Set<String> FONT_STYLES;
     private final static Set<String> BACKGROUND_POSITIONS_IDENTS;
 
-    public static String convertIdent(CSSName cssName, String ident) {
+    public static String convertIdent(final CSSName cssName, String ident) {
         if (ciEquals(ident, "inherit")) {
             return ident;
         }
@@ -99,13 +99,13 @@ public final class Idents {
         String val = ident;
 
         if (cssName == CSSName.FONT_SIZE) {
-            String size = FONT_SIZES.get(ident);
+            final String size = FONT_SIZES.get(ident);
             val = (size == null ? ident : size);
         } else if (cssName == CSSName.FONT_WEIGHT) {
-            String size = FONT_WEIGHTS.get(ident);
+            final String size = FONT_WEIGHTS.get(ident);
             val = (size == null ? ident : size);
         } else if (cssName == CSSName.BACKGROUND_POSITION) {
-            String pos = BACKGROUND_POSITIONS.get(ident);
+            final String pos = BACKGROUND_POSITIONS.get(ident);
             val = (pos == null ? ident : pos);
         } else if (
                 cssName == CSSName.BORDER_BOTTOM_WIDTH ||
@@ -114,7 +114,7 @@ public final class Idents {
                 cssName == CSSName.BORDER_WIDTH_SHORTHAND ||
                 cssName == CSSName.BORDER_TOP_WIDTH) {
 
-            String size = BORDER_WIDTHS.get(ident);
+            final String size = BORDER_WIDTHS.get(ident);
             val = (size == null ? ident : size);
         } else if (
                 cssName == CSSName.BORDER_BOTTOM_COLOR ||
@@ -139,11 +139,11 @@ public final class Idents {
         return val;
     }
 
-    public static boolean looksLikeABorderStyle(String val) {
+    public static boolean looksLikeABorderStyle(final String val) {
         return BORDER_STYLES.contains(val.toLowerCase(Locale.US));
     }
 
-    public static boolean looksLikeAColor(String val) {
+    public static boolean looksLikeAColor(final String val) {
         return COLOR_MAP.containsKey(val.toLowerCase(Locale.US)) || 
         		(val.startsWith("#") && 
         		(val.length() == 7 || 
@@ -151,66 +151,66 @@ public final class Idents {
         		 val.toLowerCase(Locale.US).startsWith("rgb");
     }
 
-    public static boolean looksLikeALength(String val) {
+    public static boolean looksLikeALength(final String val) {
         return CSS_LENGTH_PATTERN.matcher(val).matches();
     }
 
-    public static boolean looksLikeAURI(String val) {
+    public static boolean looksLikeAURI(final String val) {
         return val.toLowerCase(Locale.US).startsWith("url(") && val.endsWith(")");
     }
     
-    public static boolean looksLikeAFunction(String value) {
+    public static boolean looksLikeAFunction(final String value) {
         return FUNCTION_PATTERN.matcher(value).find();
     }
 
-    public static boolean looksLikeABGRepeat(String val) {
+    public static boolean looksLikeABGRepeat(final String val) {
         return BACKGROUND_REPEATS.contains(val.toLowerCase(Locale.US));
     }
 
-    public static boolean looksLikeABGAttachment(String val) {
+    public static boolean looksLikeABGAttachment(final String val) {
         return ciEquals("scroll", val) || ciEquals("fixed", val);
     }
 
-    public static boolean looksLikeABGPosition(String val) {
+    public static boolean looksLikeABGPosition(final String val) {
         return BACKGROUND_POSITIONS_IDENTS.contains(val.toLowerCase(Locale.US)) || looksLikeALength(val);
     }
 
-    public static boolean looksLikeAListStyleType(String val) {
+    public static boolean looksLikeAListStyleType(final String val) {
         return LIST_TYPES.contains(val.toLowerCase(Locale.US));
     }
 
-    public static boolean looksLikeAListStyleImage(String val) {
+    public static boolean looksLikeAListStyleImage(final String val) {
         return ciEquals("none", val) || looksLikeAURI(val);
     }
 
-    public static boolean looksLikeAListStylePosition(String val) {
+    public static boolean looksLikeAListStylePosition(final String val) {
         return ciEquals("inside", val) || ciEquals("outside", val);
     }
 
-    public static boolean looksLikeAFontStyle(String val) {
+    public static boolean looksLikeAFontStyle(final String val) {
         return FONT_STYLES.contains(val.toLowerCase(Locale.US));
     }
 
-    public static boolean looksLikeAFontVariant(String val) {
+    public static boolean looksLikeAFontVariant(final String val) {
         return ciEquals("normal", val) || ciEquals("small-caps", val);
     }
 
-    public static boolean looksLikeAFontWeight(String val) {
+    public static boolean looksLikeAFontWeight(final String val) {
         return FONT_WEIGHTS.containsKey(val.toLowerCase(Locale.US));
     }
 
-    public static boolean looksLikeAFontSize(String val) {
+    public static boolean looksLikeAFontSize(final String val) {
         // TODO
         return FONT_SIZES.containsKey(val.toLowerCase(Locale.US)) ||
                 looksLikeALength(val) ||
                 ciEquals("larger", val) || ciEquals("smaller", val);
     }
 
-    public static boolean looksLikeALineHeight(String val) {
+    public static boolean looksLikeALineHeight(final String val) {
         return ciEquals("normal", val) || looksLikeALength(val) || looksLikeANumber(val);
     }
 
-    public static boolean looksLikeANumber(String val) {
+    public static boolean looksLikeANumber(final String val) {
         return CSS_NUMBER_PATTERN.matcher(val).matches();
     }
 
@@ -222,7 +222,7 @@ public final class Idents {
      *              assignment or a Color hex value.
      * @return The colorHex value
      */
-    public static String getColorHex(String value) {
+    public static String getColorHex(final String value) {
     	assert(value != null);
     	
         String retval = COLOR_MAP.get(value.toLowerCase(Locale.US));
@@ -230,7 +230,7 @@ public final class Idents {
             if (value.trim().toLowerCase(Locale.US).startsWith("rgb(")) {
                 retval = value;
             } else {
-                Matcher m = COLOR_HEX_PATTERN.matcher(value);
+                final Matcher m = COLOR_HEX_PATTERN.matcher(value);
                 if (m.matches()) {
                     retval = value;
                 }
@@ -400,11 +400,11 @@ public final class Idents {
         FONT_STYLES.add("oblique");
     }
 
-    public static boolean looksLikeAQuote(String content) {
+    public static boolean looksLikeAQuote(final String content) {
         return ciEquals(content, "open-quote") || ciEquals(content, "close-quote");
     }
 
-    public static boolean looksLikeASkipQuote(String content) {
+    public static boolean looksLikeASkipQuote(final String content) {
         return ciEquals(content, "no-open-quote") || ciEquals(content, "no-close-quote");
     }
 }

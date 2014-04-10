@@ -40,7 +40,7 @@ class ImageLoadWorker extends Thread {
     private static volatile int counter = 0;
     private final ImageLoadQueue queue;
 
-    public ImageLoadWorker(ImageLoadQueue queue) {
+    public ImageLoadWorker(final ImageLoadQueue queue) {
         this.queue = queue;
         setDaemon(true);
         setPriority(Thread.MIN_PRIORITY);
@@ -56,7 +56,7 @@ class ImageLoadWorker extends Thread {
                     break;
                 }
                 final ImageResource ir = ImageResourceLoader.loadImageResourceFromUri(loadItem._uri);
-                FSImage awtfsImage = ir.getImage();
+                final FSImage awtfsImage = ir.getImage();
                 BufferedImage newImg = (BufferedImage) ((AWTFSImage) awtfsImage).getImage();
                 XRLog.load(Level.FINE, this + ", loaded " + loadItem._uri);
 
@@ -65,7 +65,7 @@ class ImageLoadWorker extends Thread {
                 if (loadItem.haveTargetDimensions() && !ir.hasDimensions(loadItem._targetWidth, loadItem._targetHeight)) {
                     XRLog.load(Level.FINE, this + ", scaling " + loadItem._uri + " to " + loadItem._targetWidth + ", " + loadItem._targetHeight);
                     newImg = ImageUtil.getScaledInstance(newImg, loadItem._targetWidth, loadItem._targetHeight);
-                    ImageResource sir = new ImageResource(ir.getImageUri(), AWTFSImage.createImage(newImg));
+                    final ImageResource sir = new ImageResource(ir.getImageUri(), AWTFSImage.createImage(newImg));
                     loadItem._imageResourceLoader.loaded(sir, newImg.getWidth(), newImg.getHeight());
                     wasScaled = true;
                 } else {
@@ -80,7 +80,7 @@ class ImageLoadWorker extends Thread {
                     }
                 });
             }
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             //
         }
     }

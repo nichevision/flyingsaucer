@@ -29,7 +29,7 @@ import org.xhtmlrenderer.css.style.CssContext;
 public class ViewportBox extends BlockBox {
     private final Rectangle _viewport;
 
-    public ViewportBox(Rectangle viewport) {
+    public ViewportBox(final Rectangle viewport) {
         _viewport = viewport;
     }
 
@@ -45,15 +45,15 @@ public class ViewportBox extends BlockBox {
         return _viewport.width;
     }
 
-    public Rectangle getContentAreaEdge(int left, int top, CssContext cssCtx) {
+    public Rectangle getContentAreaEdge(final int left, final int top, final CssContext cssCtx) {
         return new Rectangle(-_viewport.x, -_viewport.y, _viewport.width, _viewport.height);
     }
 
-    public Rectangle getPaddingEdge(int left, int top, CssContext cssCtx) {
+    public Rectangle getPaddingEdge(final int left, final int top, final CssContext cssCtx) {
         return new Rectangle(-_viewport.x, -_viewport.y, _viewport.width, _viewport.height);
     }
 
-    protected int getPaddingWidth(CssContext cssCtx) {
+    protected int getPaddingWidth(final CssContext cssCtx) {
         return _viewport.width;
     }
 
@@ -65,7 +65,7 @@ public class ViewportBox extends BlockBox {
         return false;
     }
 
-    protected int getCSSHeight(CssContext c) {
+    protected int getCSSHeight(final CssContext c) {
         return _viewport.height;
     }
 

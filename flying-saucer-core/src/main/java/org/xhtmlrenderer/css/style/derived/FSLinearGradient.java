@@ -32,14 +32,14 @@ public class FSLinearGradient
 		private final Float length;
 		private Float dotsValue;
 		
-		private StopValue(FSColor color, Float value, CSSPrimitiveUnit lengthType)
+		private StopValue(final FSColor color, final Float value, final CSSPrimitiveUnit lengthType)
 		{
 			this.color = color;
 			this.length = value;
 			this.lengthType = lengthType;
 		}
 		
-		private StopValue(FSColor color)
+		private StopValue(final FSColor color)
 		{
 			this.color = color;
 			this.length = null;
@@ -63,7 +63,7 @@ public class FSLinearGradient
 		}
 
 		@Override
-		public int compareTo(StopValue arg0) 
+		public int compareTo(final StopValue arg0) 
 		{
 			if (this.dotsValue == arg0.dotsValue)
 				return 0;
@@ -79,12 +79,12 @@ public class FSLinearGradient
 		return stopPoints;
 	}
 	
-	private float deg2rad(float deg)
+	private float deg2rad(final float deg)
 	{
 		return (float) Math.toRadians(deg);
 	}
 	
-	private float rad2deg(float rad)
+	private float rad2deg(final float rad)
 	{
 		return (float) Math.toDegrees(rad);
 	}
@@ -92,7 +92,7 @@ public class FSLinearGradient
 	// Compute the endpoints so that a gradient of the given angle
 	// covers a box of the given size.
 	// From: https://github.com/WebKit/webkit/blob/master/Source/WebCore/css/CSSGradientValue.cpp
-	private void endPointsFromAngle(float angleDeg, int w, int h)
+	private void endPointsFromAngle(float angleDeg, final int w, final int h)
 	{
 	    angleDeg = angleDeg % 360;
 	    if (angleDeg < 0)
@@ -136,15 +136,15 @@ public class FSLinearGradient
 
 	    // angleDeg is a "bearing angle" (0deg = N, 90deg = E),
 	    // but tan expects 0deg = E, 90deg = N.
-	    float slope = (float) Math.tan(deg2rad(90 - angleDeg));
+	    final float slope = (float) Math.tan(deg2rad(90 - angleDeg));
 
 	    // We find the endpoint by computing the intersection of the line formed by the slope,
 	    // and a line perpendicular to it that intersects the corner.
-	    float perpendicularSlope = -1 / slope;
+	    final float perpendicularSlope = -1 / slope;
 
 	    // Compute start corner relative to center, in Cartesian space (+y = up).
-	    float halfHeight = h / 2;
-	    float halfWidth = w / 2;
+	    final float halfHeight = h / 2;
+	    final float halfWidth = w / 2;
 	    float xEnd, yEnd;
 	    
 	    if (angleDeg < 90)
@@ -169,9 +169,9 @@ public class FSLinearGradient
 	    }
 
 	    // Compute c (of y = mx + c) using the corner point.
-	    float c = yEnd - perpendicularSlope * xEnd;
-	    float endX = c / (slope - perpendicularSlope);
-	    float endY = perpendicularSlope * endX + c;
+	    final float c = yEnd - perpendicularSlope * xEnd;
+	    final float endX = c / (slope - perpendicularSlope);
+	    final float endY = perpendicularSlope * endX + c;
 
 	    // We computed the end point, so set the second point,
 	    // taking into account the moved origin and the fact that we're in drawing space (+y = down).
@@ -203,9 +203,9 @@ public class FSLinearGradient
 		return;
 	}
 	
-	public FSLinearGradient(FSFunction func, CalculatedStyle style, int width, int height, CssContext ctx)
+	public FSLinearGradient(final FSFunction func, final CalculatedStyle style, final int width, final int height, final CssContext ctx)
 	{
-		List<PropertyValue> params = func.getParameters();
+		final List<PropertyValue> params = func.getParameters();
 		int i = 1;
 		
 		if (params.isEmpty())
@@ -337,7 +337,7 @@ public class FSLinearGradient
 		for (; i < params.size(); i++)
 		{
 			// Each stop point can have a color and optionally a length.
-			PropertyValue value = params.get(i);
+			final PropertyValue value = params.get(i);
 			FSRGBColor color = null;
 			
 			if (value.getPrimitiveTypeN() == CSSPrimitiveUnit.CSS_IDENT)
@@ -360,7 +360,7 @@ public class FSLinearGradient
               	(BuilderUtil.isLength(params.get(i + 1)) || 
                	params.get(i + 1).getPrimitiveTypeN() == CSSPrimitiveUnit.CSS_PERCENTAGE))
             {
-              	PropertyValue val2 = params.get(i + 1);
+              	final PropertyValue val2 = params.get(i + 1);
               	stopPoints.add(new StopValue(color, val2.getFloatValue(), val2.getPrimitiveTypeN()));
               	i++;
             }
@@ -373,7 +373,7 @@ public class FSLinearGradient
 		// Normalize lengths into dots values.
 		for (int m = 0; m < stopPoints.size(); m++)
 		{
-			StopValue pt = stopPoints.get(m);
+			final StopValue pt = stopPoints.get(m);
 			if (pt.length != null)
 			{
 				pt.dotsValue = 

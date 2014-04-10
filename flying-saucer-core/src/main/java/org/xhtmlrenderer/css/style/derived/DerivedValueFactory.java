@@ -35,7 +35,7 @@ public class DerivedValueFactory {
     private static final Map<String, FSDerivedValue> CACHED_COLORS = new HashMap<String, FSDerivedValue>();
     
     public static FSDerivedValue newDerivedValue(
-            CalculatedStyle style, CSSName cssName, PropertyValue value) {
+            final CalculatedStyle style, final CSSName cssName, final PropertyValue value) {
         if (value.getCssValueTypeN() == CSSValueType.CSS_INHERIT) {
             return style.getParent().valueByName(cssName);
         }

@@ -50,12 +50,12 @@ public class StreamResource {
             	// https to http.
             	// TODO: Do more than one redirect.
 
-            	HttpURLConnection http = (HttpURLConnection) _conn;
-            	int code = http.getResponseCode();
+            	final HttpURLConnection http = (HttpURLConnection) _conn;
+            	final int code = http.getResponseCode();
             	
             	if (code >= 300 && code < 400)
             	{
-            		String redirect = http.getHeaderField("Location");
+            		final String redirect = http.getHeaderField("Location");
             		_uri = redirect;
             		_conn = new URL(_uri).openConnection();
             		_conn.setRequestProperty("Accept-Encoding", "gzip");
@@ -63,11 +63,11 @@ public class StreamResource {
             		_slen = _conn.getContentLength();
             	}
             }
-        } catch (java.net.MalformedURLException e) {
+        } catch (final java.net.MalformedURLException e) {
             XRLog.exception("bad URL given: " + _uri, e);
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             XRLog.exception("item at URI " + _uri + " not found");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             XRLog.exception("IO problem for " + _uri, e);
         }
     }
@@ -101,7 +101,7 @@ public class StreamResource {
         if (_inputStream != null) {
             try {
                 _inputStream.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // swallow
             }
         }

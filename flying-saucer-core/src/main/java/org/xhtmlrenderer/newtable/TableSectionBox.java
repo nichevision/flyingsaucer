@@ -44,7 +44,7 @@ public class TableSectionBox extends BlockBox {
     }
     
     public BlockBox copyOf() {
-        TableSectionBox result = new TableSectionBox();
+        final TableSectionBox result = new TableSectionBox();
         result.setStyle(getStyle());
         result.setElement(getElement());
         
@@ -55,67 +55,67 @@ public class TableSectionBox extends BlockBox {
         return _grid;
     }
 
-    public void setGrid(List<RowData> grid) {
+    public void setGrid(final List<RowData> grid) {
         _grid = grid;
     }
     
-    public void extendGridToColumnCount(int columnCount) {
-        for (Iterator<RowData> i = _grid.iterator(); i.hasNext(); ) {
-            RowData row = i.next();
+    public void extendGridToColumnCount(final int columnCount) {
+        for (final Iterator<RowData> i = _grid.iterator(); i.hasNext(); ) {
+            final RowData row = i.next();
             row.extendToColumnCount(columnCount);
         }
     }
     
-    public void splitColumn(int pos) {
-        for (Iterator<RowData> i = _grid.iterator(); i.hasNext(); ) {
-            RowData row = i.next();
+    public void splitColumn(final int pos) {
+        for (final Iterator<RowData> i = _grid.iterator(); i.hasNext(); ) {
+            final RowData row = i.next();
             row.splitColumn(pos);
         }
     }
     
-    public void recalcCells(LayoutContext c) {
+    public void recalcCells(final LayoutContext c) {
         int cRow = 0;
         _grid.clear();
         ensureChildren(c);
-        for (Iterator<Box> i = getChildIterator(); i.hasNext(); cRow++) {
-            TableRowBox row = (TableRowBox)i.next();
+        for (final Iterator<Box> i = getChildIterator(); i.hasNext(); cRow++) {
+            final TableRowBox row = (TableRowBox)i.next();
             row.ensureChildren(c);
-            for (Iterator<Box> j = row.getChildIterator(); j.hasNext(); ) {
-                TableCellBox cell = (TableCellBox)j.next();
+            for (final Iterator<Box> j = row.getChildIterator(); j.hasNext(); ) {
+                final TableCellBox cell = (TableCellBox)j.next();
                 addCell(row, cell, cRow);
             }
         }
     }
     
-    public void calcBorders(LayoutContext c) {
+    public void calcBorders(final LayoutContext c) {
         ensureChildren(c);
-        for (Iterator<Box> i = getChildIterator(); i.hasNext(); ) {
-            TableRowBox row = (TableRowBox)i.next();
+        for (final Iterator<Box> i = getChildIterator(); i.hasNext(); ) {
+            final TableRowBox row = (TableRowBox)i.next();
             row.ensureChildren(c);
-            for (Iterator<Box> j = row.getChildIterator(); j.hasNext(); ) {
-                TableCellBox cell = (TableCellBox)j.next();
+            for (final Iterator<Box> j = row.getChildIterator(); j.hasNext(); ) {
+                final TableCellBox cell = (TableCellBox)j.next();
                 cell.calcCollapsedBorder(c);
             }
         }
     }
     
-    public TableCellBox cellAt(int row, int col) {
+    public TableCellBox cellAt(final int row, final int col) {
         if (row >= _grid.size()) return null;
-        RowData rowData = _grid.get(row);
+        final RowData rowData = _grid.get(row);
         if (col >= rowData.getRow().size()) return null;
         return (TableCellBox)rowData.getRow().get(col);
     }
     
-    private void setCellAt(int row, int col, TableCellBox cell) {
+    private void setCellAt(final int row, final int col, final TableCellBox cell) {
         _grid.get(row).getRow().set(col, cell);
     }
     
-    private void ensureRows(int numRows) {
+    private void ensureRows(final int numRows) {
         int nRows = _grid.size();
-        int nCols = getTable().numEffCols();
+        final int nCols = getTable().numEffCols();
         
         while (nRows < numRows) {
-            RowData row = new RowData();
+            final RowData row = new RowData();
             row.extendToColumnCount(nCols);
             _grid.add(row);
             nRows++;
@@ -126,7 +126,7 @@ public class TableSectionBox extends BlockBox {
         return (TableBox)getParent();
     }
     
-    protected void layoutChildren(LayoutContext c, int contentStart) {
+    protected void layoutChildren(final LayoutContext c, final int contentStart) {
         if (isNeedCellRecalc()) {
             recalcCells(c);
             setNeedCellRecalc(false);
@@ -140,12 +140,12 @@ public class TableSectionBox extends BlockBox {
         super.layoutChildren(c, contentStart);
     }
     
-    private void addCell(TableRowBox row, TableCellBox cell, int cRow) {
-        int rSpan = cell.getStyle().getRowSpan();
+    private void addCell(final TableRowBox row, final TableCellBox cell, final int cRow) {
+        final int rSpan = cell.getStyle().getRowSpan();
         int cSpan = cell.getStyle().getColSpan();
         
-        List<ColumnData> columns = getTable().getColumns();
-        int nCols = columns.size();
+        final List<ColumnData> columns = getTable().getColumns();
+        final int nCols = columns.size();
         int cCol = 0;
         
         ensureRows(cRow + rSpan);
@@ -154,7 +154,7 @@ public class TableSectionBox extends BlockBox {
             cCol++;
         }
         
-        int col = cCol;
+        final int col = cCol;
         TableCellBox set = cell;
         while (cSpan > 0) {
             int currentSpan;
@@ -184,7 +184,7 @@ public class TableSectionBox extends BlockBox {
         cell.setCol(getTable().effColToCol(col));
     }
     
-    public void reset(LayoutContext c) {
+    public void reset(final LayoutContext c) {
         super.reset(c);
         _grid.clear();
         setNeedCellWidthCalc(true);
@@ -192,16 +192,16 @@ public class TableSectionBox extends BlockBox {
         setCapturedOriginalAbsY(false);
     }
     
-    void setCellWidths(LayoutContext c)
+    void setCellWidths(final LayoutContext c)
     {
-        int[] columnPos = getTable().getColumnPos();
+        final int[] columnPos = getTable().getColumnPos();
         
-        for (Iterator<RowData> i = _grid.iterator(); i.hasNext(); ) {
-            RowData row = i.next();
-            List<TableCellBox> cols = row.getRow();
-            int hspacing = getTable().getStyle().getBorderHSpacing(c);
+        for (final Iterator<RowData> i = _grid.iterator(); i.hasNext(); ) {
+            final RowData row = i.next();
+            final List<TableCellBox> cols = row.getRow();
+            final int hspacing = getTable().getStyle().getBorderHSpacing(c);
             for (int j = 0; j < cols.size(); j++) {
-                TableCellBox cell = (TableCellBox)cols.get(j);
+                final TableCellBox cell = (TableCellBox)cols.get(j);
                 
                 if (cell == null || cell == TableCellBox.SPANNING_CELL) {
                     continue;
@@ -214,7 +214,7 @@ public class TableSectionBox extends BlockBox {
                     endCol++;
                 }
                 
-                int w = columnPos[endCol] - columnPos[j] - hspacing;
+                final int w = columnPos[endCol] - columnPos[j] - hspacing;
                 cell.setLayoutWidth(c, w);
                 cell.setX(columnPos[j] + hspacing);
             }
@@ -234,11 +234,11 @@ public class TableSectionBox extends BlockBox {
         return true;
     }
     
-    public void paintBorder(RenderingContext c) {
+    public void paintBorder(final RenderingContext c) {
         // row groups never have borders
     }
     
-    public void paintBackground(RenderingContext c) {
+    public void paintBackground(final RenderingContext c) {
         // painted at the cell level
     }
     
@@ -254,7 +254,7 @@ public class TableSectionBox extends BlockBox {
         return _needCellWidthCalc;
     }
 
-    void setNeedCellWidthCalc(boolean needCellWidthCalc) {
+    void setNeedCellWidthCalc(final boolean needCellWidthCalc) {
         _needCellWidthCalc = needCellWidthCalc;
     }
 
@@ -262,12 +262,12 @@ public class TableSectionBox extends BlockBox {
         return _needCellRecalc;
     }
 
-    private void setNeedCellRecalc(boolean needCellRecalc) {
+    private void setNeedCellRecalc(final boolean needCellRecalc) {
         _needCellRecalc = needCellRecalc;
     }
     
-    public void layout(LayoutContext c, int contentStart) {
-        boolean running = c.isPrint() && (isHeader() || isFooter()) && getTable().getStyle().isPaginateTable();
+    public void layout(final LayoutContext c, final int contentStart) {
+        final boolean running = c.isPrint() && (isHeader() || isFooter()) && getTable().getStyle().isPaginateTable();
         
         if (running) {
             c.setNoPageBreak(c.getNoPageBreak()+1);
@@ -284,7 +284,7 @@ public class TableSectionBox extends BlockBox {
         return _footer;
     }
 
-    public void setFooter(boolean footer) {
+    public void setFooter(final boolean footer) {
         _footer = footer;
     }
 
@@ -292,7 +292,7 @@ public class TableSectionBox extends BlockBox {
         return _header;
     }
 
-    public void setHeader(boolean header) {
+    public void setHeader(final boolean header) {
         _header = header;
     }
 
@@ -300,7 +300,7 @@ public class TableSectionBox extends BlockBox {
         return _capturedOriginalAbsY;
     }
 
-    public void setCapturedOriginalAbsY(boolean capturedOriginalAbsY) {
+    public void setCapturedOriginalAbsY(final boolean capturedOriginalAbsY) {
         _capturedOriginalAbsY = capturedOriginalAbsY;
     }
 
@@ -308,7 +308,7 @@ public class TableSectionBox extends BlockBox {
         return _originalAbsY;
     }
 
-    public void setOriginalAbsY(int originalAbsY) {
+    public void setOriginalAbsY(final int originalAbsY) {
         _originalAbsY = originalAbsY;
     }
 }

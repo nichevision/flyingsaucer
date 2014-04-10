@@ -30,21 +30,21 @@ public class CSSParseException extends RuntimeException {
     
     private boolean _callerNotified;
     
-    public CSSParseException(String message, int line) {
+    public CSSParseException(final String message, final int line) {
         _found = null;
         _expected = null;
         _line = line;
         _genericMessage = message;
     }
     
-    public CSSParseException(Token found, Token expected, int line) {
+    public CSSParseException(final Token found, final Token expected, final int line) {
         _found = found;
         _expected = new Token[] { expected };
         _line = line;
         _genericMessage = null;
     }
     
-    public CSSParseException(Token found, Token[] expected, int line) {
+    public CSSParseException(final Token found, final Token[] expected, final int line) {
         _found = found;
         _expected = expected == null ? new Token[]{} : (Token[]) expected.clone(); 
         _line = line;
@@ -55,17 +55,17 @@ public class CSSParseException extends RuntimeException {
         if (_genericMessage != null) {
             return _genericMessage + " at line " + (_line+1) + ".";
         } else {
-            String found = _found == null ? "end of file" : _found.getExternalName();
+            final String found = _found == null ? "end of file" : _found.getExternalName();
             return "Found " + found + " where " + 
                 descr(_expected) + " was expected at line " + (_line+1) + "."; 
         }
     }
     
-    private String descr(Token[] tokens) {
+    private String descr(final Token[] tokens) {
         if (tokens.length == 1) {
             return tokens[0].getExternalName();
         } else {
-            StringBuffer result = new StringBuffer();
+            final StringBuffer result = new StringBuffer();
             if (tokens.length > 2) {
                 result.append("one of ");
             }
@@ -93,7 +93,7 @@ public class CSSParseException extends RuntimeException {
         return _line;
     }
     
-    public void setLine(int i) {
+    public void setLine(final int i) {
         _line = i;
     }
     
@@ -105,7 +105,7 @@ public class CSSParseException extends RuntimeException {
         return _callerNotified;
     }
 
-    public void setCallerNotified(boolean callerNotified) {
+    public void setCallerNotified(final boolean callerNotified) {
         _callerNotified = callerNotified;
     }
 }

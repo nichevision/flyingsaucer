@@ -38,7 +38,7 @@ public class MutableFSImage extends AWTFSImage {
     private final RepaintListener repaintListener;
     private volatile boolean loaded;
 
-    public MutableFSImage(RepaintListener repaintListener) {
+    public MutableFSImage(final RepaintListener repaintListener) {
         this.repaintListener = repaintListener;
         img = ImageUtil.createTransparentImage(10, 10);
     }
@@ -55,11 +55,11 @@ public class MutableFSImage extends AWTFSImage {
         return img.getHeight(null);
     }
 
-    public synchronized void scale(int width, int height) {
+    public synchronized void scale(final int width, final int height) {
         img.getScaledInstance(width, height, Image.SCALE_DEFAULT);
     }
 
-    public synchronized void setImage(String uri, BufferedImage newImg, final boolean wasScaled) {
+    public synchronized void setImage(final String uri, final BufferedImage newImg, final boolean wasScaled) {
         assert EventQueue.isDispatchThread() : "setImage() must be called on EDT";
         
         img = newImg;

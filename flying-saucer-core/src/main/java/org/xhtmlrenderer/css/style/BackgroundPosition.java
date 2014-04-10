@@ -25,7 +25,7 @@ public class BackgroundPosition {
     private final PropertyValue _horizontal;
     private final PropertyValue _vertical;
     
-    public BackgroundPosition(PropertyValue horizontal, PropertyValue vertical) {
+    public BackgroundPosition(final PropertyValue horizontal, final PropertyValue vertical) {
         _horizontal = horizontal;
         _vertical = vertical;
     }

@@ -54,7 +54,7 @@ import java.util.Iterator;
  * output quality. Note that for the JPG format, your image or BufferedImage shouldn't be ARGB.</p>
  */
 public class FSImageWriter {
-    private String imageFormat;
+    private final String imageFormat;
     private float writeCompressionQuality;
     private int writeCompressionMode;
     private String writeCompressionType;
@@ -74,7 +74,7 @@ public class FSImageWriter {
      * @param imageFormat Informal image format name, e.g. "jpg", "png", "bmp"; usually the part that appears
      *                    as the file extension.
      */
-    public FSImageWriter(String imageFormat) {
+    public FSImageWriter(final String imageFormat) {
         this.imageFormat = imageFormat;
         this.writeCompressionMode = ImageWriteParam.MODE_COPY_FROM_METADATA;
         this.writeCompressionType = null;
@@ -87,8 +87,8 @@ public class FSImageWriter {
      * @param quality level of compression, between 0 and 1; 0 is lowest, 1 is highest quality.
      * @return a writer for JPEG images
      */
-    public static FSImageWriter newJpegWriter(float quality) {
-        FSImageWriter writer = new FSImageWriter("jpg");
+    public static FSImageWriter newJpegWriter(final float quality) {
+        final FSImageWriter writer = new FSImageWriter("jpg");
         writer.setWriteCompressionMode(ImageWriteParam.MODE_EXPLICIT);
         writer.setWriteCompressionType("JPEG");
         writer.setWriteCompressionQuality(quality);
@@ -104,8 +104,8 @@ public class FSImageWriter {
      *                 caller to make sure this corresponds to the image format.
      * @throws IOException If the file could not be written.
      */
-    public void write(BufferedImage bimg, String filePath) throws IOException {
-        File file = new File(filePath);
+    public void write(final BufferedImage bimg, final String filePath) throws IOException {
+        final File file = new File(filePath);
         if (file.exists()) {
             if (!file.delete()) {
                 throw new IOException("File " + filePath + " exists already, and call to .delete() failed " +
@@ -118,13 +118,13 @@ public class FSImageWriter {
             }
         }
 
-        OutputStream fos = new BufferedOutputStream(new FileOutputStream(file));
+        final OutputStream fos = new BufferedOutputStream(new FileOutputStream(file));
         try {
             write(bimg, fos);
         } finally {
             try {
                 fos.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // ignore
             }
         }
@@ -138,26 +138,26 @@ public class FSImageWriter {
      * @param os outputstream to write to
      * @throws IOException If the file could not be written.
      */
-    public void write(BufferedImage bimg, OutputStream os) throws IOException {
+    public void write(final BufferedImage bimg, final OutputStream os) throws IOException {
         ImageWriter writer = null;
         ImageOutputStream ios = null;
         try {
             writer = lookupImageWriterForFormat(imageFormat);
             ios = ImageIO.createImageOutputStream(os);
             writer.setOutput(ios);
-            ImageWriteParam iwparam = getImageWriteParameters(writer);
+            final ImageWriteParam iwparam = getImageWriteParameters(writer);
 
             writer.write(null, new IIOImage(bimg, null, null), iwparam);
         } finally {
             if (ios != null) {
                 try {
                     ios.flush();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
                 try {
                     ios.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }
@@ -175,8 +175,8 @@ public class FSImageWriter {
      * @param writer The ImageWriter we are going to use for image output.
      * @return ImageWriteParam configured for image output.
      */
-    protected ImageWriteParam getImageWriteParameters(ImageWriter writer) {
-        ImageWriteParam param = writer.getDefaultWriteParam();
+    protected ImageWriteParam getImageWriteParameters(final ImageWriter writer) {
+        final ImageWriteParam param = writer.getDefaultWriteParam();
         if (param.canWriteCompressed()) {
             if (writeCompressionMode != ImageWriteParam.MODE_COPY_FROM_METADATA) {
                 param.setCompressionMode(writeCompressionMode);
@@ -200,7 +200,7 @@ public class FSImageWriter {
      *
      * @param q Compression quality for image output.
      */
-    public void setWriteCompressionQuality(float q) {
+    public void setWriteCompressionQuality(final float q) {
         writeCompressionQuality = q;
     }
 
@@ -211,7 +211,7 @@ public class FSImageWriter {
      *
      * @param mode Compression mode for image output.
      */
-    public void setWriteCompressionMode(int mode) {
+    public void setWriteCompressionMode(final int mode) {
         this.writeCompressionMode = mode;
     }
 
@@ -222,7 +222,7 @@ public class FSImageWriter {
      *
      * @param type Type of compression for image output.
      */
-    public void setWriteCompressionType(String type) {
+    public void setWriteCompressionType(final String type) {
         this.writeCompressionType = type;
     }
 
@@ -232,9 +232,9 @@ public class FSImageWriter {
      * @param imageFormat String informal format name, "jpg"
      * @return ImageWriter corresponding to that format, null if not found.
      */
-    private ImageWriter lookupImageWriterForFormat(String imageFormat) {
+    private ImageWriter lookupImageWriterForFormat(final String imageFormat) {
         ImageWriter writer = null;
-        Iterator<?> iter = ImageIO.getImageWritersByFormatName(imageFormat);
+        final Iterator<?> iter = ImageIO.getImageWritersByFormatName(imageFormat);
 		if (iter.hasNext()) {
 			writer = (ImageWriter) iter.next();
 		}

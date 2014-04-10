@@ -46,7 +46,7 @@ public class LayoutState {
         return _BFCs;
     }
 
-    public void setBFCs(LinkedList<BlockFormattingContext> s) {
+    public void setBFCs(final LinkedList<BlockFormattingContext> s) {
         _BFCs = s;
     }
 
@@ -54,7 +54,7 @@ public class LayoutState {
         return _currentMarkerData;
     }
 
-    public void setCurrentMarkerData(MarkerData currentMarkerData) {
+    public void setCurrentMarkerData(final MarkerData currentMarkerData) {
         _currentMarkerData = currentMarkerData;
     }
 
@@ -62,7 +62,7 @@ public class LayoutState {
         return _firstLetters;
     }
 
-    public void setFirstLetters(StyleTracker firstLetters) {
+    public void setFirstLetters(final StyleTracker firstLetters) {
         _firstLetters = firstLetters;
     }
 
@@ -70,7 +70,7 @@ public class LayoutState {
         return _firstLines;
     }
 
-    public void setFirstLines(StyleTracker firstLines) {
+    public void setFirstLines(final StyleTracker firstLines) {
         _firstLines = firstLines;
     }
 
@@ -78,7 +78,7 @@ public class LayoutState {
         return _pageName;
     }
 
-    public void setPageName(String pageName) {
+    public void setPageName(final String pageName) {
         _pageName = pageName;
     }
 
@@ -86,7 +86,7 @@ public class LayoutState {
         return _extraSpaceTop;
     }
 
-    public void setExtraSpaceTop(int extraSpaceTop) {
+    public void setExtraSpaceTop(final int extraSpaceTop) {
         _extraSpaceTop = extraSpaceTop;
     }
 
@@ -94,7 +94,7 @@ public class LayoutState {
         return _extraSpaceBottom;
     }
 
-    public void setExtraSpaceBottom(int extraSpaceBottom) {
+    public void setExtraSpaceBottom(final int extraSpaceBottom) {
         _extraSpaceBottom = extraSpaceBottom;
     }
 
@@ -102,7 +102,7 @@ public class LayoutState {
         return _noPageBreak;
     }
 
-    public void setNoPageBreak(int noPageBreak) {
+    public void setNoPageBreak(final int noPageBreak) {
         _noPageBreak = noPageBreak;
     }
 }

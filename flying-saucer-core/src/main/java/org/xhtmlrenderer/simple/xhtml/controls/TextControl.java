@@ -28,10 +28,12 @@ public class TextControl extends AbstractControl {
     public static final int DEFAULT_SIZE = 20;
     public static final int DEFAULT_ROWS = 3;
 
-    private boolean _password, _readonly, _multiline;
+    private boolean _password;
+    private final boolean _readonly;
+    private boolean _multiline;
     private int _size, _rows, _maxlength;
 
-    public TextControl(XhtmlForm form, Element e) {
+    public TextControl(final XhtmlForm form, final Element e) {
         super(form, e);
 
         _readonly = (e.attr("readonly").length() > 0);

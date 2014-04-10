@@ -5,7 +5,7 @@ public class UriNotImmediatelyAvailableException extends RuntimeException
 {
 	private final String uri;
 	
-	public UriNotImmediatelyAvailableException(String uri)
+	public UriNotImmediatelyAvailableException(final String uri)
 	{
 		this.uri = uri;
 	}

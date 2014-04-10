@@ -27,9 +27,9 @@ import org.xhtmlrenderer.css.style.CssContext;
  * A dummy box representing one side of the margin area of a page.
  */
 public class MarginBox extends BlockBox {
-    private Rectangle _bounds;
+    private final Rectangle _bounds;
     
-    public MarginBox(Rectangle bounds) {
+    public MarginBox(final Rectangle bounds) {
         _bounds = bounds;
     }
     
@@ -45,11 +45,11 @@ public class MarginBox extends BlockBox {
         return _bounds.width;
     }
     
-    public Rectangle getContentAreaEdge(int left, int top, CssContext cssCtx) {
+    public Rectangle getContentAreaEdge(final int left, final int top, final CssContext cssCtx) {
         return new Rectangle(-_bounds.x, -_bounds.y, _bounds.width, _bounds.height);
     }
     
-    public Rectangle getPaddingEdge(int left, int top, CssContext cssCtx) {
+    public Rectangle getPaddingEdge(final int left, final int top, final CssContext cssCtx) {
         return new Rectangle(-_bounds.x, -_bounds.y, _bounds.width, _bounds.height);
     }
     
@@ -57,7 +57,7 @@ public class MarginBox extends BlockBox {
         return _bounds.width;
     }
     
-    protected int getPaddingWidth(CssContext cssCtx) {
+    protected int getPaddingWidth(final CssContext cssCtx) {
         return _bounds.width;
     }
     

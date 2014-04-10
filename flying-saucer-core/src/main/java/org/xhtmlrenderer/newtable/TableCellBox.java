@@ -82,14 +82,14 @@ public class TableCellBox extends BlockBox {
     }
     
     public BlockBox copyOf() {
-        TableCellBox result = new TableCellBox();
+        final TableCellBox result = new TableCellBox();
         result.setStyle(getStyle());
         result.setElement(getElement());
         
         return result;
     }
     
-    public BorderPropertySet getBorder(CssContext cssCtx) {
+    public BorderPropertySet getBorder(final CssContext cssCtx) {
         if (getTable().getStyle().isCollapseBorders()) {
             // Should always be non-null, but might not be if layout code crashed
             return _collapsedLayoutBorder == null ? 
@@ -99,11 +99,11 @@ public class TableCellBox extends BlockBox {
         }
     }
     
-    public void calcCollapsedBorder(CssContext c) {
-        CollapsedBorderValue top = collapsedTopBorder(c);
-        CollapsedBorderValue right = collapsedRightBorder(c);
-        CollapsedBorderValue bottom = collapsedBottomBorder(c);
-        CollapsedBorderValue left = collapsedLeftBorder(c);
+    public void calcCollapsedBorder(final CssContext c) {
+        final CollapsedBorderValue top = collapsedTopBorder(c);
+        final CollapsedBorderValue right = collapsedRightBorder(c);
+        final CollapsedBorderValue bottom = collapsedBottomBorder(c);
+        final CollapsedBorderValue left = collapsedLeftBorder(c);
         
         _collapsedPaintingBorder = new BorderPropertySet(top, right, bottom, left);
         
@@ -125,7 +125,7 @@ public class TableCellBox extends BlockBox {
         return _col;
     }
 
-    public void setCol(int col) {
+    public void setCol(final int col) {
         _col = col;
     }
 
@@ -133,11 +133,11 @@ public class TableCellBox extends BlockBox {
         return _row;
     }
 
-    public void setRow(int row) {
+    public void setRow(final int row) {
         _row = row;
     }
     
-    public void layout(LayoutContext c) {
+    public void layout(final LayoutContext c) {
         super.layout(c);
     }
     
@@ -156,17 +156,17 @@ public class TableCellBox extends BlockBox {
         return _section;
     }
     
-    public Length getOuterStyleWidth(CssContext c) {
-        Length result = getStyle().asLength(c, CSSName.WIDTH);
+    public Length getOuterStyleWidth(final CssContext c) {
+        final Length result = getStyle().asLength(c, CSSName.WIDTH);
         if (result.isVariable() || result.isPercent()) {
             return result;
         }
         
         int bordersAndPadding = 0;
-        BorderPropertySet border = getBorder(c);
+        final BorderPropertySet border = getBorder(c);
         bordersAndPadding += (int)border.left() + (int)border.right();
         
-        RectPropertySet padding = getPadding(c);
+        final RectPropertySet padding = getPadding(c);
         bordersAndPadding += (int)padding.left() + (int)padding.right();
         
         result.setValue(result.value() + bordersAndPadding);
@@ -174,12 +174,12 @@ public class TableCellBox extends BlockBox {
         return result;
     }
     
-    public Length getOuterStyleOrColWidth(CssContext c) {
+    public Length getOuterStyleOrColWidth(final CssContext c) {
         Length result = getOuterStyleWidth(c);
         if (getStyle().getColSpan() > 1 || ! result.isVariable()) {
             return result;
         }
-        TableColumn col = getTable().colElement(getCol());
+        final TableColumn col = getTable().colElement(getCol());
         if (col != null) {
             // XXX Need to add in collapsed borders from cell (if collapsing borders)
             result = col.getStyle().asLength(c, CSSName.WIDTH);
@@ -187,7 +187,7 @@ public class TableCellBox extends BlockBox {
         return result;
     }
     
-    public void setLayoutWidth(LayoutContext c, int width) {
+    public void setLayoutWidth(final LayoutContext c, final int width) {
         calcDimensions(c);
         
         setContentWidth(width - getLeftMBP() - getRightMBP());
@@ -197,29 +197,29 @@ public class TableCellBox extends BlockBox {
         return getStyle().isAutoHeight() || ! getStyle().hasAbsoluteUnit(CSSName.HEIGHT);
     }
     
-    public int calcBaseline(LayoutContext c) {
-        int result = super.calcBaseline(c);
+    public int calcBaseline(final LayoutContext c) {
+        final int result = super.calcBaseline(c);
         if (result != NO_BASELINE) {
             return result;
         } else {
-            Rectangle contentArea = getContentAreaEdge(getAbsX(), getAbsY(), c);
+            final Rectangle contentArea = getContentAreaEdge(getAbsX(), getAbsY(), c);
             return (int)contentArea.getY();
         }
     }
     
-    public int calcBlockBaseline(LayoutContext c) {
+    public int calcBlockBaseline(final LayoutContext c) {
         return super.calcBaseline(c);
     }
     
-    public void moveContent(LayoutContext c, final int deltaY) {
+    public void moveContent(final LayoutContext c, final int deltaY) {
         for (int i = 0; i < getChildCount(); i++) {
-            Box b = getChild(i);
+            final Box b = getChild(i);
             b.setY(b.getY() + deltaY);
         }
         
         getPersistentBFC().getFloatManager().performFloatOperation(
                 new FloatManager.FloatOperation() {
-                    public void operate(Box floater) {
+                    public void operate(final Box floater) {
                         floater.setY(floater.getY() + deltaY);
                     }
                 });
@@ -227,21 +227,21 @@ public class TableCellBox extends BlockBox {
         calcChildLocations();
     }
     
-    public boolean isPageBreaksChange(LayoutContext c, int posDeltaY) {
+    public boolean isPageBreaksChange(final LayoutContext c, final int posDeltaY) {
         if (! c.isPageBreaksAllowed()) {
             return false;
         }
         
-        PageBox page = c.getRootLayer().getFirstPage(c, this);
+        final PageBox page = c.getRootLayer().getFirstPage(c, this);
         
-        int bottomEdge = getAbsY() + getChildrenHeight();
+        final int bottomEdge = getAbsY() + getChildrenHeight();
         
         return bottomEdge >= page.getBottom() - c.getExtraSpaceBottom() || 
                     bottomEdge + posDeltaY >= page.getBottom() - c.getExtraSpaceBottom();
     }
     
     public IdentValue getVerticalAlign() {
-        IdentValue val = getStyle().getIdent(CSSName.VERTICAL_ALIGN);
+        final IdentValue val = getStyle().getIdent(CSSName.VERTICAL_ALIGN);
         
         if (val == IdentValue.TOP || val == IdentValue.MIDDLE || val == IdentValue.BOTTOM) {
             return val;
@@ -251,7 +251,7 @@ public class TableCellBox extends BlockBox {
     }
     
     private boolean isPaintBackgroundsAndBorders() {
-        boolean showEmpty = getStyle().isShowEmptyCells();
+        final boolean showEmpty = getStyle().isShowEmptyCells();
         // XXX Not quite right, but good enough for now 
         // (e.g. absolute boxes will be counted as content here when the spec 
         // says the cell should be treated as empty).  
@@ -259,7 +259,7 @@ public class TableCellBox extends BlockBox {
                     
     }
     
-    public void paintBackground(RenderingContext c) {
+    public void paintBackground(final RenderingContext c) {
         if (isPaintBackgroundsAndBorders() && getStyle().isVisible()) {
             Rectangle bounds;
             if (c.isPrint() && getTable().getStyle().isPaginateTable()) {
@@ -274,11 +274,11 @@ public class TableCellBox extends BlockBox {
         }
     }
 
-    private void paintBackgroundStack(RenderingContext c, Rectangle bounds) {
+    private void paintBackgroundStack(final RenderingContext c, final Rectangle bounds) {
         Rectangle imageContainer;
         
-        BorderPropertySet border = getStyle().getBorder(c);
-        TableColumn column = getTable().colElement(getCol());
+        final BorderPropertySet border = getStyle().getBorder(c);
+        final TableColumn column = getTable().colElement(getCol());
         if (column != null) {
             c.getOutputDevice().paintBackground(
                     c, column.getStyle(), 
@@ -286,12 +286,12 @@ public class TableCellBox extends BlockBox {
                     border);
         }
         
-        Box row = getParent();
-        Box section = row.getParent();
+        final Box row = getParent();
+        final Box section = row.getParent();
         
-        CalculatedStyle tableStyle = getTable().getStyle();
+        final CalculatedStyle tableStyle = getTable().getStyle();
         
-        CalculatedStyle sectionStyle = section.getStyle();
+        final CalculatedStyle sectionStyle = section.getStyle();
         
         imageContainer = section.getPaintingBorderEdge(c);
         imageContainer.y += tableStyle.getBorderVSpacing(c);
@@ -301,7 +301,7 @@ public class TableCellBox extends BlockBox {
         
         c.getOutputDevice().paintBackground(c, sectionStyle, bounds, imageContainer, border);
         
-        CalculatedStyle rowStyle = row.getStyle();
+        final CalculatedStyle rowStyle = row.getStyle();
         
         imageContainer = row.getPaintingBorderEdge(c);
         imageContainer.x += tableStyle.getBorderHSpacing(c);
@@ -312,11 +312,11 @@ public class TableCellBox extends BlockBox {
         c.getOutputDevice().paintBackground(c, getStyle(), bounds, getPaintingBorderEdge(c), border);
     }
     
-    public void paintBorder(RenderingContext c) {
+    public void paintBorder(final RenderingContext c) {
         if (isPaintBackgroundsAndBorders() && ! hasCollapsedPaintingBorder()) {
             // Collapsed table borders are painted separately
             if (c.isPrint() && getTable().getStyle().isPaginateTable() && getStyle().isVisible()) {
-                Rectangle bounds = getContentLimitedBorderEdge(c);
+                final Rectangle bounds = getContentLimitedBorderEdge(c);
                 if (bounds != null) {
                     c.getOutputDevice().paintBorder(c, getStyle(), bounds, getBorderSides());
                 }
@@ -326,21 +326,21 @@ public class TableCellBox extends BlockBox {
         }
     }
     
-    public void paintCollapsedBorder(RenderingContext c, int side) {
+    public void paintCollapsedBorder(final RenderingContext c, final int side) {
         c.getOutputDevice().paintCollapsedBorder(
                 c, getCollapsedPaintingBorder(), getCollapsedBorderBounds(c), side);
     }
     
-    private Rectangle getContentLimitedBorderEdge(RenderingContext c) {
-        Rectangle result = getPaintingBorderEdge(c);
+    private Rectangle getContentLimitedBorderEdge(final RenderingContext c) {
+        final Rectangle result = getPaintingBorderEdge(c);
         
-        TableSectionBox section = getSection();
+        final TableSectionBox section = getSection();
         if (section.isHeader() || section.isFooter()) {
             return result;
         }
         
-        ContentLimitContainer contentLimitContainer = ((TableRowBox)getParent()).getContentLimitContainer();
-        ContentLimit limit = contentLimitContainer.getContentLimit(c.getPageNo());
+        final ContentLimitContainer contentLimitContainer = ((TableRowBox)getParent()).getContentLimitContainer();
+        final ContentLimit limit = contentLimitContainer.getContentLimit(c.getPageNo());
         
         if (limit == null) {
             return null;
@@ -371,12 +371,12 @@ public class TableCellBox extends BlockBox {
         }
     }  
     
-    public Rectangle getChildrenClipEdge(RenderingContext c) {
+    public Rectangle getChildrenClipEdge(final RenderingContext c) {
         if (c.isPrint() && getTable().getStyle().isPaginateTable()) {
-            Rectangle bounds = getContentLimitedBorderEdge(c);
+            final Rectangle bounds = getContentLimitedBorderEdge(c);
             if (bounds != null) {
-                BorderPropertySet border = getBorder(c);
-                RectPropertySet padding = getPadding(c);
+                final BorderPropertySet border = getBorder(c);
+                final RectPropertySet padding = getPadding(c);
                 bounds.y += (int)border.top() + (int)padding.top();
                 bounds.height -= (int)border.height() + (int)padding.height();
                 return bounds;
@@ -418,7 +418,7 @@ public class TableCellBox extends BlockBox {
     // is undefined which color
     // is used when two elements of the same type disagree.
     public static CollapsedBorderValue compareBorders(
-            CollapsedBorderValue border1, CollapsedBorderValue border2, boolean returnNullOnEqual) {
+            final CollapsedBorderValue border1, final CollapsedBorderValue border2, final boolean returnNullOnEqual) {
         // Sanity check the values passed in.  If either is null, return the other.
         if (!border2.defined()) {
             return border1;
@@ -469,18 +469,18 @@ public class TableCellBox extends BlockBox {
     }
     
     private static CollapsedBorderValue compareBorders(
-            CollapsedBorderValue border1, CollapsedBorderValue border2) {
+            final CollapsedBorderValue border1, final CollapsedBorderValue border2) {
         return compareBorders(border1, border2, false);
     }
     
-    private CollapsedBorderValue collapsedLeftBorder(CssContext c) {
-        BorderPropertySet border = getStyle().getBorder(c);
+    private CollapsedBorderValue collapsedLeftBorder(final CssContext c) {
+        final BorderPropertySet border = getStyle().getBorder(c);
         // For border left, we need to check, in order of precedence:
         // (1) Our left border.
         CollapsedBorderValue result = CollapsedBorderValue.borderLeft(border, BCELL);
 
         // (2) The previous cell's right border.
-        TableCellBox prevCell = getTable().cellLeft(this);
+        final TableCellBox prevCell = getTable().cellLeft(this);
         if (prevCell != null) {
             result = compareBorders(
                     result, CollapsedBorderValue.borderRight(prevCell.getStyle().getBorder(c), BCELL));
@@ -537,10 +537,10 @@ public class TableCellBox extends BlockBox {
         return result;
     }
     
-    private CollapsedBorderValue collapsedRightBorder(CssContext c) {
-        TableBox tableElt = getTable();
+    private CollapsedBorderValue collapsedRightBorder(final CssContext c) {
+        final TableBox tableElt = getTable();
         boolean inLastColumn = false;
-        int effCol = tableElt.colToEffCol(getCol() + getStyle().getColSpan() - 1);
+        final int effCol = tableElt.colToEffCol(getCol() + getStyle().getColSpan() - 1);
         if (effCol == tableElt.numEffCols() - 1) {
             inLastColumn = true;
         }
@@ -552,7 +552,7 @@ public class TableCellBox extends BlockBox {
 
         // (2) The next cell's left border.
         if (!inLastColumn) {
-            TableCellBox nextCell = tableElt.cellRight(this);
+            final TableCellBox nextCell = tableElt.cellRight(this);
             if (nextCell != null) {
                 result = compareBorders(result, 
                         CollapsedBorderValue.borderLeft(nextCell.getStyle().getBorder(c), BCELL));
@@ -608,13 +608,13 @@ public class TableCellBox extends BlockBox {
         return result;
     }
     
-    private CollapsedBorderValue collapsedTopBorder(CssContext c) {
+    private CollapsedBorderValue collapsedTopBorder(final CssContext c) {
         // For border top, we need to check, in order of precedence:
         // (1) Our top border.
         CollapsedBorderValue result = 
             CollapsedBorderValue.borderTop(getStyle().getBorder(c), BCELL);
 
-        TableCellBox prevCell = getTable().cellAbove(this);
+        final TableCellBox prevCell = getTable().cellAbove(this);
         if (prevCell != null) {
             // (2) A previous cell's bottom border.
             result = compareBorders(result, 
@@ -672,7 +672,7 @@ public class TableCellBox extends BlockBox {
 
         if (currSection == null) {
             // (8) Our column's top border.
-            TableColumn colElt = getTable().colElement(getCol());
+            final TableColumn colElt = getTable().colElement(getCol());
             if (colElt != null) {
                 result = compareBorders(result, 
                             CollapsedBorderValue.borderTop(colElt.getStyle().getBorder(c), BCOL));
@@ -692,13 +692,13 @@ public class TableCellBox extends BlockBox {
         return result;
     }
 
-    private CollapsedBorderValue collapsedBottomBorder(CssContext c) {
+    private CollapsedBorderValue collapsedBottomBorder(final CssContext c) {
         // For border top, we need to check, in order of precedence:
         // (1) Our bottom border.
         CollapsedBorderValue result = 
             CollapsedBorderValue.borderBottom(getStyle().getBorder(c), BCELL);
 
-        TableCellBox nextCell = getTable().cellBelow(this);
+        final TableCellBox nextCell = getTable().cellBelow(this);
         if (nextCell != null) {
             // (2) A following cell's top border.
             result = compareBorders(result, 
@@ -747,7 +747,7 @@ public class TableCellBox extends BlockBox {
 
         if (currSection == null) {
             // (8) Our column's bottom border.
-            TableColumn colElt = getTable().colElement(getCol());
+            final TableColumn colElt = getTable().colElement(getCol());
             if (colElt != null) {
                 result = compareBorders(result, 
                             CollapsedBorderValue.borderBottom(colElt.getStyle().getBorder(c), BCOL));
@@ -767,9 +767,9 @@ public class TableCellBox extends BlockBox {
         return result;
     }
     
-    private Rectangle getCollapsedBorderBounds(CssContext c) {
-        BorderPropertySet border = getCollapsedPaintingBorder();
-        Rectangle bounds = getPaintingBorderEdge(c);
+    private Rectangle getCollapsedBorderBounds(final CssContext c) {
+        final BorderPropertySet border = getCollapsedPaintingBorder();
+        final Rectangle bounds = getPaintingBorderEdge(c);
         bounds.x -= (int) border.left() / 2;
         bounds.y -= (int) border.top() / 2;
         bounds.width += (int) border.left() / 2 + ((int) border.right() + 1) / 2;
@@ -778,7 +778,7 @@ public class TableCellBox extends BlockBox {
         return bounds;
     }
     
-    public Rectangle getPaintingClipEdge(CssContext c) {
+    public Rectangle getPaintingClipEdge(final CssContext c) {
         if (hasCollapsedPaintingBorder()) {
             return getCollapsedBorderBounds(c);
         } else {
@@ -810,7 +810,7 @@ public class TableCellBox extends BlockBox {
         return _collapsedBorderTop;
     }
     
-    public void addCollapsedBorders(Set<CollapsedBorderValue> all, List<CollapsedBorderSide> borders) {
+    public void addCollapsedBorders(final Set<CollapsedBorderValue> all, final List<CollapsedBorderSide> borders) {
         if (_collapsedBorderTop.exists() && !all.contains(_collapsedBorderTop)) {
             all.add(_collapsedBorderTop);
             borders.add(new CollapsedBorderSide(this, BorderPainter.TOP));
@@ -836,17 +836,17 @@ public class TableCellBox extends BlockBox {
     // box-sizing: border-box in CSS3).  There doesn't seem to be any
     // justification in the spec for this, but everybody does it 
     // (in standards mode) so I guess we will too
-    protected int getCSSHeight(CssContext c) {
+    protected int getCSSHeight(final CssContext c) {
         if (getStyle().isAutoHeight()) {
             return -1;
         } else {
             int result = (int)getStyle().getFloatPropertyProportionalWidth(
                     CSSName.HEIGHT, getContainingBlock().getContentWidth(), c);
             
-            BorderPropertySet border = getBorder(c);
+            final BorderPropertySet border = getBorder(c);
             result -= (int)border.top() + (int)border.bottom();
             
-            RectPropertySet padding = getPadding(c);
+            final RectPropertySet padding = getPadding(c);
             result -= (int)padding.top() + (int)padding.bottom();
             
             return result >= 0 ? result : -1;
@@ -857,8 +857,8 @@ public class TableCellBox extends BlockBox {
         return false;
     } 
     
-    public boolean isNeedsClipOnPaint(RenderingContext c) {
-        boolean result = super.isNeedsClipOnPaint(c);
+    public boolean isNeedsClipOnPaint(final RenderingContext c) {
+        final boolean result = super.isNeedsClipOnPaint(c);
         if (result) {
             return result;
         }

@@ -32,16 +32,16 @@ import static org.xhtmlrenderer.util.GeneralUtil.ciEquals;
 
 public class SelectControl extends AbstractControl {
 
-    private int _size;
-    private boolean _multiple;
+    private final int _size;
+    private final boolean _multiple;
     private List<String> _values;
 
     private String _initialValue;
     private String[] _initialValues;
 
-    private Map<String, String> _options;
+    private final Map<String, String> _options;
 
-    public SelectControl(XhtmlForm form, Element e) {
+    public SelectControl(final XhtmlForm form, final Element e) {
         super(form, e);
 
         _size = getIntAttribute(e, "size", 1);
@@ -68,18 +68,18 @@ public class SelectControl extends AbstractControl {
         }
     }
 
-    private void traverseOptions(Element e, String prefix) {
-        List<Node> children = e.childNodes();
+    private void traverseOptions(final Element e, final String prefix) {
+        final List<Node> children = e.childNodes();
         for (int i = 0; i < children.size(); i++) {
             if (JsoupUtil.isElement(children.get(i))) {
-                Element child = (Element) children.get(i);
+                final Element child = (Element) children.get(i);
                 if (ciEquals(child.nodeName(), "optgroup")) {
                     traverseOptions(child, prefix + child.attr("label")
                             + " ");
                 } else if (ciEquals(child.nodeName(), "option")) {
                     String value = child.attr("value");
                     String label = child.attr("label");
-                    String content = collectText(child);
+                    final String content = collectText(child);
                     if (value.length() == 0) {
                         value = content;
                     }
@@ -115,7 +115,7 @@ public class SelectControl extends AbstractControl {
         return new LinkedHashMap<String, String>(_options);
     }
 
-    public void setValue(String value) {
+    public void setValue(final String value) {
         if (!isMultiple()) {
             if (_options.containsKey(value)) {
                 super.setValue(value);
@@ -135,7 +135,7 @@ public class SelectControl extends AbstractControl {
         }
     }
 
-    public void setMultipleValues(String[] values) {
+    public void setMultipleValues(final String[] values) {
         if (isMultiple()) {
             _values.clear();
             for (int i = 0; i < values.length; i++) {

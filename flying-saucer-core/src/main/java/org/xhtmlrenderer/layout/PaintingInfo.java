@@ -40,7 +40,7 @@ public class PaintingInfo {
         return _aggregateBounds;
     }
     
-    public void setAggregateBounds(Rectangle aggregateBounds) {
+    public void setAggregateBounds(final Rectangle aggregateBounds) {
         _aggregateBounds = aggregateBounds;
     }
     
@@ -48,19 +48,19 @@ public class PaintingInfo {
         return _outerMarginCorner;
     }
     
-    public void setOuterMarginCorner(Dimension outerMarginCorner) {
+    public void setOuterMarginCorner(final Dimension outerMarginCorner) {
         _outerMarginCorner = outerMarginCorner;
     }
     
     public PaintingInfo copyOf() {
-        PaintingInfo result = new PaintingInfo();
+        final PaintingInfo result = new PaintingInfo();
         result.setOuterMarginCorner(new Dimension(_outerMarginCorner));
         result.setAggregateBounds(new Rectangle(_aggregateBounds));
         
         return result;
     }
     
-    public void translate(int tx, int ty) {
+    public void translate(final int tx, final int ty) {
         _aggregateBounds.translate(tx, ty);
         _outerMarginCorner.setSize(
                 _outerMarginCorner.getWidth()+tx, _outerMarginCorner.getHeight()+ty);

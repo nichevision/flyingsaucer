@@ -32,18 +32,18 @@ import org.xhtmlrenderer.extend.FSImage;
  * @see MarkerData 
  */
 public class ListItemPainter {
-    public static void paint(RenderingContext c, BlockBox box) {
+    public static void paint(final RenderingContext c, final BlockBox box) {
         if (box.getMarkerData() == null) {
             return;
         }
         
-        MarkerData markerData = box.getMarkerData();
+        final MarkerData markerData = box.getMarkerData();
         
         if (markerData.getImageMarker() != null) {
             drawImage(c, box, markerData);
         } else {
-            CalculatedStyle style = box.getStyle();
-            IdentValue listStyle = style.getIdent(CSSName.LIST_STYLE_TYPE);
+            final CalculatedStyle style = box.getStyle();
+            final IdentValue listStyle = style.getIdent(CSSName.LIST_STYLE_TYPE);
             
             c.getOutputDevice().setColor(style.getColor());
     
@@ -55,12 +55,12 @@ public class ListItemPainter {
         }
     }
 
-    private static void drawImage(RenderingContext c, BlockBox box, MarkerData markerData) {
+    private static void drawImage(final RenderingContext c, final BlockBox box, final MarkerData markerData) {
         FSImage img = null;
-        MarkerData.ImageMarker marker = markerData.getImageMarker();
+        final MarkerData.ImageMarker marker = markerData.getImageMarker();
         img = marker.getImage();
         if (img != null) {
-            StrutMetrics strutMetrics = box.getMarkerData().getStructMetrics();
+            final StrutMetrics strutMetrics = box.getMarkerData().getStructMetrics();
             int x = getReferenceX(c, box);
             // FIXME: findbugs possible loss of precision, cf. int / (float)2
             x += -marker.getLayoutWidth() +
@@ -72,8 +72,8 @@ public class ListItemPainter {
         }
     }
     
-    private static int getReferenceX(RenderingContext c, BlockBox box) {
-        MarkerData markerData = box.getMarkerData();
+    private static int getReferenceX(final RenderingContext c, final BlockBox box) {
+        final MarkerData markerData = box.getMarkerData();
         
         if (markerData.getReferenceLine() != null) {
             return markerData.getReferenceLine().getAbsX();
@@ -82,9 +82,9 @@ public class ListItemPainter {
         }
     }
     
-    private static int getReferenceBaseline(RenderingContext c, BlockBox box) {
-        MarkerData markerData = box.getMarkerData();
-        StrutMetrics strutMetrics = box.getMarkerData().getStructMetrics();
+    private static int getReferenceBaseline(final RenderingContext c, final BlockBox box) {
+        final MarkerData markerData = box.getMarkerData();
+        final StrutMetrics strutMetrics = box.getMarkerData().getStructMetrics();
         
         if (markerData.getReferenceLine() != null) {
             return markerData.getReferenceLine().getAbsY() + strutMetrics.getBaseline();
@@ -93,19 +93,19 @@ public class ListItemPainter {
         }
     }
 
-    private static void drawGlyph(RenderingContext c, BlockBox box, 
-            CalculatedStyle style, IdentValue listStyle) {
+    private static void drawGlyph(final RenderingContext c, final BlockBox box, 
+            final CalculatedStyle style, final IdentValue listStyle) {
         // save the old AntiAliasing setting, then force it on
-        Object aa_key = c.getOutputDevice().getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+        final Object aa_key = c.getOutputDevice().getRenderingHint(RenderingHints.KEY_ANTIALIASING);
         c.getOutputDevice().setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         // calculations for bullets
-        StrutMetrics strutMetrics = box.getMarkerData().getStructMetrics();
-        MarkerData.GlyphMarker marker = box.getMarkerData().getGlyphMarker();
+        final StrutMetrics strutMetrics = box.getMarkerData().getStructMetrics();
+        final MarkerData.GlyphMarker marker = box.getMarkerData().getGlyphMarker();
         int x = getReferenceX(c, box);
         x += -marker.getLayoutWidth();
-        int y = getReferenceBaseline(c, box) 
+        final int y = getReferenceBaseline(c, box) 
             - (int)strutMetrics.getAscent() / 2 - marker.getDiameter() / 2;
         if (listStyle == IdentValue.DISC) {
             c.getOutputDevice().fillOval(x, y, marker.getDiameter(), marker.getDiameter());
@@ -120,12 +120,12 @@ public class ListItemPainter {
                 aa_key == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : aa_key);
     }
 
-    private static void drawText(RenderingContext c, BlockBox box, IdentValue listStyle) {
-        MarkerData.TextMarker text = box.getMarkerData().getTextMarker();
+    private static void drawText(final RenderingContext c, final BlockBox box, final IdentValue listStyle) {
+        final MarkerData.TextMarker text = box.getMarkerData().getTextMarker();
         
         int x = getReferenceX(c, box);
         x += -text.getLayoutWidth();
-        int y = getReferenceBaseline(c, box);
+        final int y = getReferenceBaseline(c, box);
         
         c.getOutputDevice().setColor(box.getStyle().getColor());
         c.getOutputDevice().setFont(box.getStyle().getFSFont(c));

@@ -37,7 +37,7 @@ public class FloatedBoxData {
         return _drawingLayer;
     }
     
-    public void setDrawingLayer(Layer drawingLayer) {
+    public void setDrawingLayer(final Layer drawingLayer) {
         _drawingLayer = drawingLayer;
     }
     
@@ -45,7 +45,7 @@ public class FloatedBoxData {
         return _manager;
     }
     
-    public void setManager(FloatManager manager) {
+    public void setManager(final FloatManager manager) {
         _manager = manager;
     }
     
@@ -53,7 +53,7 @@ public class FloatedBoxData {
         return _marginFromSibling;
     }
     
-    public void setMarginFromSibling(int marginFromSibling) {
+    public void setMarginFromSibling(final int marginFromSibling) {
         _marginFromSibling = marginFromSibling;
     }
 }

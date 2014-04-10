@@ -31,7 +31,7 @@ public class CSSResource extends AbstractResource {
 	/**
      * Creates a new instance of CSSResource
      */
-    public CSSResource(InputStream stream) {
+    public CSSResource(final InputStream stream) {
         is = stream;
     }
 

@@ -54,21 +54,21 @@ public class XRSimpleLogFormatter extends Formatter {
      * @param record  PARAM
      * @return        Returns
      */
-    public String format( LogRecord record ) {
+    public String format( final LogRecord record ) {
 
-        Throwable th = record.getThrown();
+        final Throwable th = record.getThrown();
         String thName = "";
         String thMessage = "";
         String trace = null;
         if ( th != null ) {
-            StringWriter sw = new StringWriter();
+            final StringWriter sw = new StringWriter();
             th.printStackTrace( new PrintWriter( sw ) );
             trace = sw.toString();
 
             thName = th.getClass().getName();
             thMessage = th.getMessage();
         }
-        String args[] = {
+        final String args[] = {
                 String.valueOf( record.getMillis() ),
                 record.getLoggerName(),
                 record.getLevel().toString(),
@@ -94,7 +94,7 @@ public class XRSimpleLogFormatter extends Formatter {
      * @param record  PARAM
      * @return        Returns
      */
-    public String formatMessage( LogRecord record ) {
+    public String formatMessage( final LogRecord record ) {
         return super.formatMessage( record );
     }
 
@@ -104,7 +104,7 @@ public class XRSimpleLogFormatter extends Formatter {
      * @param h  PARAM
      * @return   The head value
      */
-    public String getHead( Handler h ) {
+    public String getHead( final Handler h ) {
         return super.getHead( h );
     }
 
@@ -114,7 +114,7 @@ public class XRSimpleLogFormatter extends Formatter {
      * @param h  PARAM
      * @return   The tail value
      */
-    public String getTail( Handler h ) {
+    public String getTail( final Handler h ) {
         return super.getTail( h );
     }
 

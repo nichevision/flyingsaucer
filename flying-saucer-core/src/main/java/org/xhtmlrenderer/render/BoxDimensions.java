@@ -32,7 +32,7 @@ public class BoxDimensions {
         return _contentWidth;
     }
     
-    public void setContentWidth(int contentWidth) {
+    public void setContentWidth(final int contentWidth) {
         _contentWidth = contentWidth;
     }
     
@@ -40,7 +40,7 @@ public class BoxDimensions {
         return _height;
     }
     
-    public void setHeight(int height) {
+    public void setHeight(final int height) {
         _height = height;
     }
     
@@ -48,7 +48,7 @@ public class BoxDimensions {
         return _leftMBP;
     }
     
-    public void setLeftMBP(int leftMBP) {
+    public void setLeftMBP(final int leftMBP) {
         _leftMBP = leftMBP;
     }
     
@@ -56,7 +56,7 @@ public class BoxDimensions {
         return _rightMBP;
     }
     
-    public void setRightMBP(int rightMBP) {
+    public void setRightMBP(final int rightMBP) {
         _rightMBP = rightMBP;
     }
 }

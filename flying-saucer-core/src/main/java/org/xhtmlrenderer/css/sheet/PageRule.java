@@ -32,7 +32,7 @@ public class PageRule implements RulesetContainer {
     private Ruleset _ruleset;
     private CSSOrigin _origin;
     
-    private Map<MarginBoxName, List<PropertyDeclaration>> _marginBoxes = new HashMap<MarginBoxName, List<PropertyDeclaration>>();
+    private final Map<MarginBoxName, List<PropertyDeclaration>> _marginBoxes = new HashMap<MarginBoxName, List<PropertyDeclaration>>();
     
     private int _pos;
     
@@ -40,7 +40,7 @@ public class PageRule implements RulesetContainer {
     private int _specificityG;
     private int _specificityH;
     
-    public PageRule(CSSOrigin origin) {
+    public PageRule(final CSSOrigin origin) {
         _origin = origin;
     }
     
@@ -48,7 +48,7 @@ public class PageRule implements RulesetContainer {
         return _pseudoPage;
     }
     
-    public void setPseudoPage(String pseudoPage) {
+    public void setPseudoPage(final String pseudoPage) {
         _pseudoPage = pseudoPage;
         if (pseudoPage.equals("first")) {
             _specificityG = 1;
@@ -61,11 +61,11 @@ public class PageRule implements RulesetContainer {
         return _ruleset;
     }
     
-    public void setRuleset(Ruleset ruleset) {
+    public void setRuleset(final Ruleset ruleset) {
         _ruleset = ruleset;
     }
     
-    public void addContent(Ruleset ruleset) {
+    public void addContent(final Ruleset ruleset) {
         if (_ruleset != null) {
             throw new IllegalStateException("Ruleset has already been set");
         }
@@ -76,7 +76,7 @@ public class PageRule implements RulesetContainer {
         return _origin;
     }
 
-    public void setOrigin(CSSOrigin origin) {
+    public void setOrigin(final CSSOrigin origin) {
         _origin = origin;
     }
 
@@ -84,16 +84,16 @@ public class PageRule implements RulesetContainer {
         return _name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         _name = name;
         _specificityF = 1;
     }
     
-    public List<PropertyDeclaration> getMarginBoxProperties(MarginBoxName name) {
+    public List<PropertyDeclaration> getMarginBoxProperties(final MarginBoxName name) {
         return _marginBoxes.get(name);
     }
     
-    public void addMarginBoxProperties(MarginBoxName name, List<PropertyDeclaration> props) {
+    public void addMarginBoxProperties(final MarginBoxName name, final List<PropertyDeclaration> props) {
         _marginBoxes.put(name, props);
     }
     
@@ -112,7 +112,7 @@ public class PageRule implements RulesetContainer {
         return result;
     }
     
-    public boolean applies(String pageName, String pseudoPage) {
+    public boolean applies(final String pageName, final String pseudoPage) {
         if (_name == null && _pseudoPage == null) {
             return true;
         } else if (_name == null && _pseudoPage != null && 
@@ -133,7 +133,7 @@ public class PageRule implements RulesetContainer {
         return _pos;
     }
 
-    public void setPos(int pos) {
+    public void setPos(final int pos) {
         _pos = pos;
     }
 }

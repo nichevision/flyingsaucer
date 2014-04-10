@@ -29,12 +29,12 @@ import org.xhtmlrenderer.render.BlockBox;
 import org.xhtmlrenderer.simple.extend.XhtmlForm;
 
 class CheckboxField extends InputField {
-    public CheckboxField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public CheckboxField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
 
     public JComponent create() {
-        JCheckBox checkbox = new JCheckBox();
+        final JCheckBox checkbox = new JCheckBox();
 
         checkbox.setText("");
         checkbox.setOpaque(false);
@@ -48,13 +48,13 @@ class CheckboxField extends InputField {
     }
     
     protected void applyOriginalState() {
-        JToggleButton button = (JToggleButton) getComponent();
+        final JToggleButton button = (JToggleButton) getComponent();
         
         button.setSelected(getOriginalState().isChecked());
     }
     
     protected String[] getFieldValues() {
-        JToggleButton button = (JToggleButton) getComponent();
+        final JToggleButton button = (JToggleButton) getComponent();
         
         if (button.isSelected()) {
             return new String [] {

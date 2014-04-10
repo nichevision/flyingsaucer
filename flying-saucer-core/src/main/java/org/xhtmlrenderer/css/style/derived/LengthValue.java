@@ -40,16 +40,16 @@ public class LengthValue extends DerivedValue {
     /**
      * The specified length value, as a float; pulled from the CSS text
      */
-    private float _lengthAsFloat;
+    private final float _lengthAsFloat;
     
-    private CalculatedStyle _style;
+    private final CalculatedStyle _style;
 
     /**
      * The specified primitive SAC data type given for this length, from the CSS text
      */
-    private CSSPrimitiveUnit _lengthPrimitiveType;
+    private final CSSPrimitiveUnit _lengthPrimitiveType;
     
-    public LengthValue(CalculatedStyle style, CSSName name, PropertyValue value) {
+    public LengthValue(final CalculatedStyle style, final CSSName name, final PropertyValue value) {
         super(name, value.getPrimitiveTypeN(), value.getCssText(), value.getCssText());
         
         _style = style;
@@ -71,9 +71,9 @@ public class LengthValue extends DerivedValue {
      * @param ctx
      * @return the absolute value or computed absolute value
      */
-    public float getFloatProportionalTo(CSSName cssName,
-                                        float baseValue,
-                                        CssContext ctx) {
+    public float getFloatProportionalTo(final CSSName cssName,
+                                        final float baseValue,
+                                        final CssContext ctx) {
         return calcFloatProportionalValue(getStyle(),
                 cssName,
                 getStringValue(),
@@ -92,13 +92,13 @@ public class LengthValue extends DerivedValue {
                _lengthPrimitiveType == CSSPrimitiveUnit.CSS_EMS;
     }
 
-    public static float calcFloatProportionalValue(CalculatedStyle style,
-                                                      CSSName cssName,
-                                                      String stringValue,
-                                                      float relVal,
-                                                      CSSPrimitiveUnit primitiveType,
+    public static float calcFloatProportionalValue(final CalculatedStyle style,
+                                                      final CSSName cssName,
+                                                      final String stringValue,
+                                                      final float relVal,
+                                                      final CSSPrimitiveUnit primitiveType,
                                                       float baseValue,
-                                                      CssContext ctx) {
+                                                      final CssContext ctx) {
 
         float absVal = Float.MIN_VALUE;
 
@@ -132,7 +132,7 @@ public class LengthValue extends DerivedValue {
                 // to the calculated font size of the parent element
                 // http://www.w3.org/TR/CSS21/fonts.html#font-size-props
                 if (cssName == CSSName.FONT_SIZE) {
-                    FontSpecification parentFont = style.getParent().getFont(ctx);
+                    final FontSpecification parentFont = style.getParent().getFont(ctx);
                     //font size and FontSize2D should be identical
                     absVal = relVal * parentFont.size;//ctx.getFontSize2D(parentFont);
                 } else {
@@ -146,10 +146,10 @@ public class LengthValue extends DerivedValue {
                 // to the font size of the parent element (spec: 4.3.2)
                 float xHeight;
                 if (cssName == CSSName.FONT_SIZE) {
-                    FontSpecification parentFont = style.getParent().getFont(ctx);
+                    final FontSpecification parentFont = style.getParent().getFont(ctx);
                     xHeight = ctx.getXHeight(parentFont);
                 } else {
-                    FontSpecification font = style.getFont(ctx);
+                    final FontSpecification font = style.getFont(ctx);
                     xHeight = ctx.getXHeight(font);
                 }
                 absVal = relVal * xHeight;
@@ -161,10 +161,10 @@ public class LengthValue extends DerivedValue {
                     baseValue = style.getParent().getLineHeight(ctx);
                 } else if (cssName == CSSName.FONT_SIZE) {
                     // same as with EM
-                    FontSpecification parentFont = style.getParent().getFont(ctx);
+                    final FontSpecification parentFont = style.getParent().getFont(ctx);
                     baseValue = ctx.getFontSize2D(parentFont);
                 } else if (cssName == CSSName.LINE_HEIGHT) {
-                    FontSpecification font = style.getFont(ctx);
+                    final FontSpecification font = style.getFont(ctx);
                     baseValue = ctx.getFontSize2D(font);
                 }
                 absVal = (relVal / 100F) * baseValue;
@@ -195,7 +195,7 @@ public class LengthValue extends DerivedValue {
             }
         }
 
-        double d = Math.round((double) absVal);
+        final double d = Math.round((double) absVal);
         absVal = new Float(d).floatValue();
         return absVal;
     }

@@ -28,7 +28,7 @@ import org.xhtmlrenderer.simple.extend.XhtmlForm;
 
 public abstract class InputField extends FormField {
 
-    public InputField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public InputField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
 

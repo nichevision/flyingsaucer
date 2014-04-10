@@ -52,13 +52,13 @@ public class XhtmlForm {
 
     private static int _defaultGroupCount = 1;
 
-    private UserAgentCallback _userAgentCallback;
-    private Map<Element, FormField> _componentCache;
-    private Map<String, ButtonGroupWrapper> _buttonGroups;
-    private Element _parentFormElement;
-    private FormSubmissionListener _formSubmissionListener;
+    private final UserAgentCallback _userAgentCallback;
+    private final Map<Element, FormField> _componentCache;
+    private final Map<String, ButtonGroupWrapper> _buttonGroups;
+    private final Element _parentFormElement;
+    private final FormSubmissionListener _formSubmissionListener;
 
-    public XhtmlForm(UserAgentCallback uac, Element e, FormSubmissionListener fsListener) {
+    public XhtmlForm(final UserAgentCallback uac, final Element e, final FormSubmissionListener fsListener) {
         _userAgentCallback = uac;
         _buttonGroups = new HashMap<String, ButtonGroupWrapper>();
         _componentCache = new LinkedHashMap<Element, FormField>();
@@ -66,7 +66,7 @@ public class XhtmlForm {
         _formSubmissionListener = fsListener;
     }
 
-    public XhtmlForm(UserAgentCallback uac, Element e) {
+    public XhtmlForm(final UserAgentCallback uac, final Element e) {
         this(uac, e, new DefaultFormSubmissionListener());
     }
 
@@ -74,7 +74,7 @@ public class XhtmlForm {
         return _userAgentCallback;
     }
     
-    public void addButtonToGroup(String groupName, AbstractButton button) {
+    public void addButtonToGroup(String groupName, final AbstractButton button) {
         if (groupName == null) {
             groupName = createNewDefaultGroupName();
         }
@@ -94,8 +94,8 @@ public class XhtmlForm {
         return FS_DEFAULT_GROUP + ++_defaultGroupCount;
     }
 
-    private static boolean isFormField(Element e) {
-        String nodeName = e.nodeName();
+    private static boolean isFormField(final Element e) {
+        final String nodeName = e.nodeName();
         
         if (nodeName.equals("input") || nodeName.equals("select") || nodeName.equals("textarea")) {
             return true;
@@ -104,7 +104,7 @@ public class XhtmlForm {
         return false;
     }
 
-    public FormField addComponent(Element e, LayoutContext context, BlockBox box) {
+    public FormField addComponent(final Element e, final LayoutContext context, final BlockBox box) {
         FormField field = null;
 
         if (_componentCache.containsKey(e)) {
@@ -129,38 +129,38 @@ public class XhtmlForm {
     }
     
     public void reset() {
-        Iterator<ButtonGroupWrapper> buttonGroups = _buttonGroups.values().iterator();
+        final Iterator<ButtonGroupWrapper> buttonGroups = _buttonGroups.values().iterator();
         while (buttonGroups.hasNext()) {
             buttonGroups.next().clearSelection();
         }
 
-        Iterator<FormField> fields = _componentCache.values().iterator();
+        final Iterator<FormField> fields = _componentCache.values().iterator();
         while (fields.hasNext()) {
             fields.next().reset();
         }
     }
 
-    public void submit(JComponent source) {
+    public void submit(final JComponent source) {
         // If we don't have a <form> to tell us what to do, don't
         // do anything.
         if (_parentFormElement == null) {
             return;
         }
 
-        StringBuffer data = new StringBuffer();
-        String action = _parentFormElement.attr("action");
+        final StringBuffer data = new StringBuffer();
+        final String action = _parentFormElement.attr("action");
         data.append(action).append("?");
-        Iterator<Map.Entry<Element, FormField>> fields = _componentCache.entrySet().iterator();
+        final Iterator<Map.Entry<Element, FormField>> fields = _componentCache.entrySet().iterator();
         boolean first=true;
         while (fields.hasNext()) {
-            Map.Entry<Element, FormField> entry = fields.next();
+            final Map.Entry<Element, FormField> entry = fields.next();
 
-            FormField field = (FormField) entry.getValue();
+            final FormField field = (FormField) entry.getValue();
             
             if (field.includeInSubmission(source)) {
-                String [] dataStrings = field.getFormDataStrings();
+                final String [] dataStrings = field.getFormDataStrings();
                 
-                for (String dataString : dataStrings) {
+                for (final String dataString : dataStrings) {
                     if (!first) {
                         data.append('&');
                     }
@@ -174,18 +174,18 @@ public class XhtmlForm {
         if(_formSubmissionListener !=null) _formSubmissionListener.submit(data.toString());
     }
 
-    public static String collectText(Element e) {
-        StringBuffer result = new StringBuffer();
+    public static String collectText(final Element e) {
+        final StringBuffer result = new StringBuffer();
 
         if (e.childNodeSize() > 0) {
             Node node = e.childNode(0);
         	do {
                 if (node instanceof TextNode) {
-                    TextNode text = (TextNode) node;
+                    final TextNode text = (TextNode) node;
                     result.append(text.text());
                 }
                 else if (node instanceof DataNode) {
-                	DataNode data = (DataNode) node;
+                	final DataNode data = (DataNode) node;
                 	result.append(data.getWholeData());
                 }
                 
@@ -195,8 +195,8 @@ public class XhtmlForm {
     }
     
     private static class ButtonGroupWrapper {
-        private ButtonGroup _group;
-        private AbstractButton _dummy;
+        private final ButtonGroup _group;
+        private final AbstractButton _dummy;
         
         public ButtonGroupWrapper() {
             _group = new ButtonGroup();
@@ -217,7 +217,7 @@ public class XhtmlForm {
             _group.add(_dummy);
         }
         
-        public void add(AbstractButton b) {
+        public void add(final AbstractButton b) {
             _group.add(b);
         }
 

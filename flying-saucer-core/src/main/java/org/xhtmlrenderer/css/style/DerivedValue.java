@@ -35,10 +35,10 @@ public abstract class DerivedValue implements FSDerivedValue {
     protected DerivedValue() {}
 
     protected DerivedValue(
-            CSSName name,
-            CSSPrimitiveUnit cssSACUnitType,
-            String cssText,
-            String cssStringValue) {
+            final CSSName name,
+            final CSSPrimitiveUnit cssSACUnitType,
+            final String cssText,
+            final String cssStringValue) {
         this._cssSacUnitType = cssSACUnitType;
 
         if ( cssText == null ) {
@@ -49,7 +49,7 @@ public abstract class DerivedValue implements FSDerivedValue {
         this._asString = deriveStringValue(cssText, cssStringValue);
     }
 
-    private String deriveStringValue(String cssText, String cssStringValue) {
+    private String deriveStringValue(final String cssText, final String cssStringValue) {
             switch (_cssSacUnitType) {
                 case CSS_IDENT:
                 case CSS_STRING:
@@ -91,9 +91,9 @@ public abstract class DerivedValue implements FSDerivedValue {
     }
 
     public float getFloatProportionalTo(
-            CSSName cssName,
-            float baseValue,
-            CssContext ctx
+            final CSSName cssName,
+            final float baseValue,
+            final CssContext ctx
     ) {
         throw new XRRuntimeException("getFloatProportionalTo() needs to be overridden in subclass.");
     }

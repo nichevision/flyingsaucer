@@ -28,8 +28,8 @@ public class RoundedBorderPainter {
      * @param Set true if you want the inner bounds of borders
      * @return A Path that is all sides of the round rectangle
      */
-    public static Path2D generateBorderBounds(Rectangle bounds, BorderPropertySet border, boolean inside) {
-    	Path2D path = generateBorderShape(bounds, TOP, border, false, inside ? 1 : 0, 1);
+    public static Path2D generateBorderBounds(final Rectangle bounds, final BorderPropertySet border, final boolean inside) {
+    	final Path2D path = generateBorderShape(bounds, TOP, border, false, inside ? 1 : 0, 1);
     	path.append(generateBorderShape(bounds, RIGHT, border, false, inside ? 1 : 0, 1), true);
     	path.append(generateBorderShape(bounds, BOTTOM, border, false, inside ? 1 : 0, 1), true);
     	path.append(generateBorderShape(bounds, LEFT, border, false, inside ? 1 : 0, 1), true);
@@ -37,7 +37,7 @@ public class RoundedBorderPainter {
     }
 	
     // helper function for bezier curves
-    private static Point2D subT(double t, Point2D a, Point2D b) {
+    private static Point2D subT(final double t, final Point2D a, final Point2D b) {
     	return new Point2D.Double(a.getX() + t*(b.getX()-a.getX()),
     			a.getY() + t*(b.getY()-a.getY()));
     }
@@ -51,13 +51,13 @@ public class RoundedBorderPainter {
      * @param P3 end point
      * @return [[curve 1 starting at P0 and ending at B(t)], [curve 2 starting at P(3) and ending at B(t)]]
      */
-    private static Point2D[][] getSubCurve(double t, Point2D P0, Point2D P1, Point2D P2, Point2D P3) {
-    	Point2D P4 = subT(t, P0, P1);
-    	Point2D P5 = subT(t, P1, P2);
-    	Point2D P6 = subT(t, P2, P3);
-    	Point2D P7 = subT(t, P4, P5);
-    	Point2D P8 = subT(t, P5, P6);
-    	Point2D P9 = subT(t, P7, P8);
+    private static Point2D[][] getSubCurve(final double t, final Point2D P0, final Point2D P1, final Point2D P2, final Point2D P3) {
+    	final Point2D P4 = subT(t, P0, P1);
+    	final Point2D P5 = subT(t, P1, P2);
+    	final Point2D P6 = subT(t, P2, P3);
+    	final Point2D P7 = subT(t, P4, P5);
+    	final Point2D P8 = subT(t, P5, P6);
+    	final Point2D P9 = subT(t, P7, P8);
     	return new Point2D [][] {
     			new Point2D[]{P0, P4, P7, P9},
     			new Point2D[]{P3, P6, P8, P9}};
@@ -65,10 +65,10 @@ public class RoundedBorderPainter {
     
 
     // 2 helper functions to reduce the number of params you have to see as the last 2 are very option and rarely used
-    public static Path2D generateBorderShape(Rectangle bounds, int side, BorderPropertySet border, boolean drawInterior) {
+    public static Path2D generateBorderShape(final Rectangle bounds, final int side, final BorderPropertySet border, final boolean drawInterior) {
     	return generateBorderShape(bounds, side, border, drawInterior, 0, 1);
     }
-    public static Path2D generateBorderShape(Rectangle bounds, int side, BorderPropertySet border, boolean drawInterior, float scaledOffset) {
+    public static Path2D generateBorderShape(final Rectangle bounds, final int side, final BorderPropertySet border, final boolean drawInterior, final float scaledOffset) {
     	return generateBorderShape(bounds, side, border, drawInterior, scaledOffset, 1);
     }
     /**
@@ -81,7 +81,7 @@ public class RoundedBorderPainter {
      * @param widthScale scales the border widths by this factor, useful for drawing half borders for border types like groove or double
      * @return a path for the side chosen!
      */
-    public static Path2D generateBorderShape(Rectangle bounds, int side, BorderPropertySet border, boolean drawInterior, float scaledOffset, float widthScale) {
+    public static Path2D generateBorderShape(final Rectangle bounds, final int side, final BorderPropertySet border, final boolean drawInterior, final float scaledOffset, final float widthScale) {
     	
     	float sideWidth = -1, topWidth = widthScale, leftWidth = widthScale, rightWidth = widthScale;
     	double rotation = 0;
@@ -166,7 +166,7 @@ public class RoundedBorderPainter {
     	float lco = scaledOffset*leftWidth;
     	float rco = scaledOffset*rightWidth;
     	
-    	float curveConstant = .45f;
+    	final float curveConstant = .45f;
 
     	// top left corner % of side space
 		float lp = 1;
@@ -185,11 +185,11 @@ public class RoundedBorderPainter {
 		
 		
 		
-		Path2D path = new Path2D.Float();
+		final Path2D path = new Path2D.Float();
 		
 		if(leftRadius.getMaxRight(exteriorWidth) > 0) {
 			
-	    	Point2D [][] leftCurvePoints = getSubCurve(1-lp, 
+	    	final Point2D [][] leftCurvePoints = getSubCurve(1-lp, 
 				new Point2D.Double(	leftRadius.getMaxRight(exteriorWidth) + lco, 					tco), 
 				new Point2D.Double(	curveConstant*(leftRadius.getMaxRight(exteriorWidth)) + lco, 	tco), 
 				new Point2D.Double(	lco, 															tco+curveConstant*(leftRadius.getMaxLeft(exteriorHeight))),
@@ -206,7 +206,7 @@ public class RoundedBorderPainter {
 		
 		if(rightRadius.getMaxLeft(exteriorWidth) > 0) {
 			
-			Point2D [][] rightCurvePoints = getSubCurve(1-rp, 
+			final Point2D [][] rightCurvePoints = getSubCurve(1-rp, 
     				new Point2D.Double(	sideWidth - rightRadius.getMaxLeft(exteriorWidth) - rco, 						tco), 
     				new Point2D.Double(	sideWidth - curveConstant*(rightRadius.getMaxLeft(exteriorWidth)) - rco, 		tco), 
     				new Point2D.Double(	sideWidth - rco, 														   		tco + curveConstant*(rightRadius.getMaxRight(exteriorHeight))),
@@ -229,7 +229,7 @@ public class RoundedBorderPainter {
 
 	    	if(rightRadius.getMaxLeft(interiorWidth) > 0) {
 	    		
-				Point2D [][] rightCurvePoints = getSubCurve(1-rp, 
+				final Point2D [][] rightCurvePoints = getSubCurve(1-rp, 
 	    				new Point2D.Double(	sideWidth - rightRadius.getMaxLeft(interiorWidth) - rco, 							tco), 
 	    				new Point2D.Double(	sideWidth - curveConstant*(rightRadius.getMaxLeft(interiorWidth)) - rco, 			tco), 
 	    				new Point2D.Double(	sideWidth - rco, 														   			tco + curveConstant*(rightRadius.getMaxRight(interiorHeight))),
@@ -245,7 +245,7 @@ public class RoundedBorderPainter {
 			
 			if(leftRadius.getMaxRight(interiorWidth) > 0) {
 				
-		    	Point2D [][] leftCurvePoints = getSubCurve(1-lp, 
+		    	final Point2D [][] leftCurvePoints = getSubCurve(1-lp, 
 					new Point2D.Double(	leftRadius.getMaxRight(interiorWidth) + lco, 						tco), 
 					new Point2D.Double(	curveConstant*(leftRadius.getMaxRight(interiorWidth)) + lco, 		tco), 
 					new Point2D.Double(	lco, 																tco + curveConstant*(leftRadius.getMaxLeft(interiorHeight))),
@@ -273,8 +273,8 @@ public class RoundedBorderPainter {
      * @param xOffset for determining starting point for patterns
      */
     public static void paint(
-            Rectangle bounds, int sides, BorderPropertySet border, 
-            RenderingContext ctx, int xOffset, boolean bevel) {
+            final Rectangle bounds, int sides, final BorderPropertySet border, 
+            final RenderingContext ctx, final int xOffset, final boolean bevel) {
         if ((sides & BorderPainter.TOP) == BorderPainter.TOP && border.noTop()) {
             sides -= BorderPainter.TOP;
         }
@@ -307,11 +307,11 @@ public class RoundedBorderPainter {
         }
     }
 
-    private static void paintBorderSide(OutputDevice outputDevice, 
+    private static void paintBorderSide(final OutputDevice outputDevice, 
             final BorderPropertySet border, final Rectangle bounds, final int sides, 
-            int currentSide, final IdentValue borderSideStyle, int xOffset, boolean bevel) {
+            final int currentSide, final IdentValue borderSideStyle, final int xOffset, final boolean bevel) {
         if (borderSideStyle == IdentValue.RIDGE || borderSideStyle == IdentValue.GROOVE) {
-            BorderPropertySet bd2 = new BorderPropertySet(border, (border.top() / 2),
+            final BorderPropertySet bd2 = new BorderPropertySet(border, (border.top() / 2),
                     (border.right() / 2),
                     (border.bottom() / 2),
                     (border.left() / 2));
@@ -386,8 +386,8 @@ public class RoundedBorderPainter {
     }
 
     private static void paintDoubleBorder(
-            OutputDevice outputDevice, BorderPropertySet border, 
-            Rectangle bounds, int sides, int currentSide, boolean bevel) {
+            final OutputDevice outputDevice, final BorderPropertySet border, 
+            final Rectangle bounds, final int sides, final int currentSide, final boolean bevel) {
         // draw outer border
         paintSolid(outputDevice, bounds, border, 0, .5f, sides, currentSide, bevel);
         // draw inner border
@@ -397,16 +397,16 @@ public class RoundedBorderPainter {
     /**
      * @param xOffset     for inline borders, to determine dash_phase of top and bottom
      */
-    private static void paintPatternedRect(OutputDevice outputDevice, 
+    private static void paintPatternedRect(final OutputDevice outputDevice, 
             final Rectangle bounds, final BorderPropertySet border, 
             final BorderPropertySet color, final float[] pattern, 
-            final int sides, final int currentSide, int xOffset) {
-        Stroke old_stroke = outputDevice.getStroke();
+            final int sides, final int currentSide, final int xOffset) {
+        final Stroke old_stroke = outputDevice.getStroke();
 
-        Path2D path = generateBorderShape(bounds, currentSide, border, false, .5f, 1);
-        Path2D clip = generateBorderShape(bounds, currentSide, border, true, 0, 1);
+        final Path2D path = generateBorderShape(bounds, currentSide, border, false, .5f, 1);
+        final Path2D clip = generateBorderShape(bounds, currentSide, border, true, 0, 1);
         
-        Shape old_clip = outputDevice.getClip();
+        final Shape old_clip = outputDevice.getClip();
         outputDevice.setClip(clip);
         		
         if (currentSide == BorderPainter.TOP) {
@@ -435,11 +435,11 @@ public class RoundedBorderPainter {
         outputDevice.setStroke(old_stroke);
     }
 
-    private static void paintBorderSideShape(OutputDevice outputDevice, 
+    private static void paintBorderSideShape(final OutputDevice outputDevice, 
             final Rectangle bounds, final BorderPropertySet border, 
             final BorderPropertySet high, final BorderPropertySet low, 
             final float offset, final float scale,
-            final int sides, int currentSide, boolean bevel) {
+            final int sides, final int currentSide, final boolean bevel) {
         if (currentSide == BorderPainter.TOP) {
             paintSolid(outputDevice, bounds, high, offset, scale, sides, currentSide, bevel);
         } else if (currentSide == BorderPainter.BOTTOM) {
@@ -451,49 +451,49 @@ public class RoundedBorderPainter {
         }
     }
 
-    private static void paintSolid(OutputDevice outputDevice, 
+    private static void paintSolid(final OutputDevice outputDevice, 
             final Rectangle bounds, final BorderPropertySet border, 
-            final float offset, final float scale, final int sides, int currentSide,
-            boolean bevel) {
+            final float offset, final float scale, final int sides, final int currentSide,
+            final boolean bevel) {
         
         if (currentSide == BorderPainter.TOP) {
             outputDevice.setColor(border.topColor());
             // draw a 1px border with a line instead of a polygon
             if ((int) border.top() == 1) {
-            	Shape line = generateBorderShape(bounds, currentSide, border, false, offset, scale);
+            	final Shape line = generateBorderShape(bounds, currentSide, border, false, offset, scale);
             	outputDevice.draw(line);
             } else {
-            	Shape line = generateBorderShape(bounds, currentSide, border, true, offset, scale);
+            	final Shape line = generateBorderShape(bounds, currentSide, border, true, offset, scale);
                 // use polygons for borders over 1px wide
                 outputDevice.fill(line);
             }
         } else if (currentSide == BorderPainter.BOTTOM) {
             outputDevice.setColor(border.bottomColor());
             if ((int) border.bottom() == 1) {
-            	Shape line = generateBorderShape(bounds, currentSide, border, false, offset, scale);
+            	final Shape line = generateBorderShape(bounds, currentSide, border, false, offset, scale);
             	outputDevice.draw(line);
             } else {
-            	Shape line = generateBorderShape(bounds, currentSide, border, true, offset, scale);
+            	final Shape line = generateBorderShape(bounds, currentSide, border, true, offset, scale);
                 // use polygons for borders over 1px wide
                 outputDevice.fill(line);
             }
         } else if (currentSide == BorderPainter.RIGHT) {
             outputDevice.setColor(border.rightColor());
             if ((int) border.right() == 1) {
-            	Shape line = generateBorderShape(bounds, currentSide, border, false, offset, scale);
+            	final Shape line = generateBorderShape(bounds, currentSide, border, false, offset, scale);
             	outputDevice.draw(line);
             } else {
-            	Shape line = generateBorderShape(bounds, currentSide, border, true, offset, scale);
+            	final Shape line = generateBorderShape(bounds, currentSide, border, true, offset, scale);
                 // use polygons for borders over 1px wide
                 outputDevice.fill(line);
             }
         } else if (currentSide == BorderPainter.LEFT) {
             outputDevice.setColor(border.leftColor());
             if ((int) border.left() == 1) {
-            	Shape line = generateBorderShape(bounds, currentSide, border, false, offset, scale);
+            	final Shape line = generateBorderShape(bounds, currentSide, border, false, offset, scale);
             	outputDevice.draw(line);
             } else {
-            	Shape line = generateBorderShape(bounds, currentSide, border, true, offset, scale);
+            	final Shape line = generateBorderShape(bounds, currentSide, border, true, offset, scale);
                 // use polygons for borders over 1px wide
                 outputDevice.fill(line);
             }

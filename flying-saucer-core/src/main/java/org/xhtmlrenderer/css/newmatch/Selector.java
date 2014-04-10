@@ -65,7 +65,7 @@ public class Selector {
     /**
      * Give each a unique ID to be able to create a key to internalize Matcher.Mappers
      */
-    private int selectorID;
+    private final int selectorID;
     private static int selectorCount = 0;
 
     public Selector() {
@@ -76,9 +76,9 @@ public class Selector {
      * Check if the given Element matches this selector. Note: the parser should
      * give all class
      */
-    public boolean matches(Object e, AttributeResolver attRes, TreeResolver treeRes) {
+    public boolean matches(final Object e, final AttributeResolver attRes, final TreeResolver treeRes) {
         if (siblingSelector != null) {
-            Object sib = siblingSelector.getAppropriateSibling(e, treeRes);
+            final Object sib = siblingSelector.getAppropriateSibling(e, treeRes);
             if (sib == null) {
                 return false;
             }
@@ -89,7 +89,7 @@ public class Selector {
         if (_name == null || treeRes.matchesElement(e, _namespaceURI, _name)) {
             if (conditions != null) {
                 // all conditions need to be true
-                for (Condition c : conditions) {
+                for (final Condition c : conditions) {
                     if (!c.matches(e, attRes, treeRes)) {
                         return false;
                     }
@@ -104,9 +104,9 @@ public class Selector {
      * Check if the given Element matches this selector's dynamic properties.
      * Note: the parser should give all class
      */
-    public boolean matchesDynamic(Object e, AttributeResolver attRes, TreeResolver treeRes) {
+    public boolean matchesDynamic(final Object e, final AttributeResolver attRes, final TreeResolver treeRes) {
         if (siblingSelector != null) {
-            Object sib = siblingSelector.getAppropriateSibling(e, treeRes);
+            final Object sib = siblingSelector.getAppropriateSibling(e, treeRes);
             if (sib == null) {
                 return false;
             }
@@ -171,7 +171,7 @@ public class Selector {
     /**
      * the CSS condition that element has pseudo-class :nth-child(an+b)
      */
-    public void addNthChildCondition(String number) {
+    public void addNthChildCondition(final String number) {
         _specificityC++;
         addCondition(Condition.createNthChildCondition(number));
     }
@@ -195,7 +195,7 @@ public class Selector {
     /**
      * the CSS condition :lang(Xx)
      */
-    public void addLangCondition(String lang) {
+    public void addLangCondition(final String lang) {
         _specificityC++;
         addCondition(Condition.createLangCondition(lang));
     }
@@ -203,7 +203,7 @@ public class Selector {
     /**
      * the CSS condition #ID
      */
-    public void addIDCondition(String id) {
+    public void addIDCondition(final String id) {
         _specificityB++;
         addCondition(Condition.createIDCondition(id));
     }
@@ -211,7 +211,7 @@ public class Selector {
     /**
      * the CSS condition .class
      */
-    public void addClassCondition(String className) {
+    public void addClassCondition(final String className) {
         _specificityC++;
         addCondition(Condition.createClassCondition(className));
     }
@@ -219,7 +219,7 @@ public class Selector {
     /**
      * the CSS condition [attribute]
      */
-    public void addAttributeExistsCondition(String namespaceURI, String name) {
+    public void addAttributeExistsCondition(final String namespaceURI, final String name) {
         _specificityC++;
         addCondition(Condition.createAttributeExistsCondition(namespaceURI, name));
     }
@@ -227,7 +227,7 @@ public class Selector {
     /**
      * the CSS condition [attribute=value]
      */
-    public void addAttributeEqualsCondition(String namespaceURI, String name, String value) {
+    public void addAttributeEqualsCondition(final String namespaceURI, final String name, final String value) {
         _specificityC++;
         addCondition(Condition.createAttributeEqualsCondition(namespaceURI, name, value));
     }
@@ -235,7 +235,7 @@ public class Selector {
     /**
      * the CSS condition [attribute^=value]
      */
-    public void addAttributePrefixCondition(String namespaceURI, String name, String value) {
+    public void addAttributePrefixCondition(final String namespaceURI, final String name, final String value) {
         _specificityC++;
         addCondition(Condition.createAttributePrefixCondition(namespaceURI, name, value));
     }
@@ -243,7 +243,7 @@ public class Selector {
     /**
      * the CSS condition [attribute$=value]
      */
-    public void addAttributeSuffixCondition(String namespaceURI, String name, String value) {
+    public void addAttributeSuffixCondition(final String namespaceURI, final String name, final String value) {
         _specificityC++;
         addCondition(Condition.createAttributeSuffixCondition(namespaceURI, name, value));
     }
@@ -251,7 +251,7 @@ public class Selector {
     /**
      * the CSS condition [attribute*=value]
      */
-    public void addAttributeSubstringCondition(String namespaceURI, String name, String value) {
+    public void addAttributeSubstringCondition(final String namespaceURI, final String name, final String value) {
         _specificityC++;
         addCondition(Condition.createAttributeSubstringCondition(namespaceURI, name, value));
     }
@@ -259,7 +259,7 @@ public class Selector {
     /**
      * the CSS condition [attribute~=value]
      */
-    public void addAttributeMatchesListCondition(String namespaceURI, String name, String value) {
+    public void addAttributeMatchesListCondition(final String namespaceURI, final String name, final String value) {
         _specificityC++;
         addCondition(Condition.createAttributeMatchesListCondition(namespaceURI, name, value));
     }
@@ -267,7 +267,7 @@ public class Selector {
     /**
      * the CSS condition [attribute|=value]
      */
-    public void addAttributeMatchesFirstPartCondition(String namespaceURI, String name, String value) {
+    public void addAttributeMatchesFirstPartCondition(final String namespaceURI, final String name, final String value) {
         _specificityC++;
         addCondition(Condition.createAttributeMatchesFirstPartCondition(namespaceURI, name, value));
     }
@@ -279,7 +279,7 @@ public class Selector {
      *           they cannot be unset. Note that the pseudo-classes should be set one
      *           at a time, otherwise specificity of declaration becomes wrong.
      */
-    public void setPseudoClass(int pc) {
+    public void setPseudoClass(final int pc) {
         if (!isPseudoClass(pc)) {
             _specificityC++;
         }
@@ -296,7 +296,7 @@ public class Selector {
      * return (_pc != 0);
      * }
      */
-    public void setPseudoElement(String pseudoElement) {
+    public void setPseudoElement(final String pseudoElement) {
         if (_pe != null) {
             addUnsupportedCondition();
             XRLog.match(Level.WARNING, "Trying to set more than one pseudo-element");
@@ -312,7 +312,7 @@ public class Selector {
      * @param pc the values from AttributeResolver should be used.
      * @return The pseudoClass value
      */
-    public boolean isPseudoClass(int pc) {
+    public boolean isPseudoClass(final int pc) {
         return ((_pc & pc) != 0);
     }
 
@@ -387,10 +387,10 @@ public class Selector {
         if (chainedSelector != null) {
             return chainedSelector.getOrder();
         }//only "deepest" value is correct
-        String b = "000" + getSpecificityB();
-        String c = "000" + getSpecificityC();
-        String d = "000" + getSpecificityD();
-        String p = "00000" + _pos;
+        final String b = "000" + getSpecificityB();
+        final String c = "000" + getSpecificityC();
+        final String d = "000" + getSpecificityD();
+        final String p = "00000" + _pos;
         return "0" + b.substring(b.length() - 3) + c.substring(c.length() - 3) + d.substring(d.length() - 3) + p.substring(p.length() - 5);
     }
 
@@ -401,7 +401,7 @@ public class Selector {
      * @param treeRes
      * @return The appropriateSibling value
      */
-    Object getAppropriateSibling(Object e, TreeResolver treeRes) {
+    Object getAppropriateSibling(final Object e, final TreeResolver treeRes) {
         Object sibling = null;
         switch (_axis) {
             case IMMEDIATE_SIBLING_AXIS:
@@ -418,7 +418,7 @@ public class Selector {
      *
      * @param c The feature to be added to the Condition attribute
      */
-    private void addCondition(Condition c) {
+    private void addCondition(final Condition c) {
         if (conditions == null) {
             conditions = new java.util.ArrayList<Condition>();
         }
@@ -442,12 +442,12 @@ public class Selector {
         return selectorID;
     }
     
-    public void setName(String name) {
+    public void setName(final String name) {
         _name = name;
         _specificityD++;
     }
     
-    public void setPos(int pos) {
+    public void setPos(final int pos) {
         _pos = pos;
         if (siblingSelector != null) {
             siblingSelector.setPos(pos);
@@ -457,35 +457,35 @@ public class Selector {
         }
     }
     
-    public void setParent(Ruleset ruleset) {
+    public void setParent(final Ruleset ruleset) {
         _parent = ruleset;
     }
     
-    public void setAxis(int axis) {
+    public void setAxis(final int axis) {
         _axis = axis;
     }
     
-    public void setSpecificityB(int b) {
+    public void setSpecificityB(final int b) {
         _specificityB = b;
     }
     
-    public void setSpecificityC(int c) {
+    public void setSpecificityC(final int c) {
         _specificityC = c;
     }
     
-    public void setSpecificityD(int d) {
+    public void setSpecificityD(final int d) {
         _specificityD = d;
     }
     
-    public void setChainedSelector(Selector selector) {
+    public void setChainedSelector(final Selector selector) {
         chainedSelector = selector;
     }
     
-    public void setSiblingSelector(Selector selector) {
+    public void setSiblingSelector(final Selector selector) {
         siblingSelector = selector;
     }
     
-    public void setNamespaceURI(String namespaceURI) {
+    public void setNamespaceURI(final String namespaceURI) {
         _namespaceURI = namespaceURI;
     }
 }

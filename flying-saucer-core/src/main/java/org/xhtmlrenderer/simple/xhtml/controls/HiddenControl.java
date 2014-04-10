@@ -24,7 +24,7 @@ import org.xhtmlrenderer.simple.xhtml.XhtmlForm;
 
 public class HiddenControl extends AbstractControl {
 
-    public HiddenControl(XhtmlForm form, Element e) {
+    public HiddenControl(final XhtmlForm form, final Element e) {
         super(form, e);
     }
 

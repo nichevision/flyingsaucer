@@ -37,7 +37,7 @@ public class PageInfo {
     
     private final List<PropertyDeclaration> _xmpPropertyList;
     
-    public PageInfo(List<PropertyDeclaration> properties, CascadedStyle pageStyle, Map<MarginBoxName, List<PropertyDeclaration>> marginBoxes) {
+    public PageInfo(final List<PropertyDeclaration> properties, final CascadedStyle pageStyle, final Map<MarginBoxName, List<PropertyDeclaration>> marginBoxes) {
         _properties = properties;
         _pageStyle = pageStyle;
         _marginBoxes = marginBoxes;
@@ -57,8 +57,8 @@ public class PageInfo {
         return _properties;
     }
     
-    public CascadedStyle createMarginBoxStyle(MarginBoxName marginBox, boolean alwaysCreate) {
-        List<PropertyDeclaration> marginProps = _marginBoxes.get(marginBox);
+    public CascadedStyle createMarginBoxStyle(final MarginBoxName marginBox, final boolean alwaysCreate) {
+        final List<PropertyDeclaration> marginProps = _marginBoxes.get(marginBox);
         
         if ((marginProps == null || marginProps.size() == 0) && ! alwaysCreate) {
             return null;
@@ -88,8 +88,8 @@ public class PageInfo {
         return new CascadedStyle(all.iterator());
     }
     
-    public boolean hasAny(MarginBoxName[] marginBoxes) {
-        for (MarginBoxName marginBox : marginBoxes) {
+    public boolean hasAny(final MarginBoxName[] marginBoxes) {
+        for (final MarginBoxName marginBox : marginBoxes) {
             if (_marginBoxes.containsKey(marginBox)) {
                 return true;
             }

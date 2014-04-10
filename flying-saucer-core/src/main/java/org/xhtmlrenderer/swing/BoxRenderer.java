@@ -106,7 +106,7 @@ public class BoxRenderer {
 	 * @param dotsPerPoint Layout XML at so many dots per point
 	 * @param dotsPerPixel Layout XML at so many dots per pixel
 	 */
-	private BoxRenderer(float dotsPerPoint, int dotsPerPixel) {
+	private BoxRenderer(final float dotsPerPoint, final int dotsPerPixel) {
 		this();
 		init(dotsPerPoint, dotsPerPixel);
 	}
@@ -119,7 +119,7 @@ public class BoxRenderer {
 	 * @param baseUrl The base url for the document, against which  relative paths are resolved.
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 */
-	public BoxRenderer(String url, String baseUrl, int width, int height) {
+	public BoxRenderer(final String url, final String baseUrl, final int width, final int height) {
 		// bypass scaling routines based on DPI -- see PDFRenderer and compare--dotsPerPoint is not implemented
 		// in all subordinate classes and interfaces for Java2D, so leaving it out
 		// leaving this constructor call here as a TODO
@@ -139,7 +139,7 @@ public class BoxRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * @param height Target height, in pixels, for the image
 	 */
-	public BoxRenderer(File file, int width, int height) throws IOException {
+	public BoxRenderer(final File file, final int width, final int height) throws IOException {
 		this(file.toURI().toURL().toExternalForm(), width, height);
 	}
 
@@ -151,7 +151,7 @@ public class BoxRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * Heght is calculated based on content
 	 */
-	public BoxRenderer(File file, int width) throws IOException {
+	public BoxRenderer(final File file, final int width) throws IOException {
 		this(file.toURI().toURL().toExternalForm(), width);
 	}
 
@@ -164,7 +164,7 @@ public class BoxRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * Heght is calculated based on content
 	 */
-	public BoxRenderer(String url, int width) {
+	public BoxRenderer(final String url, final int width) {
 		this(url, url, width, NO_HEIGHT);
 	}
 
@@ -177,7 +177,7 @@ public class BoxRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * Heght is calculated based on content
 	 */
-	public BoxRenderer(String url, String baseurl, int width) {
+	public BoxRenderer(final String url, final String baseurl, final int width) {
 		this(url, baseurl, width, NO_HEIGHT);
 	}
 
@@ -189,7 +189,7 @@ public class BoxRenderer {
 	 * @param width Target width, in pixels, for the image; required to provide horizontal bounds for the layout.
 	 * @param height Target height, in pixels, for the image
 	 */
-	public BoxRenderer(String url, int width, int height) {
+	public BoxRenderer(final String url, final int width, final int height) {
 		this(url, url, width, height);
 	}
 
@@ -201,7 +201,7 @@ public class BoxRenderer {
 	 *
 	 * @param hints values to override in default rendering hints for Graphics2D we are rendering to
 	 */
-	public void setRenderingHints(Map<RenderingHints.Key, Object> hints) {
+	public void setRenderingHints(final Map<RenderingHints.Key, Object> hints) {
 		renderingHints = hints;
 	}
 
@@ -238,15 +238,15 @@ public class BoxRenderer {
 			layout(this.width);
 
 			height = this.height == -1 ? root.getHeight() : this.height;
-			BufferedImage outputImage = createBufferedImage(this.width, height);
+			final BufferedImage outputImage = createBufferedImage(this.width, height);
 			outputDevice = new Java2DOutputDevice(outputImage);
-			Graphics2D newG = (Graphics2D) outputImage.getGraphics();
+			final Graphics2D newG = (Graphics2D) outputImage.getGraphics();
             try {
                 if ( renderingHints != null ) {
                     newG.getRenderingHints().putAll(renderingHints);
                 }
 
-                RenderingContext rc = sharedContext.newRenderingContextInstance();
+                final RenderingContext rc = sharedContext.newRenderingContextInstance();
                 rc.setFontContext(new Java2DFontContext(newG));
                 rc.setOutputDevice(outputDevice);
                 sharedContext.getTextRenderer().setup(rc.getFontContext());
@@ -270,13 +270,13 @@ public class BoxRenderer {
 	 * @param height target height
 	 * @return new BI
 	 */
-	protected BufferedImage createBufferedImage(int width, int height) {
-		BufferedImage image = ImageUtil.createCompatibleBufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	protected BufferedImage createBufferedImage(final int width, final int height) {
+		final BufferedImage image = ImageUtil.createCompatibleBufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		ImageUtil.clearImage(image);
 		return image;
 	}
 
-	private void setDocument(Document doc, String url, NamespaceHandler nsh) {
+	private void setDocument(final Document doc, final String url, final NamespaceHandler nsh) {
 		this.doc = doc;
 
 		sharedContext.reset();
@@ -295,10 +295,10 @@ public class BoxRenderer {
 		);
 	}
 
-	private void layout(int width) {
-		Rectangle rect = new Rectangle(0, 0, width, DEFAULT_HEIGHT);
+	private void layout(final int width) {
+		final Rectangle rect = new Rectangle(0, 0, width, DEFAULT_HEIGHT);
 		sharedContext.set_TempCanvas(rect);
-		BlockBox root = BoxBuilder.createRootBox(layoutContext, doc);
+		final BlockBox root = BoxBuilder.createRootBox(layoutContext, doc);
 		root.setContainingBlock(new ViewportBox(rect));
 		root.layout(layoutContext);
 		this.root = root;
@@ -309,7 +309,7 @@ public class BoxRenderer {
 	}
 
 	private LayoutContext newLayoutContext() {
-		LayoutContext result = sharedContext.newLayoutContextInstance();
+		final LayoutContext result = sharedContext.newLayoutContextInstance();
 		result.setFontContext(new Java2DFontContext(outputDevice.getGraphics()));
 
 		sharedContext.getTextRenderer().setup(result.getFontContext());
@@ -317,21 +317,21 @@ public class BoxRenderer {
 		return result;
 	}
 
-	private void init(float dotsPerPoint, int dotsPerPixel) {
+	private void init(final float dotsPerPoint, final int dotsPerPixel) {
 		this.dotsPerPoint = dotsPerPoint;
 
-		BufferedImage outputImage = ImageUtil.createCompatibleBufferedImage(DEFAULT_DOTS_PER_POINT, DEFAULT_DOTS_PER_POINT);
+		final BufferedImage outputImage = ImageUtil.createCompatibleBufferedImage(DEFAULT_DOTS_PER_POINT, DEFAULT_DOTS_PER_POINT);
 		outputDevice = new Java2DOutputDevice(outputImage);
 
-		UserAgentCallback userAgent = new NaiveUserAgent();
+		final UserAgentCallback userAgent = new NaiveUserAgent();
         sharedContext = newSharedContext(dotsPerPixel, userAgent);
         layoutContext = newLayoutContext();
 	}
 
-    private SharedContext newSharedContext(int dotsPerPixel, UserAgentCallback userAgent) {
-        SharedContext context = new SharedContext(userAgent);
+    private SharedContext newSharedContext(final int dotsPerPixel, final UserAgentCallback userAgent) {
+        final SharedContext context = new SharedContext(userAgent);
 
-        AWTFontResolver fontResolver = new AWTFontResolver();
+        final AWTFontResolver fontResolver = new AWTFontResolver();
         context.setFontResolver(fontResolver);
 
         // TODO
@@ -348,15 +348,15 @@ public class BoxRenderer {
 
     private static final class NullUserInterface implements UserInterface {
 
-		public boolean isHover(Element e) {
+		public boolean isHover(final Element e) {
 			return false;
 		}
 
-		public boolean isActive(Element e) {
+		public boolean isActive(final Element e) {
 			return false;
 		}
 
-		public boolean isFocus(Element e) {
+		public boolean isFocus(final Element e) {
 			return false;
 		}
 	}

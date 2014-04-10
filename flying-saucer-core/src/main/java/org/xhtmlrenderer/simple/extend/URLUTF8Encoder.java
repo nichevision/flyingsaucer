@@ -88,11 +88,11 @@ public class URLUTF8Encoder {
      * @param s  The string to be encoded
      * @return   The encoded string
      */
-    public static String encode( String s ) {
-        StringBuffer sbuf = new StringBuffer();
-        int len = s.length();
+    public static String encode( final String s ) {
+        final StringBuffer sbuf = new StringBuffer();
+        final int len = s.length();
         for ( int i = 0; i < len; i++ ) {
-            int ch = s.charAt( i );
+            final int ch = s.charAt( i );
             append( sbuf, ch );
         }
         return sbuf.toString();
@@ -104,11 +104,11 @@ public class URLUTF8Encoder {
      * @param chars  PARAM
      * @return       Returns
      */
-    public static String encode( char[] chars ) {
-        StringBuffer sbuf = new StringBuffer();
-        int len = chars.length;
+    public static String encode( final char[] chars ) {
+        final StringBuffer sbuf = new StringBuffer();
+        final int len = chars.length;
         for ( int i = 0; i < len; i++ ) {
-            int ch = chars[i];
+            final int ch = chars[i];
             append( sbuf, ch );
         }
         return sbuf.toString();
@@ -120,7 +120,7 @@ public class URLUTF8Encoder {
      * @param sbuf  PARAM
      * @param ch    PARAM
      */
-    private static void append( StringBuffer sbuf, int ch ) {
+    private static void append( final StringBuffer sbuf, final int ch ) {
         if ( 'A' <= ch && ch <= 'Z' ) {// 'A'..'Z'
             sbuf.append( (char)ch );
         } else if ( 'a' <= ch && ch <= 'z' ) {// 'a'..'z'

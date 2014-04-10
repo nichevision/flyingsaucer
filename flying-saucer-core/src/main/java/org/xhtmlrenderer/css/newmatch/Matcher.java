@@ -51,9 +51,9 @@ import org.xhtmlrenderer.util.Util;
 public class Matcher {
 
     Mapper docMapper;
-    private org.xhtmlrenderer.css.extend.AttributeResolver _attRes;
-    private org.xhtmlrenderer.css.extend.TreeResolver _treeRes;
-    private org.xhtmlrenderer.css.extend.StylesheetFactory _styleFactory;
+    private final org.xhtmlrenderer.css.extend.AttributeResolver _attRes;
+    private final org.xhtmlrenderer.css.extend.TreeResolver _treeRes;
+    private final org.xhtmlrenderer.css.extend.StylesheetFactory _styleFactory;
 
     private java.util.Map<Object, Mapper> _map;
 
@@ -63,11 +63,11 @@ public class Matcher {
     private Set<Object> _focusElements;
     private Set<Object> _visitElements;
     
-    private List<PageRule> _pageRules;
-    private List<FontFaceRule> _fontFaceRules;
+    private final List<PageRule> _pageRules;
+    private final List<FontFaceRule> _fontFaceRules;
     
     public Matcher(
-            TreeResolver tr, AttributeResolver ar, StylesheetFactory factory, List<Stylesheet> stylesheets, String medium) {
+            final TreeResolver tr, final AttributeResolver ar, final StylesheetFactory factory, final List<Stylesheet> stylesheets, final String medium) {
         newMaps();
         _treeRes = tr;
         _attRes = ar;
@@ -78,11 +78,11 @@ public class Matcher {
         docMapper = createDocumentMapper(stylesheets, medium);
     }
     
-    public void removeStyle(Object e) {
+    public void removeStyle(final Object e) {
         _map.remove(e);
     }
 
-    public CascadedStyle getCascadedStyle(Object e, boolean restyle) {
+    public CascadedStyle getCascadedStyle(final Object e, final boolean restyle) {
         synchronized (e) {
             Mapper em;
             if (!restyle) {
@@ -98,18 +98,18 @@ public class Matcher {
      * May return null.
      * We assume that restyle has already been done by a getCascadedStyle if necessary.
      */
-    public CascadedStyle getPECascadedStyle(Object e, String pseudoElement) {
+    public CascadedStyle getPECascadedStyle(final Object e, final String pseudoElement) {
         synchronized (e) {
-            Mapper em = getMapper(e);
+            final Mapper em = getMapper(e);
             return em.getPECascadedStyle(e, pseudoElement);
         }
     }
     
-    public PageInfo getPageCascadedStyle(String pageName, String pseudoPage) {
-        List<PropertyDeclaration> props = new ArrayList<PropertyDeclaration>();
-        Map<MarginBoxName, List<PropertyDeclaration>> marginBoxes = new HashMap<MarginBoxName, List<PropertyDeclaration>>();
+    public PageInfo getPageCascadedStyle(final String pageName, final String pseudoPage) {
+        final List<PropertyDeclaration> props = new ArrayList<PropertyDeclaration>();
+        final Map<MarginBoxName, List<PropertyDeclaration>> marginBoxes = new HashMap<MarginBoxName, List<PropertyDeclaration>>();
 
-        for (PageRule pageRule : _pageRules) {
+        for (final PageRule pageRule : _pageRules) {
             if (pageRule.applies(pageName, pseudoPage)) {
                 props.addAll(pageRule.getRuleset().getPropertyDeclarations());
                 marginBoxes.putAll(pageRule.getMarginBoxes());
@@ -130,28 +130,28 @@ public class Matcher {
         return _fontFaceRules;
     }
     
-    public boolean isVisitedStyled(Object e) {
+    public boolean isVisitedStyled(final Object e) {
         return _visitElements.contains(e);
     }
 
-    public boolean isHoverStyled(Object e) {
+    public boolean isHoverStyled(final Object e) {
         return _hoverElements.contains(e);
     }
 
-    public boolean isActiveStyled(Object e) {
+    public boolean isActiveStyled(final Object e) {
         return _activeElements.contains(e);
     }
 
-    public boolean isFocusStyled(Object e) {
+    public boolean isFocusStyled(final Object e) {
         return _focusElements.contains(e);
     }
 
-    protected Mapper matchElement(Object e) {
+    protected Mapper matchElement(final Object e) {
         synchronized (e) {
-            Object parent = _treeRes.getParentElement(e);
+            final Object parent = _treeRes.getParentElement(e);
             Mapper child;
             if (parent != null) {
-                Mapper m = getMapper(parent);
+                final Mapper m = getMapper(parent);
                 child = m.mapChild(e);
             } else {//has to be document or fragment node
                 child = docMapper.mapChild(e);
@@ -160,20 +160,20 @@ public class Matcher {
         }
     }
 
-    Mapper createDocumentMapper(List<Stylesheet> stylesheets, String medium) {
-        java.util.TreeMap<String, Selector> sorter = new java.util.TreeMap<String, Selector>();
+    Mapper createDocumentMapper(final List<Stylesheet> stylesheets, final String medium) {
+        final java.util.TreeMap<String, Selector> sorter = new java.util.TreeMap<String, Selector>();
         addAllStylesheets(stylesheets, sorter, medium);
         XRLog.match("Matcher created with " + sorter.size() + " selectors");
         return new Mapper(sorter.values());
     }
     
-    private void addAllStylesheets(List<Stylesheet> stylesheets, TreeMap<String, Selector> sorter, String medium) {
+    private void addAllStylesheets(final List<Stylesheet> stylesheets, final TreeMap<String, Selector> sorter, final String medium) {
         int count = 0;
         int pCount = 0;
-        for (Stylesheet stylesheet : stylesheets) {
-            for (Object obj : stylesheet.getContents()) {
+        for (final Stylesheet stylesheet : stylesheets) {
+            for (final Object obj : stylesheet.getContents()) {
                 if (obj instanceof Ruleset) {
-                    for (Selector selector : ((Ruleset)obj).getFSSelectors()) {
+                    for (final Selector selector : ((Ruleset)obj).getFSSelectors()) {
                         selector.setPos(++count);
                         sorter.put(selector.getOrder(), selector);
                     }
@@ -181,10 +181,10 @@ public class Matcher {
                     ((PageRule)obj).setPos(++pCount);
                     _pageRules.add((PageRule) obj);
                 } else if (obj instanceof MediaRule) {
-                    MediaRule mediaRule = (MediaRule)obj;
+                    final MediaRule mediaRule = (MediaRule)obj;
                     if (mediaRule.matches(medium)) {
-                        for (Ruleset ruleset : mediaRule.getContents()) {
-                            for (Selector selector : ruleset.getFSSelectors()) {
+                        for (final Ruleset ruleset : mediaRule.getContents()) {
+                            for (final Selector selector : ruleset.getFSSelectors()) {
                                 selector.setPos(++count);
                                 sorter.put(selector.getOrder(), selector);
                             }
@@ -197,9 +197,9 @@ public class Matcher {
         }
         
         Collections.sort(_pageRules, new Comparator<PageRule>() {
-            public int compare(PageRule o1, PageRule o2) {
-                PageRule p1 = (PageRule)o1;
-                PageRule p2 = (PageRule)o2;
+            public int compare(final PageRule o1, final PageRule o2) {
+                final PageRule p1 = (PageRule)o1;
+                final PageRule p2 = (PageRule)o2;
                 
                 if (p1.getOrder() - p2.getOrder() < 0) {
                     return -1;
@@ -212,7 +212,7 @@ public class Matcher {
         });
     }
 
-    private void link(Object e, Mapper m) {
+    private void link(final Object e, final Mapper m) {
         _map.put(e, m);
     }
 
@@ -224,7 +224,7 @@ public class Matcher {
         _visitElements = Collections.synchronizedSet(new java.util.HashSet<Object>());
     }
 
-    private Mapper getMapper(Object e) {
+    private Mapper getMapper(final Object e) {
         Mapper m = _map.get(e);
         if (m != null) {
             return m;
@@ -256,7 +256,7 @@ public class Matcher {
                 };
     }
 
-    private static java.util.Iterator<Ruleset> getSelectedRulesets(java.util.List<Selector> selectorList) {
+    private static java.util.Iterator<Ruleset> getSelectedRulesets(final java.util.List<Selector> selectorList) {
         final java.util.List<Selector> sl = selectorList;
         return
                 new java.util.Iterator<Ruleset>() {
@@ -280,13 +280,13 @@ public class Matcher {
                 };
     }
 
-    private org.xhtmlrenderer.css.sheet.Ruleset getElementStyle(Object e) {
+    private org.xhtmlrenderer.css.sheet.Ruleset getElementStyle(final Object e) {
         synchronized (e) {
             if (_attRes == null || _styleFactory == null) {
                 return null;
             }
             
-            String style = _attRes.getElementStyling(e);
+            final String style = _attRes.getElementStyling(e);
             if (Util.isNullOrEmpty(style)) {
                 return null;
             }
@@ -295,12 +295,12 @@ public class Matcher {
         }
     }
 
-    private org.xhtmlrenderer.css.sheet.Ruleset getNonCssStyle(Object e) {
+    private org.xhtmlrenderer.css.sheet.Ruleset getNonCssStyle(final Object e) {
         synchronized (e) {
             if (_attRes == null || _styleFactory == null) {
                 return null;
             }
-            String style = _attRes.getNonCssStyling(e);
+            final String style = _attRes.getNonCssStyling(e);
             if (Util.isNullOrEmpty(style)) {
                 return null;
             }
@@ -320,7 +320,7 @@ public class Matcher {
         private List<Selector> mappedSelectors;
         private HashMap<String, Mapper> children;
 
-        Mapper(java.util.Collection<Selector> selectors) {
+        Mapper(final java.util.Collection<Selector> selectors) {
             axes = new java.util.ArrayList<Selector>(selectors.size());
             axes.addAll(selectors);
         }
@@ -335,14 +335,14 @@ public class Matcher {
          * @return The selectors that matched, sorted according to specificity
          *         (more correct: preserves the sort order from Matcher creation)
          */
-        Mapper mapChild(Object e) {
+        Mapper mapChild(final Object e) {
             //Mapper childMapper = new Mapper();
-            java.util.List<Selector> childAxes = new ArrayList<Selector>(axes.size() + 10);
-            java.util.HashMap<String, List<Selector>> pseudoSelectors = new java.util.HashMap<String, List<Selector>>();
-            java.util.List<Selector> mappedSelectors = new java.util.LinkedList<Selector>();
-            StringBuilder key = new StringBuilder();
+            final java.util.List<Selector> childAxes = new ArrayList<Selector>(axes.size() + 10);
+            final java.util.HashMap<String, List<Selector>> pseudoSelectors = new java.util.HashMap<String, List<Selector>>();
+            final java.util.List<Selector> mappedSelectors = new java.util.LinkedList<Selector>();
+            final StringBuilder key = new StringBuilder();
             for (int i = 0, size = axes.size(); i < size; i++) {
-                Selector sel = axes.get(i);
+                final Selector sel = axes.get(i);
                 if (sel.getAxis() == Selector.DESCENDANT_AXIS) {
                     //carry it forward to other descendants
                     childAxes.add(sel);
@@ -353,7 +353,7 @@ public class Matcher {
                     continue;
                 }
                 //Assumption: if it is a pseudo-element, it does not also have dynamic pseudo-class
-                String pseudoElement = sel.getPseudoElement();
+                final String pseudoElement = sel.getPseudoElement();
                 if (pseudoElement != null) {
                     java.util.List<Selector> l = pseudoSelectors.get(pseudoElement);
                     if (l == null) {
@@ -380,7 +380,7 @@ public class Matcher {
                     continue;
                 }
                 key.append(sel.getSelectorID()).append(":");
-                Selector chain = sel.getChainedSelector();
+                final Selector chain = sel.getChainedSelector();
                 if (chain == null) {
                     mappedSelectors.add(sel);
                 } else if (chain.getAxis() == Selector.IMMEDIATE_SIBLING_AXIS) {
@@ -402,20 +402,20 @@ public class Matcher {
             return childMapper;
         }
 
-        CascadedStyle getCascadedStyle(Object e) {
+        CascadedStyle getCascadedStyle(final Object e) {
             CascadedStyle result;
             synchronized (e) {
                 CascadedStyle cs = null;
-                org.xhtmlrenderer.css.sheet.Ruleset elementStyling = getElementStyle(e);
-                org.xhtmlrenderer.css.sheet.Ruleset nonCssStyling = getNonCssStyle(e);
-                List<PropertyDeclaration> propList = new LinkedList<PropertyDeclaration>();
+                final org.xhtmlrenderer.css.sheet.Ruleset elementStyling = getElementStyle(e);
+                final org.xhtmlrenderer.css.sheet.Ruleset nonCssStyling = getNonCssStyle(e);
+                final List<PropertyDeclaration> propList = new LinkedList<PropertyDeclaration>();
                 //specificity 0,0,0,0
                 if (nonCssStyling != null) {
                     propList.addAll(nonCssStyling.getPropertyDeclarations());
                 }
                 //these should have been returned in order of specificity
-                for (Iterator<Ruleset> i = getMatchedRulesets(mappedSelectors); i.hasNext();) {
-                    org.xhtmlrenderer.css.sheet.Ruleset rs = (org.xhtmlrenderer.css.sheet.Ruleset) i.next();
+                for (final Iterator<Ruleset> i = getMatchedRulesets(mappedSelectors); i.hasNext();) {
+                    final org.xhtmlrenderer.css.sheet.Ruleset rs = (org.xhtmlrenderer.css.sheet.Ruleset) i.next();
                     propList.addAll(rs.getPropertyDeclarations());
                 }
                 //specificity 1,0,0,0
@@ -437,18 +437,18 @@ public class Matcher {
          * May return null.
          * We assume that restyle has already been done by a getCascadedStyle if necessary.
          */
-        public CascadedStyle getPECascadedStyle(Object e, String pseudoElement) {
-            java.util.Iterator<Map.Entry<String, List<Selector>>> si = pseudoSelectors.entrySet().iterator();
+        public CascadedStyle getPECascadedStyle(final Object e, final String pseudoElement) {
+            final java.util.Iterator<Map.Entry<String, List<Selector>>> si = pseudoSelectors.entrySet().iterator();
             if (!si.hasNext()) {
                 return null;
             }
             CascadedStyle cs = null;
-            java.util.List<Selector> pe = pseudoSelectors.get(pseudoElement);
+            final java.util.List<Selector> pe = pseudoSelectors.get(pseudoElement);
             if (pe == null) return null;
 
-            java.util.List<PropertyDeclaration> propList = new java.util.LinkedList<PropertyDeclaration>();
-            for (java.util.Iterator<Ruleset> i = getSelectedRulesets(pe); i.hasNext();) {
-                org.xhtmlrenderer.css.sheet.Ruleset rs = (org.xhtmlrenderer.css.sheet.Ruleset) i.next();
+            final java.util.List<PropertyDeclaration> propList = new java.util.LinkedList<PropertyDeclaration>();
+            for (final java.util.Iterator<Ruleset> i = getSelectedRulesets(pe); i.hasNext();) {
+                final org.xhtmlrenderer.css.sheet.Ruleset rs = (org.xhtmlrenderer.css.sheet.Ruleset) i.next();
                 propList.addAll(rs.getPropertyDeclarations());
             }
             if (propList.size() == 0)

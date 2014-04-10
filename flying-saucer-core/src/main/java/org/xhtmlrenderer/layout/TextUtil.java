@@ -39,8 +39,8 @@ public class TextUtil {
      * @param style
      * @return       Returns
      */
-    public static String transformText( String text, CalculatedStyle style ) {
-        IdentValue transform = style.getIdent( CSSName.TEXT_TRANSFORM );
+    public static String transformText( String text, final CalculatedStyle style ) {
+        final IdentValue transform = style.getIdent( CSSName.TEXT_TRANSFORM );
         if ( transform == IdentValue.LOWERCASE ) {
             text = text.toLowerCase();
         }
@@ -50,7 +50,7 @@ public class TextUtil {
         if ( transform == IdentValue.CAPITALIZE ) {
             text = capitalizeWords( text );
         }
-        IdentValue fontVariant = style.getIdent( CSSName.FONT_VARIANT );
+        final IdentValue fontVariant = style.getIdent( CSSName.FONT_VARIANT );
         if ( fontVariant == IdentValue.SMALL_CAPS ) {
             text = text.toUpperCase();
         }
@@ -64,10 +64,10 @@ public class TextUtil {
      * @param style
      * @return       Returns
      */
-    public static String transformFirstLetterText( String text, CalculatedStyle style ) {
+    public static String transformFirstLetterText( String text, final CalculatedStyle style ) {
         if (text.length() > 0) {
-            IdentValue transform = style.getIdent( CSSName.TEXT_TRANSFORM );
-            IdentValue fontVariant = style.getIdent( CSSName.FONT_VARIANT );
+            final IdentValue transform = style.getIdent( CSSName.TEXT_TRANSFORM );
+            final IdentValue fontVariant = style.getIdent( CSSName.FONT_VARIANT );
             char currentChar;
             for ( int i = 0, end = text.length(); i < end; i++ ) {
                 currentChar = text.charAt(i);
@@ -93,9 +93,9 @@ public class TextUtil {
      * @param newChar Replacement character
      * @return        Returns the new text
      */
-    public static String replaceChar( String text, char newChar, int index ) {
-        int textLength = text.length();
-        StringBuilder b = new StringBuilder(textLength);
+    public static String replaceChar( final String text, final char newChar, final int index ) {
+        final int textLength = text.length();
+        final StringBuilder b = new StringBuilder(textLength);
         for (int i = 0; i < textLength; i++) {
             if (i == index) {
                 b.append(newChar);
@@ -112,7 +112,7 @@ public class TextUtil {
      * @param c     PARAM
      * @return      Returns
      */
-    public static boolean isFirstLetterSeparatorChar( char c ) {
+    public static boolean isFirstLetterSeparatorChar( final char c ) {
         switch (Character.getType(c)) {
             case Character.START_PUNCTUATION:
             case Character.END_PUNCTUATION:
@@ -133,20 +133,20 @@ public class TextUtil {
      * @param text  PARAM
      * @return      Returns
      */
-    private static String capitalizeWords( String text ) {
+    private static String capitalizeWords( final String text ) {
         //Uu.p("start = -"+text+"-");
         if ( text.length() == 0 ) {
             return text;
         }
 
-        StringBuffer sb = new StringBuffer();
+        final StringBuffer sb = new StringBuffer();
         //Uu.p("text = -" + text + "-");
 
         // do first letter
         //Uu.p("first = " + text.substring(0,1));
         boolean cap = true;
         for ( int i = 0; i < text.length(); i++ ) {
-            String ch = text.substring( i, i + 1 );
+            final String ch = text.substring( i, i + 1 );
             //Uu.p("ch = " + ch + " cap = " + cap);
 
 

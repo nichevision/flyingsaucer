@@ -34,7 +34,7 @@ public class ColumnData {
         return _span;
     }
     
-    public void setSpan(int span) {
+    public void setSpan(final int span) {
         _span = span;
     }
 }

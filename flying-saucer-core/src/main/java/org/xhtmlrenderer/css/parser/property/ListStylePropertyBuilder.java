@@ -36,7 +36,7 @@ public class ListStylePropertyBuilder implements PropertyBuilder {
     private static final CSSName[] ALL = new CSSName[] {
         CSSName.LIST_STYLE_TYPE, CSSName.LIST_STYLE_POSITION, CSSName.LIST_STYLE_IMAGE }; 
     
-    public List<PropertyDeclaration> buildDeclarations(CSSName cssName, List<PropertyValue> values, CSSOrigin origin, boolean important, boolean inheritAllowed) {
+    public List<PropertyDeclaration> buildDeclarations(final CSSName cssName, final List<PropertyValue> values, final CSSOrigin origin, final boolean important, final boolean inheritAllowed) {
         List<PropertyDeclaration> result = checkInheritAll(ALL, values, origin, important, inheritAllowed);
         if (result != null) {
             return result;
@@ -46,11 +46,11 @@ public class ListStylePropertyBuilder implements PropertyBuilder {
         PropertyDeclaration listStylePosition = null;
         PropertyDeclaration listStyleImage = null;
         
-        for (PropertyValue value : values) {
+        for (final PropertyValue value : values) {
             checkInheritAllowed(value, false);
-            CSSPrimitiveUnit type = value.getPrimitiveTypeN();
+            final CSSPrimitiveUnit type = value.getPrimitiveTypeN();
             if (type == CSSPrimitiveUnit.CSS_IDENT) {
-                IdentValue ident = checkIdent(CSSName.LIST_STYLE_SHORTHAND, value);
+                final IdentValue ident = checkIdent(CSSName.LIST_STYLE_SHORTHAND, value);
                 
                 if (ident == IdentValue.NONE) {
                     if (listStyleType == null) {

@@ -26,5 +26,5 @@ public class DefaultFormSubmissionListener implements FormSubmissionListener {
     /**
      * {@inheritDoc}
      */
-    public void submit(String query) { }
+    public void submit(final String query) { }
 }

@@ -37,10 +37,10 @@ import org.xhtmlrenderer.util.XRLog;
 
 public class DataURLConnection extends URLConnection {
 
-    private Map<String, String> _headers = new HashMap<String, String>();
+    private final Map<String, String> _headers = new HashMap<String, String>();
     private byte [] _data;
 
-    DataURLConnection(URL u) {
+    DataURLConnection(final URL u) {
         super(u);
     }
 
@@ -49,7 +49,7 @@ public class DataURLConnection extends URLConnection {
     }
 
     public String getContentType() {
-        String type = _headers.get("Content-Type");
+        final String type = _headers.get("Content-Type");
         
         if (type == null) {
             return "Content-Type: text/plain; charset=US-ASCII";
@@ -75,24 +75,24 @@ public class DataURLConnection extends URLConnection {
     }
 
     protected void parseURL() throws UnsupportedEncodingException {
-        String sub = getURL().getPath();
+        final String sub = getURL().getPath();
 
-        int comma = sub.indexOf(',');
+        final int comma = sub.indexOf(',');
         
         if (comma < 0) {
             throw new RuntimeException("Improperly formatted data URL");
         }
         
-        String meta = sub.substring(0, comma);
-        String data = sub.substring(comma + 1);
+        final String meta = sub.substring(0, comma);
+        final String data = sub.substring(comma + 1);
 
         boolean isBase64 = false;
-        Map<String, String> properties = new HashMap<String, String>();
+        final Map<String, String> properties = new HashMap<String, String>();
         
         properties.put("charset", "US-ASCII");
         
         if (meta.length() > 0) {
-            String [] parts = meta.split(";");
+            final String [] parts = meta.split(";");
 
             if (parts.length > 0) {
                 int index = 0;
@@ -105,7 +105,7 @@ public class DataURLConnection extends URLConnection {
                 
                 for (; index < parts.length; index++) {
                     if (parts[index].indexOf("=") >= 0) {
-                        String [] nameValuePair = parts[index].split("=");
+                        final String [] nameValuePair = parts[index].split("=");
                         
                         if (nameValuePair.length > 1) {
                             _headers.put(nameValuePair[0], nameValuePair[1]);
@@ -119,7 +119,7 @@ public class DataURLConnection extends URLConnection {
             }
         }
         
-        String charset = properties.get("charset");
+        final String charset = properties.get("charset");
 
         // Make sure we have a supported charset
         if (!Charset.isSupported(charset)) {
@@ -136,7 +136,7 @@ public class DataURLConnection extends URLConnection {
 
     private static class URLByteDecoder 
     {
-        public static byte [] decode(String s) 
+        public static byte [] decode(final String s) 
         {
         	try {
 				return URLCodec.decodeUrl(s.getBytes("ASCII"));
@@ -150,7 +150,7 @@ public class DataURLConnection extends URLConnection {
 
     private static class Base64 
     {
-        public static byte [] decode(String s) 
+        public static byte [] decode(final String s) 
         {
         	return s == null ? new byte[0] : org.apache.commons.codec.binary.Base64.decodeBase64(s);
         }

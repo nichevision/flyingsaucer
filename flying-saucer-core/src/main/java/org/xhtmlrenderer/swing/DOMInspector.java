@@ -102,7 +102,7 @@ public class DOMInspector extends JPanel {
      *
      * @param doc PARAM
      */
-    public DOMInspector(Document doc) {
+    public DOMInspector(final Document doc) {
         this(doc, null, null);
     }
 
@@ -113,7 +113,7 @@ public class DOMInspector extends JPanel {
      * @param context PARAM
      * @param sr      PARAM
      */
-    public DOMInspector(Document doc, SharedContext context, StyleReference sr) {
+    public DOMInspector(final Document doc, final SharedContext context, final StyleReference sr) {
         super();
 
         this.setLayout(new java.awt.BorderLayout());
@@ -142,7 +142,7 @@ public class DOMInspector extends JPanel {
         setForDocument(doc, context, sr);
 
         close.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(final ActionEvent evt) {
                 getFrame(DOMInspector.this).setVisible(false);
             }
         });
@@ -153,7 +153,7 @@ public class DOMInspector extends JPanel {
      *
      * @param g PARAM
      */
-    public void paintComponent(Graphics g) {
+    public void paintComponent(final Graphics g) {
 
         super.paintComponent(g);
 
@@ -166,7 +166,7 @@ public class DOMInspector extends JPanel {
      *
      * @param doc The new forDocument value
      */
-    public void setForDocument(Document doc) {
+    public void setForDocument(final Document doc) {
         setForDocument(doc, null, null);
     }
 
@@ -177,7 +177,7 @@ public class DOMInspector extends JPanel {
      * @param context The new forDocument value
      * @param sr      The new forDocument value
      */
-    public void setForDocument(Document doc, SharedContext context, StyleReference sr) {
+    public void setForDocument(final Document doc, final SharedContext context, final StyleReference sr) {
         this.doc = doc;
         this.styleReference = sr;
         this.context = context;
@@ -190,7 +190,7 @@ public class DOMInspector extends JPanel {
      * @param comp PARAM
      * @return The frame value
      */
-    public JFrame getFrame(Component comp) {
+    public JFrame getFrame(final Component comp) {
         if (comp instanceof JFrame) {
             return (JFrame) comp;
         }
@@ -202,7 +202,7 @@ public class DOMInspector extends JPanel {
      */
     private void initForCurrentDocument() {
         // tree stuff
-        TreeModel model = new DOMTreeModel(doc);
+        final TreeModel model = new DOMTreeModel(doc);
         tree.setModel(model);
         if (!(tree.getCellRenderer() instanceof DOMTreeCellRenderer)) {
             tree.setCellRenderer(new DOMTreeCellRenderer());
@@ -241,22 +241,22 @@ class ElementPropertiesPanel extends JPanel {
     /**
      * Description of the Field
      */
-    private StyleReference _sr;
+    private final StyleReference _sr;
     /**
      * Description of the Field
      */
-    private JTable _properties;
+    private final JTable _properties;
     /**
      * Description of the Field
      */
-    private TableModel _defaultTableModel;
+    private final TableModel _defaultTableModel;
 
     /**
      * Constructor for the ElementPropertiesPanel object
      *
      * @param sr PARAM
      */
-    ElementPropertiesPanel(StyleReference sr) {
+    ElementPropertiesPanel(final StyleReference sr) {
         super();
         //this._context = context;
         this._sr = sr;
@@ -273,14 +273,14 @@ class ElementPropertiesPanel extends JPanel {
      *
      * @param node The new forElement value
      */
-    public void setForElement(Node node) {
+    public void setForElement(final Node node) {
         try {
             _properties.setModel(tableModel(node));
-            TableColumnModel model = _properties.getColumnModel();
+            final TableColumnModel model = _properties.getColumnModel();
             if (model.getColumnCount() > 0) {
                 model.getColumn(0).sizeWidthToFit();
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -292,12 +292,12 @@ class ElementPropertiesPanel extends JPanel {
      * @return Returns
      * @throws Exception Throws
      */
-    private TableModel tableModel(Node node) {
+    private TableModel tableModel(final Node node) {
         if (!(node instanceof Element)) {
             Toolkit.getDefaultToolkit().beep();
             return _defaultTableModel;
         }
-        Map<String, PropertyValue> props = _sr.getCascadedPropertiesMap((Element) node);
+        final Map<String, PropertyValue> props = _sr.getCascadedPropertiesMap((Element) node);
         return new PropertiesTableModel(props);
     }
 
@@ -336,17 +336,17 @@ class ElementPropertiesPanel extends JPanel {
          * @param col PARAM
          * @return The cellRenderer value
          */
-        public TableCellRenderer getCellRenderer(int row, int col) {
-            JLabel label = (JLabel) super.getCellRenderer(row, col);
+        public TableCellRenderer getCellRenderer(final int row, final int col) {
+            final JLabel label = (JLabel) super.getCellRenderer(row, col);
             label.setBackground(Color.white);
             label.setFont(defaultFont);
             if (col == 0) {
                 // BUG: not working?
                 label.setFont(propLabelFont);
             } else if (col == 2) {
-                PropertiesTableModel pmodel = (PropertiesTableModel) this.getModel();
-                Map.Entry<String, PropertyValue> me = (Map.Entry<String, PropertyValue>) pmodel._properties.entrySet().toArray()[row];
-                PropertyValue cpv = me.getValue();
+                final PropertiesTableModel pmodel = (PropertiesTableModel) this.getModel();
+                final Map.Entry<String, PropertyValue> me = (Map.Entry<String, PropertyValue>) pmodel._properties.entrySet().toArray()[row];
+                final PropertyValue cpv = me.getValue();
                 if (cpv.getCssText().startsWith("rgb")) {
                     label.setBackground(org.xhtmlrenderer.css.util.ConversionUtil.rgbToColor(cpv.getRGBColorValue()));
                 }
@@ -379,7 +379,7 @@ class ElementPropertiesPanel extends JPanel {
          *
          * @param cssProperties PARAM
          */
-        PropertiesTableModel(Map<String, PropertyValue> cssProperties) {
+        PropertiesTableModel(final Map<String, PropertyValue> cssProperties) {
             _properties = cssProperties;
         }
 
@@ -389,7 +389,7 @@ class ElementPropertiesPanel extends JPanel {
          * @param col PARAM
          * @return The columnName value
          */
-        public String getColumnName(int col) {
+        public String getColumnName(final int col) {
             return _colNames[col];
         }
 
@@ -418,9 +418,9 @@ class ElementPropertiesPanel extends JPanel {
          * @param col PARAM
          * @return The valueAt value
          */
-        public Object getValueAt(int row, int col) {
-            Map.Entry<String, PropertyValue> me = (Map.Entry<String, PropertyValue>) _properties.entrySet().toArray()[row];
-            PropertyValue cpv = me.getValue();
+        public Object getValueAt(final int row, final int col) {
+            final Map.Entry<String, PropertyValue> me = (Map.Entry<String, PropertyValue>) _properties.entrySet().toArray()[row];
+            final PropertyValue cpv = me.getValue();
 
             Object val = null;
             switch (col) {
@@ -455,7 +455,7 @@ class ElementPropertiesPanel extends JPanel {
          * @param col PARAM
          * @return The cellEditable value
          */
-        public boolean isCellEditable(int row, int col) {
+        public boolean isCellEditable(final int row, final int col) {
             return false;
         }
     }
@@ -473,13 +473,13 @@ class DOMSelectionListener implements TreeSelectionListener {
     /**
      * Description of the Field
      */
-    private JTree _tree;
+    private final JTree _tree;
     /** Description of the Field */
     //private StyleReference _sr;
     /**
      * Description of the Field
      */
-    private ElementPropertiesPanel _elemPropPanel;
+    private final ElementPropertiesPanel _elemPropPanel;
 
     /**
      * Constructor for the DOMSelectionListener object
@@ -488,7 +488,7 @@ class DOMSelectionListener implements TreeSelectionListener {
      * @param panel PARAM
      */
     //DOMSelectionListener( JTree tree, StyleReference sr, ElementPropertiesPanel panel ) {
-    DOMSelectionListener(JTree tree, ElementPropertiesPanel panel) {
+    DOMSelectionListener(final JTree tree, final ElementPropertiesPanel panel) {
         _tree = tree;
         //_sr = sr;
         _elemPropPanel = panel;
@@ -499,8 +499,8 @@ class DOMSelectionListener implements TreeSelectionListener {
      *
      * @param e PARAM
      */
-    public void valueChanged(TreeSelectionEvent e) {
-        Node node = (Node) _tree.getLastSelectedPathComponent();
+    public void valueChanged(final TreeSelectionEvent e) {
+        final Node node = (Node) _tree.getLastSelectedPathComponent();
 
         if (node == null) {
             return;
@@ -544,15 +544,15 @@ class DOMTreeModel implements TreeModel {
      *
      * @param doc PARAM
      */
-    public DOMTreeModel(Document doc) {
+    public DOMTreeModel(final Document doc) {
         this.displayableNodes = new HashMap<>();
         this.doc = doc;
         setRoot("body");
     }
 
-    private void setRoot(String rootNodeName) {
-        Node tempRoot = doc;
-        for (Node node : tempRoot.childNodes())
+    private void setRoot(final String rootNodeName) {
+        final Node tempRoot = doc;
+        for (final Node node : tempRoot.childNodes())
         {
             if (node.nodeName().toLowerCase(Locale.US).equals(rootNodeName))
             {
@@ -571,7 +571,7 @@ class DOMTreeModel implements TreeModel {
      *
      * @param l Contains the TreeModelListener for TreeModelEvent data.
      */
-    public void addTreeModelListener(TreeModelListener l) {
+    public void addTreeModelListener(final TreeModelListener l) {
 
         this.listeners.add(l);
 
@@ -589,7 +589,7 @@ class DOMTreeModel implements TreeModel {
      *
      * @param l Contains the TreeModelListener for TreeModelEvent data.
      */
-    public void removeTreeModelListener(TreeModelListener l) {
+    public void removeTreeModelListener(final TreeModelListener l) {
 
         this.listeners.remove(l);
 
@@ -604,7 +604,7 @@ class DOMTreeModel implements TreeModel {
      * @param path     PARAM
      * @param newValue PARAM
      */
-    public void valueForPathChanged(TreePath path, Object newValue) {
+    public void valueForPathChanged(final TreePath path, final Object newValue) {
 
         // no-op
 
@@ -619,9 +619,9 @@ class DOMTreeModel implements TreeModel {
      * @param index  PARAM
      * @return The child value
      */
-    public Object getChild(Object parent, int index) {
+    public Object getChild(final Object parent, final int index) {
 
-        Node node = (Node) parent;
+        final Node node = (Node) parent;
 
         List<Node> children = this.displayableNodes.get(parent);
         if (children == null) {
@@ -640,9 +640,9 @@ class DOMTreeModel implements TreeModel {
      * @param parent PARAM
      * @return The childCount value
      */
-    public int getChildCount(Object parent) {
+    public int getChildCount(final Object parent) {
 
-        Node node = (Node) parent;
+        final Node node = (Node) parent;
         List<Node> children = this.displayableNodes.get(parent);
         if (children == null) {
             children = addDisplayable(node);
@@ -661,9 +661,9 @@ class DOMTreeModel implements TreeModel {
      * @param child  PARAM
      * @return The indexOfChild value
      */
-    public int getIndexOfChild(Object parent, Object child) {
+    public int getIndexOfChild(final Object parent, final Object child) {
 
-        Node node = (Node) parent;
+        final Node node = (Node) parent;
         List<Node> children = this.displayableNodes.get(parent);
         if (children == null) {
             children = addDisplayable(node);
@@ -697,9 +697,9 @@ class DOMTreeModel implements TreeModel {
      * @param nd PARAM
      * @return The leaf value
      */
-    public boolean isLeaf(Object nd) {
+    public boolean isLeaf(final Object nd) {
 
-        Node node = (Node) nd;
+        final Node node = (Node) nd;
 
         return (node.childNodeSize() <= 0);
     }
@@ -711,12 +711,12 @@ class DOMTreeModel implements TreeModel {
      * @param parent The feature to be added to the Displayable attribute
      * @return Returns
      */
-    private List<Node> addDisplayable(Node parent) {
+    private List<Node> addDisplayable(final Node parent) {
         List<Node> children = this.displayableNodes.get(parent);
         if (children == null) {
             children = new ArrayList<Node>();
             this.displayableNodes.put(parent, children);
-            for (Node child : parent.childNodes())
+            for (final Node child : parent.childNodes())
             {
             	if (child instanceof Element ||
             		child instanceof Comment ||
@@ -757,16 +757,16 @@ class DOMTreeCellRenderer extends DefaultTreeCellRenderer {
      * @param hasFocus PARAM
      * @return The treeCellRendererComponent value
      */
-    public Component getTreeCellRendererComponent(JTree tree, Object value,
-                                                  boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    public Component getTreeCellRendererComponent(final JTree tree, Object value,
+                                                  final boolean selected, final boolean expanded, final boolean leaf, final int row, final boolean hasFocus) {
 
-        Node node = (Node) value;
+        final Node node = (Node) value;
 
         if (node instanceof Element) {
 
             String cls = "";
             if (node.attributes().size() > 0) {
-                String cn = node.attr("class");
+                final String cn = node.attr("class");
                 if (cn != null) {
                     cls = " class='" + cn + "'";
                 }
@@ -788,7 +788,7 @@ class DOMTreeCellRenderer extends DefaultTreeCellRenderer {
 
         }
 
-        DefaultTreeCellRenderer tcr = (DefaultTreeCellRenderer) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        final DefaultTreeCellRenderer tcr = (DefaultTreeCellRenderer) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         tcr.setOpenIcon(null);
         tcr.setClosedIcon(null);
 

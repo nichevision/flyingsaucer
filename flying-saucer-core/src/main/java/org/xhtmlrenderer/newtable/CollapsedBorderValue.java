@@ -35,7 +35,7 @@ public class CollapsedBorderValue {
     private FSColor _color;
     private int _precedence;
     
-    public CollapsedBorderValue(IdentValue style, int width, FSColor color, int precedence) {
+    public CollapsedBorderValue(final IdentValue style, final int width, final FSColor color, final int precedence) {
         _style = style;
         _width = width;
         _color = color;
@@ -46,7 +46,7 @@ public class CollapsedBorderValue {
         return _color;
     }
 
-    public void setColor(FSColor color) {
+    public void setColor(final FSColor color) {
         _color = color;
     }
 
@@ -54,7 +54,7 @@ public class CollapsedBorderValue {
         return _style;
     }
 
-    public void setStyle(IdentValue style) {
+    public void setStyle(final IdentValue style) {
         _style = style;
     }
 
@@ -62,7 +62,7 @@ public class CollapsedBorderValue {
         return _width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(final int width) {
         _width = width;
     }
 
@@ -70,7 +70,7 @@ public class CollapsedBorderValue {
         return _precedence;
     }
 
-    public void setPrecedence(int precedence) {
+    public void setPrecedence(final int precedence) {
         _precedence = precedence;
     }
     
@@ -86,22 +86,22 @@ public class CollapsedBorderValue {
         return _style == IdentValue.HIDDEN;
     }
     
-    public static CollapsedBorderValue borderLeft(BorderPropertySet border, int precedence) {
+    public static CollapsedBorderValue borderLeft(final BorderPropertySet border, final int precedence) {
         return new CollapsedBorderValue(
                 border.leftStyle(), (int)border.left(), border.leftColor(), precedence);
     }
     
-    public static CollapsedBorderValue borderRight(BorderPropertySet border, int precedence) {
+    public static CollapsedBorderValue borderRight(final BorderPropertySet border, final int precedence) {
         return new CollapsedBorderValue(
                 border.rightStyle(), (int)border.right(), border.rightColor(), precedence);
     }
     
-    public static CollapsedBorderValue borderTop(BorderPropertySet border, int precedence) {
+    public static CollapsedBorderValue borderTop(final BorderPropertySet border, final int precedence) {
         return new CollapsedBorderValue(
                 border.topStyle(), (int)border.top(), border.topColor(), precedence);
     }
 
-    public static CollapsedBorderValue borderBottom(BorderPropertySet border, int precedence) {
+    public static CollapsedBorderValue borderBottom(final BorderPropertySet border, final int precedence) {
         return new CollapsedBorderValue(
                 border.bottomStyle(), (int)border.bottom(), border.bottomColor(), precedence);
     }

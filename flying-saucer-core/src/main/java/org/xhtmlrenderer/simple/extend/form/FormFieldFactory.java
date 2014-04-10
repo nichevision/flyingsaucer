@@ -28,10 +28,10 @@ public class FormFieldFactory {
     private FormFieldFactory() {
     }
 
-    public static FormField create(XhtmlForm form, LayoutContext context, BlockBox box) {
+    public static FormField create(final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         String typeKey = null;
 
-        Element e = box.getElement();
+        final Element e = box.getElement();
 
         if (e.nodeName().equals("input")) {
             typeKey = e.attr("type");  

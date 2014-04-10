@@ -41,22 +41,22 @@ public class BackgroundPropertyBuilder implements PropertyBuilder {
         CSSName.BACKGROUND_COLOR, CSSName.BACKGROUND_IMAGE, CSSName.BACKGROUND_REPEAT,
         CSSName.BACKGROUND_ATTACHMENT, CSSName.BACKGROUND_POSITION };
     
-    private boolean isAppliesToBackgroundPosition(PropertyValue value) {
-    	CSSPrimitiveUnit type = value.getPrimitiveTypeN();
+    private boolean isAppliesToBackgroundPosition(final PropertyValue value) {
+    	final CSSPrimitiveUnit type = value.getPrimitiveTypeN();
         
         if (isLength(value) || type == CSSPrimitiveUnit.CSS_PERCENTAGE) {
             return true;
         } else if (type != CSSPrimitiveUnit.CSS_IDENT) {
             return false;
         } else {
-            IdentValue ident = IdentValue.fsValueOf(value.getStringValue());
+            final IdentValue ident = IdentValue.fsValueOf(value.getStringValue());
             return ident != null && 
                 PrimitivePropertyBuilders.BACKGROUND_POSITIONS.contains(ident);
         }
     }
 
     public List<PropertyDeclaration> buildDeclarations(
-            CSSName cssName, List<PropertyValue> values, CSSOrigin origin, boolean important, boolean inheritAllowed) {
+            final CSSName cssName, final List<PropertyValue> values, final CSSOrigin origin, final boolean important, final boolean inheritAllowed) {
         List<PropertyDeclaration> result = checkInheritAll(ALL, values, origin, important, inheritAllowed);
         if (result != null) {
             return result;
@@ -69,13 +69,13 @@ public class BackgroundPropertyBuilder implements PropertyBuilder {
         PropertyDeclaration backgroundPosition = null;
         
         for (int i = 0; i < values.size(); i++) {
-            PropertyValue value = (PropertyValue)values.get(i);
+            final PropertyValue value = (PropertyValue)values.get(i);
             checkInheritAllowed(value, false);
             
             boolean processingBackgroundPosition = false;
-            CSSPrimitiveUnit type = value.getPrimitiveTypeN();
+            final CSSPrimitiveUnit type = value.getPrimitiveTypeN();
             if (type == CSSPrimitiveUnit.CSS_IDENT) {
-                FSRGBColor color = Conversions.getColor(value.getStringValue());
+                final FSRGBColor color = Conversions.getColor(value.getStringValue());
                 if (color != null) {
                     if (backgroundColor != null) {
                         throw new CSSParseException("A background-color value cannot be set twice", -1);
@@ -88,7 +88,7 @@ public class BackgroundPropertyBuilder implements PropertyBuilder {
                     continue;
                 }
                 
-                IdentValue ident = checkIdent(CSSName.BACKGROUND_SHORTHAND, value);
+                final IdentValue ident = checkIdent(CSSName.BACKGROUND_SHORTHAND, value);
                 
                 if (PrimitivePropertyBuilders.BACKGROUND_REPEATS.contains(ident)) {
                     if (backgroundRepeat != null) {
@@ -150,17 +150,17 @@ public class BackgroundPropertyBuilder implements PropertyBuilder {
                     throw new CSSParseException("A background-position value cannot be set twice", -1);
                 }
                 
-                List<PropertyValue> v = new ArrayList<PropertyValue>(2);
+                final List<PropertyValue> v = new ArrayList<PropertyValue>(2);
                 v.add(value);
                 if (i < values.size() - 1) {
-                    PropertyValue next = (PropertyValue)values.get(i+1);
+                    final PropertyValue next = (PropertyValue)values.get(i+1);
                     if (isAppliesToBackgroundPosition(next)) {
                         v.add(next);
                         i++;
                     }
                 }
                 
-                PropertyBuilder builder = CSSName.getPropertyBuilder(CSSName.BACKGROUND_POSITION);
+                final PropertyBuilder builder = CSSName.getPropertyBuilder(CSSName.BACKGROUND_POSITION);
                 backgroundPosition = (PropertyDeclaration)builder.buildDeclarations(
                         CSSName.BACKGROUND_POSITION, v, origin, important, true).get(0);
             }
@@ -188,7 +188,7 @@ public class BackgroundPropertyBuilder implements PropertyBuilder {
         }
         
         if (backgroundPosition == null) {
-            List<PropertyValue> v = new ArrayList<PropertyValue>(2);
+            final List<PropertyValue> v = new ArrayList<PropertyValue>(2);
             v.add(new PropertyValueImp(CSSPrimitiveUnit.CSS_PERCENTAGE, 0.0f, "0%"));
             v.add(new PropertyValueImp(CSSPrimitiveUnit.CSS_PERCENTAGE, 0.0f, "0%"));
             backgroundPosition = new PropertyDeclaration(

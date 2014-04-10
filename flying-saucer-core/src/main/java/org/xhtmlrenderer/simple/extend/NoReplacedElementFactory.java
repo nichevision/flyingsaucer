@@ -9,16 +9,16 @@ import org.xhtmlrenderer.render.BlockBox;
 
 public class NoReplacedElementFactory implements ReplacedElementFactory {
 
-    public ReplacedElement createReplacedElement(LayoutContext c, BlockBox box,
-            UserAgentCallback uac, int cssWidth, int cssHeight) {
+    public ReplacedElement createReplacedElement(final LayoutContext c, final BlockBox box,
+            final UserAgentCallback uac, final int cssWidth, final int cssHeight) {
         return null;
     }
 
-    public void remove(Element e) {
+    public void remove(final Element e) {
 
     }
 
-    public void setFormSubmissionListener(FormSubmissionListener listener) {
+    public void setFormSubmissionListener(final FormSubmissionListener listener) {
         //TODO
     }
 

@@ -22,11 +22,11 @@ package org.xhtmlrenderer.render;
 import org.xhtmlrenderer.css.constants.IdentValue;
 
 public class TextDecoration {
-    private IdentValue _identValue;
+    private final IdentValue _identValue;
     private int _offset;
     private int _thickness;
     
-    public TextDecoration(IdentValue identValue) {
+    public TextDecoration(final IdentValue identValue) {
         _identValue = identValue;
     }
     
@@ -34,7 +34,7 @@ public class TextDecoration {
         return _offset;
     }
     
-    public void setOffset(int offset) {
+    public void setOffset(final int offset) {
         _offset = offset;
     }
     
@@ -42,7 +42,7 @@ public class TextDecoration {
         return _thickness;
     }
     
-    public void setThickness(int thickness) {
+    public void setThickness(final int thickness) {
         if (thickness == 0) {
             _thickness = 1;
         } else {

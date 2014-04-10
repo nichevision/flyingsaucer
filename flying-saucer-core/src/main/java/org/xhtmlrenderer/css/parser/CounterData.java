@@ -23,7 +23,7 @@ public class CounterData {
     private final String _name;
     private final int _value;
     
-    public CounterData(String name, int value) {
+    public CounterData(final String name, final int value) {
         _name = name;
         _value = value;
     }

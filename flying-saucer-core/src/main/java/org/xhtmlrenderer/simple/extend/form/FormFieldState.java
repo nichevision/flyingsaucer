@@ -46,26 +46,26 @@ public class FormFieldState {
         return ArrayUtil.cloneOrEmpty(_selected);
     }
     
-    public static FormFieldState fromString(String s) {
-        FormFieldState stateObject = new FormFieldState();
+    public static FormFieldState fromString(final String s) {
+        final FormFieldState stateObject = new FormFieldState();
         
         stateObject._value = s;
 
         return stateObject;
     }
     
-    public static FormFieldState fromBoolean(boolean b) {
-        FormFieldState stateObject = new FormFieldState();
+    public static FormFieldState fromBoolean(final boolean b) {
+        final FormFieldState stateObject = new FormFieldState();
         
         stateObject._checked = b;
         
         return stateObject;
     }
     
-    public static FormFieldState fromList(List<Integer> list) {
-        FormFieldState stateObject = new FormFieldState();
+    public static FormFieldState fromList(final List<Integer> list) {
+        final FormFieldState stateObject = new FormFieldState();
         
-        int [] indices = new int [list.size()];
+        final int [] indices = new int [list.size()];
         
         for (int i = 0; i < list.size(); i++) {
             indices[i] = ((Integer) list.get(i)).intValue();

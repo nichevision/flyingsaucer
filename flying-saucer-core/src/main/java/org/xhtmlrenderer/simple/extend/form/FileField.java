@@ -40,12 +40,12 @@ class FileField extends InputField implements ActionListener {
     private JTextField _pathTextField;
     private JButton _browseButton;
 
-    public FileField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public FileField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
 
     public JComponent create() {
-        JPanel panel = new JPanel(new GridBagLayout());
+        final JPanel panel = new JPanel(new GridBagLayout());
         
         panel.setOpaque(false);
 
@@ -55,7 +55,7 @@ class FileField extends InputField implements ActionListener {
         _browseButton = new JButton("Browse...");
         _browseButton.addActionListener(this);
 
-        GridBagConstraints pathConstraints = new GridBagConstraints();
+        final GridBagConstraints pathConstraints = new GridBagConstraints();
         pathConstraints.fill = GridBagConstraints.HORIZONTAL;
         pathConstraints.gridx = 0;
         pathConstraints.gridy = 0;
@@ -64,7 +64,7 @@ class FileField extends InputField implements ActionListener {
         pathConstraints.insets = new Insets(0, 0, 0, 0);
         panel.add(_pathTextField, pathConstraints);
 
-        GridBagConstraints browseConstraints = new GridBagConstraints();
+        final GridBagConstraints browseConstraints = new GridBagConstraints();
         browseConstraints.fill = GridBagConstraints.HORIZONTAL;
         browseConstraints.gridx = 1;
         browseConstraints.gridy = 0;
@@ -90,12 +90,12 @@ class FileField extends InputField implements ActionListener {
         };
     }
     
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
         if (e.getSource() == _browseButton) {
-            JFileChooser chooser = new JFileChooser();
+            final JFileChooser chooser = new JFileChooser();
             
             // TODO: We should probably use the BasicPanel as the parent
-            int result = chooser.showOpenDialog(_browseButton);
+            final int result = chooser.showOpenDialog(_browseButton);
             
             if (result == JFileChooser.APPROVE_OPTION) {
                 _pathTextField.setText(chooser.getSelectedFile().getAbsolutePath());

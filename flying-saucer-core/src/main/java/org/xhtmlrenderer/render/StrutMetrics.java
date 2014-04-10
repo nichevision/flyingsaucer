@@ -24,7 +24,7 @@ public class StrutMetrics {
     private float _ascent;
     private float _descent;
     
-    public StrutMetrics(float ascent, int baseline, float descent) {
+    public StrutMetrics(final float ascent, final int baseline, final float descent) {
         _ascent = ascent;
         _baseline = baseline;
         _descent = descent;
@@ -37,7 +37,7 @@ public class StrutMetrics {
         return _ascent;
     }
     
-    public void setAscent(float ascent) {
+    public void setAscent(final float ascent) {
         _ascent = ascent;
     }
     
@@ -45,7 +45,7 @@ public class StrutMetrics {
         return _baseline;
     }
     
-    public void setBaseline(int baseline) {
+    public void setBaseline(final int baseline) {
         _baseline = baseline;
     }
     
@@ -53,7 +53,7 @@ public class StrutMetrics {
         return _descent;
     }
     
-    public void setDescent(float descent) {
+    public void setDescent(final float descent) {
         _descent = descent;
     }
 }

@@ -55,7 +55,7 @@ public class StyleReference {
     private SharedContext _context;
     private NamespaceHandler _nsh;
     private Document _doc;
-    private StylesheetFactoryImpl _stylesheetFactory;
+    private final StylesheetFactoryImpl _stylesheetFactory;
 
     /**
      * Instance of our element-styles matching class. Will be null if new rules
@@ -66,7 +66,7 @@ public class StyleReference {
     /** */
     private UserAgentCallback _uac;
     
-    public StyleReference(UserAgentCallback userAgent) {
+    public StyleReference(final UserAgentCallback userAgent) {
         _uac = userAgent;
         _stylesheetFactory = new StylesheetFactoryImpl(userAgent);
     }
@@ -74,13 +74,13 @@ public class StyleReference {
     /**
      * Sets the documentContext attribute of the StyleReference object
      */
-    public void setDocumentContext(SharedContext context, NamespaceHandler nsh, Document doc, UserInterface ui) {
+    public void setDocumentContext(final SharedContext context, final NamespaceHandler nsh, final Document doc, final UserInterface ui) {
         _context = context;
         _nsh = nsh;
         _doc = doc;
-        AttributeResolver attRes = new StandardAttributeResolver(_nsh, _uac, ui);
+        final AttributeResolver attRes = new StandardAttributeResolver(_nsh, _uac, ui);
 
-        List<StylesheetInfo> infos = getStylesheets();
+        final List<StylesheetInfo> infos = getStylesheets();
         XRLog.match("media = " + _context.getMedia());
         _matcher = new org.xhtmlrenderer.css.newmatch.Matcher(
                 new DOMTreeResolver(), 
@@ -90,9 +90,9 @@ public class StyleReference {
                 _context.getMedia());
     }
     
-    private List<Stylesheet> readAndParseAll(List<StylesheetInfo> infos, String medium) {
-        List<Stylesheet> result = new ArrayList<Stylesheet>(infos.size() + 15);
-        for (StylesheetInfo info : infos) {
+    private List<Stylesheet> readAndParseAll(final List<StylesheetInfo> infos, final String medium) {
+        final List<Stylesheet> result = new ArrayList<Stylesheet>(infos.size() + 15);
+        for (final StylesheetInfo info : infos) {
             if (info.appliesToMedia(medium)) {
                 Stylesheet sheet = info.getStylesheet();
                 
@@ -111,7 +111,7 @@ public class StyleReference {
         return result;
     }
     
-    public boolean isHoverStyled(Element e) {
+    public boolean isHoverStyled(final Element e) {
         return _matcher.isHoverStyled(e);
     }
 
@@ -127,14 +127,14 @@ public class StyleReference {
      * @param e The DOM Element for which to find properties
      * @return Map of CSS property names to CSSValue instance assigned to it.
      */
-    public java.util.Map<String, PropertyValue> getCascadedPropertiesMap(Element e) {
-        CascadedStyle cs = _matcher.getCascadedStyle(e, false);//this is only for debug, I think
-        java.util.LinkedHashMap<String, PropertyValue> props = new java.util.LinkedHashMap<>();
-        for (java.util.Iterator<PropertyDeclaration> i = cs.getCascadedPropertyDeclarations(); i.hasNext();) {
-            PropertyDeclaration pd = i.next();
+    public java.util.Map<String, PropertyValue> getCascadedPropertiesMap(final Element e) {
+        final CascadedStyle cs = _matcher.getCascadedStyle(e, false);//this is only for debug, I think
+        final java.util.LinkedHashMap<String, PropertyValue> props = new java.util.LinkedHashMap<>();
+        for (final java.util.Iterator<PropertyDeclaration> i = cs.getCascadedPropertyDeclarations(); i.hasNext();) {
+            final PropertyDeclaration pd = i.next();
 
-            String propName = pd.getPropertyName();
-            CSSName cssName = CSSName.getByPropertyName(propName);
+            final String propName = pd.getPropertyName();
+            final CSSName cssName = CSSName.getByPropertyName(propName);
             props.put(propName, cs.propertyByName(cssName).getValue());
         }
         return props;
@@ -143,7 +143,7 @@ public class StyleReference {
     /**
      * Gets the pseudoElementStyle attribute of the StyleReference object
      */
-    public CascadedStyle getPseudoElementStyle(Node node, String pseudoElement) {
+    public CascadedStyle getPseudoElementStyle(final Node node, final String pseudoElement) {
         Element e = null;
         if (node instanceof Element) {
             e = (Element) node;
@@ -157,12 +157,12 @@ public class StyleReference {
      * Gets the CascadedStyle for an element. This must then be converted in the
      * current context to a CalculatedStyle (use getDerivedStyle)
      */
-    public CascadedStyle getCascadedStyle(Element e, boolean restyle) {
+    public CascadedStyle getCascadedStyle(final Element e, final boolean restyle) {
         if (e == null) return CascadedStyle.emptyCascadedStyle;
         return _matcher.getCascadedStyle(e, restyle);
     }
     
-    public PageInfo getPageStyle(String pageName, String pseudoPage) {
+    public PageInfo getPageStyle(final String pageName, final String pseudoPage) {
         return _matcher.getPageCascadedStyle(pageName, pseudoPage);
     }
 
@@ -170,8 +170,8 @@ public class StyleReference {
      * Flushes any stylesheet associated with this stylereference (based on the user agent callback) that are in cache.
      */
     public void flushStyleSheets() {
-        String uri = _uac.getBaseURL();
-        StylesheetInfo info = new StylesheetInfo();
+        final String uri = _uac.getBaseURL();
+        final StylesheetInfo info = new StylesheetInfo();
         info.setUri(uri);
         info.setOrigin(StylesheetInfo.CSSOrigin.AUTHOR);
         if (_stylesheetFactory.getUac().getStylesheetCache().containsStylesheet(uri)) {
@@ -195,13 +195,13 @@ public class StyleReference {
      * @return The stylesheets value
      */
     private List<StylesheetInfo> getStylesheets() {
-        List<StylesheetInfo> infos = new LinkedList<StylesheetInfo>();
-        long st = System.currentTimeMillis();
+        final List<StylesheetInfo> infos = new LinkedList<StylesheetInfo>();
+        final long st = System.currentTimeMillis();
 
         if (!_context.haveLookedUpDefaultStylesheet())
         {
         	_context.setLookedUpDefaultStylesheet(true);
-        	StylesheetInfo defaultStylesheet = _nsh.getDefaultStylesheet(_stylesheetFactory);
+        	final StylesheetInfo defaultStylesheet = _nsh.getDefaultStylesheet(_stylesheetFactory);
 
         	if (defaultStylesheet != null) 
         	{
@@ -215,7 +215,7 @@ public class StyleReference {
         }
         
         
-        List<StylesheetInfo> refs = _nsh.getStylesheets(_doc);
+        final List<StylesheetInfo> refs = _nsh.getStylesheets(_doc);
         int inlineStyleCount = 0;
         if (refs != null) {
             for (int i = 0; i < refs.size(); i++) {
@@ -226,7 +226,7 @@ public class StyleReference {
                     refs.get(i).setUri(uri);
                 } else {
                     refs.get(i).setUri(_uac.getBaseURL() + "#inline_style_" + (++inlineStyleCount));
-                    Stylesheet sheet = _stylesheetFactory.parse(
+                    final Stylesheet sheet = _stylesheetFactory.parse(
                             new StringReader(refs.get(i).getContent()), refs.get(i));
                     refs.get(i).setStylesheet(sheet);
                     refs.get(i).setUri(null);
@@ -237,13 +237,13 @@ public class StyleReference {
 
         // TODO: here we should also get user stylesheet from userAgent
 
-        long el = System.currentTimeMillis() - st;
+        final long el = System.currentTimeMillis() - st;
         XRLog.load("TIME: parse stylesheets  " + el + "ms");
 
         return infos;
     }
     
-    public void removeStyle(Element e) {
+    public void removeStyle(final Element e) {
         if (_matcher != null) {
             _matcher.removeStyle(e);
         }
@@ -253,12 +253,12 @@ public class StyleReference {
         return _matcher.getFontFaceRules();
     }
     
-    public void setUserAgentCallback(UserAgentCallback userAgentCallback) {
+    public void setUserAgentCallback(final UserAgentCallback userAgentCallback) {
         _uac = userAgentCallback;
         _stylesheetFactory.setUserAgentCallback(userAgentCallback);
     }
     
-    public void setSupportCMYKColors(boolean b) {
+    public void setSupportCMYKColors(final boolean b) {
         _stylesheetFactory.setSupportCMYKColors(b);
     }
 }

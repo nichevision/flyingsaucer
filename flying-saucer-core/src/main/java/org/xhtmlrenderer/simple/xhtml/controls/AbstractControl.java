@@ -33,8 +33,8 @@ import org.xhtmlrenderer.util.JsoupUtil;
 
 public abstract class AbstractControl implements FormControl {
 
-    private XhtmlForm _form;
-    private Element _element;
+    private final XhtmlForm _form;
+    private final Element _element;
     private String _name;
 
     private String _initialValue;
@@ -42,9 +42,9 @@ public abstract class AbstractControl implements FormControl {
     private boolean _successful;
     private boolean _enabled;
 
-    private List<FormControlListener> _listeners = new ArrayList<FormControlListener>();
+    private final List<FormControlListener> _listeners = new ArrayList<FormControlListener>();
 
-    public AbstractControl(XhtmlForm form, Element e) {
+    public AbstractControl(final XhtmlForm form, final Element e) {
         _form = form;
         _element = e;
         _name = e.attr("name");
@@ -58,10 +58,10 @@ public abstract class AbstractControl implements FormControl {
 
         if (form != null) {
             form.addFormListener(new FormListener() {
-                public void submitted(XhtmlForm form) {
+                public void submitted(final XhtmlForm form) {
                 }
 
-                public void resetted(XhtmlForm form) {
+                public void resetted(final XhtmlForm form) {
                     reset();
                 }
             });
@@ -69,28 +69,28 @@ public abstract class AbstractControl implements FormControl {
     }
 
     protected void fireChanged() {
-        for (FormControlListener formControlListener : _listeners) {
+        for (final FormControlListener formControlListener : _listeners) {
             formControlListener.changed(this);
         }
     }
 
     protected void fireSuccessful() {
-        for (FormControlListener formControlListener : _listeners) {
+        for (final FormControlListener formControlListener : _listeners) {
             formControlListener.successful(this);
         }
     }
 
     protected void fireEnabled() {
-        for (FormControlListener formControlListener : _listeners) {
+        for (final FormControlListener formControlListener : _listeners) {
             formControlListener.enabled(this);
         }
     }
 
-    public void addFormControlListener(FormControlListener listener) {
+    public void addFormControlListener(final FormControlListener listener) {
         _listeners.add(listener);
     }
 
-    public void removeFormControlListener(FormControlListener listener) {
+    public void removeFormControlListener(final FormControlListener listener) {
         _listeners.remove(listener);
     }
 
@@ -110,7 +110,7 @@ public abstract class AbstractControl implements FormControl {
         return _initialValue;
     }
     
-    protected void setInitialValue(String value) {
+    protected void setInitialValue(final String value) {
         _initialValue = value;
         _value = value;
     }
@@ -123,7 +123,7 @@ public abstract class AbstractControl implements FormControl {
         }
     }
 
-    public void setValue(String value) {
+    public void setValue(final String value) {
         if (!isMultiple()) {
             _value = value;
             fireChanged();
@@ -134,7 +134,7 @@ public abstract class AbstractControl implements FormControl {
         return null;
     }
 
-    public void setMultipleValues(String[] values) {
+    public void setMultipleValues(final String[] values) {
         // do nothing
     }
 
@@ -154,12 +154,12 @@ public abstract class AbstractControl implements FormControl {
         return false;
     }
 
-    public void setSuccessful(boolean successful) {
+    public void setSuccessful(final boolean successful) {
         _successful = successful;
         fireSuccessful();
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(final boolean enabled) {
         _enabled = enabled;
         fireEnabled();
     }
@@ -168,13 +168,13 @@ public abstract class AbstractControl implements FormControl {
         setValue(_initialValue);
     }
 
-    public static String collectText(Element e) {
-        StringBuilder result = new StringBuilder();
+    public static String collectText(final Element e) {
+        final StringBuilder result = new StringBuilder();
         Node node = JsoupUtil.firstChild(e);
         if (node != null) {
             do {
                 if (JsoupUtil.isText(node)) {
-                    TextNode text = (TextNode) node;
+                    final TextNode text = (TextNode) node;
                     result.append(text.text());
                 }
             } while ((node = node.nextSibling()) != null);
@@ -182,13 +182,13 @@ public abstract class AbstractControl implements FormControl {
         return result.toString().trim();
     }
 
-    public static int getIntAttribute(Element e, String attribute, int def) {
+    public static int getIntAttribute(final Element e, final String attribute, final int def) {
         int result = def;
-        String str = e.attr(attribute);
+        final String str = e.attr(attribute);
         if (str.length() > 0) {
             try {
                 result = Integer.parseInt(str);
-            } catch (NumberFormatException ex) {
+            } catch (final NumberFormatException ex) {
             }
         }
         return result;
