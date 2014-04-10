@@ -32,9 +32,9 @@ import org.xhtmlrenderer.render.FSFont;
  */
 public class Breaker {
 
-    public static void breakFirstLetter(LayoutContext c, LineBreakContext context,
-            int avail, CalculatedStyle style) {
-        FSFont font = style.getFSFont(c);
+    public static void breakFirstLetter(final LayoutContext c, final LineBreakContext context,
+            final int avail, final CalculatedStyle style) {
+        final FSFont font = style.getFSFont(c);
         context.setEnd(getFirstLetterEnd(context.getMaster(), context.getStart()));
         context.setWidth(c.getTextRenderer().getWidth(
                 c.getFontContext(), font, context.getCalculatedSubstring()));
@@ -45,9 +45,9 @@ public class Breaker {
         }
     }
 
-    private static int getFirstLetterEnd(String text, int start) {
+    private static int getFirstLetterEnd(final String text, final int start) {
         boolean letterFound = false;
-        int end = text.length();
+        final int end = text.length();
         char currentChar;
         for ( int i = start; i < end; i++ ) {
             currentChar = text.charAt(i);
@@ -62,10 +62,10 @@ public class Breaker {
         return end;
     }
 
-    public static void breakText(LayoutContext c,
-            LineBreakContext context, int avail, CalculatedStyle style) {
-        FSFont font = style.getFSFont(c);
-        IdentValue whitespace = style.getWhitespace();
+    public static void breakText(final LayoutContext c,
+            final LineBreakContext context, final int avail, final CalculatedStyle style) {
+        final FSFont font = style.getFSFont(c);
+        final IdentValue whitespace = style.getWhitespace();
 
         // ====== handle nowrap
         if (whitespace == IdentValue.NOWRAP) {
@@ -79,7 +79,7 @@ public class Breaker {
         if (whitespace == IdentValue.PRE ||
                 whitespace == IdentValue.PRE_WRAP ||
                 whitespace == IdentValue.PRE_LINE) {
-            int n = context.getStartSubstring().indexOf(WhitespaceStripper.EOL);
+            final int n = context.getStartSubstring().indexOf(WhitespaceStripper.EOL);
 
             if (n > -1) {
                 context.setEnd(context.getStart() + n + 1);
@@ -104,16 +104,16 @@ public class Breaker {
         doBreakText(c, context, avail, style, false);
     }
 
-    private static void doBreakText(LayoutContext c,
-            LineBreakContext context, int avail, CalculatedStyle style,
-            boolean tryToBreakAnywhere)
+    private static void doBreakText(final LayoutContext c,
+            final LineBreakContext context, final int avail, final CalculatedStyle style,
+            final boolean tryToBreakAnywhere)
     {
-        String currentString = context.getStartSubstring();
+        final String currentString = context.getStartSubstring();
 
-        BreakIterator iter = c.getTextBreaker();
+        final BreakIterator iter = c.getTextBreaker();
         iter.setText(currentString);
 
-        FSFont font = style.getFSFont(c);
+        final FSFont font = style.getFSFont(c);
         int width = 0;
         int next = 0;
         int last = 0;
@@ -122,10 +122,10 @@ public class Breaker {
         {
         	// First we get the width of the first five characters.
         	// This should give us a crude idea of the average width of a char.
-        	float widthChar5 = c.getTextRenderer().getWidth(
+        	final float widthChar5 = c.getTextRenderer().getWidth(
         			c.getFontContext(), font, currentString.substring(0, 4));
         	
-        	float sampledCharLength = widthChar5 / 5; 
+        	final float sampledCharLength = widthChar5 / 5; 
 
         	int estimate = 0;
         	        	
@@ -143,7 +143,7 @@ public class Breaker {
             while (next < estimate);
 
             // Next, measure our text at the break point.
-            String broken = currentString.substring(0, last);
+            final String broken = currentString.substring(0, last);
             width = c.getTextRenderer().getWidth(c.getFontContext(), font, broken);
         }
 
@@ -154,7 +154,7 @@ public class Breaker {
         	if (next == BreakIterator.DONE)
         		break;
         	last = next;
-        	String broken = currentString.substring(0, next);
+        	final String broken = currentString.substring(0, next);
         	width = c.getTextRenderer().getWidth(c.getFontContext(), font, broken);
         }
         
@@ -167,7 +167,7 @@ public class Breaker {
         	if (next == 0 || next == BreakIterator.DONE)
         		break;
         	last = next;
-        	String broken = currentString.substring(0, next);
+        	final String broken = currentString.substring(0, next);
         	width = c.getTextRenderer().getWidth(c.getFontContext(), font, broken);        	
         }
         
@@ -177,7 +177,7 @@ public class Breaker {
         {
             while (width >= avail && last > 0)
             {
-            	String broken = currentString.substring(0, last);
+            	final String broken = currentString.substring(0, last);
             	width = c.getTextRenderer().getWidth(c.getFontContext(), font, broken);
             	last--;
             }

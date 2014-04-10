@@ -32,9 +32,9 @@ import org.xhtmlrenderer.css.style.CalculatedStyle;
  * element.
  */
 public class StyleTracker {
-    private List<CascadedStyle> _styles = new ArrayList<CascadedStyle>();
+    private final List<CascadedStyle> _styles = new ArrayList<CascadedStyle>();
     
-    public void addStyle(CascadedStyle style) {
+    public void addStyle(final CascadedStyle style) {
         _styles.add(style);
     }
 
@@ -52,9 +52,9 @@ public class StyleTracker {
         _styles.clear();
     }
     
-    public CalculatedStyle deriveAll(CalculatedStyle start) {
+    public CalculatedStyle deriveAll(final CalculatedStyle start) {
         CalculatedStyle result = start;
-        for (Iterator<CascadedStyle> i = getStyles().iterator(); i.hasNext(); ) {
+        for (final Iterator<CascadedStyle> i = getStyles().iterator(); i.hasNext(); ) {
             result = result.deriveStyle(i.next());
         }
         return result;
@@ -65,7 +65,7 @@ public class StyleTracker {
     }
     
     public StyleTracker copyOf() {
-        StyleTracker result = new StyleTracker();
+        final StyleTracker result = new StyleTracker();
         result._styles.addAll(this._styles);
         return result;
     }

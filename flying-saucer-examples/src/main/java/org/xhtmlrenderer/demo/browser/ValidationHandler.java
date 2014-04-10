@@ -41,7 +41,7 @@ public class ValidationHandler implements ErrorHandler {
      *
      * @param ex  PARAM
      */
-    public void error( SAXParseException ex ) {
+    public void error( final SAXParseException ex ) {
         print( "error: " + print( ex ) );
     }
 
@@ -50,7 +50,7 @@ public class ValidationHandler implements ErrorHandler {
      *
      * @param ex  PARAM
      */
-    public void fatalError( SAXParseException ex ) {
+    public void fatalError( final SAXParseException ex ) {
         print( "fatal error: " + print( ex ) );
     }
 
@@ -59,7 +59,7 @@ public class ValidationHandler implements ErrorHandler {
      *
      * @param ex  PARAM
      */
-    public void warning( SAXParseException ex ) {
+    public void warning( final SAXParseException ex ) {
         print( "warning: " + print( ex ) );
     }
 
@@ -69,8 +69,8 @@ public class ValidationHandler implements ErrorHandler {
      * @param ex  PARAM
      * @return    Returns
      */
-    public String print( SAXParseException ex ) {
-        StringBuffer sb = new StringBuffer();
+    public String print( final SAXParseException ex ) {
+        final StringBuffer sb = new StringBuffer();
         sb.append( "Exception: " + ex.getMessage() );
         sb.append( "failed at column : " + ex.getColumnNumber() +
                 " on line " + ex.getLineNumber() );
@@ -83,7 +83,7 @@ public class ValidationHandler implements ErrorHandler {
      *
      * @param jta  The new textArea value
      */
-    public void setTextArea( JTextArea jta ) {
+    public void setTextArea( final JTextArea jta ) {
         this.jta = jta;
     }
 
@@ -92,7 +92,7 @@ public class ValidationHandler implements ErrorHandler {
      *
      * @param str  PARAM
      */
-    protected void print( String str ) {
+    protected void print( final String str ) {
         if ( jta != null ) {
             jta.append( str );
         }

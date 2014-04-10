@@ -41,7 +41,7 @@ import org.xhtmlrenderer.swing.AWTFSImage;
 import org.xhtmlrenderer.util.XRLog;
 
 class ImageField extends InputField {
-    public ImageField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public ImageField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
 
@@ -51,7 +51,7 @@ class ImageField extends InputField {
         Image image = null;
 
         if (hasAttribute("src")) {
-            FSImage fsImage = getUserAgentCallback().getImageResource(getAttribute("src")).getImage();
+            final FSImage fsImage = getUserAgentCallback().getImageResource(getAttribute("src")).getImage();
 
             if (fsImage != null) {
                 image = ((AWTFSImage) fsImage).getImage();
@@ -64,7 +64,7 @@ class ImageField extends InputField {
             final ImageIcon imgIcon = new ImageIcon(image, getAttribute("alt"));
             final Image img = imgIcon.getImage();
             button = new JButton() {
-                protected void paintComponent(Graphics g) {
+                protected void paintComponent(final Graphics g) {
                     super.paintComponent(g);
                     g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
                 }
@@ -79,20 +79,20 @@ class ImageField extends InputField {
         button.setContentAreaFilled(false);
 
 
-        CalculatedStyle style = getStyle();
+        final CalculatedStyle style = getStyle();
 
-        FSDerivedValue widthValue = style.valueByName(CSSName.WIDTH);
+        final FSDerivedValue widthValue = style.valueByName(CSSName.WIDTH);
         if (widthValue instanceof LengthValue) {
             intrinsicWidth = new Integer(getBox().getContentWidth());
         }
 
-        FSDerivedValue heightValue = style.valueByName(CSSName.HEIGHT);
+        final FSDerivedValue heightValue = style.valueByName(CSSName.HEIGHT);
         if (heightValue instanceof LengthValue) {
             intrinsicHeight = new Integer(getBox().getHeight());
         }
 
         button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(final ActionEvent event) {
                 XRLog.layout("Image pressed: Submit");
 
                 getParentForm().submit(getComponent());

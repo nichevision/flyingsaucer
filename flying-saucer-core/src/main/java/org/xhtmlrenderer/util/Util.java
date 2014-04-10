@@ -47,7 +47,7 @@ public class Util {
      *
      * @param writer PARAM
      */
-    public Util(PrintWriter writer) {
+    public Util(final PrintWriter writer) {
         this.pw = writer;
     }
 
@@ -56,7 +56,7 @@ public class Util {
      *
      * @param out PARAM
      */
-    public Util(OutputStream out) {
+    public Util(final OutputStream out) {
         this.pw = new PrintWriter(out);
     }
 
@@ -71,7 +71,7 @@ public class Util {
      *
      * @param o PARAM
      */
-    public void print(Object o) {
+    public void print(final Object o) {
         println(o, false);
     }
 
@@ -80,7 +80,7 @@ public class Util {
      *
      * @param o PARAM
      */
-    public void println(Object o) {
+    public void println(final Object o) {
         println(o, true);
     }
 
@@ -90,7 +90,7 @@ public class Util {
      * @param o    PARAM
      * @param line PARAM
      */
-    public void println(Object o, boolean line) {
+    public void println(final Object o, final boolean line) {
         if (o == null) {
             ps("null");
             return;
@@ -140,7 +140,7 @@ public class Util {
      *
      * @param v PARAM
      */
-    public void print_vector(Vector v) {
+    public void print_vector(final Vector v) {
         ps("vector: size=" + v.size());
         for (int i = 0; i < v.size(); i++) {
             ps(v.elementAt(i).toString());
@@ -152,7 +152,7 @@ public class Util {
      *
      * @param array PARAM
      */
-    public void print_array(int[][] array) {
+    public void print_array(final int[][] array) {
         print("array: size=" + array.length + " by " + array[0].length);
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
@@ -168,7 +168,7 @@ public class Util {
      *
      * @param array PARAM
      */
-    public void print_array(Object[] array) {
+    public void print_array(final Object[] array) {
         print("array: size=" + array.length);
         for (int i = 0; i < array.length; i++) {
             ps(" " + array[i].toString(), false);
@@ -180,7 +180,7 @@ public class Util {
      *
      * @param array PARAM
      */
-    public void print_array(int[] array) {
+    public void print_array(final int[] array) {
         print("array: size=" + array.length);
         for (int i = 0; i < array.length; i++) {
             ps(" " + array[i], false);
@@ -192,11 +192,11 @@ public class Util {
      *
      * @param h PARAM
      */
-    public void print_hashtable(Hashtable h) {
+    public void print_hashtable(final Hashtable h) {
         print("hashtable size=" + h.size());
-        Enumeration keys = h.keys();
+        final Enumeration keys = h.keys();
         while (keys.hasMoreElements()) {
-            String key = (String) keys.nextElement();
+            final String key = (String) keys.nextElement();
             print(key + " = ");
             print(h.get(key).toString());
         }
@@ -207,7 +207,7 @@ public class Util {
      *
      * @param array PARAM
      */
-    public void print_array(byte[] array) {
+    public void print_array(final byte[] array) {
         print("byte array: size = " + array.length);
         for (int i = 0; i < array.length; i++) {
             print("" + array[i]);
@@ -219,8 +219,8 @@ public class Util {
      *
      * @param date PARAM
      */
-    public void print_date(Date date) {
-        DateFormat date_format = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+    public void print_date(final Date date) {
+        final DateFormat date_format = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
         print(date_format.format(date));
     }
 
@@ -229,7 +229,7 @@ public class Util {
      *
      * @param cal PARAM
      */
-    public void print_calendar(Calendar cal) {
+    public void print_calendar(final Calendar cal) {
         print(cal.getTime());
     }
 
@@ -238,7 +238,7 @@ public class Util {
      *
      * @param sec PARAM
      */
-    public void printUnixtime(long sec) {
+    public void printUnixtime(final long sec) {
         print(new Date(sec * 1000));
     }
 
@@ -247,7 +247,7 @@ public class Util {
      *
      * @param on The new on value
      */
-    public void setOn(boolean on) {
+    public void setOn(final boolean on) {
         this.on = on;
     }
 
@@ -257,7 +257,7 @@ public class Util {
      *
      * @param writer The new printWriter value
      */
-    public void setPrintWriter(PrintWriter writer) {
+    public void setPrintWriter(final PrintWriter writer) {
         this.pw = writer;
     }
 
@@ -266,7 +266,7 @@ public class Util {
      *
      * @param s PARAM
      */
-    private void ps(String s) {
+    private void ps(final String s) {
         ps(s, true);
     }
 
@@ -276,7 +276,7 @@ public class Util {
      * @param s    PARAM
      * @param line PARAM
      */
-    private void ps(String s, boolean line) {
+    private void ps(final String s, final boolean line) {
         if (!on) {
             return;
         }
@@ -311,9 +311,9 @@ public class Util {
      * @throws FileNotFoundException Throws
      * @throws IOException           Throws
      */
-    public static String file_to_string(String filename)
+    public static String file_to_string(final String filename)
             throws FileNotFoundException, IOException {
-        File file = new File(filename);
+        final File file = new File(filename);
         return file_to_string(file);
     }
 
@@ -324,15 +324,15 @@ public class Util {
      * @param file PARAM
      * @throws IOException Throws
      */
-    public static void string_to_file(String text, File file)
+    public static void string_to_file(final String text, final File file)
             throws IOException {
         FileWriter writer = null;
         writer = new FileWriter(file);
         try {
-            StringReader reader = new StringReader(text);
-            char[] buf = new char[1000];
+            final StringReader reader = new StringReader(text);
+            final char[] buf = new char[1000];
             while (true) {
-                int n = reader.read(buf, 0, 1000);
+                final int n = reader.read(buf, 0, 1000);
                 if (n == -1) {
                     break;
                 }
@@ -352,7 +352,7 @@ public class Util {
      * @param str PARAM
      * @return Returns
      */
-    public static int string_to_int(String str) {
+    public static int string_to_int(final String str) {
         return Integer.parseInt(str);
     }
 
@@ -362,9 +362,9 @@ public class Util {
      * @param e PARAM
      * @return Returns
      */
-    public static String stack_to_string(Exception e) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
+    public static String stack_to_string(final Exception e) {
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         pw.close();
         return sw.toString();
@@ -376,9 +376,9 @@ public class Util {
      * @param e PARAM
      * @return Returns
      */
-    public static String stack_to_string(Throwable e) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
+    public static String stack_to_string(final Throwable e) {
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         pw.close();
         return sw.toString();
@@ -391,13 +391,13 @@ public class Util {
      * @return Returns
      * @throws IOException Throws
      */
-    public static String inputstream_to_string(InputStream in)
+    public static String inputstream_to_string(final InputStream in)
             throws IOException {
-        Reader reader = new InputStreamReader(in);
-        StringWriter writer = new StringWriter();
-        char[] buf = new char[1000];
+        final Reader reader = new InputStreamReader(in);
+        final StringWriter writer = new StringWriter();
+        final char[] buf = new char[1000];
         while (true) {
-            int n = reader.read(buf, 0, 1000);
+            final int n = reader.read(buf, 0, 1000);
             if (n == -1) {
                 break;
             }
@@ -414,7 +414,7 @@ public class Util {
      * @throws FileNotFoundException Throws
      * @throws IOException           Throws
      */
-    public static String file_to_string(File file)
+    public static String file_to_string(final File file)
             throws IOException {
         FileReader reader = null;
         StringWriter writer = null;
@@ -422,9 +422,9 @@ public class Util {
         try {
             reader = new FileReader(file);
             writer = new StringWriter();
-            char[] buf = new char[1000];
+            final char[] buf = new char[1000];
             while (true) {
-                int n = reader.read(buf, 0, 1000);
+                final int n = reader.read(buf, 0, 1000);
                 if (n == -1) {
                     break;
                 }
@@ -450,12 +450,12 @@ public class Util {
      * @param replacement PARAM
      * @return Returns
      */
-    public static String replace(String source, String target, String replacement) {
-        StringBuffer output = new StringBuffer();
+    public static String replace(final String source, final String target, final String replacement) {
+        final StringBuffer output = new StringBuffer();
         int n = 0;
         while (true) {
             //print("n = " + n);
-            int off = source.indexOf(target, n);
+            final int off = source.indexOf(target, n);
             if (off == -1) {
                 output.append(source.substring(n));
                 break;
@@ -474,9 +474,9 @@ public class Util {
      * @param v PARAM
      * @return Returns
      */
-    public static String[] vector_to_strings(Vector v) {
-        int len = v.size();
-        String[] ret = new String[len];
+    public static String[] vector_to_strings(final Vector v) {
+        final int len = v.size();
+        final String[] ret = new String[len];
         for (int i = 0; i < len; i++) {
             ret[i] = v.elementAt(i).toString();
         }
@@ -489,9 +489,9 @@ public class Util {
      * @param l PARAM
      * @return Returns
      */
-    public static String[] list_to_strings(List l) {
-        int len = l.size();
-        String[] ret = new String[len];
+    public static String[] list_to_strings(final List l) {
+        final int len = l.size();
+        final String[] ret = new String[len];
         for (int i = 0; i < len; i++) {
             ret[i] = l.get(i).toString();
         }
@@ -504,7 +504,7 @@ public class Util {
      * @param array PARAM
      * @return Returns
      */
-    public static List<Object> toList(Object[] array) {
+    public static List<Object> toList(final Object[] array) {
         return to_list(array);
     }
 
@@ -514,8 +514,8 @@ public class Util {
      * @param array PARAM
      * @return Returns
      */
-    public static List<Object> to_list(Object[] array) {
-        List<Object> list = new ArrayList<Object>();
+    public static List<Object> to_list(final Object[] array) {
+        final List<Object> list = new ArrayList<Object>();
         for (int i = 0; i < array.length; i++) {
             list.add(array[i]);
         }
@@ -539,10 +539,10 @@ public class Util {
      *
      * @param msec PARAM
      */
-    public static void sleep(long msec) {
+    public static void sleep(final long msec) {
         try {
             Thread.sleep(msec);
-        } catch (InterruptedException ex) {
+        } catch (final InterruptedException ex) {
             org.xhtmlrenderer.util.Uu.p(stack_to_string(ex));
         }
     }
@@ -552,9 +552,9 @@ public class Util {
      *
      * @param frame PARAM
      */
-    public static void center(JFrame frame) {
+    public static void center(final JFrame frame) {
         //p("centering");
-        Dimension screen_size = Toolkit.getDefaultToolkit().getScreenSize();
+        final Dimension screen_size = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation((int) ((screen_size.getWidth() - frame.getWidth()) / 2),
                 (int) ((screen_size.getHeight() - frame.getHeight()) / 2));
     }
@@ -564,9 +564,9 @@ public class Util {
      *
      * @param frame PARAM
      */
-    public static void center(JDialog frame) {
+    public static void center(final JDialog frame) {
         //p("centering");
-        Dimension screen_size = Toolkit.getDefaultToolkit().getScreenSize();
+        final Dimension screen_size = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation((int) ((screen_size.getWidth() - frame.getWidth()) / 2),
                 (int) ((screen_size.getHeight() - frame.getHeight()) / 2));
     }
@@ -578,28 +578,28 @@ public class Util {
      * @param str PARAM
      * @return The number value
      */
-    public static boolean isNumber(String str) {
+    public static boolean isNumber(final String str) {
         try {
             Integer.parseInt(str);
             return true;
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             return false;
         }
     }
 
-    public static boolean isNullOrEmpty(String str) {
+    public static boolean isNullOrEmpty(final String str) {
         return str == null || str.length() == 0;
     }
 
-    public static boolean isNullOrEmpty(String str, boolean trim) {
+    public static boolean isNullOrEmpty(final String str, final boolean trim) {
         return str == null || str.length() == 0 || (trim && str.trim().length() == 0);
     }
 
-    public static boolean isEqual(String str1, String str2) {
+    public static boolean isEqual(final String str1, final String str2) {
         return str1 == str2 || (str1 != null && str1.equals(str2));
     }
 
-    public static boolean isEqual(String str1, String str2, boolean ignoreCase) {
+    public static boolean isEqual(final String str1, final String str2, final boolean ignoreCase) {
         return str1 == str2 || (str1 != null && (ignoreCase ? str1.equalsIgnoreCase(str2) : str1.equals(str2)));
     }
 }

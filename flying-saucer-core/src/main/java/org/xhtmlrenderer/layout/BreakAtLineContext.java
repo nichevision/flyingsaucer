@@ -25,7 +25,7 @@ public class BreakAtLineContext {
     private final BlockBox _block;
     private final int _line;
     
-    public BreakAtLineContext(BlockBox block, int line) {
+    public BreakAtLineContext(final BlockBox block, final int line) {
         _block = block;
         _line = line;
     }

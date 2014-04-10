@@ -20,7 +20,7 @@ public class GenerateDiffAction extends AbstractAction {
 
     protected BrowserStartup root;
 
-    public GenerateDiffAction(BrowserStartup root) {
+    public GenerateDiffAction(final BrowserStartup root) {
         super("Generate Diff");
         this.root = root;
     }
@@ -30,16 +30,16 @@ public class GenerateDiffAction extends AbstractAction {
      *
      * @param evt Description of the Parameter
      */
-    public void actionPerformed(ActionEvent evt) {
+    public void actionPerformed(final ActionEvent evt) {
         try {
 
-            URL url = root.panel.view.getURL();
+            final URL url = root.panel.view.getURL();
             if (url != null) {
                 if (url.toString().startsWith("file:")) {
                     String str = url.toString();
                     str = str.substring(6, str.length() - 6);
                     if (new File(str + ".diff").exists()) {
-                        int n = JOptionPane.showConfirmDialog(root.panel.view,
+                        final int n = JOptionPane.showConfirmDialog(root.panel.view,
                                 "Diff already exists. Overwrite?",
                                 "Warning",
                                 JOptionPane.OK_CANCEL_OPTION);
@@ -51,7 +51,7 @@ public class GenerateDiffAction extends AbstractAction {
                     Uu.p("wrote out: " + str + ".diff");
                 }
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Uu.p(ex);
         }
     }

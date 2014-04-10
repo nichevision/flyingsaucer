@@ -38,25 +38,25 @@ public class XhtmlForm {
 
     protected String _action, _method;
 
-    public XhtmlForm(String action, String method) {
+    public XhtmlForm(final String action, final String method) {
         _action = action;
         _method = method;
     }
 
     protected List<FormControl> _controls = new LinkedList<FormControl>();
 
-    private List<FormListener> _listeners = new ArrayList<FormListener>();
+    private final List<FormListener> _listeners = new ArrayList<FormListener>();
 
-    public void addFormListener(FormListener listener) {
+    public void addFormListener(final FormListener listener) {
         _listeners.add(listener);
     }
 
-    public void removeFormListener(FormListener listener) {
+    public void removeFormListener(final FormListener listener) {
         _listeners.remove(listener);
     }
 
-    public FormControl getControl(String name) {
-        for (FormControl control : _controls) {
+    public FormControl getControl(final String name) {
+        for (final FormControl control : _controls) {
             if (control.getName().equals(name)) {
                 return control;
             }
@@ -64,9 +64,9 @@ public class XhtmlForm {
         return null;
     }
 
-    public List<FormControl> getAllControls(String name) {
-        List<FormControl> result = new ArrayList<FormControl>();
-        for (FormControl control : _controls) {
+    public List<FormControl> getAllControls(final String name) {
+        final List<FormControl> result = new ArrayList<FormControl>();
+        for (final FormControl control : _controls) {
             if (control.getName().equals(name)) {
                 result.add(control);
             }
@@ -78,18 +78,18 @@ public class XhtmlForm {
         return _controls.iterator();
     }
 
-    public FormControl createControl(Element e) {
+    public FormControl createControl(final Element e) {
         return createControl(this, e);
     }
 
-    public static FormControl createControl(XhtmlForm form, Element e) {
+    public static FormControl createControl(final XhtmlForm form, final Element e) {
         if (e == null)
             return null;
 
         FormControl control;
-        String name = e.nodeName();
+        final String name = e.nodeName();
         if (name.equals("input")) {
-            String type = e.attr("type");
+            final String type = e.attr("type");
             if (ciEquals(type, "text") || ciEquals(type, "password")) {
                 control = new TextControl(form, e);
             } else if (ciEquals(type, "hidden")) {
@@ -119,20 +119,20 @@ public class XhtmlForm {
     }
 
     public void reset() {
-        for (FormListener formListener : _listeners) {
+        for (final FormListener formListener : _listeners) {
             formListener.resetted(this);
         }
     }
 
     public void submit() {
         // TODO other encodings than urlencode?
-        StringBuffer data = new StringBuffer();
-        for (Iterator<FormControl> iter = getControls(); iter.hasNext();) {
-            FormControl control = iter.next();
+        final StringBuffer data = new StringBuffer();
+        for (final Iterator<FormControl> iter = getControls(); iter.hasNext();) {
+            final FormControl control = iter.next();
             if (control.isSuccessful()) {
                 if (control.isMultiple()) {
-                    String[] values = control.getMultipleValues();
-                    for (String value : values) {
+                    final String[] values = control.getMultipleValues();
+                    for (final String value : values) {
                         if (data.length() > 0) {
                             data.append('&');
                         }
@@ -157,7 +157,7 @@ public class XhtmlForm {
         System.out.println("Method: ".concat(_method));
         System.out.println("Data: ".concat(data.toString()));
 
-        for (FormListener formListener : _listeners) {
+        for (final FormListener formListener : _listeners) {
             formListener.submitted(this);
         }
     }

@@ -41,28 +41,28 @@ public class PropertyDeclaration {
     /**
      * Description of the Field
      */
-    private String propName;
+    private final String propName;
 
     /**
      * Description of the Field
      */
-    private CSSName cssName;
+    private final CSSName cssName;
     /**
      * Description of the Field
      */
-    private PropertyValue cssPrimitiveValue;
+    private final PropertyValue cssPrimitiveValue;
 
     /**
      * Whether the property was declared as important! by the user.
      */
-    private boolean important;
+    private final boolean important;
 
     /**
      * Origin constant from the list defined in {@link Stylesheet}. See {@link
      * Stylesheet#USER_AGENT}, {@link StylesheetInfo#USER}, and {@link
      * Stylesheet#AUTHOR}.
      */
-    private CSSOrigin origin;
+    private final CSSOrigin origin;
     /**
      * Description of the Field
      */
@@ -118,10 +118,10 @@ public class PropertyDeclaration {
      *                where it was declared. See {@link StylesheetInfo#USER_AGENT}, {@link
      *                StylesheetInfo#USER}, and {@link StylesheetInfo#AUTHOR}.
      */
-    public PropertyDeclaration(CSSName cssName,
-                               PropertyValue value,
-                               boolean imp,
-                               CSSOrigin orig) {
+    public PropertyDeclaration(final CSSName cssName,
+                               final PropertyValue value,
+                               final boolean imp,
+                               final CSSOrigin orig) {
         this.propName = cssName.toString();
         this.cssName = cssName;
         this.cssPrimitiveValue = value;

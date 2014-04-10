@@ -70,7 +70,7 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 	 *
 	 * @param uac The custom UserAgentCallback implementation.
 	 */
-	public ScalableXHTMLPanel(UserAgentCallback uac) {
+	public ScalableXHTMLPanel(final UserAgentCallback uac) {
 		super(uac);
 		scListeners = new ArrayList<ScaleChangeListener>();
 	}
@@ -82,7 +82,7 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 	 * @param doc The new document value
 	 * @param url The new document value
 	 */
-	public void setDocument(Document doc, String url) {
+	public void setDocument(final Document doc, final String url) {
 		resetScaleAccordingToPolicy();
 		lastLayoutSize = null;
 		super.setDocument(doc, url);
@@ -95,7 +95,7 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 	 * @param stream The stream to read the Document from.
 	 * @param url	The URL used to resolve relative path references.
 	 */
-	public void setDocument(InputStream stream, String url) throws Exception {
+	public void setDocument(final InputStream stream, final String url) throws Exception {
 		resetScaleAccordingToPolicy();
 		lastLayoutSize = null;
 		super.setDocument(stream, url);
@@ -111,9 +111,9 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 	 * @param x The displayed x position
 	 * @param y the displayed y position
 	 */
-	public Box find(int x, int y) {
-		Point p = convertFromScaled(x, y);
-		Layer l = getRootLayer();
+	public Box find(final int x, final int y) {
+		final Point p = convertFromScaled(x, y);
+		final Layer l = getRootLayer();
 		if (l != null) {
 			return l.find(getLayoutContext(), p.x, p.y, false);
 		}
@@ -126,7 +126,7 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 	 * @param newScale The scale to use
 	 * @throws IllegalArgumentException If newScale <= <tt>0.0d</tt>.
 	 */
-	public void setScale(double newScale) throws IllegalArgumentException {
+	public void setScale(final double newScale) throws IllegalArgumentException {
 		if (newScale <= 0.0d) throw new IllegalArgumentException("Only positive scales are allowed.");
 		this.scale = newScale;
 		scalePolicy = SCALE_POLICY_NONE;
@@ -139,17 +139,17 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 		return scale;
 	}
 
-	public void addScaleChangeListener(ScaleChangeListener scl) {
+	public void addScaleChangeListener(final ScaleChangeListener scl) {
 		scListeners.add(scl);
 	}
 
-	public void removeScaleChangeListener(ScaleChangeListener scl) {
+	public void removeScaleChangeListener(final ScaleChangeListener scl) {
 		scListeners.remove(scl);
 	}
 
 	private void scaleChanged() {
-		ScaleChangeEvent evt = new ScaleChangeEvent(this, scale);
-		for (ScaleChangeListener scl: scListeners) {
+		final ScaleChangeEvent evt = new ScaleChangeEvent(this, scale);
+		for (final ScaleChangeListener scl: scListeners) {
 			scl.scaleChanged(evt);
 		}
 	}
@@ -160,16 +160,16 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 	 * @param c	the RenderingContext to use
 	 * @param root The Layer to render
 	 */
-	protected void doRender(RenderingContext c, Layer root) {
-		Graphics2D g = ((Java2DOutputDevice) c.getOutputDevice()).getGraphics();
+	protected void doRender(final RenderingContext c, final Layer root) {
+		final Graphics2D g = ((Java2DOutputDevice) c.getOutputDevice()).getGraphics();
 		if (!(g instanceof PrinterGraphics) && isOpaque()) {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
 		}
-		AffineTransform current = g.getTransform();
+		final AffineTransform current = g.getTransform();
 
-		PaintingInfo pI = root.getMaster().getPaintingInfo();
-		Dimension layoutSize = pI.getOuterMarginCorner();
+		final PaintingInfo pI = root.getMaster().getPaintingInfo();
+		final Dimension layoutSize = pI.getOuterMarginCorner();
 
 		calculateScaleAccordingToPolicy(layoutSize);
 
@@ -184,8 +184,8 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 		g.setTransform(current);
 	}
 
-	protected void calculateScaleAccordingToPolicy(Dimension layoutSize) {
-		Rectangle viewportBounds = getFixedRectangle();
+	protected void calculateScaleAccordingToPolicy(final Dimension layoutSize) {
+		final Rectangle viewportBounds = getFixedRectangle();
 		if (getScalePolicy() == SCALE_POLICY_NONE) {
             // FIXME: float comparison
 			if (scale == -1.0d) scale = 1.0d;
@@ -207,22 +207,22 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 		else scale = Math.min(xScale, yScale);
 	}
 
-	protected Point convertToScaled(Point origin) {
+	protected Point convertToScaled(final Point origin) {
 		if (scale <= 0.0d) return origin;
 		return new Point((int) (origin.x * scale), (int) (origin.y * scale));
 	}
 
-	protected Point convertFromScaled(Point origin) {
+	protected Point convertFromScaled(final Point origin) {
 		if (scale <= 0.0d) return origin;
 		return new Point((int) (origin.x / scale), (int) (origin.y / scale));
 	}
 
-	protected Point convertToScaled(int x, int y) {
+	protected Point convertToScaled(final int x, final int y) {
 		if (scale <= 0.0d) return new Point(x, y);
 		return new Point((int) (x * scale), (int) (y * scale));
 	}
 
-	protected Point convertFromScaled(int x, int y) {
+	protected Point convertFromScaled(final int x, final int y) {
 		if (scale <= 0.0d) return new Point(x, y);
 		return new Point((int) (x / scale), (int) (y / scale));
 	}
@@ -231,7 +231,7 @@ public class ScalableXHTMLPanel extends XHTMLPanel {
 		return scalePolicy;
 	}
 
-	public void setScalePolicy(int scalePolicy) {
+	public void setScalePolicy(final int scalePolicy) {
 		this.scalePolicy = scalePolicy;
 		lastLayoutSize = null;
 		repaint(getFixedRectangle());

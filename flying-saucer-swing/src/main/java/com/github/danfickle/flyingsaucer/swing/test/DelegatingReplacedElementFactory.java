@@ -53,7 +53,7 @@ public class DelegatingReplacedElementFactory implements ReplacedElementFactory 
         if (nameReplacer != null) {
             return replaceUsing(context, box, uac, cssWidth, cssHeight, nameReplacer);
         }
-        for (ElementReplacer replacer : replacers) {
+        for (final ElementReplacer replacer : replacers) {
             if (replacer.accept(context, box.getElement())) {
                 return replaceUsing(context, box, uac, cssWidth, cssHeight, replacer);
             }
@@ -61,7 +61,7 @@ public class DelegatingReplacedElementFactory implements ReplacedElementFactory 
         return null;
     }
 
-    private ReplacedElement replaceUsing(LayoutContext context, BlockBox box, UserAgentCallback uac, int cssWidth, int cssHeight, ElementReplacer replacer) {
+    private ReplacedElement replaceUsing(final LayoutContext context, final BlockBox box, final UserAgentCallback uac, final int cssWidth, final int cssHeight, final ElementReplacer replacer) {
         final ReplacedElement re = replacer.replace(context, box, uac, cssWidth, cssHeight);
         elementReplacements.add(new ERItem(box.getElement(), re, replacer));
         return re;
@@ -70,17 +70,17 @@ public class DelegatingReplacedElementFactory implements ReplacedElementFactory 
     public void reset() {
         System.out.println("\n\n***Factory reset()");
         elementReplacements.clear();
-        for (ElementReplacer elementReplacer : replacers) {
+        for (final ElementReplacer elementReplacer : replacers) {
             elementReplacer.reset();
         }
-        for (ElementReplacer elementReplacer : byNameReplacers.values()) {
+        for (final ElementReplacer elementReplacer : byNameReplacers.values()) {
             elementReplacer.reset();
         }
     }
 
     public void remove(final Element element) {
         final int idx = elementReplacements.indexOf(element);
-        ERItem item = elementReplacements.get(idx);
+        final ERItem item = elementReplacements.get(idx);
         elementReplacements.remove(idx);
         item.elementReplacer.clear(element);
     }
@@ -98,7 +98,7 @@ public class DelegatingReplacedElementFactory implements ReplacedElementFactory 
         replacers.remove(replacer);
     }
 
-    public void setFormSubmissionListener(FormSubmissionListener listener) {
+    public void setFormSubmissionListener(final FormSubmissionListener listener) {
         // maybe there is nothing to do...
     }
 
@@ -115,10 +115,10 @@ public class DelegatingReplacedElementFactory implements ReplacedElementFactory 
             return element.hashCode();
         }
 
-        public boolean equals(Object o) {
+        public boolean equals(final Object o) {
             if (o == null) return false;
             if (!(o instanceof ERItem)) return false;
-            ERItem other = (ERItem) o;
+            final ERItem other = (ERItem) o;
             return other.element == this.element;
         }
     }

@@ -41,7 +41,7 @@ public class InlineBoxMeasurements {
         return _baseline;
     }
 
-    public void setBaseline(int baseline) {
+    public void setBaseline(final int baseline) {
         _baseline = baseline;
     }
 
@@ -49,7 +49,7 @@ public class InlineBoxMeasurements {
         return _inlineBottom;
     }
 
-    public void setInlineBottom(int inlineBottom) {
+    public void setInlineBottom(final int inlineBottom) {
         _inlineBottom = inlineBottom;
     }
 
@@ -57,7 +57,7 @@ public class InlineBoxMeasurements {
         return _inlineTop;
     }
 
-    public void setInlineTop(int inlineTop) {
+    public void setInlineTop(final int inlineTop) {
         _inlineTop = inlineTop;
     }
 
@@ -65,7 +65,7 @@ public class InlineBoxMeasurements {
         return _textBottom;
     }
 
-    public void setTextBottom(int textBottom) {
+    public void setTextBottom(final int textBottom) {
         _textBottom = textBottom;
     }
 
@@ -73,7 +73,7 @@ public class InlineBoxMeasurements {
         return _textTop;
     }
 
-    public void setTextTop(int textTop) {
+    public void setTextTop(final int textTop) {
         _textTop = textTop;
     }
 
@@ -81,7 +81,7 @@ public class InlineBoxMeasurements {
         return _paintingBottom;
     }
 
-    public void setPaintingBottom(int paintingBottom) {
+    public void setPaintingBottom(final int paintingBottom) {
         _paintingBottom = paintingBottom;
     }
 
@@ -89,7 +89,7 @@ public class InlineBoxMeasurements {
         return _paintingTop;
     }
 
-    public void setPaintingTop(int paintingTop) {
+    public void setPaintingTop(final int paintingTop) {
         _paintingTop = paintingTop;
     }
 }

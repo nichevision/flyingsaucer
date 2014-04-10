@@ -33,14 +33,14 @@ public class ITextFSFontMetrics implements FSFontMetrics {
         return _ascent;
     }
     
-    public void setAscent(float ascent) {
+    public void setAscent(final float ascent) {
         _ascent = ascent;
     }
     public float getDescent() {
         return _descent;
     }
     
-    public void setDescent(float descent) {
+    public void setDescent(final float descent) {
         _descent = descent;
     }
     
@@ -48,7 +48,7 @@ public class ITextFSFontMetrics implements FSFontMetrics {
         return _strikethroughOffset;
     }
     
-    public void setStrikethroughOffset(float strikethroughOffset) {
+    public void setStrikethroughOffset(final float strikethroughOffset) {
         _strikethroughOffset = strikethroughOffset;
     }
     
@@ -56,7 +56,7 @@ public class ITextFSFontMetrics implements FSFontMetrics {
         return _strikethroughThickness;
     }
     
-    public void setStrikethroughThickness(float strikethroughThickness) {
+    public void setStrikethroughThickness(final float strikethroughThickness) {
         _strikethroughThickness = strikethroughThickness;
     }
     
@@ -64,7 +64,7 @@ public class ITextFSFontMetrics implements FSFontMetrics {
         return _underlineOffset;
     }
     
-    public void setUnderlineOffset(float underlineOffset) {
+    public void setUnderlineOffset(final float underlineOffset) {
         _underlineOffset = underlineOffset;
     }
     
@@ -72,7 +72,7 @@ public class ITextFSFontMetrics implements FSFontMetrics {
         return _underlineThickness;
     }
     
-    public void setUnderlineThickness(float underlineThickness) {
+    public void setUnderlineThickness(final float underlineThickness) {
         _underlineThickness = underlineThickness;
     }
     

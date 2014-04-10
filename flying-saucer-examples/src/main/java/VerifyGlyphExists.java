@@ -41,21 +41,21 @@ import java.util.List;
  * font files listed in the font-list, and check each one for support of the glyph.
  */
 public class VerifyGlyphExists {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         if (args.length != 2) {
             error("Need two arguments: code point (int) and either a font file name, or a path to a text file listing font paths");
         }
         int codePoint = 0;
         try {
             codePoint = Integer.valueOf(args[0]).intValue();
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             error("Value " + args[0] + " for codepoint is not an integer.");
         }
-        File file = new File(args[1]);
+        final File file = new File(args[1]);
         if (file.exists()) {
             if (file.getName().endsWith("txt")) {
-                List<String> lines = readLines(file);
-                for (String path : lines) {
+                final List<String> lines = readLines(file);
+                for (final String path : lines) {
                     testForGlyph(codePoint, new File(path));
                 }
                 System.out.println("TODO: read list of fonts");
@@ -67,8 +67,8 @@ public class VerifyGlyphExists {
         }
     }
 
-    private static List<String> readLines(File file) {
-        List<String> l = new ArrayList<String>();
+    private static List<String> readLines(final File file) {
+        final List<String> l = new ArrayList<String>();
         LineNumberReader r = null;
         try {
             r = new LineNumberReader(new BufferedReader(new FileReader(file)));
@@ -76,19 +76,19 @@ public class VerifyGlyphExists {
             while ((path = r.readLine()) != null) {
                 l.add(path);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             error("Can't read list of font paths from " + file.getPath());
         } finally {
             try {
                 if (r != null) r.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // swallow
             }
         }
         return l;
     }
 
-    private static void testForGlyph(int codePoint, File file) {
+    private static void testForGlyph(final int codePoint, final File file) {
         Font font;
         try {
             font = loadFont(file.getCanonicalPath());
@@ -101,25 +101,25 @@ public class VerifyGlyphExists {
                     System.out.println("NO GLYPH &#" + codePoint + "; for " + font + " from " + file.getPath());
                 }
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             error("Can't load font at path " + file.getPath() + ", err: " + e.getMessage());
         }
     }
 
-    private static Font loadFont(String fontPath) throws IOException {
+    private static Font loadFont(final String fontPath) throws IOException {
         try {
             // FIXME: only TTF supported in 1.4
             // int format = fontPath.endsWith(".ttf") ? Font.TRUETYPE_FONT : Font.TYPE1_FONT;
-            int format = Font.TRUETYPE_FONT;
-            Font font = Font.createFont(format, new File(fontPath).toURL().openStream());
+            final int format = Font.TRUETYPE_FONT;
+            final Font font = Font.createFont(format, new File(fontPath).toURL().openStream());
             return font.deriveFont(Font.PLAIN, 12);
-        } catch (FontFormatException e) {
+        } catch (final FontFormatException e) {
             System.err.println(fontPath + " INVALID FONT FORMAT " + e.getMessage());
             return null;
         }
     }
 
-    private static void error(String msg) {
+    private static void error(final String msg) {
         System.err.println(msg);
         System.exit(-1);
     }

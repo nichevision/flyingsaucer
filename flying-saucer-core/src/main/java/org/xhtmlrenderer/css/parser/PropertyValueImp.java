@@ -48,14 +48,14 @@ public class PropertyValueImp implements PropertyValue {
     }
     
     
-    private CSSPrimitiveUnit _type;
-    private CSSValueType _cssValueType;
+    private final CSSPrimitiveUnit _type;
+    private final CSSValueType _cssValueType;
     
     private String _stringValue;
     private float _floatValue;
     private String[] _stringArrayValue;
     
-    private String _cssText;
+    private final String _cssText;
     
     private FSColor _FSColor;
     
@@ -68,7 +68,7 @@ public class PropertyValueImp implements PropertyValue {
     private List<?> _values;
     private FSFunction _function;
 
-    public PropertyValueImp(CSSPrimitiveUnit type, float floatValue, String cssText) {
+    public PropertyValueImp(final CSSPrimitiveUnit type, final float floatValue, final String cssText) {
         _type = type;
         _floatValue = floatValue;
         _cssValueType = CSSValueType.CSS_PRIMITIVE_VALUE;
@@ -81,7 +81,7 @@ public class PropertyValueImp implements PropertyValue {
         }
     }
     
-    public PropertyValueImp(FSColor color) {
+    public PropertyValueImp(final FSColor color) {
         _type = CSSPrimitiveUnit.CSS_RGBCOLOR;
         _cssValueType = CSSValueType.CSS_PRIMITIVE_VALUE;
         _cssText = color.toString();
@@ -90,7 +90,7 @@ public class PropertyValueImp implements PropertyValue {
         _propertyValueType = VALUE_TYPE_COLOR;
     }
     
-    public PropertyValueImp(CSSPrimitiveUnit type, String stringValue, String cssText) {
+    public PropertyValueImp(final CSSPrimitiveUnit type, final String stringValue, final String cssText) {
         _type = type;
         _stringValue = stringValue;
         // Must be a case-insensitive compare since ident values aren't normalized
@@ -105,7 +105,7 @@ public class PropertyValueImp implements PropertyValue {
         }
     }
     
-    public PropertyValueImp(IdentValue ident) {
+    public PropertyValueImp(final IdentValue ident) {
         _type = CSSPrimitiveUnit.CSS_IDENT;
         _stringValue = ident.toString();
         _cssValueType = _stringValue.equals("inherit") ? CSSValueType.CSS_INHERIT : CSSValueType.CSS_PRIMITIVE_VALUE;
@@ -115,7 +115,7 @@ public class PropertyValueImp implements PropertyValue {
         _identValue = ident;
     }
     
-    public PropertyValueImp(List<?> values) {
+    public PropertyValueImp(final List<?> values) {
         _type = CSSPrimitiveUnit.CSS_UNKNOWN; // HACK
         _cssValueType = CSSValueType.CSS_CUSTOM;
         _cssText = values.toString(); // HACK
@@ -124,7 +124,7 @@ public class PropertyValueImp implements PropertyValue {
         _propertyValueType = VALUE_TYPE_LIST;
     }
     
-    public PropertyValueImp(FSFunction function) {
+    public PropertyValueImp(final FSFunction function) {
         _type = CSSPrimitiveUnit.CSS_UNKNOWN;
         _cssValueType = CSSValueType.CSS_CUSTOM;
         _cssText = function.toString();
@@ -137,7 +137,7 @@ public class PropertyValueImp implements PropertyValue {
         throw new UnsupportedOperationException();
     }
 
-    public float getFloatValue(CSSPrimitiveUnit unitType) throws DOMException {
+    public float getFloatValue(final CSSPrimitiveUnit unitType) throws DOMException {
         return _floatValue;
     }
     
@@ -161,11 +161,11 @@ public class PropertyValueImp implements PropertyValue {
         return _stringValue;
     }
 
-    public void setFloatValue(short unitType, float floatValue) throws DOMException {
+    public void setFloatValue(final short unitType, final float floatValue) throws DOMException {
         throw new UnsupportedOperationException();
     }
 
-    public void setStringValue(short stringType, String stringValue) throws DOMException {
+    public void setStringValue(final short stringType, final String stringValue) throws DOMException {
         throw new UnsupportedOperationException();
     }
 
@@ -179,7 +179,7 @@ public class PropertyValueImp implements PropertyValue {
         throw new UnsupportedOperationException();
     }
 
-    public void setCssText(String cssText) throws DOMException {
+    public void setCssText(final String cssText) throws DOMException {
         throw new UnsupportedOperationException();
     }
     
@@ -191,7 +191,7 @@ public class PropertyValueImp implements PropertyValue {
         return _identValue;
     }
 
-    public void setIdentValue(IdentValue identValue) {
+    public void setIdentValue(final IdentValue identValue) {
         _identValue = identValue;
     }
     
@@ -203,7 +203,7 @@ public class PropertyValueImp implements PropertyValue {
         return _operator;
     }
 
-    public void setOperator(Token operator) {
+    public void setOperator(final Token operator) {
         _operator = operator;
     }
 
@@ -211,7 +211,7 @@ public class PropertyValueImp implements PropertyValue {
         return ArrayUtil.cloneOrEmpty(_stringArrayValue);
     }
 
-    public void setStringArrayValue(String[] stringArrayValue) {
+    public void setStringArrayValue(final String[] stringArrayValue) {
         _stringArrayValue = ArrayUtil.cloneOrEmpty(stringArrayValue);
     }
     
@@ -247,7 +247,7 @@ public class PropertyValueImp implements PropertyValue {
 	}
 
 	@Deprecated
-	public float getFloatValue(short arg0) throws DOMException {
+	public float getFloatValue(final short arg0) throws DOMException {
 		assert(false);
 		throw new UnsupportedOperationException();
 	}

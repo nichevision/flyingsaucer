@@ -1609,8 +1609,8 @@ public enum CSSName {
                     CSSName.BORDER_LEFT_COLOR);
 
     private CSSName(
-            String propName, Marker type, String initialValue, boolean inherits,
-            boolean implemented, PropertyBuilder builder) {
+            final String propName, final Marker type, final String initialValue, final boolean inherits,
+            final boolean implemented, final PropertyBuilder builder) {
         this.propName = propName;
         this.FS_ID = ordinal();
         this.initialValue = initialValue;
@@ -1621,22 +1621,22 @@ public enum CSSName {
     }
 
     private CSSName (
-            String propName,
-            Marker type,
-            String initialValue,
-            Marker inherit,
-            PropertyBuilder builder
+            final String propName,
+            final Marker type,
+            final String initialValue,
+            final Marker inherit,
+            final PropertyBuilder builder
     ) {
     	this(propName, type, initialValue, inherit == Marker.INHERITS, true, builder);
     }
     
     private CSSName (
-            String propName,
-            Marker type,
-            String initialValue,
-            Marker inherit,
-            boolean implemented,
-            PropertyBuilder builder
+            final String propName,
+            final Marker type,
+            final String initialValue,
+            final Marker inherit,
+            final boolean implemented,
+            final PropertyBuilder builder
     ) {
     	this(propName, type, initialValue, inherit == Marker.INHERITS, implemented, builder);
     }
@@ -1695,7 +1695,7 @@ public enum CSSName {
      * @return Returns
      */
     // CLEAN: method is now unnecessary
-    public static boolean propertyInherits(CSSName cssName) {
+    public static boolean propertyInherits(final CSSName cssName) {
         return cssName.propertyInherits;
     }
 
@@ -1708,19 +1708,19 @@ public enum CSSName {
      * @return Returns
      */
     // CLEAN: method is now unnecessary
-    public static String initialValue(CSSName cssName) {
+    public static String initialValue(final CSSName cssName) {
         return cssName.initialValue;
     }
 
-    public static FSDerivedValue initialDerivedValue(CSSName cssName) {
+    public static FSDerivedValue initialDerivedValue(final CSSName cssName) {
         return cssName.initialDerivedValue;
     }
 
-    public static boolean isImplemented(CSSName cssName) {
+    public static boolean isImplemented(final CSSName cssName) {
         return cssName.implemented;
     }
 
-    public static PropertyBuilder getPropertyBuilder(CSSName cssName) {
+    public static PropertyBuilder getPropertyBuilder(final CSSName cssName) {
         return cssName.builder;
     }
 
@@ -1730,18 +1730,18 @@ public enum CSSName {
      * @param propName PARAM
      * @return The byPropertyName value
      */
-    public static CSSName getByPropertyName(String propName) {
+    public static CSSName getByPropertyName(final String propName) {
 
         return ALL_PROPERTY_NAMES.get(propName);
     }
 
-    public static CSSName getByID(int id) {
+    public static CSSName getByID(final int id) {
         return values()[id];
     }
 
     static 
     {
-    	for (CSSName nm : values())
+    	for (final CSSName nm : values())
     	{
     		ALL_PROPERTY_NAMES.put(nm.propName, nm);
 
@@ -1752,14 +1752,14 @@ public enum CSSName {
     }
 
     static {
-        CSSParser parser = new CSSParser(new CSSErrorHandler() {
-            public void error(String uri, String message) {
+        final CSSParser parser = new CSSParser(new CSSErrorHandler() {
+            public void error(final String uri, final String message) {
                 XRLog.cssParse("(" + uri + ") " + message);
             }
         });
-        for (CSSName cssName : ALL_PRIMITIVE_PROPERTY_NAMES.values()) {
+        for (final CSSName cssName : ALL_PRIMITIVE_PROPERTY_NAMES.values()) {
             if (cssName.initialValue.charAt(0) != '=' && cssName.implemented) {
-                PropertyValue value = parser.parsePropertyValue(
+                final PropertyValue value = parser.parsePropertyValue(
                         cssName, StylesheetInfo.CSSOrigin.USER_AGENT, cssName.initialValue);
 
                 if (value == null) {
@@ -1781,7 +1781,7 @@ public enum CSSName {
         public final CSSName bottom;
         public final CSSName left;
 
-        public CSSSideProperties(CSSName top, CSSName right, CSSName bottom, CSSName left) {
+        public CSSSideProperties(final CSSName top, final CSSName right, final CSSName bottom, final CSSName left) {
             this.top = top;
             this.right = right;
             this.bottom = bottom;

@@ -46,15 +46,15 @@ public class SelectFormField extends AbstractFormField {
     private static final int EMPTY_SPACE_COUNT = 10;
     private static final int EXTRA_SPACE_COUNT = 4;
     
-    private List<Option> _options;
+    private final List<Option> _options;
 
-    private int _baseline;
+    private final int _baseline;
     
-    public SelectFormField(LayoutContext c, BlockBox box, int cssWidth, int cssHeight) {
+    public SelectFormField(final LayoutContext c, final BlockBox box, final int cssWidth, final int cssHeight) {
         _options = readOptions(box.getElement());
         initDimensions(c, box, cssWidth, cssHeight);
         
-        float fontSize = box.getStyle().getFSFont(c).getSize2D();
+        final float fontSize = box.getStyle().getFSFont(c).getSize2D();
         // FIXME: findbugs possible loss of precision, cf. int / (float)2
         _baseline = (int)(getHeight() / 2 + (fontSize * 0.3f));
     }
@@ -62,10 +62,10 @@ public class SelectFormField extends AbstractFormField {
     private int getSelectedIndex() {
         int result = 0;
         
-        List<Option> options = _options;
+        final List<Option> options = _options;
         
-        int offset = 0;
-        for (Option option : options) {
+        final int offset = 0;
+        for (final Option option : options) {
             if (option.isSelected()) {
                 result = offset;
             }
@@ -75,19 +75,19 @@ public class SelectFormField extends AbstractFormField {
     }
     
     private String[][] getPDFOptions() {
-        List<Option> options = _options;
-        String[][] result = new String[options.size()][];
+        final List<Option> options = _options;
+        final String[][] result = new String[options.size()][];
         
-        int offset = 0;
-        for (Option option : options) {
+        final int offset = 0;
+        for (final Option option : options) {
             result[offset] = new String[] { option.getValue(), option.getLabel() };
         }
         
         return result;
     }
     
-    private int calcDefaultWidth(LayoutContext c, BlockBox box) {
-        List<Option> options = _options;
+    private int calcDefaultWidth(final LayoutContext c, final BlockBox box) {
+        final List<Option> options = _options;
         
         if (options.size() == 0) {
             return c.getTextRenderer().getWidth(
@@ -96,10 +96,10 @@ public class SelectFormField extends AbstractFormField {
                     spaces(EMPTY_SPACE_COUNT));
         } else {
             int maxWidth = 0;
-            for (Option option : options) {
-                String result = option.getLabel() + spaces(EXTRA_SPACE_COUNT);
+            for (final Option option : options) {
+                final String result = option.getLabel() + spaces(EXTRA_SPACE_COUNT);
                 
-                int width = c.getTextRenderer().getWidth(
+                final int width = c.getTextRenderer().getWidth(
                         c.getFontContext(),
                         box.getStyle().getFSFont(c),
                         result);
@@ -113,15 +113,15 @@ public class SelectFormField extends AbstractFormField {
         }
     }
     
-    private List<Option> readOptions(Element e) {
-        List<Option> result = new ArrayList<>();
+    private List<Option> readOptions(final Element e) {
+        final List<Option> result = new ArrayList<>();
         
         Node n = e.childNodeSize() > 0 ? e.childNode(0) : null;
         while (n != null) {
             if (n instanceof Element && ciEquals(n.nodeName(), "option")) 
             {
-                Element optionElem = (Element)n;
-                String label = collectText(optionElem);
+                final Element optionElem = (Element)n;
+                final String label = collectText(optionElem);
                 String value;
 
                 if (!optionElem.hasAttr("value")) {
@@ -131,7 +131,7 @@ public class SelectFormField extends AbstractFormField {
                 }
                 
                 if (label != null) {
-                    Option option = new Option();
+                    final Option option = new Option();
                     option.setLabel(label);
                     option.setValue(value);
                     if (isSelected(optionElem)) {
@@ -147,8 +147,8 @@ public class SelectFormField extends AbstractFormField {
         return result;
     }
     
-    private String collectText(Element e) {
-        StringBuilder result = new StringBuilder();
+    private String collectText(final Element e) {
+        final StringBuilder result = new StringBuilder();
         
         Node n = e.childNodeSize() > 0 ? e.childNode(0) : null;
         while (n != null) 
@@ -162,7 +162,7 @@ public class SelectFormField extends AbstractFormField {
         return result.length() > 0 ? result.toString() : null;
     }
 
-    protected void initDimensions(LayoutContext c, BlockBox box, int cssWidth, int cssHeight) {
+    protected void initDimensions(final LayoutContext c, final BlockBox box, final int cssWidth, final int cssHeight) {
         if (cssWidth != -1) {
             setWidth(cssWidth);
         } else {
@@ -176,25 +176,25 @@ public class SelectFormField extends AbstractFormField {
         }
     } 
     
-    private int getSize(Element elem) {
+    private int getSize(final Element elem) {
         int result = 1;
         try {
-            String v = elem.hasAttr("size") ? elem.attr("size").trim() : "";
+            final String v = elem.hasAttr("size") ? elem.attr("size").trim() : "";
             if (!v.isEmpty()) {
-                int i = Integer.parseInt(v);
+                final int i = Integer.parseInt(v);
                 if (i > 1) {
                     result = i;
                 }
                 
             }
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             // ignore
         }
         
         return result;
     }
     
-    protected boolean isMultiple(Element e) {
+    protected boolean isMultiple(final Element e) {
         return !Util.isNullOrEmpty(e.attr("multiple"));
     }
     
@@ -202,11 +202,11 @@ public class SelectFormField extends AbstractFormField {
         return FIELD_TYPE;
     }
 
-    public void paint(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box) {
-        PdfWriter writer = outputDevice.getWriter();
+    public void paint(final RenderingContext c, final ITextOutputDevice outputDevice, final BlockBox box) {
+        final PdfWriter writer = outputDevice.getWriter();
         
-        String[][] options = getPDFOptions();
-        int selectedIndex = getSelectedIndex();
+        final String[][] options = getPDFOptions();
+        final int selectedIndex = getSelectedIndex();
         
         PdfFormField field;
         
@@ -246,21 +246,21 @@ public class SelectFormField extends AbstractFormField {
     }
     
     private void createAppearance(
-            RenderingContext c, ITextOutputDevice outputDevice, 
-            BlockBox box, PdfFormField field) {
-        PdfWriter writer = outputDevice.getWriter();
-        ITextFSFont font = (ITextFSFont)box.getStyle().getFSFont(c);
+            final RenderingContext c, final ITextOutputDevice outputDevice, 
+            final BlockBox box, final PdfFormField field) {
+        final PdfWriter writer = outputDevice.getWriter();
+        final ITextFSFont font = (ITextFSFont)box.getStyle().getFSFont(c);
         
-        PdfContentByte cb = writer.getDirectContent();
+        final PdfContentByte cb = writer.getDirectContent();
         
-        float width = outputDevice.getDeviceLength(getWidth());
-        float height = outputDevice.getDeviceLength(getHeight());
-        float fontSize = outputDevice.getDeviceLength(font.getSize2D());
+        final float width = outputDevice.getDeviceLength(getWidth());
+        final float height = outputDevice.getDeviceLength(getHeight());
+        final float fontSize = outputDevice.getDeviceLength(font.getSize2D());
         
-        PdfAppearance tp = cb.createAppearance(width, height);
+        final PdfAppearance tp = cb.createAppearance(width, height);
         tp.setFontAndSize(font.getFontDescription().getFont(), fontSize);
         
-        FSColor color = box.getStyle().getColor();
+        final FSColor color = box.getStyle().getColor();
         setFillColor(tp, color);
         
         field.setDefaultAppearanceString(tp);
@@ -283,7 +283,7 @@ public class SelectFormField extends AbstractFormField {
             return _value;
         }
         
-        public void setValue(String value) {
+        public void setValue(final String value) {
             _value = value;
         }
         
@@ -291,7 +291,7 @@ public class SelectFormField extends AbstractFormField {
             return _label;
         }
         
-        public void setLabel(String label) {
+        public void setLabel(final String label) {
             _label = label;
         }
         
@@ -299,7 +299,7 @@ public class SelectFormField extends AbstractFormField {
             return _selected;
         }
         
-        public void setSelected(boolean selected) {
+        public void setSelected(final boolean selected) {
             _selected = selected;
         }
     }

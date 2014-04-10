@@ -12,16 +12,16 @@ import java.util.List;
 /**
  */
 public class ListFontFamilyNames {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         if (args.length == 0) {
             System.err.println("Need path to font files (directory or file name)");
             System.exit(1);
         }
-        File fod = new File(args[0]);
-        List<File> fontFiles = new ArrayList<File>();
+        final File fod = new File(args[0]);
+        final List<File> fontFiles = new ArrayList<File>();
         if (fod.isDirectory()) {
             fontFiles.addAll(Arrays.asList(fod.listFiles(new FilenameFilter() {
-                public boolean accept(File file, String s) {
+                public boolean accept(final File file, final String s) {
                     return s.endsWith(".ttf");
                 }
             })));
@@ -29,16 +29,16 @@ public class ListFontFamilyNames {
             fontFiles.add(fod);
         }
         //System.out.println("font files " + fontFiles);
-        List<String> errors = new ArrayList<String>();
-        for (File file : fontFiles) {
-            File f = (File) file;
+        final List<String> errors = new ArrayList<String>();
+        for (final File file : fontFiles) {
+            final File f = (File) file;
             Font awtf = null;
             try {
                 awtf = Font.createFont(Font.TRUETYPE_FONT, f);
-            } catch (FontFormatException e) {
+            } catch (final FontFormatException e) {
                 System.err.println("Trying to load font via AWT: " + e.getMessage());
                 System.exit(1);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 System.err.println("Trying to load font via AWT: " + e.getMessage());
                 System.exit(1);
             }
@@ -50,7 +50,7 @@ public class ListFontFamilyNames {
                                 "  family name (reported by AWT): " + awtf.getFamily() + "\n" +
                                 "  family name (reported by iText): " + set.iterator().next() + "\n"
                 );
-            } catch (RuntimeException e) {
+            } catch (final RuntimeException e) {
                 if (e.getMessage().contains("not a valid TTF or OTF file.")) {
                     errors.add(e.getMessage());
                 } else if (e.getMessage().contains("Table 'OS/2' does not exist")) {
@@ -65,7 +65,7 @@ public class ListFontFamilyNames {
         if (errors.size() > 0) {
             if (args.length == 2 && args[1].equals("-e")) {
                 System.err.println("Errors were reported on reading some font files.");
-                for (String string : errors) {
+                for (final String string : errors) {
                     System.err.println((String) string);
                 }
             } else {

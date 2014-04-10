@@ -30,13 +30,13 @@ public class BackgroundSize {
     private PropertyValue _height;
 
 
-    public BackgroundSize(boolean contain, boolean cover, boolean bothAuto) {
+    public BackgroundSize(final boolean contain, final boolean cover, final boolean bothAuto) {
         _contain = contain;
         _cover = cover;
         _bothAuto = bothAuto;
     }
 
-    public BackgroundSize(PropertyValue width, PropertyValue height) {
+    public BackgroundSize(final PropertyValue width, final PropertyValue height) {
         _width = width;
         _height = height;
     }

@@ -54,8 +54,8 @@ public class InlineBoxing {
     private InlineBoxing() {
     }
 
-    public static void layoutContent(LayoutContext c, BlockBox box, int initialY, int breakAtLine) {
-        int maxAvailableWidth = box.getContentWidth();
+    public static void layoutContent(final LayoutContext c, final BlockBox box, final int initialY, final int breakAtLine) {
+        final int maxAvailableWidth = box.getContentWidth();
         int remainingWidth = maxAvailableWidth;
 
         LineBox currentLine = newLine(c, initialY, box);
@@ -68,7 +68,7 @@ public class InlineBoxing {
 
         List<InlineBox> openInlineBoxes = null;
 
-        Map<InlineBox, InlineLayoutBox> iBMap = new HashMap<InlineBox, InlineLayoutBox>();
+        final Map<InlineBox, InlineLayoutBox> iBMap = new HashMap<InlineBox, InlineLayoutBox>();
 
         if (box instanceof AnonymousBlockBox) {
             openInlineBoxes = ((AnonymousBlockBox)box).getOpenInlineBoxes();
@@ -85,9 +85,9 @@ public class InlineBoxing {
 
         remainingWidth -= c.getBlockFormattingContext().getFloatDistance(c, currentLine, remainingWidth);
 
-        CalculatedStyle parentStyle = box.getStyle();
-        int minimumLineHeight = (int) parentStyle.getLineHeight(c);
-        int indent = (int) parentStyle.getFloatPropertyProportionalWidth(CSSName.TEXT_INDENT, maxAvailableWidth, c);
+        final CalculatedStyle parentStyle = box.getStyle();
+        final int minimumLineHeight = (int) parentStyle.getLineHeight(c);
+        final int indent = (int) parentStyle.getFloatPropertyProportionalWidth(CSSName.TEXT_INDENT, maxAvailableWidth, c);
         remainingWidth -= indent;
         contentStart += indent;
 
@@ -98,12 +98,12 @@ public class InlineBoxing {
         }
         c.setCurrentMarkerData(null);
 
-        List<FloatLayoutResult> pendingFloats = new ArrayList<FloatLayoutResult>();
+        final List<FloatLayoutResult> pendingFloats = new ArrayList<FloatLayoutResult>();
         int pendingLeftMBP = 0;
         int pendingRightMBP = 0;
 
         boolean hasFirstLinePEs = false;
-        List<Layer> pendingInlineLayers = new ArrayList<Layer>();
+        final List<Layer> pendingInlineLayers = new ArrayList<Layer>();
 
         if (c.getFirstLinesTracker().hasStyles()) {
             box.styleText(c, c.getFirstLinesTracker().deriveAll(box.getStyle()));
@@ -115,13 +115,13 @@ public class InlineBoxing {
 
         int lineOffset = 0;
 
-        for (Styleable styleable : box.getInlineContent()) {
-            Styleable node = (Styleable)styleable;
+        for (final Styleable styleable : box.getInlineContent()) {
+            final Styleable node = (Styleable)styleable;
 
             if (node.getStyle().isInline()) {
-                InlineBox iB = (InlineBox)node;
+                final InlineBox iB = (InlineBox)node;
 
-                CalculatedStyle style = iB.getStyle();
+                final CalculatedStyle style = iB.getStyle();
                 if (iB.isStartsHere()) {
                     previousIB = currentIB;
                     currentIB = new InlineLayoutBox(c, iB.getElement(), style, maxAvailableWidth);
@@ -136,11 +136,11 @@ public class InlineBoxing {
                     }
 
                     if (currentIB.getElement() != null) {
-                        String name = c.getNamespaceHandler().getAnchorName(currentIB.getElement());
+                        final String name = c.getNamespaceHandler().getAnchorName(currentIB.getElement());
                         if (name != null) {
                             c.addBoxId(name, currentIB);
                         }
-                        String id = c.getNamespaceHandler().getID(currentIB.getElement());
+                        final String id = c.getNamespaceHandler().getID(currentIB.getElement());
                         if (id != null) {
                             c.addBoxId(id, currentIB);
                         }
@@ -153,7 +153,7 @@ public class InlineBoxing {
                             c, maxAvailableWidth, CalculatedStyle.RIGHT);
                 }
 
-                LineBreakContext lbContext = new LineBreakContext();
+                final LineBreakContext lbContext = new LineBreakContext();
                 lbContext.setMaster(iB.getText());
                 lbContext.setTextNode(iB.getTextNode());
                 if (iB.isDynamicFunction()) {
@@ -184,7 +184,7 @@ public class InlineBoxing {
                     }
 
                     if (needFirstLetter && !lbContext.isFinished()) {
-                        InlineLayoutBox firstLetter =
+                        final InlineLayoutBox firstLetter =
                             addFirstLetterBox(c, currentLine, currentIB, lbContext,
                                     maxAvailableWidth, remainingWidth);
                         remainingWidth -= firstLetter.getInlineWidth();
@@ -197,10 +197,10 @@ public class InlineBoxing {
                         needFirstLetter = false;
                     } else {
                         lbContext.saveEnd();
-                        InlineText inlineText = layoutText(
+                        final InlineText inlineText = layoutText(
                                 c, iB.getStyle(), remainingWidth - fit, lbContext, false);
                         if (lbContext.isUnbreakable() && ! currentLine.isContainsContent()) {
-                            int delta = c.getBlockFormattingContext().getNextLineBoxDelta(c, currentLine, maxAvailableWidth);
+                            final int delta = c.getBlockFormattingContext().getNextLineBoxDelta(c, currentLine, maxAvailableWidth);
                             if (delta > 0) {
                                 currentLine.setY(currentLine.getY() + delta);
                                 currentLine.calcCanvasLocation();
@@ -225,7 +225,7 @@ public class InlineBoxing {
                             remainingWidth -= inlineText.getWidth();
 
                             if (currentIB.isStartsHere()) {
-                                int marginBorderPadding =
+                                final int marginBorderPadding =
                                     currentIB.getStyle().getMarginBorderPadding(
                                         c, maxAvailableWidth, CalculatedStyle.LEFT);
                                 pendingLeftMBP -= marginBorderPadding;
@@ -259,7 +259,7 @@ public class InlineBoxing {
                 } while (!lbContext.isFinished());
 
                 if (iB.isEndsHere()) {
-                    int rightMBP = style.getMarginBorderPadding(
+                    final int rightMBP = style.getMarginBorderPadding(
                             c, maxAvailableWidth, CalculatedStyle.RIGHT);
 
                     pendingRightMBP -= rightMBP;
@@ -293,7 +293,7 @@ public class InlineBoxing {
                             null : (InlineLayoutBox) currentIB.getParent();
                 }
             } else {
-               BlockBox child = (BlockBox)node;
+               final BlockBox child = (BlockBox)node;
 
                if (child.getStyle().isNonFlowContent()) {
                    remainingWidth -= processOutOfFlowContent(
@@ -361,7 +361,7 @@ public class InlineBoxing {
         box.setHeight(currentLine.getY() + currentLine.getHeight());
     }
 
-    private static boolean isAlwaysBreak(LayoutContext c, BlockBox parent, int breakAtLine, int lineOffset) {
+    private static boolean isAlwaysBreak(final LayoutContext c, final BlockBox parent, final int breakAtLine, final int lineOffset) {
         if (parent.isCurrentBreakAtLineContext(c)) {
             return lineOffset == breakAtLine;
         } else {
@@ -370,21 +370,21 @@ public class InlineBoxing {
     }
 
 
-    private static InlineLayoutBox addFirstLetterBox(LayoutContext c, LineBox current,
-            InlineLayoutBox currentIB, LineBreakContext lbContext, int maxAvailableWidth,
-            int remainingWidth) {
-        CalculatedStyle previous = currentIB.getStyle();
+    private static InlineLayoutBox addFirstLetterBox(final LayoutContext c, final LineBox current,
+            final InlineLayoutBox currentIB, final LineBreakContext lbContext, final int maxAvailableWidth,
+            final int remainingWidth) {
+        final CalculatedStyle previous = currentIB.getStyle();
 
         currentIB.setStyle(c.getFirstLettersTracker().deriveAll(currentIB.getStyle()));
 
-        InlineLayoutBox iB = new InlineLayoutBox(c, null, currentIB.getStyle(), maxAvailableWidth);
+        final InlineLayoutBox iB = new InlineLayoutBox(c, null, currentIB.getStyle(), maxAvailableWidth);
         iB.setStartsHere(true);
         iB.setEndsHere(true);
 
         currentIB.addInlineChild(c, iB);
         current.setContainsContent(true);
 
-        InlineText text = layoutText(c, iB.getStyle(), remainingWidth, lbContext, true);
+        final InlineText text = layoutText(c, iB.getStyle(), remainingWidth, lbContext, true);
         iB.addInlineChild(c, text);
         iB.setInlineWidth(text.getWidth());
 
@@ -397,7 +397,7 @@ public class InlineBoxing {
     }
 
     private static void layoutInlineBlockContent(
-            LayoutContext c, BlockBox containingBlock, BlockBox inlineBlock, int initialY) {
+            final LayoutContext c, final BlockBox containingBlock, final BlockBox inlineBlock, final int initialY) {
         inlineBlock.setContainingBlock(containingBlock);
         inlineBlock.setContainingLayer(c.getLayer());
         inlineBlock.initStaticPos(c, containingBlock, initialY);
@@ -405,7 +405,7 @@ public class InlineBoxing {
         inlineBlock.layout(c);
     }
 
-    public static int positionHorizontally(CssContext c, Box current, int start) {
+    public static int positionHorizontally(final CssContext c, final Box current, final int start) {
         int x = start;
 
         InlineLayoutBox currentIB = null;
@@ -416,9 +416,9 @@ public class InlineBoxing {
         }
 
         for (int i = 0; i < current.getChildCount(); i++) {
-            Box b = current.getChild(i);
+            final Box b = current.getChild(i);
             if (b instanceof InlineLayoutBox) {
-                InlineLayoutBox iB = (InlineLayoutBox) current.getChild(i);
+                final InlineLayoutBox iB = (InlineLayoutBox) current.getChild(i);
                 iB.setX(x);
                 x += positionHorizontally(c, iB, x);
             } else {
@@ -435,23 +435,23 @@ public class InlineBoxing {
         return x - start;
     }
 
-    private static int positionHorizontally(CssContext c, InlineLayoutBox current, int start) {
+    private static int positionHorizontally(final CssContext c, final InlineLayoutBox current, final int start) {
         int x = start;
 
         x += current.getLeftMarginBorderPadding(c);
 
         for (int i = 0; i < current.getInlineChildCount(); i++) {
-            Object child = current.getInlineChild(i);
+            final Object child = current.getInlineChild(i);
             if (child instanceof InlineLayoutBox) {
-                InlineLayoutBox iB = (InlineLayoutBox) child;
+                final InlineLayoutBox iB = (InlineLayoutBox) child;
                 iB.setX(x);
                 x += positionHorizontally(c, iB, x);
             } else if (child instanceof InlineText) {
-                InlineText iT = (InlineText) child;
+                final InlineText iT = (InlineText) child;
                 iT.setX(x - start);
                 x += iT.getWidth();
             } else if (child instanceof Box) {
-                Box b = (Box) child;
+                final Box b = (Box) child;
                 b.setX(x);
                 x += b.getWidth();
             }
@@ -464,32 +464,32 @@ public class InlineBoxing {
         return x - start;
     }
 
-    public static StrutMetrics createDefaultStrutMetrics(LayoutContext c, Box container) {
-        FSFontMetrics strutM = container.getStyle().getFSFontMetrics(c);
-        InlineBoxMeasurements measurements = getInitialMeasurements(c, container, strutM);
+    public static StrutMetrics createDefaultStrutMetrics(final LayoutContext c, final Box container) {
+        final FSFontMetrics strutM = container.getStyle().getFSFontMetrics(c);
+        final InlineBoxMeasurements measurements = getInitialMeasurements(c, container, strutM);
 
         return new StrutMetrics(
                 strutM.getAscent(), measurements.getBaseline(), strutM.getDescent());
     }
 
     private static void positionVertically(
-            LayoutContext c, Box container, LineBox current, MarkerData markerData) {
+            final LayoutContext c, final Box container, final LineBox current, final MarkerData markerData) {
         if (current.getChildCount() == 0 || ! current.isContainsVisibleContent()) {
             current.setHeight(0);
         } else {
-            FSFontMetrics strutM = container.getStyle().getFSFontMetrics(c);
-            VerticalAlignContext vaContext = new VerticalAlignContext();
-            InlineBoxMeasurements measurements = getInitialMeasurements(c, container, strutM);
+            final FSFontMetrics strutM = container.getStyle().getFSFontMetrics(c);
+            final VerticalAlignContext vaContext = new VerticalAlignContext();
+            final InlineBoxMeasurements measurements = getInitialMeasurements(c, container, strutM);
             vaContext.setInitialMeasurements(measurements);
 
-            List<TextDecoration> lBDecorations = calculateTextDecorations(
+            final List<TextDecoration> lBDecorations = calculateTextDecorations(
                     container, measurements.getBaseline(), strutM);
             if (lBDecorations != null) {
                 current.setTextDecorations(lBDecorations);
             }
 
             for (int i = 0; i < current.getChildCount(); i++) {
-                Box child = current.getChild(i);
+                final Box child = current.getChild(i);
                 positionInlineContentVertically(c, vaContext, child);
             }
 
@@ -503,7 +503,7 @@ public class InlineBoxing {
             if (vaContext.getInlineTop() < 0) {
                 moveLineContents(current, -vaContext.getInlineTop());
                 if (lBDecorations != null) {
-                    for (TextDecoration lBDecoration : lBDecorations) {
+                    for (final TextDecoration lBDecoration : lBDecorations) {
                         lBDecoration.setOffset(lBDecoration.getOffset() - vaContext.getInlineTop());
                     }
                 }
@@ -512,7 +512,7 @@ public class InlineBoxing {
             }
 
             if (markerData != null) {
-                StrutMetrics strutMetrics = markerData.getStructMetrics();
+                final StrutMetrics strutMetrics = markerData.getStructMetrics();
                 strutMetrics.setBaseline(measurements.getBaseline() - vaContext.getInlineTop());
                 markerData.setReferenceLine(current);
                 current.setMarkerData(markerData);
@@ -525,19 +525,19 @@ public class InlineBoxing {
         }
     }
 
-    private static void positionInlineVertically(LayoutContext c,
-            VerticalAlignContext vaContext, InlineLayoutBox iB) {
-        InlineBoxMeasurements iBMeasurements = calculateInlineMeasurements(c, iB, vaContext);
+    private static void positionInlineVertically(final LayoutContext c,
+            final VerticalAlignContext vaContext, final InlineLayoutBox iB) {
+        final InlineBoxMeasurements iBMeasurements = calculateInlineMeasurements(c, iB, vaContext);
         vaContext.pushMeasurements(iBMeasurements);
         positionInlineChildrenVertically(c, iB, vaContext);
         vaContext.popMeasurements();
     }
 
     private static void positionInlineBlockVertically(
-            LayoutContext c, VerticalAlignContext vaContext, BlockBox inlineBlock) {
-        int baseline = inlineBlock.calcInlineBaseline(c);
-        int ascent = baseline;
-        int descent = inlineBlock.getHeight() - baseline;
+            final LayoutContext c, final VerticalAlignContext vaContext, final BlockBox inlineBlock) {
+        final int baseline = inlineBlock.calcInlineBaseline(c);
+        final int ascent = baseline;
+        final int descent = inlineBlock.getHeight() - baseline;
         alignInlineContent(c, inlineBlock, ascent, descent, vaContext);
 
         vaContext.updateInlineTop(inlineBlock.getY());
@@ -547,9 +547,9 @@ public class InlineBoxing {
         vaContext.updatePaintingBottom(inlineBlock.getY() + inlineBlock.getHeight());
     }
 
-    private static void moveLineContents(LineBox current, int ty) {
+    private static void moveLineContents(final LineBox current, final int ty) {
         for (int i = 0; i < current.getChildCount(); i++) {
-            Box child = current.getChild(i);
+            final Box child = current.getChild(i);
             child.setY(child.getY() + ty);
             if (child instanceof InlineLayoutBox) {
                 moveInlineContents((InlineLayoutBox) child, ty);
@@ -557,9 +557,9 @@ public class InlineBoxing {
         }
     }
 
-    private static void moveInlineContents(InlineLayoutBox box, int ty) {
+    private static void moveInlineContents(final InlineLayoutBox box, final int ty) {
         for (int i = 0; i < box.getInlineChildCount(); i++) {
-            Object obj = box.getInlineChild(i);
+            final Object obj = box.getInlineChild(i);
             if (obj instanceof Box) {
                 ((Box) obj).setY(((Box) obj).getY() + ty);
 
@@ -570,12 +570,12 @@ public class InlineBoxing {
         }
     }
 
-    private static InlineBoxMeasurements calculateInlineMeasurements(LayoutContext c, InlineLayoutBox iB,
-                                                                     VerticalAlignContext vaContext) {
-        FSFontMetrics fm = iB.getStyle().getFSFontMetrics(c);
+    private static InlineBoxMeasurements calculateInlineMeasurements(final LayoutContext c, final InlineLayoutBox iB,
+                                                                     final VerticalAlignContext vaContext) {
+        final FSFontMetrics fm = iB.getStyle().getFSFontMetrics(c);
 
-        CalculatedStyle style = iB.getStyle();
-        float lineHeight = style.getLineHeight(c);
+        final CalculatedStyle style = iB.getStyle();
+        final float lineHeight = style.getLineHeight(c);
 
         int halfLeading = Math.round((lineHeight - iB.getStyle().getFont(c).size) / 2);
         if (halfLeading > 0) {
@@ -586,20 +586,20 @@ public class InlineBoxing {
         iB.setBaseline(Math.round(fm.getAscent()));
 
         alignInlineContent(c, iB, fm.getAscent(), fm.getDescent(), vaContext);
-        List<TextDecoration> decorations = calculateTextDecorations(iB, iB.getBaseline(), fm);
+        final List<TextDecoration> decorations = calculateTextDecorations(iB, iB.getBaseline(), fm);
         if (decorations != null) {
             iB.setTextDecorations(decorations);
         }
 
-        InlineBoxMeasurements result = new InlineBoxMeasurements();
+        final InlineBoxMeasurements result = new InlineBoxMeasurements();
         result.setBaseline(iB.getY() + iB.getBaseline());
         result.setInlineTop(iB.getY() - halfLeading);
         result.setInlineBottom(Math.round(result.getInlineTop() + lineHeight));
         result.setTextTop(iB.getY());
         result.setTextBottom((int) (result.getBaseline() + fm.getDescent()));
 
-        RectPropertySet padding = iB.getPadding(c);
-        BorderPropertySet border = iB.getBorder(c);
+        final RectPropertySet padding = iB.getPadding(c);
+        final BorderPropertySet border = iB.getBorder(c);
 
         result.setPaintingTop((int)Math.floor(iB.getY() - border.top() - padding.top()));
         result.setPaintingBottom((int)Math.ceil(iB.getY() +
@@ -609,16 +609,16 @@ public class InlineBoxing {
         return result;
     }
 
-    public static List<TextDecoration> calculateTextDecorations(Box box, int baseline,
-            FSFontMetrics fm) {
+    public static List<TextDecoration> calculateTextDecorations(final Box box, final int baseline,
+            final FSFontMetrics fm) {
         List<TextDecoration> result = null;
-        CalculatedStyle style = box.getStyle();
+        final CalculatedStyle style = box.getStyle();
 
-        List<FSDerivedValue> idents = style.getTextDecorations();
+        final List<FSDerivedValue> idents = style.getTextDecorations();
         if (idents != null) {
             result = new ArrayList<TextDecoration>(idents.size());
             if (idents.contains(IdentValue.UNDERLINE)) {
-                TextDecoration decoration = new TextDecoration(IdentValue.UNDERLINE);
+                final TextDecoration decoration = new TextDecoration(IdentValue.UNDERLINE);
                 // JDK returns zero so create additional space equal to one
                 // "underlineThickness"
                 if (fm.getUnderlineOffset() == 0) {
@@ -632,7 +632,7 @@ public class InlineBoxing {
                 // LineMetrics.getUnderlineOffset(). Compensate by always
                 // making sure underline fits inside the descender
                 if (fm.getUnderlineOffset() == 0) {  // HACK, are we running under the JDK
-                    int maxOffset =
+                    final int maxOffset =
                         baseline + (int)fm.getDescent() - decoration.getThickness();
                     if (decoration.getOffset() > maxOffset) {
                         decoration.setOffset(maxOffset);
@@ -642,14 +642,14 @@ public class InlineBoxing {
             }
 
             if (idents.contains(IdentValue.LINE_THROUGH)) {
-                TextDecoration decoration = new TextDecoration(IdentValue.LINE_THROUGH);
+                final TextDecoration decoration = new TextDecoration(IdentValue.LINE_THROUGH);
                 decoration.setOffset(Math.round(baseline + fm.getStrikethroughOffset()));
                 decoration.setThickness(Math.round(fm.getStrikethroughThickness()));
                 result.add(decoration);
             }
 
             if (idents.contains(IdentValue.OVERLINE)) {
-                TextDecoration decoration = new TextDecoration(IdentValue.OVERLINE);
+                final TextDecoration decoration = new TextDecoration(IdentValue.OVERLINE);
                 decoration.setOffset(0);
                 decoration.setThickness(Math.round(fm.getUnderlineThickness()));
                 result.add(decoration);
@@ -662,17 +662,17 @@ public class InlineBoxing {
     // XXX vertical-align: super/middle/sub could be improved (in particular,
     // super and sub should be sized by the measurements of our inline parent
     // not us)
-    private static void alignInlineContent(LayoutContext c, Box box,
-                                           float ascent, float descent, VerticalAlignContext vaContext) {
-        InlineBoxMeasurements measurements = vaContext.getParentMeasurements();
+    private static void alignInlineContent(final LayoutContext c, final Box box,
+                                           final float ascent, final float descent, final VerticalAlignContext vaContext) {
+        final InlineBoxMeasurements measurements = vaContext.getParentMeasurements();
 
-        CalculatedStyle style = box.getStyle();
+        final CalculatedStyle style = box.getStyle();
 
         if (style.isLength(CSSName.VERTICAL_ALIGN)) {
             box.setY((int) (measurements.getBaseline() - ascent -
                     style.getFloatPropertyProportionalTo(CSSName.VERTICAL_ALIGN, style.getLineHeight(c), c)));
         } else {
-            IdentValue vAlign = style.getIdent(CSSName.VERTICAL_ALIGN);
+            final IdentValue vAlign = style.getIdent(CSSName.VERTICAL_ALIGN);
 
             if (vAlign == IdentValue.BASELINE) {
                 box.setY(Math.round(measurements.getBaseline() - ascent));
@@ -695,8 +695,8 @@ public class InlineBoxing {
     }
 
     private static InlineBoxMeasurements getInitialMeasurements(
-            LayoutContext c, Box container, FSFontMetrics strutM) {
-        float lineHeight = container.getStyle().getLineHeight(c);
+            final LayoutContext c, final Box container, final FSFontMetrics strutM) {
+        final float lineHeight = container.getStyle().getLineHeight(c);
 
         int halfLeading = Math.round((lineHeight -
                 container.getStyle().getFont(c).size) / 2);
@@ -705,7 +705,7 @@ public class InlineBoxing {
                     (strutM.getDescent() + strutM.getAscent())) / 2);
         }
 
-        InlineBoxMeasurements measurements = new InlineBoxMeasurements();
+        final InlineBoxMeasurements measurements = new InlineBoxMeasurements();
         measurements.setBaseline((int) (halfLeading + strutM.getAscent()));
         measurements.setTextTop(halfLeading);
         measurements.setTextBottom((int) (measurements.getBaseline() + strutM.getDescent()));
@@ -715,43 +715,43 @@ public class InlineBoxing {
         return measurements;
     }
 
-    private static void positionInlineChildrenVertically(LayoutContext c, InlineLayoutBox current,
-                                               VerticalAlignContext vaContext) {
+    private static void positionInlineChildrenVertically(final LayoutContext c, final InlineLayoutBox current,
+                                               final VerticalAlignContext vaContext) {
         for (int i = 0; i < current.getInlineChildCount(); i++) {
-            Object child = current.getInlineChild(i);
+            final Object child = current.getInlineChild(i);
             if (child instanceof Box) {
                 positionInlineContentVertically(c, vaContext, (Box)child);
             }
         }
     }
 
-    private static void positionInlineContentVertically(LayoutContext c,
-            VerticalAlignContext vaContext, Box child) {
+    private static void positionInlineContentVertically(final LayoutContext c,
+            final VerticalAlignContext vaContext, final Box child) {
         VerticalAlignContext vaTarget = vaContext;
         if (! child.getStyle().isLength(CSSName.VERTICAL_ALIGN)) {
-            IdentValue vAlign = child.getStyle().getIdent(
+            final IdentValue vAlign = child.getStyle().getIdent(
                     CSSName.VERTICAL_ALIGN);
             if (vAlign == IdentValue.TOP || vAlign == IdentValue.BOTTOM) {
                 vaTarget = vaContext.createChild(child);
             }
         }
         if (child instanceof InlineLayoutBox) {
-            InlineLayoutBox iB = (InlineLayoutBox) child;
+            final InlineLayoutBox iB = (InlineLayoutBox) child;
             positionInlineVertically(c, vaTarget, iB);
         } else { // any other Box class
             positionInlineBlockVertically(c, vaTarget, (BlockBox)child);
         }
     }
 
-    private static void saveLine(LineBox current, LayoutContext c,
-                                 BlockBox block, int minHeight,
-                                 int maxAvailableWidth, List<FloatLayoutResult> pendingFloats,
-                                 boolean hasFirstLinePCs, List<Layer> pendingInlineLayers,
-                                 MarkerData markerData, int contentStart, boolean alwaysBreak) {
+    private static void saveLine(final LineBox current, final LayoutContext c,
+                                 final BlockBox block, final int minHeight,
+                                 final int maxAvailableWidth, final List<FloatLayoutResult> pendingFloats,
+                                 final boolean hasFirstLinePCs, final List<Layer> pendingInlineLayers,
+                                 final MarkerData markerData, final int contentStart, final boolean alwaysBreak) {
         current.setContentStart(contentStart);
         current.prunePendingInlineBoxes();
 
-        int totalLineWidth = positionHorizontally(c, current, 0);
+        final int totalLineWidth = positionHorizontally(c, current, 0);
         current.setContentWidth(totalLineWidth);
 
         positionVertically(c, block, current, markerData);
@@ -785,7 +785,7 @@ public class InlineBoxing {
         }
 
         if (pendingFloats.size() > 0) {
-            for (FloatLayoutResult layoutResult : pendingFloats) {
+            for (final FloatLayoutResult layoutResult : pendingFloats) {
                 LayoutUtil.layoutFloated(c, current, layoutResult.getBlock(), maxAvailableWidth, null);
                 current.addNonFlowContent(layoutResult.getBlock());
             }
@@ -805,7 +805,7 @@ public class InlineBoxing {
                 }
             });
         } else {
-            FloatDistances distances = new FloatDistances();
+            final FloatDistances distances = new FloatDistances();
             distances.setLeftFloatDistance(
                     c.getBlockFormattingContext().getLeftFloatDistance(
                             c, current, maxAvailableWidth));
@@ -820,16 +820,16 @@ public class InlineBoxing {
         }
     }
 
-    private static void finishPendingInlineLayers(LayoutContext c, List<Layer> layers) {
+    private static void finishPendingInlineLayers(final LayoutContext c, final List<Layer> layers) {
         for (int i = 0; i < layers.size(); i++) {
-            Layer l = layers.get(i);
+            final Layer l = layers.get(i);
             l.positionChildren(c);
         }
     }
 
-    private static InlineText layoutText(LayoutContext c, CalculatedStyle style, int remainingWidth,
-                                         LineBreakContext lbContext, boolean needFirstLetter) {
-        InlineText result = new InlineText();
+    private static InlineText layoutText(final LayoutContext c, final CalculatedStyle style, final int remainingWidth,
+                                         final LineBreakContext lbContext, final boolean needFirstLetter) {
+        final InlineText result = new InlineText();
         String masterText = lbContext.getMaster();
         if (needFirstLetter) {
             masterText = TextUtil.transformFirstLetterText(masterText, style);
@@ -848,15 +848,15 @@ public class InlineBoxing {
     }
 
     private static int processOutOfFlowContent(
-            LayoutContext c, LineBox current, BlockBox block,
-            int available, List<FloatLayoutResult> pendingFloats) {
+            final LayoutContext c, final LineBox current, final BlockBox block,
+            final int available, final List<FloatLayoutResult> pendingFloats) {
         int result = 0;
-        CalculatedStyle style = block.getStyle();
+        final CalculatedStyle style = block.getStyle();
         if (style.isAbsolute() || style.isFixed()) {
             LayoutUtil.layoutAbsolute(c, current, block);
             current.addNonFlowContent(block);
         } else if (style.isFloated()) {
-            FloatLayoutResult layoutResult = LayoutUtil.layoutFloated(
+            final FloatLayoutResult layoutResult = LayoutUtil.layoutFloated(
                     c, current, block, available, pendingFloats);
             if (layoutResult.isPending()) {
                 pendingFloats.add(layoutResult);
@@ -873,11 +873,11 @@ public class InlineBoxing {
     }
 
     private static boolean hasTrimmableLeadingSpace(
-            LineBox line, CalculatedStyle style, LineBreakContext lbContext,
-            boolean zeroWidthInlineBlock) {
+            final LineBox line, final CalculatedStyle style, final LineBreakContext lbContext,
+            final boolean zeroWidthInlineBlock) {
         if ((! line.isContainsContent() || zeroWidthInlineBlock) &&
                 lbContext.getStartSubstring().startsWith(WhitespaceStripper.SPACE)) {
-            IdentValue whitespace = style.getWhitespace();
+            final IdentValue whitespace = style.getWhitespace();
             if ( (whitespace == IdentValue.NORMAL || whitespace == IdentValue.NOWRAP
                         || whitespace == IdentValue.PRE_LINE) ||
                     ( whitespace == IdentValue.PRE_WRAP && ! lbContext.isEndsOnNL())) {
@@ -887,8 +887,8 @@ public class InlineBoxing {
         return false;
     }
 
-    private static void trimLeadingSpace(LineBreakContext lbContext) {
-        String s = lbContext.getStartSubstring();
+    private static void trimLeadingSpace(final LineBreakContext lbContext) {
+        final String s = lbContext.getStartSubstring();
         int i = 0;
         while (i < s.length() && s.charAt(i) == ' ') {
             i++;
@@ -896,7 +896,7 @@ public class InlineBoxing {
         lbContext.setStart(lbContext.getStart() + i);
     }
 
-    private static LineBox newLine(LayoutContext c, LineBox previousLine, Box box) {
+    private static LineBox newLine(final LayoutContext c, final LineBox previousLine, final Box box) {
         int y = 0;
 
         if (previousLine != null) {
@@ -906,8 +906,8 @@ public class InlineBoxing {
         return newLine(c, y, box);
     }
 
-    private static LineBox newLine(LayoutContext c, int y, Box box) {
-        LineBox result = new LineBox();
+    private static LineBox newLine(final LayoutContext c, final int y, final Box box) {
+        final LineBox result = new LineBox();
         result.setStyle(box.getStyle().createAnonymousStyle(IdentValue.BLOCK));
         result.setParent(box);
         result.initContainingLayer(c);
@@ -920,17 +920,17 @@ public class InlineBoxing {
     }
 
     private static InlineLayoutBox addOpenInlineBoxes(
-            LayoutContext c, LineBox line, List<InlineBox> openParents, int cbWidth, Map<InlineBox, InlineLayoutBox> iBMap) {
-        ArrayList<InlineBox> result = new ArrayList<InlineBox>();
+            final LayoutContext c, final LineBox line, final List<InlineBox> openParents, final int cbWidth, final Map<InlineBox, InlineLayoutBox> iBMap) {
+        final ArrayList<InlineBox> result = new ArrayList<InlineBox>();
 
         InlineLayoutBox currentIB = null;
         InlineLayoutBox previousIB = null;
 
         boolean first = true;
-        for (InlineBox iB : openParents) {
+        for (final InlineBox iB : openParents) {
             currentIB = new InlineLayoutBox(c, iB.getElement(), iB.getStyle(), cbWidth);
 
-            InlineLayoutBox prev = iBMap.get(iB);
+            final InlineLayoutBox prev = iBMap.get(iB);
             if (prev != null) {
                 currentIB.setPending(prev.isPending());
             }

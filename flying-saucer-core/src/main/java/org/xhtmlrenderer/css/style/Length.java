@@ -38,12 +38,12 @@ public class Length {
     public Length() {
     }
     
-    public Length(long value, int type) {
+    public Length(final long value, final int type) {
         _value = value;
         _type = type;
     }
     
-    public void setValue(long value) {
+    public void setValue(final long value) {
         _value = value;
     }
     
@@ -51,7 +51,7 @@ public class Length {
         return _value;
     }
     
-    public void setType(int type) {
+    public void setType(final int type) {
         _type = type;
     }
     
@@ -71,7 +71,7 @@ public class Length {
         return _type == PERCENT;
     }
     
-    public long width(int maxWidth) {
+    public long width(final int maxWidth) {
         switch (_type) {
             case FIXED:
                 return _value;
@@ -84,7 +84,7 @@ public class Length {
         }
     }
     
-    public long minWidth(int maxWidth) {
+    public long minWidth(final int maxWidth) {
         switch (_type) {
             case FIXED:
                 return _value;
@@ -96,7 +96,7 @@ public class Length {
     }
     
     public String toString() {
-        StringBuffer result = new StringBuffer();
+        final StringBuffer result = new StringBuffer();
         result.append("(type=");
         switch (_type) {
         case FIXED:

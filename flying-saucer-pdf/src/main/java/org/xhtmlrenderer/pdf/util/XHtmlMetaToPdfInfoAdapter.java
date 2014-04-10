@@ -125,7 +125,7 @@ public class XHtmlMetaToPdfInfoAdapter extends DefaultPDFCreationListener {
     private static final String HTML_META_ATTR_NAME = "name";    
     private static final String HTML_META_ATTR_CONTENT = "content";    
 
-    private java.util.Map<PdfName, PdfString> pdfInfoValues = new HashMap<PdfName, PdfString>();    
+    private final java.util.Map<PdfName, PdfString> pdfInfoValues = new HashMap<PdfName, PdfString>();    
 
     
     /**
@@ -133,7 +133,7 @@ public class XHtmlMetaToPdfInfoAdapter extends DefaultPDFCreationListener {
      * 
      * @param doc XHTML document
      */
-    public XHtmlMetaToPdfInfoAdapter( Document doc ) {
+    public XHtmlMetaToPdfInfoAdapter( final Document doc ) {
         parseHtmlTags( doc );        
     }
     
@@ -142,12 +142,12 @@ public class XHtmlMetaToPdfInfoAdapter extends DefaultPDFCreationListener {
      * 
      * @see PDFCreationListener
      */
-    public void onClose( ITextRenderer renderer ) {
+    public void onClose( final ITextRenderer renderer ) {
         XRLog.render(Level.FINEST, "handling onClose event ..." );
         addPdfMetaValuesToPdfDocument( renderer );        
     }
 
-    private void parseHtmlTags( Document doc ) {
+    private void parseHtmlTags( final Document doc ) {
         XRLog.render(Level.FINEST, "parsing (X)HTML tags ..." );
         parseHtmlTitleTag( doc );
         parseHtmlMetaTags( doc );
@@ -156,32 +156,32 @@ public class XHtmlMetaToPdfInfoAdapter extends DefaultPDFCreationListener {
         }
     }
     
-    private void parseHtmlTitleTag( Document doc ) 
+    private void parseHtmlTitleTag( final Document doc ) 
     {
-        Element rootHeadNodeElement = doc.head();
-        Elements titleElements = rootHeadNodeElement.getElementsByTag("title");
-        Element titleElement = titleElements.isEmpty() ? null : titleElements.get(0); 
+        final Element rootHeadNodeElement = doc.head();
+        final Elements titleElements = rootHeadNodeElement.getElementsByTag("title");
+        final Element titleElement = titleElements.isEmpty() ? null : titleElements.get(0); 
 
         if ( titleElement != null ) {
-            String titleContent = titleElement.text();
-            PdfName pdfName = PdfName.TITLE;
-            PdfString pdfString = new PdfString( titleContent );
+            final String titleContent = titleElement.text();
+            final PdfName pdfName = PdfName.TITLE;
+            final PdfString pdfString = new PdfString( titleContent );
             this.pdfInfoValues.put( pdfName, pdfString );
         }
     }
     
-    private void parseHtmlMetaTags( Document doc ) {
+    private void parseHtmlMetaTags( final Document doc ) {
         
-        Element rootHeadNodeElement = (Element) doc.head();
-        Elements metaNodeList = rootHeadNodeElement.getElementsByTag("meta");
+        final Element rootHeadNodeElement = (Element) doc.head();
+        final Elements metaNodeList = rootHeadNodeElement.getElementsByTag("meta");
         XRLog.render(Level.FINEST, "metaNodeList=" + metaNodeList );        
 
         for (int inode = 0; inode < metaNodeList.size(); ++inode) {
             XRLog.render(Level.FINEST, "node " + inode + " = "+ metaNodeList.get(inode).nodeName() );            
-            Element thisNode = (Element) metaNodeList.get(inode);
+            final Element thisNode = (Element) metaNodeList.get(inode);
             XRLog.render(Level.FINEST, "node " + thisNode );            
-            String metaName = thisNode.attr("name");
-            String metaContent = thisNode.attr("content");
+            final String metaName = thisNode.attr("name");
+            final String metaContent = thisNode.attr("content");
             XRLog.render(Level.FINEST, "metaName=" + metaName + ", metaContent=" + metaContent );            
             if (metaName.length() != 0 && metaContent.length() != 0) {
 
@@ -217,13 +217,13 @@ public class XHtmlMetaToPdfInfoAdapter extends DefaultPDFCreationListener {
     /**
      * Add PDF meta values to the target PDF document.
      */
-    private void addPdfMetaValuesToPdfDocument( ITextRenderer renderer ) {
+    private void addPdfMetaValuesToPdfDocument( final ITextRenderer renderer ) {
         
-        Iterator<PdfName> pdfNameIter = this.pdfInfoValues.keySet().iterator();
+        final Iterator<PdfName> pdfNameIter = this.pdfInfoValues.keySet().iterator();
 
         while (pdfNameIter.hasNext()) {
-            PdfName pdfName = pdfNameIter.next();
-            PdfString pdfString = pdfInfoValues.get( pdfName );
+            final PdfName pdfName = pdfNameIter.next();
+            final PdfString pdfString = pdfInfoValues.get( pdfName );
             XRLog.render(Level.FINEST, "pdfName=" + pdfName + ", pdfString=" + pdfString );
             renderer.getOutputDevice().getWriter().getInfo().put( pdfName, pdfString );            
         }

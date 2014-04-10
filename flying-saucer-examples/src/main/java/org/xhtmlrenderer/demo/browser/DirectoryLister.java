@@ -41,8 +41,8 @@ public class DirectoryLister {
      * @param file PARAM
      * @return Returns
      */
-    public static String list(File file) {
-        StringBuffer sb = new StringBuffer();
+    public static String list(final File file) {
+        final StringBuffer sb = new StringBuffer();
 
         sb.append("<html>");
         sb.append("<head>");
@@ -67,23 +67,23 @@ public class DirectoryLister {
         if (file.isDirectory()) {
             String loc = null;
             try {
-                File parent = file.getParentFile();
+                final File parent = file.getParentFile();
                 if ( parent != null ) {
                     loc = GeneralUtil.htmlEscapeSpace(file.getAbsoluteFile().getParentFile().toURL().toExternalForm()).toString();
                     sb.append("<a class='dir' href='" + loc + "'>Up to higher level directory</a>");
                 }
-            } catch (MalformedURLException e) {
+            } catch (final MalformedURLException e) {
                 // skip
             }
             sb.append("<table style='width: 75%'>");
-            File[] files = file.listFiles();
+            final File[] files = file.listFiles();
             String cls = "";
-            String img = "";
-            for (File f : files) {
+            final String img = "";
+            for (final File f : files) {
                 if ( f.isHidden() ) continue;
-                long len = f.length();
-                String lenDesc = ( len > 1024 ? new DecimalFormat("#,###KB").format(len / 1024) : "");
-                String lastMod = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(new Date(f.lastModified()));
+                final long len = f.length();
+                final String lenDesc = ( len > 1024 ? new DecimalFormat("#,###KB").format(len / 1024) : "");
+                final String lastMod = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(new Date(f.lastModified()));
                 sb.append("<tr>");
                 if (f.isDirectory()) {
                     cls = "dir";
@@ -98,7 +98,7 @@ public class DirectoryLister {
                             "<td>" + lenDesc + "</td>" +
                             "<td>" + lastMod + "</td>"
                     );
-                } catch (MalformedURLException e) {
+                } catch (final MalformedURLException e) {
                     sb.append(f.getAbsolutePath());
                 }
                 sb.append("</tr>");

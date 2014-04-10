@@ -33,7 +33,7 @@ public class TextAreaFormField extends AbstractFormField {
     
     private List<?> _lines;
     
-    public TextAreaFormField(LayoutContext c, BlockBox box, int cssWidth, int cssHeight) {
+    public TextAreaFormField(final LayoutContext c, final BlockBox box, final int cssWidth, final int cssHeight) {
         
     }
     
@@ -41,7 +41,7 @@ public class TextAreaFormField extends AbstractFormField {
         return FIELD_TYPE;
     }
 
-    public void paint(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box) {
+    public void paint(final RenderingContext c, final ITextOutputDevice outputDevice, final BlockBox box) {
         // TODO Auto-generated method stub
         
     }

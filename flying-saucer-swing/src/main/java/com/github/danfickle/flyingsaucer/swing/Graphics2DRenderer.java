@@ -74,7 +74,7 @@ public class Graphics2DRenderer {
      * @param g2  the canvas to layout on.
      * @param dim dimensions of the container for the document
      */
-    public void layout(Graphics2D g2, Dimension dim) {
+    public void layout(final Graphics2D g2, final Dimension dim) {
         this.dim = dim;
         if (dim != null) {
             panel.setSize(dim);
@@ -88,7 +88,7 @@ public class Graphics2DRenderer {
      *
      * @param g2 Canvas to render to.
      */
-    public void render(Graphics2D g2) {
+    public void render(final Graphics2D g2) {
         if (g2.getClip() == null) {
             g2.setClip(getMinimumSize());
         }
@@ -102,7 +102,7 @@ public class Graphics2DRenderer {
      *
      * @param url the URL for the document to render.
      */
-    public void setDocument(String url) {
+    public void setDocument(final String url) {
         panel.setDocument(url);
     }
 
@@ -112,7 +112,7 @@ public class Graphics2DRenderer {
      * @param doc      the Document to render
      * @param base_url base URL for relative links within the Document.
      */
-    public void setDocument(Document doc, String base_url) {
+    public void setDocument(final Document doc, final String base_url) {
         panel.setDocument(doc, base_url);
     }
 
@@ -121,7 +121,7 @@ public class Graphics2DRenderer {
      *
      * @param ctx The new renderingContext value
      */
-    public void setSharedContext(SharedContext ctx) {
+    public void setSharedContext(final SharedContext ctx) {
         panel.setSharedContext(ctx);
     }
 
@@ -168,7 +168,7 @@ public class Graphics2DRenderer {
      * @param height Height in pixels of the layout container
      * @return Returns an Image containing the rendered document.
      */
-    public static BufferedImage renderToImage(String url, int width, int height) {
+    public static BufferedImage renderToImage(final String url, final int width, final int height) {
         return renderToImage(url, width, height, BufferedImage.TYPE_INT_ARGB);
     }
 
@@ -183,12 +183,12 @@ public class Graphics2DRenderer {
      * as TYPE_INT_ARGB or TYPE_INT_RGB.
      * @return Returns an Image containing the rendered document.
      */
-    public static BufferedImage renderToImage(String url, int width, int height, int bufferedImageType) {
-        Graphics2DRenderer g2r = new Graphics2DRenderer();
+    public static BufferedImage renderToImage(final String url, final int width, final int height, final int bufferedImageType) {
+        final Graphics2DRenderer g2r = new Graphics2DRenderer();
         g2r.setDocument(url);
-        Dimension dim = new Dimension(width, height);
-        BufferedImage buff = new BufferedImage((int) dim.getWidth(), (int) dim.getHeight(), bufferedImageType);
-        Graphics2D g = (Graphics2D) buff.getGraphics();
+        final Dimension dim = new Dimension(width, height);
+        final BufferedImage buff = new BufferedImage((int) dim.getWidth(), (int) dim.getHeight(), bufferedImageType);
+        final Graphics2D g = (Graphics2D) buff.getGraphics();
         g2r.layout(g, dim);
         g2r.render(g);
         g.dispose();
@@ -205,7 +205,7 @@ public class Graphics2DRenderer {
      * @param width  Width in pixels of the layout container
      * @return Returns an java.awt.Image containing the rendered document.
      */
-    public static BufferedImage renderToImageAutoSize(String url, int width){
+    public static BufferedImage renderToImageAutoSize(final String url, final int width){
             return renderToImageAutoSize(url, width, BufferedImage.TYPE_INT_ARGB);
         }
 
@@ -221,10 +221,10 @@ public class Graphics2DRenderer {
      * as TYPE_INT_ARGB or TYPE_INT_RGB.
      * @return Returns an java.awt.Image containing the rendered document.
      */
-    public static BufferedImage renderToImageAutoSize(String url, int width, int bufferedImageType) {
-        Graphics2DRenderer g2r = new Graphics2DRenderer();
+    public static BufferedImage renderToImageAutoSize(final String url, final int width, final int bufferedImageType) {
+        final Graphics2DRenderer g2r = new Graphics2DRenderer();
         g2r.setDocument(url);
-        Dimension dim = new Dimension(width, 1000);
+        final Dimension dim = new Dimension(width, 1000);
 
         // do layout with temp buffer
         BufferedImage buff = new BufferedImage((int) dim.getWidth(), (int) dim.getHeight(), bufferedImageType);
@@ -233,7 +233,7 @@ public class Graphics2DRenderer {
         g.dispose();
 
         // get size
-        Rectangle rect = g2r.getMinimumSize();
+        final Rectangle rect = g2r.getMinimumSize();
 
         // render into real buffer
         buff = new BufferedImage((int) rect.getWidth(), (int) rect.getHeight(), bufferedImageType);

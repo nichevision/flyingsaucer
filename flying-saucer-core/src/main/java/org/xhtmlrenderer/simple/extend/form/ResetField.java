@@ -32,12 +32,12 @@ import org.xhtmlrenderer.simple.extend.XhtmlForm;
 import org.xhtmlrenderer.util.XRLog;
 
 class ResetField extends AbstractButtonField {
-    public ResetField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public ResetField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
     
     public JComponent create() {
-        JButton button = new JButton();
+        final JButton button = new JButton();
 
         String value;
         if (hasAttribute("value")) {
@@ -54,7 +54,7 @@ class ResetField extends AbstractButtonField {
         button.setText(value);
         
         button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(final ActionEvent event) {
                 XRLog.layout("Reset pressed: Restore");
                 
                 getParentForm().reset();
@@ -64,7 +64,7 @@ class ResetField extends AbstractButtonField {
         return button;
     }
     
-    public boolean includeInSubmission(JComponent source) {
+    public boolean includeInSubmission(final JComponent source) {
         return false;
     }
 

@@ -39,15 +39,15 @@ import org.xhtmlrenderer.util.GeneralUtil;
 import java.awt.*;
 
 class TextField extends InputField {
-    public TextField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public TextField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
 
     public JComponent create() {
-        TextFieldJTextField textfield = new TextFieldJTextField();
+        final TextFieldJTextField textfield = new TextFieldJTextField();
 
         if (hasAttribute("size")) {
-            int size = GeneralUtil.parseIntRelaxed(getAttribute("size"));
+            final int size = GeneralUtil.parseIntRelaxed(getAttribute("size"));
             
             // Size of 0 doesn't make any sense, so use default value
             if (size == 0) {
@@ -75,34 +75,34 @@ class TextField extends InputField {
         return textfield;
     }
 
-    protected void applyComponentStyle(JComponent component) {
+    protected void applyComponentStyle(final JComponent component) {
         super.applyComponentStyle(component);
 
-        TextFieldJTextField field = (TextFieldJTextField)component;
+        final TextFieldJTextField field = (TextFieldJTextField)component;
 
-        CalculatedStyle style = getBox().getStyle();
-        BorderPropertySet border = style.getBorder(null);
-        boolean disableOSBorder = (border.leftStyle() != null && border.rightStyle() != null || border.topStyle() != null || border.bottomStyle() != null);
+        final CalculatedStyle style = getBox().getStyle();
+        final BorderPropertySet border = style.getBorder(null);
+        final boolean disableOSBorder = (border.leftStyle() != null && border.rightStyle() != null || border.topStyle() != null || border.bottomStyle() != null);
 
-        RectPropertySet padding = style.getCachedPadding();
+        final RectPropertySet padding = style.getCachedPadding();
 
-        Integer paddingTop = getLengthValue(style, CSSName.PADDING_TOP);
-        Integer paddingLeft = getLengthValue(style, CSSName.PADDING_LEFT);
-        Integer paddingBottom = getLengthValue(style, CSSName.PADDING_BOTTOM);
-        Integer paddingRight = getLengthValue(style, CSSName.PADDING_RIGHT);
+        final Integer paddingTop = getLengthValue(style, CSSName.PADDING_TOP);
+        final Integer paddingLeft = getLengthValue(style, CSSName.PADDING_LEFT);
+        final Integer paddingBottom = getLengthValue(style, CSSName.PADDING_BOTTOM);
+        final Integer paddingRight = getLengthValue(style, CSSName.PADDING_RIGHT);
 
 
-        int top = paddingTop == null ? 2 : Math.max(2, paddingTop.intValue());
-        int left = paddingLeft == null ? 3 : Math.max(3, paddingLeft.intValue());
-        int bottom = paddingBottom == null ? 2 : Math.max(2, paddingBottom.intValue());
-        int right = paddingRight == null ? 3 : Math.max(3, paddingRight.intValue());
+        final int top = paddingTop == null ? 2 : Math.max(2, paddingTop.intValue());
+        final int left = paddingLeft == null ? 3 : Math.max(3, paddingLeft.intValue());
+        final int bottom = paddingBottom == null ? 2 : Math.max(2, paddingBottom.intValue());
+        final int right = paddingRight == null ? 3 : Math.max(3, paddingRight.intValue());
 
         //if a border is set or a background color is set, then use a special JButton with the BasicButtonUI.
         if (disableOSBorder) {
             //when background color is set, need to use the BasicButtonUI, certainly when using XP l&f
-            BasicTextUI ui = new BasicTextFieldUI();
+            final BasicTextUI ui = new BasicTextFieldUI();
             field.setUI(ui);
-            Border fieldBorder = BorderFactory.createEmptyBorder(top, left, bottom, right);
+            final Border fieldBorder = BorderFactory.createEmptyBorder(top, left, bottom, right);
             field.setBorder(fieldBorder);
         }
         else {
@@ -114,12 +114,12 @@ class TextField extends InputField {
         padding.setTop(0);
         padding.setBottom(0);
 
-        FSDerivedValue widthValue = style.valueByName(CSSName.WIDTH);
+        final FSDerivedValue widthValue = style.valueByName(CSSName.WIDTH);
         if (widthValue instanceof LengthValue) {
             intrinsicWidth = new Integer(getBox().getContentWidth() + left + right);
         }
 
-        FSDerivedValue heightValue = style.valueByName(CSSName.HEIGHT);
+        final FSDerivedValue heightValue = style.valueByName(CSSName.HEIGHT);
         if (heightValue instanceof LengthValue) {
             intrinsicHeight = new Integer(getBox().getHeight() + top + bottom);
         }
@@ -128,7 +128,7 @@ class TextField extends InputField {
 
     
     protected void applyOriginalState() {
-        JTextField textfield = (JTextField) getComponent();
+        final JTextField textfield = (JTextField) getComponent();
         
         textfield.setText(getOriginalState().getValue());
         
@@ -137,7 +137,7 @@ class TextField extends InputField {
     }
     
     protected String[] getFieldValues() {
-        JTextField textfield = (JTextField) getComponent();
+        final JTextField textfield = (JTextField) getComponent();
         
         return new String[] {
                 textfield.getText()
@@ -150,7 +150,7 @@ class TextField extends InputField {
         int columnWidth = 0;
         protected int getColumnWidth() {
             if (columnWidth == 0) {
-                FontMetrics metrics = getFontMetrics(getFont());
+                final FontMetrics metrics = getFontMetrics(getFont());
                 columnWidth = metrics.charWidth('o');
             }
             return columnWidth;

@@ -7,7 +7,7 @@ public class BorderRadiusCorner
 	private final PropertyValue one;
 	private final PropertyValue two;
 	
-	public BorderRadiusCorner(PropertyValue p1, PropertyValue p2) 
+	public BorderRadiusCorner(final PropertyValue p1, final PropertyValue p2) 
 	{
 		one = p1;
 		two = p2;

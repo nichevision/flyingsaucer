@@ -30,10 +30,10 @@ import static org.xhtmlrenderer.util.GeneralUtil.ciEquals;
 public class ButtonControl extends AbstractControl {
 
     private String _type, _label;
-    private boolean _extended;
-    private List<ButtonControlListener> _listeners = new ArrayList<ButtonControlListener>();
+    private final boolean _extended;
+    private final List<ButtonControlListener> _listeners = new ArrayList<ButtonControlListener>();
 
-    public ButtonControl(XhtmlForm form, Element e) {
+    public ButtonControl(final XhtmlForm form, final Element e) {
         super(form, e);
 
         _extended = ciEquals(e.nodeName(), "button");
@@ -66,16 +66,16 @@ public class ButtonControl extends AbstractControl {
         return _extended;
     }
 
-    public void addButtonControlListener(ButtonControlListener listener) {
+    public void addButtonControlListener(final ButtonControlListener listener) {
         _listeners.add(listener);
     }
 
-    public void removeButtonControlListener(ButtonControlListener listener) {
+    public void removeButtonControlListener(final ButtonControlListener listener) {
         _listeners.remove(listener);
     }
 
     public boolean press() {
-        for (ButtonControlListener buttonControlListener : _listeners) {
+        for (final ButtonControlListener buttonControlListener : _listeners) {
             if(!buttonControlListener.pressed(this))
                 return false;
         }

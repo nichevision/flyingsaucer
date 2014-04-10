@@ -26,8 +26,8 @@ package com.github.danfickle.flyingsaucer.swing;
  */
 public class ScaleChangeEvent {
 
-	private XHTMLPanel pane;
-	private double scale;
+	private final XHTMLPanel pane;
+	private final double scale;
 
 	/**
 	 * Constructs a new ScaleChangeEvent
@@ -35,7 +35,7 @@ public class ScaleChangeEvent {
 	 * @param pane  The panel where scale factor has changed
 	 * @param scale The new scale
 	 */
-	public ScaleChangeEvent(XHTMLPanel pane, double scale) {
+	public ScaleChangeEvent(final XHTMLPanel pane, final double scale) {
 		super();
 		this.pane = pane;
 		this.scale = scale;

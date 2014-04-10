@@ -42,7 +42,7 @@ public class BlockFormattingContext {
 
     private final PersistentBFC _persistentBFC;
 
-    public BlockFormattingContext(BlockBox block, LayoutContext c) {
+    public BlockFormattingContext(final BlockBox block, final LayoutContext c) {
         _persistentBFC = new PersistentBFC(block, c);
     }
 
@@ -50,7 +50,7 @@ public class BlockFormattingContext {
         return new Point(_x, _y);
     }
 
-    public void translate(int x, int y) {
+    public void translate(final int x, final int y) {
         _x -= x;
         _y -= y;
     }
@@ -59,28 +59,28 @@ public class BlockFormattingContext {
         return _persistentBFC.getFloatManager();
     }
 
-    public int getLeftFloatDistance(CssContext cssCtx, LineBox line, int containingBlockWidth) {
+    public int getLeftFloatDistance(final CssContext cssCtx, final LineBox line, final int containingBlockWidth) {
         return getFloatManager().getLeftFloatDistance(cssCtx, this, line, containingBlockWidth);
     }
 
-    public int getRightFloatDistance(CssContext cssCtx, LineBox line, int containingBlockWidth) {
+    public int getRightFloatDistance(final CssContext cssCtx, final LineBox line, final int containingBlockWidth) {
         return getFloatManager().getRightFloatDistance(cssCtx, this, line, containingBlockWidth);
     }
 
-    public int getFloatDistance(CssContext cssCtx, LineBox line, int containingBlockWidth) {
+    public int getFloatDistance(final CssContext cssCtx, final LineBox line, final int containingBlockWidth) {
         return getLeftFloatDistance(cssCtx, line, containingBlockWidth) +
                     getRightFloatDistance(cssCtx, line, containingBlockWidth);
     }
 
-    public int getNextLineBoxDelta(CssContext cssCtx, LineBox line, int containingBlockWidth) {
+    public int getNextLineBoxDelta(final CssContext cssCtx, final LineBox line, final int containingBlockWidth) {
         return getFloatManager().getNextLineBoxDelta(cssCtx, this, line, containingBlockWidth);
     }
 
-    public void floatBox(LayoutContext c, BlockBox floated) {
+    public void floatBox(final LayoutContext c, final BlockBox floated) {
         getFloatManager().floatBox(c, c.getLayer(), this, floated);
     }
 
-    public void clear(LayoutContext c, Box current) {
+    public void clear(final LayoutContext c, final Box current) {
         getFloatManager().clear(c, this, current);
     }
 

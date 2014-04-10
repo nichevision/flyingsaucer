@@ -70,135 +70,135 @@ public class XRLog {
     }
 
 
-    public static void cssParse(String msg) {
+    public static void cssParse(final String msg) {
         cssParse(Level.INFO, msg);
     }
 
-    public static void cssParse(Level level, String msg) {
+    public static void cssParse(final Level level, final String msg) {
         log(CSS_PARSE, level, msg);
     }
 
-    public static void cssParse(Level level, String msg, Throwable th) {
+    public static void cssParse(final Level level, final String msg, final Throwable th) {
         log(CSS_PARSE, level, msg, th);
     }
 
-    public static void xmlEntities(String msg) {
+    public static void xmlEntities(final String msg) {
         xmlEntities(Level.INFO, msg);
     }
 
-    public static void xmlEntities(Level level, String msg) {
+    public static void xmlEntities(final Level level, final String msg) {
         log(XML_ENTITIES, level, msg);
     }
 
-    public static void xmlEntities(Level level, String msg, Throwable th) {
+    public static void xmlEntities(final Level level, final String msg, final Throwable th) {
         log(XML_ENTITIES, level, msg, th);
     }
 
-    public static void cascade(String msg) {
+    public static void cascade(final String msg) {
         cascade(Level.INFO, msg);
     }
 
-    public static void cascade(Level level, String msg) {
+    public static void cascade(final Level level, final String msg) {
         log(CASCADE, level, msg);
     }
 
-    public static void cascade(Level level, String msg, Throwable th) {
+    public static void cascade(final Level level, final String msg, final Throwable th) {
         log(CASCADE, level, msg, th);
     }
 
-    public static void exception(String msg) {
+    public static void exception(final String msg) {
         exception(msg, null);
     }
 
-    public static void exception(String msg, Throwable th) {
+    public static void exception(final String msg, final Throwable th) {
         log(EXCEPTION, Level.WARNING, msg, th);
     }
 
-    public static void general(String msg) {
+    public static void general(final String msg) {
         general(Level.INFO, msg);
     }
 
-    public static void general(Level level, String msg) {
+    public static void general(final Level level, final String msg) {
         log(GENERAL, level, msg);
     }
 
-    public static void general(Level level, String msg, Throwable th) {
+    public static void general(final Level level, final String msg, final Throwable th) {
         log(GENERAL, level, msg, th);
     }
 
-    public static void init(String msg) {
+    public static void init(final String msg) {
         init(Level.INFO, msg);
     }
 
-    public static void init(Level level, String msg) {
+    public static void init(final Level level, final String msg) {
         log(INIT, level, msg);
     }
 
-    public static void init(Level level, String msg, Throwable th) {
+    public static void init(final Level level, final String msg, final Throwable th) {
         log(INIT, level, msg, th);
     }
 
-    public static void junit(String msg) {
+    public static void junit(final String msg) {
         junit(Level.FINEST, msg);
     }
 
-    public static void junit(Level level, String msg) {
+    public static void junit(final Level level, final String msg) {
         log(JUNIT, level, msg);
     }
 
-    public static void junit(Level level, String msg, Throwable th) {
+    public static void junit(final Level level, final String msg, final Throwable th) {
         log(JUNIT, level, msg, th);
     }
 
-    public static void load(String msg) {
+    public static void load(final String msg) {
         load(Level.INFO, msg);
     }
 
-    public static void load(Level level, String msg) {
+    public static void load(final Level level, final String msg) {
         log(LOAD, level, msg);
     }
 
-    public static void load(Level level, String msg, Throwable th) {
+    public static void load(final Level level, final String msg, final Throwable th) {
         log(LOAD, level, msg, th);
     }
 
-    public static void match(String msg) {
+    public static void match(final String msg) {
         match(Level.INFO, msg);
     }
 
-    public static void match(Level level, String msg) {
+    public static void match(final Level level, final String msg) {
         log(MATCH, level, msg);
     }
 
-    public static void match(Level level, String msg, Throwable th) {
+    public static void match(final Level level, final String msg, final Throwable th) {
         log(MATCH, level, msg, th);
     }
 
-    public static void layout(String msg) {
+    public static void layout(final String msg) {
         layout(Level.INFO, msg);
     }
 
-    public static void layout(Level level, String msg) {
+    public static void layout(final Level level, final String msg) {
         log(LAYOUT, level, msg);
     }
 
-    public static void layout(Level level, String msg, Throwable th) {
+    public static void layout(final Level level, final String msg, final Throwable th) {
         log(LAYOUT, level, msg, th);
     }
 
-    public static void render(String msg) {
+    public static void render(final String msg) {
         render(Level.INFO, msg);
     }
 
-    public static void render(Level level, String msg) {
+    public static void render(final Level level, final String msg) {
         log(RENDER, level, msg);
     }
 
-    public static void render(Level level, String msg, Throwable th) {
+    public static void render(final Level level, final String msg, final Throwable th) {
         log(RENDER, level, msg, th);
     }
 
-    public static synchronized void log(String where, Level level, String msg) {
+    public static synchronized void log(final String where, final Level level, final String msg) {
         if (initPending) {
             init();
         }
@@ -207,7 +207,7 @@ public class XRLog {
         }
     }
 
-    public static synchronized void log(String where, Level level, String msg, Throwable th) {
+    public static synchronized void log(final String where, final Level level, final String msg, final Throwable th) {
         if (initPending) {
             init();
         }
@@ -216,7 +216,7 @@ public class XRLog {
         }
     }
 
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
         try {
             XRLog.cascade("Cascade msg");
             XRLog.cascade(Level.WARNING, "Cascade msg");
@@ -234,7 +234,7 @@ public class XRLog {
             XRLog.layout(Level.WARNING, "Layout msg");
             XRLog.render("Render msg");
             XRLog.render(Level.WARNING, "Render msg");
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -255,7 +255,7 @@ public class XRLog {
         }
     }
 
-    public static synchronized void setLevel(String log, Level level) {
+    public static synchronized void setLevel(final String log, final Level level) {
         if (initPending) {
             init();
         }
@@ -279,7 +279,7 @@ public class XRLog {
      * if false, all logging calls fail silently. Corresponds
      * to configuration file property xr.util-logging.loggingEnabled
      */
-    public static synchronized void setLoggingEnabled(boolean loggingEnabled) {
+    public static synchronized void setLoggingEnabled(final boolean loggingEnabled) {
         XRLog.loggingEnabled = loggingEnabled;
     }
 
@@ -287,7 +287,7 @@ public class XRLog {
         return loggerImpl;
     }
 
-    public static synchronized void setLoggerImpl(XRLogger loggerImpl) {
+    public static synchronized void setLoggerImpl(final XRLogger loggerImpl) {
         XRLog.loggerImpl = loggerImpl;
     }
 }// end class

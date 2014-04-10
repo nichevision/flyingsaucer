@@ -31,18 +31,18 @@ public class PDFEncryption {
     public PDFEncryption() {
     }
 
-    public PDFEncryption(byte[] userPassword, byte[] ownerPassword) {
+    public PDFEncryption(final byte[] userPassword, final byte[] ownerPassword) {
         _userPassword = ArrayUtil.cloneOrEmpty(userPassword);
         _ownerPassword = ArrayUtil.cloneOrEmpty(ownerPassword);
     }
 
-    public PDFEncryption(byte[] userPassword, byte[] ownerPassword, int allowedPrivileges) {
+    public PDFEncryption(final byte[] userPassword, final byte[] ownerPassword, final int allowedPrivileges) {
         _userPassword = ArrayUtil.cloneOrEmpty(userPassword);
         _ownerPassword = ArrayUtil.cloneOrEmpty(ownerPassword);
         _allowedPrivileges = allowedPrivileges;
     }
     
-    public PDFEncryption(byte[] userPassword, byte[] ownerPassword, int allowedPrivileges, int encryptionType) {
+    public PDFEncryption(final byte[] userPassword, final byte[] ownerPassword, final int allowedPrivileges, final int encryptionType) {
         _userPassword = ArrayUtil.cloneOrEmpty(userPassword);
         _ownerPassword = ArrayUtil.cloneOrEmpty(ownerPassword);
         _allowedPrivileges = allowedPrivileges;
@@ -53,7 +53,7 @@ public class PDFEncryption {
         return ArrayUtil.cloneOrEmpty(_userPassword);
     }
 
-    public void setUserPassword(byte[] userPassword) {
+    public void setUserPassword(final byte[] userPassword) {
         _userPassword = ArrayUtil.cloneOrEmpty(userPassword);
     }
 
@@ -61,7 +61,7 @@ public class PDFEncryption {
         return ArrayUtil.cloneOrEmpty(_ownerPassword);
     }
 
-    public void setOwnerPassword(byte[] ownerPassword) {
+    public void setOwnerPassword(final byte[] ownerPassword) {
         _ownerPassword = ArrayUtil.cloneOrEmpty(ownerPassword);
     }
 
@@ -69,7 +69,7 @@ public class PDFEncryption {
         return _allowedPrivileges;
     }
         
-    public void setAllowedPrivileges(int allowedPrivileges) {
+    public void setAllowedPrivileges(final int allowedPrivileges) {
         _allowedPrivileges = allowedPrivileges;
     }
     
@@ -77,7 +77,7 @@ public class PDFEncryption {
         return _encryptionType;
     }
 
-    public void setEncryptionType(int encryptionType ) {
+    public void setEncryptionType(final int encryptionType ) {
         _encryptionType  = encryptionType;
     }
     

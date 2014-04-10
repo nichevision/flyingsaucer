@@ -23,7 +23,7 @@ package org.xhtmlrenderer.resource;
  * @author Patrick Wright
  */
 public abstract class AbstractResource implements Resource {
-    private long createTimeStamp;
+    private final long createTimeStamp;
     private long elapsedLoadTime;
 
     public AbstractResource() {
@@ -39,7 +39,7 @@ public abstract class AbstractResource implements Resource {
     }
 
     /*package*/
-    void setElapsedLoadTime(long elapsedLoadTime) {
+    void setElapsedLoadTime(final long elapsedLoadTime) {
         this.elapsedLoadTime = elapsedLoadTime;
     }
 }

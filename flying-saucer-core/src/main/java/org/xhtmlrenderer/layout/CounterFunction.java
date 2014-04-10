@@ -25,17 +25,17 @@ import java.util.Iterator;
 import java.util.List;
 
 public class CounterFunction {
-    private IdentValue _listStyleType;
+    private final IdentValue _listStyleType;
     private int _counterValue;
     private List<Integer> _counterValues;
     private String _separator;
 
-    public CounterFunction(int counterValue, IdentValue listStyleType) {
+    public CounterFunction(final int counterValue, final IdentValue listStyleType) {
         _counterValue = counterValue;
         _listStyleType = listStyleType;
     }
 
-    public CounterFunction(List<Integer> counterValues, String separator, IdentValue listStyleType) {
+    public CounterFunction(final List<Integer> counterValues, final String separator, final IdentValue listStyleType) {
         _counterValues = counterValues;
         _separator = separator;
         _listStyleType = listStyleType;
@@ -45,16 +45,16 @@ public class CounterFunction {
         if (_counterValues == null) {
             return createCounterText(_listStyleType, _counterValue);
         }
-        StringBuffer sb = new StringBuffer();
-        for (Iterator<Integer> i = _counterValues.iterator(); i.hasNext();) {
-            Integer value = (Integer) i.next();
+        final StringBuffer sb = new StringBuffer();
+        for (final Iterator<Integer> i = _counterValues.iterator(); i.hasNext();) {
+            final Integer value = (Integer) i.next();
             sb.append(createCounterText(_listStyleType, value.intValue()));
             if (i.hasNext()) sb.append(_separator);
         }
         return sb.toString();
     }
 
-    public static String createCounterText(IdentValue listStyle, int listCounter) {
+    public static String createCounterText(final IdentValue listStyle, final int listCounter) {
         String text;
         if (listStyle == IdentValue.LOWER_LATIN || listStyle == IdentValue.LOWER_ALPHA) {
             text = toLatin(listCounter).toLowerCase();
@@ -76,7 +76,7 @@ public class CounterFunction {
     private static String toLatin(int val) {
         String result = "";
         while (val > 0) {
-            int letter = val % 26;
+            final int letter = val % 26;
             val = val / 26;
             result = ((char) (letter + 64)) + result;
         }
@@ -84,11 +84,11 @@ public class CounterFunction {
     }
 
     private static String toRoman(int val) {
-        int[] ints = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-        String[] nums = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-        StringBuffer sb = new StringBuffer();
+        final int[] ints = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        final String[] nums = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        final StringBuffer sb = new StringBuffer();
         for (int i = 0; i < ints.length; i++) {
-            int count = (int) (val / ints[i]);
+            final int count = (int) (val / ints[i]);
             for (int j = 0; j < count; j++) {
                 sb.append(nums[i]);
             }

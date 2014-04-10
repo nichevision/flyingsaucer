@@ -30,7 +30,7 @@ import java.awt.*;
  * There is a default constructor for average quality and performance.
  */
 public class ScalingOptions {
-	private DownscaleQuality downscalingHint;
+	private final DownscaleQuality downscalingHint;
 	private int targetWidth;
 	private int targetHeight;
 
@@ -43,7 +43,7 @@ public class ScalingOptions {
 	 * @param interpolationHint Hint for interpolation to AWT image renderer, one of the Object constants from
 	 *                          {@link java.awt.RenderingHints} using {@link java.awt.RenderingHints.KEY_INTERPOLATION}
 	 */
-	public ScalingOptions(DownscaleQuality downscalingHint) {
+	public ScalingOptions(final DownscaleQuality downscalingHint) {
 		this.downscalingHint = downscalingHint;
 	}
 
@@ -68,7 +68,7 @@ public class ScalingOptions {
 	 * @param hint		 Hint for interpolation to AWT image renderer, one of the Object constants from
 	 *                     {@link java.awt.RenderingHints} using {@link java.awt.RenderingHints.KEY_INTERPOLATION}
 	 */
-	public ScalingOptions(int targetWidth, int targetHeight, int type, DownscaleQuality downscalingHint) {
+	public ScalingOptions(final int targetWidth, final int targetHeight, final int type, final DownscaleQuality downscalingHint) {
 		this(downscalingHint);
 		this.setTargetHeight(Math.max(1, targetHeight));
 		this.setTargetWidth(Math.max(1, targetWidth));
@@ -89,7 +89,7 @@ public class ScalingOptions {
 	 * @param h an image height
 	 * @return true if image dimensions already match target size
 	 */
-	public boolean sizeMatches(int w, int h) {
+	public boolean sizeMatches(final int w, final int h) {
 		return (w == getTargetWidth() && h == getTargetHeight());
 	}
 
@@ -100,7 +100,7 @@ public class ScalingOptions {
 	 * @param img
 	 * @return true if image dimensions already match target size
 	 */
-	public boolean sizeMatches(Image img) {
+	public boolean sizeMatches(final Image img) {
 		return sizeMatches(img.getWidth(null), img.getHeight(null));
 	}
 
@@ -112,15 +112,15 @@ public class ScalingOptions {
 		return targetHeight;
 	}
 
-	public void setTargetWidth(int targetWidth) {
+	public void setTargetWidth(final int targetWidth) {
 		this.targetWidth = targetWidth;
 	}
 
-	public void setTargetHeight(int targetHeight) {
+	public void setTargetHeight(final int targetHeight) {
 		this.targetHeight = targetHeight;
 	}
 
-	public void setTargetDimensions(Dimension dim) {
+	public void setTargetDimensions(final Dimension dim) {
 		setTargetWidth((int) dim.getWidth());
 		setTargetHeight((int) dim.getHeight());
 	}

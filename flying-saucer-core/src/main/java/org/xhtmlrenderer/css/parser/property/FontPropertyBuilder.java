@@ -42,7 +42,7 @@ public class FontPropertyBuilder implements PropertyBuilder {
         CSSName.FONT_SIZE, CSSName.LINE_HEIGHT, CSSName.FONT_FAMILY };
     
     public List<PropertyDeclaration> buildDeclarations(
-            CSSName cssName, List<PropertyValue> values, CSSOrigin origin, boolean important, boolean inheritAllowed) {
+            final CSSName cssName, final List<PropertyValue> values, final CSSOrigin origin, final boolean important, final boolean inheritAllowed) {
         List<PropertyDeclaration> result = checkInheritAll(ALL, values, origin, important, inheritAllowed);
         if (result != null) {
             return result;
@@ -57,18 +57,18 @@ public class FontPropertyBuilder implements PropertyBuilder {
         
         boolean keepGoing = false;
         
-        ListIterator<PropertyValue> i = values.listIterator();
+        final ListIterator<PropertyValue> i = values.listIterator();
         while (i.hasNext()) {
             PropertyValue value = (PropertyValue)i.next();
-            CSSPrimitiveUnit type = value.getPrimitiveTypeN();
+            final CSSPrimitiveUnit type = value.getPrimitiveTypeN();
             if (type == CSSPrimitiveUnit.CSS_IDENT) {
                 // The parser will have given us ident values as they appear
                 // (case-wise) in the CSS text since we might be creating
                 // a font-family list out of them.  Here we want the normalized
                 // (lowercase) version though.
-                String lowerCase = value.getStringValue().toLowerCase();
+                final String lowerCase = value.getStringValue().toLowerCase();
                 value = new PropertyValueImp(CSSPrimitiveUnit.CSS_IDENT, lowerCase, lowerCase);
-                IdentValue ident = checkIdent(cssName, value);
+                final IdentValue ident = checkIdent(cssName, value);
                 if (ident == IdentValue.NORMAL) { // skip to avoid double set false positives
                     continue;
                 }
@@ -96,12 +96,12 @@ public class FontPropertyBuilder implements PropertyBuilder {
                     throw new CSSParseException("font-weight cannot be set twice", -1);
                 }
                 
-                IdentValue weight = Conversions.getNumericFontWeight(value.getFloatValue());
+                final IdentValue weight = Conversions.getNumericFontWeight(value.getFloatValue());
                 if (weight == null) {
                     throw new CSSParseException(value + " is not a valid font weight", -1);
                 }
                 
-                PropertyValue replacement = new PropertyValueImp(
+                final PropertyValue replacement = new PropertyValueImp(
                 		CSSPrimitiveUnit.CSS_IDENT, weight.toString(), weight.toString());
                 replacement.setIdentValue(weight);
                 
@@ -117,11 +117,11 @@ public class FontPropertyBuilder implements PropertyBuilder {
             PropertyValue value = (PropertyValue)i.next();
             
             if (value.getPrimitiveTypeN() == CSSPrimitiveUnit.CSS_IDENT) {
-                String lowerCase = value.getStringValue().toLowerCase();
+                final String lowerCase = value.getStringValue().toLowerCase();
                 value = new PropertyValueImp(CSSPrimitiveUnit.CSS_IDENT, lowerCase, lowerCase);
             }
             
-            PropertyBuilder fontSizeBuilder = CSSName.getPropertyBuilder(CSSName.FONT_SIZE);
+            final PropertyBuilder fontSizeBuilder = CSSName.getPropertyBuilder(CSSName.FONT_SIZE);
             List<PropertyDeclaration> l = fontSizeBuilder.buildDeclarations(
                     CSSName.FONT_SIZE, Collections.singletonList(value), origin, important, true);
             
@@ -130,7 +130,7 @@ public class FontPropertyBuilder implements PropertyBuilder {
             if (i.hasNext()) {
                 value = (PropertyValue)i.next();
                 if (value.getOperator() == Token.TK_VIRGULE) {
-                    PropertyBuilder lineHeightBuilder = CSSName.getPropertyBuilder(CSSName.LINE_HEIGHT);
+                    final PropertyBuilder lineHeightBuilder = CSSName.getPropertyBuilder(CSSName.LINE_HEIGHT);
                     l = lineHeightBuilder.buildDeclarations(
                             CSSName.LINE_HEIGHT, Collections.singletonList(value), origin, important, true);
                     lineHeight = (PropertyDeclaration)l.get(0);
@@ -140,11 +140,11 @@ public class FontPropertyBuilder implements PropertyBuilder {
             }
             
             if (i.hasNext()) {
-                List<PropertyValue> families = new ArrayList<PropertyValue>();
+                final List<PropertyValue> families = new ArrayList<PropertyValue>();
                 while (i.hasNext()) {
                     families.add(i.next());
                 }
-                PropertyBuilder fontFamilyBuilder = CSSName.getPropertyBuilder(CSSName.FONT_FAMILY);
+                final PropertyBuilder fontFamilyBuilder = CSSName.getPropertyBuilder(CSSName.FONT_FAMILY);
                 l = fontFamilyBuilder.buildDeclarations(
                         CSSName.FONT_FAMILY, families, origin, important, true);
                 fontFamily = (PropertyDeclaration)l.get(0);

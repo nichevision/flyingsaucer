@@ -35,13 +35,13 @@ public class PageElementPosition {
     public static final PageElementPosition LAST = addValue("last");
     public static final PageElementPosition LAST_EXCEPT = addValue("last-except");
 
-    private PageElementPosition(String ident) {
+    private PageElementPosition(final String ident) {
         this._ident = ident;
         this.FS_ID = _maxAssigned++;
     }
     
-    private final static PageElementPosition addValue(String ident) {
-        PageElementPosition val = new PageElementPosition(ident);
+    private final static PageElementPosition addValue(final String ident) {
+        final PageElementPosition val = new PageElementPosition(ident);
         ALL.put(ident, val);
         return val;
     }
@@ -50,7 +50,7 @@ public class PageElementPosition {
         return _ident;
     }
     
-    public static PageElementPosition valueOf(String ident) {
+    public static PageElementPosition valueOf(final String ident) {
         return ALL.get(ident);
     }
     
@@ -58,7 +58,7 @@ public class PageElementPosition {
         return FS_ID;
     }
     
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || ! (o instanceof PageElementPosition)) {
             return false;
         }

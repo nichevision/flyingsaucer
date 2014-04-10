@@ -30,8 +30,8 @@ public class MakeTokens {
     private static final String EOL = System.getProperty("line.separator");
     private static final String INPUT = "C:/eclipseWorkspaceQT/xhtmlrenderer/src/java/org/xhtmlrenderer/css/parser/tokens.txt";
     
-    public static final void main(String[] args) throws IOException {
-        List<String> tokens = new ArrayList<String>();
+    public static final void main(final String[] args) throws IOException {
+        final List<String> tokens = new ArrayList<String>();
         
         BufferedReader reader = null; 
         try {
@@ -45,17 +45,17 @@ public class MakeTokens {
             if (reader != null) {
                 try {
                     reader.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }
         }
         
-        StringBuffer buf = new StringBuffer();
+        final StringBuffer buf = new StringBuffer();
         
-        int offset = 1;
-        for (String token : tokens) {
-            String id = token.substring(0, token.indexOf(','));
+        final int offset = 1;
+        for (final String token : tokens) {
+            final String id = token.substring(0, token.indexOf(','));
             
             buf.append("\tpublic static final int ");
             buf.append(id);
@@ -67,9 +67,9 @@ public class MakeTokens {
         
         buf.append(EOL);
         
-        for (String token : tokens) {
-            String id = token.substring(0, token.indexOf(','));
-            String descr = token.substring(token.indexOf(',')+1);
+        for (final String token : tokens) {
+            final String id = token.substring(0, token.indexOf(','));
+            final String descr = token.substring(token.indexOf(',')+1);
             
             buf.append("\tpublic static final Token TK_");
             buf.append(id);

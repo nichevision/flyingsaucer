@@ -36,7 +36,7 @@ public class FloatLayoutResult {
         return _pending;
     }
 
-    public void setPending(boolean pending) {
+    public void setPending(final boolean pending) {
         _pending = pending;
     }
 
@@ -44,7 +44,7 @@ public class FloatLayoutResult {
         return _block;
     }
 
-    public void setBlock(BlockBox block) {
+    public void setBlock(final BlockBox block) {
         _block = block;
     }
 }

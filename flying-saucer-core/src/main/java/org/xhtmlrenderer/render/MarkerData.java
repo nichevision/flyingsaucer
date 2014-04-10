@@ -43,7 +43,7 @@ public class MarkerData {
         return _textMarker;
     }
 
-    public void setTextMarker(TextMarker markerText) {
+    public void setTextMarker(final TextMarker markerText) {
         _textMarker = markerText;
     }
 
@@ -51,7 +51,7 @@ public class MarkerData {
         return _glyphMarker;
     }
 
-    public void setGlyphMarker(GlyphMarker glyphMarker) {
+    public void setGlyphMarker(final GlyphMarker glyphMarker) {
         _glyphMarker = glyphMarker;
     }
 
@@ -59,7 +59,7 @@ public class MarkerData {
         return _imageMarker;
     }
 
-    public void setImageMarker(ImageMarker imageMarker) {
+    public void setImageMarker(final ImageMarker imageMarker) {
         _imageMarker = imageMarker;
     }
 
@@ -67,7 +67,7 @@ public class MarkerData {
         return _structMetrics;
     }
 
-    public void setStructMetrics(StrutMetrics structMetrics) {
+    public void setStructMetrics(final StrutMetrics structMetrics) {
         _structMetrics = structMetrics;
     }
     
@@ -87,12 +87,12 @@ public class MarkerData {
         return _referenceLine;
     }
 
-    public void setReferenceLine(LineBox referenceLine) {
+    public void setReferenceLine(final LineBox referenceLine) {
         _previousReferenceLine = _referenceLine;
         _referenceLine = referenceLine;
     }
     
-    public void restorePreviousReferenceLine(LineBox current) {
+    public void restorePreviousReferenceLine(final LineBox current) {
         if (current == _referenceLine) {
             _referenceLine = _previousReferenceLine;
         }
@@ -105,13 +105,13 @@ public class MarkerData {
         public FSImage getImage() {
             return _image;
         }
-        public void setImage(FSImage image) {
+        public void setImage(final FSImage image) {
             _image = image;
         }
         public int getLayoutWidth() {
             return _layoutWidth;
         }
-        public void setLayoutWidth(int layoutWidth) {
+        public void setLayoutWidth(final int layoutWidth) {
             _layoutWidth = layoutWidth;
         }
     }
@@ -124,7 +124,7 @@ public class MarkerData {
             return _diameter;
         }
         
-        public void setDiameter(int diameter) {
+        public void setDiameter(final int diameter) {
             _diameter = diameter;
         }
         
@@ -132,7 +132,7 @@ public class MarkerData {
             return _layoutWidth;
         }
         
-        public void setLayoutWidth(int layoutWidth) {
+        public void setLayoutWidth(final int layoutWidth) {
             _layoutWidth = layoutWidth;
         }
     }
@@ -148,7 +148,7 @@ public class MarkerData {
             return _text;
         }
 
-        public void setText(String text) {
+        public void setText(final String text) {
             _text = text;
         }
 
@@ -156,7 +156,7 @@ public class MarkerData {
             return _layoutWidth;
         }
 
-        public void setLayoutWidth(int width) {
+        public void setLayoutWidth(final int width) {
             _layoutWidth = width;
         }
     }    

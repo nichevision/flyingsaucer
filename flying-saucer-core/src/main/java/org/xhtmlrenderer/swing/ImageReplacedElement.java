@@ -49,10 +49,10 @@ public class ImageReplacedElement implements ReplacedElement {
      * @param targetWidth The width we'd like the image to have, in pixels.
      * @param targetHeight The height we'd like the image to have, in pixels.
      */
-    public ImageReplacedElement(Image image, int targetWidth, int targetHeight) {
+    public ImageReplacedElement(Image image, final int targetWidth, final int targetHeight) {
 		if (targetWidth > 0 || targetHeight > 0) {
-            int w = image.getWidth(null);
-            int h = image.getHeight(null);
+            final int w = image.getWidth(null);
+            final int h = image.getHeight(null);
 
 		    int newW = targetWidth;
 		    int newH = targetHeight;
@@ -69,7 +69,7 @@ public class ImageReplacedElement implements ReplacedElement {
                 if (image instanceof BufferedImage) {
                     image = ImageUtil.getScaledInstance((BufferedImage) image, newW, newH);
                 } else {
-                   String scalingType = Configuration.valueFor("xr.image.scale", "HIGH").trim() ;
+                   final String scalingType = Configuration.valueFor("xr.image.scale", "HIGH").trim() ;
 
                    if(scalingType.equalsIgnoreCase("HIGH") || scalingType.equalsIgnoreCase("MID") ){
                        image = image.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
@@ -83,7 +83,7 @@ public class ImageReplacedElement implements ReplacedElement {
     }
 
     /** {@inheritDoc} */
-    public void detach(LayoutContext c) {
+    public void detach(final LayoutContext c) {
         // nothing to do in this case
     }
 
@@ -108,7 +108,7 @@ public class ImageReplacedElement implements ReplacedElement {
     }
 
     /** {@inheritDoc} */
-    public void setLocation(int x, int y) {
+    public void setLocation(final int x, final int y) {
         _location = new Point(x, y);
     }
 

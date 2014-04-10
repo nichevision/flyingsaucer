@@ -37,19 +37,19 @@ public class SizePropertyBuilder implements PropertyBuilder {
     private static final CSSName[] ALL = { CSSName.FS_PAGE_ORIENTATION, CSSName.FS_PAGE_HEIGHT, CSSName.FS_PAGE_WIDTH };
     
     public List<PropertyDeclaration> buildDeclarations(
-            CSSName cssName, List<PropertyValue> values, CSSOrigin origin, boolean important, boolean inheritAllowed) {
-        List<PropertyDeclaration> result = new ArrayList<PropertyDeclaration>(3);
+            final CSSName cssName, final List<PropertyValue> values, final CSSOrigin origin, final boolean important, final boolean inheritAllowed) {
+        final List<PropertyDeclaration> result = new ArrayList<PropertyDeclaration>(3);
         checkValueCount(cssName, 1, 2, values.size());
         
         if (values.size() == 1) {
-            PropertyValue value = (PropertyValue)values.get(0);
+            final PropertyValue value = (PropertyValue)values.get(0);
             
             checkInheritAllowed(value, inheritAllowed);
             
             if (value.getCssValueTypeN() == CSSValueType.CSS_INHERIT) {
                 return checkInheritAll(ALL, values, origin, important, inheritAllowed);
             } else if (value.getPrimitiveTypeN() == CSSPrimitiveUnit.CSS_IDENT) {
-                PageSize pageSize = PageSize.getPageSize(value.getStringValue());
+                final PageSize pageSize = PageSize.getPageSize(value.getStringValue());
                 if (pageSize != null) {
                     result.add(new PropertyDeclaration(
                             CSSName.FS_PAGE_ORIENTATION, new PropertyValueImp(IdentValue.AUTO), important, origin));
@@ -60,7 +60,7 @@ public class SizePropertyBuilder implements PropertyBuilder {
                     return result;
                 }
                 
-                IdentValue ident = checkIdent(cssName, value);
+                final IdentValue ident = checkIdent(cssName, value);
                 if (ident == IdentValue.LANDSCAPE || ident == IdentValue.PORTRAIT) {
                     result.add(new PropertyDeclaration(
                             CSSName.FS_PAGE_ORIENTATION, value, important, origin));
@@ -123,7 +123,7 @@ public class SizePropertyBuilder implements PropertyBuilder {
                        value2.getPrimitiveTypeN() == CSSPrimitiveUnit.CSS_IDENT) {
                 if (value2.getStringValue().equals("landscape") || 
                         value2.getStringValue().equals("portrait")) {
-                    PropertyValue temp = value1;
+                    final PropertyValue temp = value1;
                     value1 = value2;
                     value2 = temp;
                 }
@@ -135,7 +135,7 @@ public class SizePropertyBuilder implements PropertyBuilder {
                 result.add(new PropertyDeclaration(
                         CSSName.FS_PAGE_ORIENTATION, value1, important, origin));
                 
-                PageSize pageSize = PageSize.getPageSize(value2.getStringValue());
+                final PageSize pageSize = PageSize.getPageSize(value2.getStringValue());
                 if (pageSize == null) {
                     throw new CSSParseException("Value " + value1 + " is not a valid page size", -1);
                 }

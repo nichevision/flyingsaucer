@@ -101,7 +101,7 @@ public class Eeze {
      */
     private final static FileFilter HTML_FILE_FILTER =
             new FileFilter() {
-                public boolean accept(File f) {
+                public boolean accept(final File f) {
                     return f.getName().endsWith(".html") ||
                             f.getName().endsWith(".htm") ||
                             f.getName().endsWith(".xhtml") ||
@@ -122,19 +122,19 @@ public class Eeze {
      *
      * @param args PARAM
      */
-    private void run(String args[]) {
+    private void run(final String args[]) {
         buildFrame();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    File fontFile = new File(directory + "/support/AHEM____.TTF");
+                    final File fontFile = new File(directory + "/support/AHEM____.TTF");
                     if (fontFile.exists()) {
                         html.getSharedContext().setFontMapping("Ahem",
                                 Font.createFont(Font.TRUETYPE_FONT, fontFile.toURL().openStream()));
                     }
-                } catch (FontFormatException e) {
+                } catch (final FontFormatException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
             }
@@ -146,16 +146,16 @@ public class Eeze {
                     showHelpPage();
                 }
             });
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private void parseArgs(String[] args) {
+    private void parseArgs(final String[] args) {
         File f = null;
 
         for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
+            final String arg = args[i];
 
             f = new File(arg);
 
@@ -181,9 +181,9 @@ public class Eeze {
     private List buildFileList() {
         List fileList = null;
         try {
-            File list[] = directory.listFiles(HTML_FILE_FILTER);
+            final File list[] = directory.listFiles(HTML_FILE_FILTER);
             fileList = Arrays.asList(list);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
         return fileList;
@@ -209,7 +209,7 @@ public class Eeze {
                     frame.setVisible(true);
 
                     frame.addComponentListener(new ComponentAdapter() {
-                        public void componentResized(ComponentEvent e) {
+                        public void componentResized(final ComponentEvent e) {
                             html.relayout();
                         }
                     });
@@ -231,7 +231,7 @@ public class Eeze {
                     overlayImage = new CompareImageAction();
 
                     frame.setJMenuBar(new JMenuBar());
-                    JMenu doMenu = new JMenu("Do");
+                    final JMenu doMenu = new JMenu("Do");
                     doMenu.add(reloadPageAction);
                     doMenu.add(nextDemoAction);
                     doMenu.add(chooseDemoAction);
@@ -250,7 +250,7 @@ public class Eeze {
                 }
             });
 
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -260,7 +260,7 @@ public class Eeze {
      *
      * @param file PARAM
      */
-    private void switchPage(File file, boolean reload) {
+    private void switchPage(final File file, final boolean reload) {
         eezeFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
             if (reload) {
@@ -278,7 +278,7 @@ public class Eeze {
                     imagePanel.repaint();
                 }
             });
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         } finally {
             eezeFrame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -291,10 +291,10 @@ public class Eeze {
     private void showHelpPage() {
         eezeFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
-            URL help = eezeHelp();
+            final URL help = eezeHelp();
             html.setDocument(help.openStream(), help.toString());
             changeTitle(html.getDocumentTitle());
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         } finally {
             eezeFrame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -307,8 +307,8 @@ public class Eeze {
      * @param hdelta PARAM
      * @param vdelta PARAM
      */
-    private void resizeFrame(float hdelta, float vdelta) {
-        Dimension d = eezeFrame.getSize();
+    private void resizeFrame(final float hdelta, final float vdelta) {
+        final Dimension d = eezeFrame.getSize();
         eezeFrame.setSize((int) (d.getWidth() * hdelta),
                 (int) (d.getHeight() * vdelta));
     }
@@ -318,7 +318,7 @@ public class Eeze {
      *
      * @param newPage PARAM
      */
-    private void changeTitle(String newPage) {
+    private void changeTitle(final String newPage) {
         eezeFrame.setTitle("Eeze:  " + html.getDocumentTitle() + "  (" + newPage + ")");
     }
 
@@ -336,15 +336,15 @@ public class Eeze {
      *
      * @param args PARAM
      */
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
         try {
             if (args.length == 0) {
                 showUsageAndExit("Eeze needs some information to work.", -1);
             }
-            Eeze eeze = new Eeze();
+            final Eeze eeze = new Eeze();
             eeze.parseArgs(args);
             eeze.run(args);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -355,8 +355,8 @@ public class Eeze {
      * @param error PARAM
      * @param i
      */
-    private static void showUsageAndExit(String error, int i) {
-        StringBuffer sb = new StringBuffer();
+    private static void showUsageAndExit(final String error, final int i) {
+        final StringBuffer sb = new StringBuffer();
 
         sb.append("Oops! " + error + " \n")
                 .append(" \n")
@@ -400,7 +400,7 @@ public class Eeze {
             this.setOpaque(false);
         }
 
-        public void setImage(Image i) {
+        public void setImage(final Image i) {
             currentPageImg = i;
             repaint();
         }
@@ -419,12 +419,12 @@ public class Eeze {
         private Image loadImageForPage() {
             Image img = null;
             try {
-                File file = currentDisplayed;
+                final File file = currentDisplayed;
                 File parent = file.getAbsoluteFile().getParentFile();
                 if (parent == null) parent = file;
-                File imgDir = new File(parent.getAbsolutePath() + File.separator + "ref-img");
-                String name = file.getName().substring(0, file.getName().lastIndexOf(".")) + ".png";
-                File target = new File(imgDir.getAbsolutePath() + File.separator + name);
+                final File imgDir = new File(parent.getAbsolutePath() + File.separator + "ref-img");
+                final String name = file.getName().substring(0, file.getName().lastIndexOf(".")) + ".png";
+                final File target = new File(imgDir.getAbsolutePath() + File.separator + name);
                 if (target.exists()) {
                     img = new ImageIcon(target.toURI().toURL()).getImage();
                 } else {
@@ -435,7 +435,7 @@ public class Eeze {
                             JOptionPane.ERROR_MESSAGE
                     );
                 }
-            } catch (Exception e1) {
+            } catch (final Exception e1) {
                 JOptionPane.showMessageDialog(
                         Eeze.this.eezeFrame,
                         "Error on trying to save image, check stack trace on console.",
@@ -452,9 +452,9 @@ public class Eeze {
          *
          * @param g PARAM
          */
-        protected void paintComponent(Graphics g) {
+        protected void paintComponent(final Graphics g) {
             super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
+            final Graphics2D g2d = (Graphics2D) g;
             if (currentPageImg == null) {
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(0, 0, (int) this.getPreferredSize().getWidth(), (int) this.getPreferredSize().getHeight());
@@ -520,15 +520,15 @@ public class Eeze {
          *
          * @param g PARAM
          */
-        protected void paintComponent(Graphics g) {
-            Graphics2D graphics = (Graphics2D) g;
-            BufferedImage oddLine = createGradientLine(this.getWidth(), mainLightColor,
+        protected void paintComponent(final Graphics g) {
+            final Graphics2D graphics = (Graphics2D) g;
+            final BufferedImage oddLine = createGradientLine(this.getWidth(), mainLightColor,
                     mainDarkColor, 0.6);
-            BufferedImage evenLine = createGradientLine(this
+            final BufferedImage evenLine = createGradientLine(this
                     .getWidth(), mainUltraLightColor,
                     mainMidColor, 0.6);
 
-            int height = this.getHeight();
+            final int height = this.getHeight();
             for (int row = 0; row < height; row = row + 10) {
                 if ((row % 2) == 0) {
                     graphics.drawImage(evenLine, 0, row, null);
@@ -548,22 +548,22 @@ public class Eeze {
          * @param opacity    PARAM
          * @return Returns
          */
-        public BufferedImage createGradientLine(int width, Color leftColor,
-                                                Color rightColor, double opacity) {
-            BufferedImage image = new BufferedImage(width, 1,
+        public BufferedImage createGradientLine(final int width, final Color leftColor,
+                                                final Color rightColor, final double opacity) {
+            final BufferedImage image = new BufferedImage(width, 1,
                     BufferedImage.TYPE_INT_ARGB);
-            int iOpacity = (int) (255 * opacity);
+            final int iOpacity = (int) (255 * opacity);
 
             for (int col = 0; col < width; col++) {
-                double coef = (double) col / (double) width;
-                int r = (int) (leftColor.getRed() + coef
+                final double coef = (double) col / (double) width;
+                final int r = (int) (leftColor.getRed() + coef
                         * (rightColor.getRed() - leftColor.getRed()));
-                int g = (int) (leftColor.getGreen() + coef
+                final int g = (int) (leftColor.getGreen() + coef
                         * (rightColor.getGreen() - leftColor.getGreen()));
-                int b = (int) (leftColor.getBlue() + coef
+                final int b = (int) (leftColor.getBlue() + coef
                         * (rightColor.getBlue() - leftColor.getBlue()));
 
-                int color = (iOpacity << 24) | (r << 16) | (g << 8) | b;
+                final int color = (iOpacity << 24) | (r << 16) | (g << 8) | b;
                 image.setRGB(col, 0, color);
             }
             return image;
@@ -581,7 +581,7 @@ public class Eeze {
         /**
          * Description of the Field
          */
-        private float increment = 1.1F;
+        private final float increment = 1.1F;
 
         /**
          * Constructor for the GrowAction object
@@ -597,7 +597,7 @@ public class Eeze {
          *
          * @param e PARAM
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             resizeFrame(increment, increment);
         }
     }
@@ -612,7 +612,7 @@ public class Eeze {
 
         private boolean on;
         private Component originalGlassPane;
-        private GridGlassPane gridGlassPane;
+        private final GridGlassPane gridGlassPane;
 
         /**
          * Constructor for the ShowGridAction object
@@ -629,7 +629,7 @@ public class Eeze {
          *
          * @param e PARAM
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             if (on) {
                 eezeFrame.setGlassPane(originalGlassPane);
                 gridGlassPane.setVisible(false);
@@ -665,7 +665,7 @@ public class Eeze {
          *
          * @param e PARAM
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             comparingWithImage = !comparingWithImage;
 
             if (comparingWithImage) {
@@ -687,7 +687,7 @@ public class Eeze {
                 // is first loaded
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        Dimension d = eezeFrame.getSize();
+                        final Dimension d = eezeFrame.getSize();
                         eezeFrame.setSize((int) d.getWidth(), (int) d.getHeight() + 1);
                         eezeFrame.setSize(d);
                     }
@@ -710,7 +710,7 @@ public class Eeze {
         /**
          * Description of the Field
          */
-        private float increment = 1 / 1.1F;
+        private final float increment = 1 / 1.1F;
 
         /**
          * Constructor for the ShrinkAction object
@@ -726,7 +726,7 @@ public class Eeze {
          *
          * @param e PARAM
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             resizeFrame(increment, increment);
         }
     }
@@ -753,7 +753,7 @@ public class Eeze {
          *
          * @param e PARAM
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             showHelpPage();
         }
     }
@@ -780,10 +780,10 @@ public class Eeze {
          *
          * @param e PARAM
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             File nextPage = null;
-            for (Iterator iter = testFiles.iterator(); iter.hasNext();) {
-                File f = (File) iter.next();
+            for (final Iterator iter = testFiles.iterator(); iter.hasNext();) {
+                final File f = (File) iter.next();
                 if (f.equals(currentDisplayed)) {
                     if (iter.hasNext()) {
                         nextPage = (File) iter.next();
@@ -793,13 +793,13 @@ public class Eeze {
             }
             if (nextPage == null) {
                 // go to first page
-                Iterator iter = testFiles.iterator();
+                final Iterator iter = testFiles.iterator();
                 nextPage = (File) iter.next();
             }
 
             try {
                 switchPage(nextPage, false);
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -822,12 +822,12 @@ public class Eeze {
          *
          * @param e PARAM
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             try {
-                File file = currentDisplayed;
+                final File file = currentDisplayed;
                 File parent = file.getAbsoluteFile().getParentFile();
                 if (parent == null) parent = file;
-                File imgDir = new File(parent.getAbsolutePath() + File.separator + "ref-img");
+                final File imgDir = new File(parent.getAbsolutePath() + File.separator + "ref-img");
                 if (!imgDir.exists()) {
                     if (!imgDir.mkdir()) {
                         JOptionPane.showMessageDialog(
@@ -839,8 +839,8 @@ public class Eeze {
                         return;
                     }
                 }
-                String name = file.getName().substring(0, file.getName().lastIndexOf(".")) + ".png";
-                File target = new File(imgDir.getAbsolutePath() + File.separator + name);
+                final String name = file.getName().substring(0, file.getName().lastIndexOf(".")) + ".png";
+                final File target = new File(imgDir.getAbsolutePath() + File.separator + name);
                 if (target.exists() && JOptionPane.showConfirmDialog(
                         Eeze.this.eezeFrame,
                         "Stored image exists (" + name + "), overwrite?",
@@ -852,14 +852,14 @@ public class Eeze {
                 // area. this becomes an issue when comparing a saved image with one rendered by FS, as fluid layouts
                 // may expand to fill the size we pass in to the renderer on the next line; need to figure out the right
                 // sizes to use...or maybe resize the frame when the image is loaded.
-                BufferedImage image = Graphics2DRenderer.renderToImage(file.toURI().toURL().toExternalForm(), 1024, 768);
+                final BufferedImage image = Graphics2DRenderer.renderToImage(file.toURI().toURL().toExternalForm(), 1024, 768);
                 ImageIO.write(image, "png", target);
                 Toolkit.getDefaultToolkit().beep();
 
                 if (comparingWithImage) {
                     imagePanel.setImage(image);
                 }
-            } catch (Exception e1) {
+            } catch (final Exception e1) {
                 JOptionPane.showMessageDialog(
                         Eeze.this.eezeFrame,
                         "Error on trying to save image, check stack trace on console.",
@@ -893,10 +893,10 @@ public class Eeze {
          *
          * @param e PARAM
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             try {
                 switchPage(currentDisplayed, true);
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -924,8 +924,8 @@ public class Eeze {
          *
          * @param e PARAM
          */
-        public void actionPerformed(ActionEvent e) {
-            File nextPage = (File) JOptionPane.showInputDialog(eezeFrame,
+        public void actionPerformed(final ActionEvent e) {
+            final File nextPage = (File) JOptionPane.showInputDialog(eezeFrame,
                     "Choose a demo file",
                     "Choose Demo",
                     JOptionPane.PLAIN_MESSAGE,
@@ -935,7 +935,7 @@ public class Eeze {
 
             try {
                 switchPage(nextPage, false);
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -950,7 +950,7 @@ public class Eeze {
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.ALT_MASK));
         }
 
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             testFiles = buildFileList();
             currentDisplayed = (File) testFiles.get(0);
             reloadPageAction.actionPerformed(null);
@@ -968,7 +968,7 @@ public class Eeze {
         /**
          * Description of the Field
          */
-        private int whichDirection;
+        private final int whichDirection;
 
         /**
          * Description of the Field
@@ -989,7 +989,7 @@ public class Eeze {
          * @param which PARAM
          * @param ks    PARAM
          */
-        public FontSizeAction(int which, KeyStroke ks) {
+        public FontSizeAction(final int which, final KeyStroke ks) {
             super("FontSize");
             this.whichDirection = which;
             this.putValue(Action.ACCELERATOR_KEY, ks);
@@ -1002,7 +1002,7 @@ public class Eeze {
          * @param which PARAM
          * @param ks    PARAM
          */
-        public FontSizeAction(float scale, int which, KeyStroke ks) {
+        public FontSizeAction(final float scale, final int which, final KeyStroke ks) {
             this(which, ks);
             html.setFontScalingFactor(scale);
         }
@@ -1012,7 +1012,7 @@ public class Eeze {
          *
          * @param evt PARAM
          */
-        public void actionPerformed(ActionEvent evt) {
+        public void actionPerformed(final ActionEvent evt) {
             switch (whichDirection) {
                 case INCREMENT:
                     html.incrementFontSize();

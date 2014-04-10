@@ -54,27 +54,27 @@ import org.xhtmlrenderer.render.RenderingContext;
 public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDevice {
     private final Graphics2D _graphics;
 
-    public Java2DOutputDevice(Graphics2D graphics) {
+    public Java2DOutputDevice(final Graphics2D graphics) {
         _graphics = graphics;
     }
 
-    public Java2DOutputDevice(BufferedImage outputImage) {
+    public Java2DOutputDevice(final BufferedImage outputImage) {
         this(outputImage.createGraphics());
     }
     
     @Override
-    public void drawSelection(RenderingContext c, InlineText inlineText) {
+    public void drawSelection(final RenderingContext c, final InlineText inlineText) {
         if (inlineText.isSelected()) {
-            InlineLayoutBox iB = inlineText.getParent();
-            String text = inlineText.getSubstring();
+            final InlineLayoutBox iB = inlineText.getParent();
+            final String text = inlineText.getSubstring();
             if (text != null && text.length() > 0) {
-                FSFont font = iB.getStyle().getFSFont(c);
-                FSGlyphVector glyphVector = c.getTextRenderer().getGlyphVector(
+                final FSFont font = iB.getStyle().getFSFont(c);
+                final FSGlyphVector glyphVector = c.getTextRenderer().getGlyphVector(
                         c.getOutputDevice(),
                         font,
                         inlineText.getSubstring());
                 
-                Rectangle start = c.getTextRenderer().getGlyphBounds(
+                final Rectangle start = c.getTextRenderer().getGlyphBounds(
                         c.getOutputDevice(),
                         font,
                         glyphVector,
@@ -82,18 +82,18 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
                         iB.getAbsX() + inlineText.getX(),
                         iB.getAbsY() + iB.getBaseline());
                 
-                Rectangle end = c.getTextRenderer().getGlyphBounds(
+                final Rectangle end = c.getTextRenderer().getGlyphBounds(
                         c.getOutputDevice(),
                         font,
                         glyphVector,
                         inlineText.getSelectionEnd() - 1,
                         iB.getAbsX() + inlineText.getX(),
                         iB.getAbsY() + iB.getBaseline());
-                Graphics2D graphics = getGraphics();
-                double scaleX = graphics.getTransform().getScaleX();
-                boolean allSelected = (text.length() == inlineText.getSelectionEnd()-inlineText.getSelectionStart());
-                int startX = (inlineText.getSelectionStart() == inlineText.getStart())?iB.getAbsX() + inlineText.getX():(int)Math.round(start.x/scaleX);
-                int endX = (allSelected)?startX+inlineText.getWidth():(int)Math.round((end.x + end.width)/scaleX);
+                final Graphics2D graphics = getGraphics();
+                final double scaleX = graphics.getTransform().getScaleX();
+                final boolean allSelected = (text.length() == inlineText.getSelectionEnd()-inlineText.getSelectionStart());
+                final int startX = (inlineText.getSelectionStart() == inlineText.getStart())?iB.getAbsX() + inlineText.getX():(int)Math.round(start.x/scaleX);
+                final int endX = (allSelected)?startX+inlineText.getWidth():(int)Math.round((end.x + end.width)/scaleX);
                 _graphics.setColor(UIManager.getColor("TextArea.selectionBackground"));  // FIXME
                 fillRect(
                         startX,
@@ -109,8 +109,8 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
         }
     }
 
-    private void drawSelectedText(RenderingContext c, InlineText inlineText, InlineLayoutBox iB, FSGlyphVector glyphVector) {
-        GlyphVector vector = ((AWTFSGlyphVector)glyphVector).getGlyphVector();
+    private void drawSelectedText(final RenderingContext c, final InlineText inlineText, final InlineLayoutBox iB, final FSGlyphVector glyphVector) {
+        final GlyphVector vector = ((AWTFSGlyphVector)glyphVector).getGlyphVector();
         
         // We'd like to draw only the characters that are actually selected, but 
         // unfortunately vector.getGlyphPixelBounds() doesn't give us accurate
@@ -124,14 +124,14 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
             vector.setGlyphPosition(i, new Point2D.Float(-100000, -100000));
         }
         if(inlineText.getParent().getStyle().isTextJustify()) {
-            JustificationInfo info = inlineText.getParent().getLineBox().getJustificationInfo();
+            final JustificationInfo info = inlineText.getParent().getLineBox().getJustificationInfo();
             if(info!=null) {
-                String string = inlineText.getSubstring();
+                final String string = inlineText.getSubstring();
                 float adjust = 0.0f;
                 for (int i = inlineText.getSelectionStart(); i < inlineText.getSelectionEnd(); i++) {
-                    char ch = string.charAt(i);
+                    final char ch = string.charAt(i);
                     if (i != 0) {
-                        Point2D point = vector.getGlyphPosition(i);
+                        final Point2D point = vector.getGlyphPosition(i);
                         vector.setGlyphPosition(
                                 i, new Point2D.Double(point.getX() + adjust, point.getY()));
                     }
@@ -153,14 +153,14 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
 
     @Override
     public void drawBorderLine(
-            Rectangle bounds, int side, int lineWidth, boolean solid) {
+            final Rectangle bounds, final int side, final int lineWidth, final boolean solid) {
     	
-    	int x = bounds.x;
-        int y = bounds.y;
-        int w = bounds.width;
-        int h = bounds.height;
+    	final int x = bounds.x;
+        final int y = bounds.y;
+        final int w = bounds.width;
+        final int h = bounds.height;
         
-        int adj = solid ? 1 : 0;
+        final int adj = solid ? 1 : 0;
         
         if (side == BorderPainter.TOP) {
             drawLine(x, y + (int) (lineWidth / 2), x + w - adj, y + (int) (lineWidth / 2));
@@ -182,8 +182,8 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
     }
 
     @Override
-    public void paintReplacedElement(RenderingContext c, BlockBox box) {
-        ReplacedElement replaced = box.getReplacedElement();
+    public void paintReplacedElement(final RenderingContext c, final BlockBox box) {
+        final ReplacedElement replaced = box.getReplacedElement();
 //      if (replaced instanceof SwingReplacedElement) {
 // TODO
 //            Rectangle contentBounds = box.getContentAreaEdge(box.getAbsX(), box.getAbsY(), c);
@@ -193,18 +193,18 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
 //            pane.paintComponent(_graphics, component, canvas, contentBounds.x,  contentBounds.y, contentBounds.width, contentBounds.height,true);
 //        }
     if (replaced instanceof ImageReplacedElement) {
-            Image image = ((ImageReplacedElement)replaced).getImage();
+            final Image image = ((ImageReplacedElement)replaced).getImage();
             
-            Point location = replaced.getLocation();
+            final Point location = replaced.getLocation();
             _graphics.drawImage(
                     image, (int)location.getX(), (int)location.getY(), null);
         }
     }
     
     @Override
-    public void setColor(FSColor color) {
+    public void setColor(final FSColor color) {
         if (color instanceof FSRGBColor) {
-            FSRGBColor rgb = (FSRGBColor) color;
+            final FSRGBColor rgb = (FSRGBColor) color;
             _graphics.setColor(new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue(),(int) (rgb.getAlpha() * 255)));
         } else {
             throw new RuntimeException("internal error: unsupported color class " + color.getClass().getName());
@@ -212,22 +212,22 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
     }
     
     @Override
-    protected void drawLine(int x1, int y1, int x2, int y2) {
+    protected void drawLine(final int x1, final int y1, final int x2, final int y2) {
         _graphics.drawLine(x1, y1, x2, y2);
     }
     
     @Override
-    public void drawRect(int x, int y, int width, int height) {
+    public void drawRect(final int x, final int y, final int width, final int height) {
         _graphics.drawRect(x, y, width, height);
     }
     
     @Override
-    public void fillRect(int x, int y, int width, int height) {
+    public void fillRect(final int x, final int y, final int width, final int height) {
         _graphics.fillRect(x, y, width, height);
     }
     
     @Override
-    public void setClip(Shape s) {
+    public void setClip(final Shape s) {
         _graphics.setClip(s);
     }
     
@@ -237,12 +237,12 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
     }
 
     @Override    
-    public void clip(Shape s) {
+    public void clip(final Shape s) {
         _graphics.clip(s);
     }
     
     @Override
-    public void translate(double tx, double ty) {
+    public void translate(final double tx, final double ty) {
         _graphics.translate(tx, ty);
     }
     
@@ -251,32 +251,32 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
     }
 
     @Override
-    public void drawOval(int x, int y, int width, int height) {
+    public void drawOval(final int x, final int y, final int width, final int height) {
         _graphics.drawOval(x, y, width, height);
     }
 
     @Override
-    public void fillOval(int x, int y, int width, int height) {
+    public void fillOval(final int x, final int y, final int width, final int height) {
         _graphics.fillOval(x, y, width, height);
     }
 
     @Override
-    public Object getRenderingHint(Key key) {
+    public Object getRenderingHint(final Key key) {
         return _graphics.getRenderingHint(key);
     }
 
     @Override
-    public void setRenderingHint(Key key, Object value) {
+    public void setRenderingHint(final Key key, final Object value) {
         _graphics.setRenderingHint(key, value);
     }
     
     @Override
-    public void setFont(FSFont font) {
+    public void setFont(final FSFont font) {
         _graphics.setFont(((AWTFSFont)font).getAWTFont());
     }
 
     @Override
-    public void setStroke(Stroke s) {
+    public void setStroke(final Stroke s) {
         _graphics.setStroke(s);
     }
 
@@ -286,12 +286,12 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
     }
 
     @Override
-    public void fill(Shape s) {
+    public void fill(final Shape s) {
         _graphics.fill(s);
     }
 
     @Override
-    public void drawImage(FSImage image, int x, int y) {
+    public void drawImage(final FSImage image, final int x, final int y) {
         _graphics.drawImage(((AWTFSImage)image).getImage(), x, y, null);
     }
     
@@ -306,30 +306,30 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
     }
 
 	@Override
-	public void drawBorderLine(Shape bounds, int side, int width, boolean solid) {
+	public void drawBorderLine(final Shape bounds, final int side, final int width, final boolean solid) {
 		draw(bounds);
 	}
 
 	@Override
-	public void draw(Shape s) {
+	public void draw(final Shape s) {
 		_graphics.draw(s);
 	}
 
 	@Override
-	public void drawLinearGradient(FSLinearGradient gradient, int x, int y, int width, int height) 
+	public void drawLinearGradient(final FSLinearGradient gradient, final int x, final int y, final int width, final int height) 
 	{
-		float[] fractions = new float[gradient.getStopPoints().size()];
-		Color[] colors = new Color[gradient.getStopPoints().size()];
+		final float[] fractions = new float[gradient.getStopPoints().size()];
+		final Color[] colors = new Color[gradient.getStopPoints().size()];
 
-		float range = gradient.getStopPoints().get(gradient.getStopPoints().size() - 1).getLength() -
+		final float range = gradient.getStopPoints().get(gradient.getStopPoints().size() - 1).getLength() -
 				gradient.getStopPoints().get(0).getLength();
 		
 		int i = 0;
-		for (StopValue pt : gradient.getStopPoints())
+		for (final StopValue pt : gradient.getStopPoints())
 		{
 	        if (pt.getColor() instanceof FSRGBColor) 
 	        {
-	            FSRGBColor rgb = (FSRGBColor) pt.getColor();
+	            final FSRGBColor rgb = (FSRGBColor) pt.getColor();
 	            colors[i] = new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue(), (int) (rgb.getAlpha() * 255));
 	        }
 	        else {
@@ -343,7 +343,7 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
 	        i++;
 		}
 
-		LinearGradientPaint paint = new LinearGradientPaint(
+		final LinearGradientPaint paint = new LinearGradientPaint(
 				gradient.getStartX() + x, gradient.getStartY() + y,
 				gradient.getEndX() + x, gradient.getEndY() + y, fractions, colors);
 		
@@ -353,7 +353,7 @@ public class Java2DOutputDevice extends AbstractOutputDevice implements OutputDe
 	}
 
 	@Override
-	public void setOpacity(float opacity) 
+	public void setOpacity(final float opacity) 
 	{
 		if (opacity == 1)
 		{

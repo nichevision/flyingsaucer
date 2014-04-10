@@ -11,12 +11,12 @@ public class StylesheetCache {
 	 * an LRU cache
 	 */
 	private static final int DEFAULT_CSS_CACHE_SIZE = 64;
-	private Map<String, Stylesheet> _cache = new java.util.LinkedHashMap<String, Stylesheet>(
+	private final Map<String, Stylesheet> _cache = new java.util.LinkedHashMap<String, Stylesheet>(
 			DEFAULT_CSS_CACHE_SIZE, 0.75f, true) {
 		private static final long serialVersionUID = 1L;
 
 		protected boolean removeEldestEntry(
-				java.util.Map.Entry<String, Stylesheet> eldest) {
+				final java.util.Map.Entry<String, Stylesheet> eldest) {
 			return size() > DEFAULT_CSS_CACHE_SIZE;
 		}
 	};
@@ -31,7 +31,7 @@ public class StylesheetCache {
 	 * @param sheet
 	 *            The sheet to cache.
 	 */
-	public void putStylesheet(String key, Stylesheet sheet) {
+	public void putStylesheet(final String key, final Stylesheet sheet) {
 		XRLog.load("Receiving stylesheet for " + key);
 		
 		_cache.put(key, sheet);
@@ -42,7 +42,7 @@ public class StylesheetCache {
 	 * @return true if a Stylesheet with this key has been put in the cache.
 	 *         Note that the Stylesheet may be null.
 	 */
-	public boolean containsStylesheet(String key) {
+	public boolean containsStylesheet(final String key) {
 		return _cache.containsKey(key);
 	}
 
@@ -53,7 +53,7 @@ public class StylesheetCache {
 	 *            The key for this sheet; same as key passed to putStylesheet();
 	 * @return The stylesheet
 	 */
-	public Stylesheet getStylesheet(StylesheetInfo key) {
+	public Stylesheet getStylesheet(final StylesheetInfo key) {
 		if (_cache.containsKey(key.getUri()))
 			XRLog.load("Stylesheet hit for " + key.getUri());
 		else
@@ -68,7 +68,7 @@ public class StylesheetCache {
 	 * @param key
 	 *            The key for this sheet; same as key passed to putStylesheet();
 	 */
-	public Stylesheet removeCachedStylesheet(String key) {
+	public Stylesheet removeCachedStylesheet(final String key) {
 		return _cache.remove(key);
 	}
 

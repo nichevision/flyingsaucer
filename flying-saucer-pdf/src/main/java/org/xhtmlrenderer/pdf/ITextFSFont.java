@@ -23,10 +23,10 @@ import org.xhtmlrenderer.pdf.ITextFontResolver.FontDescription;
 import org.xhtmlrenderer.render.FSFont;
 
 public class ITextFSFont implements FSFont {
-    private FontDescription _font;
-    private float _size;
+    private final FontDescription _font;
+    private final float _size;
     
-    public ITextFSFont(FontDescription font, float size) {
+    public ITextFSFont(final FontDescription font, final float size) {
         _font = font;
         _size = size;
     }

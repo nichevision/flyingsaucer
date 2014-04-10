@@ -40,15 +40,15 @@ public class Stylesheet implements RulesetContainer {
     /**
      * The info for this stylesheet
      */
-    private String _uri;
+    private final String _uri;
     /**
      * Description of the Field
      */
-    private CSSOrigin _origin;
+    private final CSSOrigin _origin;
 
-    private List<FontFaceRule> _fontFaceRules = new ArrayList<FontFaceRule>();
-    private List<StylesheetInfo> _importRules = new ArrayList<StylesheetInfo>();
-    private List<Object> _contents = new ArrayList<Object>();
+    private final List<FontFaceRule> _fontFaceRules = new ArrayList<FontFaceRule>();
+    private final List<StylesheetInfo> _importRules = new ArrayList<StylesheetInfo>();
+    private final List<Object> _contents = new ArrayList<Object>();
 
     /**
      * Creates a new instance of Stylesheet
@@ -56,7 +56,7 @@ public class Stylesheet implements RulesetContainer {
      * @param uri
      * @param origin
      */
-    public Stylesheet(String uri, CSSOrigin origin) {
+    public Stylesheet(final String uri, final CSSOrigin origin) {
         _uri = uri;
         _origin = origin;
     }
@@ -79,15 +79,15 @@ public class Stylesheet implements RulesetContainer {
         return _uri;
     }
     
-    public void addContent(Ruleset ruleset) {
+    public void addContent(final Ruleset ruleset) {
         _contents.add(ruleset);
     }
     
-    public void addContent(MediaRule rule) {
+    public void addContent(final MediaRule rule) {
         _contents.add(rule);
     }
     
-    public void addContent(PageRule rule) {
+    public void addContent(final PageRule rule) {
         _contents.add(rule);
     }
     
@@ -95,7 +95,7 @@ public class Stylesheet implements RulesetContainer {
         return _contents;
     }
     
-    public void addImportRule(StylesheetInfo info) {
+    public void addImportRule(final StylesheetInfo info) {
         _importRules.add(info);
     }
     
@@ -103,7 +103,7 @@ public class Stylesheet implements RulesetContainer {
         return _importRules;
     }
     
-    public void addFontFaceRule(FontFaceRule rule) {
+    public void addFontFaceRule(final FontFaceRule rule) {
         _fontFaceRules.add(rule);
     }
     

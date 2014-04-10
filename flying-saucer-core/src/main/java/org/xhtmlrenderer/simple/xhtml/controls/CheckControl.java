@@ -25,9 +25,9 @@ import org.xhtmlrenderer.simple.xhtml.XhtmlForm;
 
 public class CheckControl extends AbstractControl {
 
-    private boolean _initialValue, _radio;
+    private final boolean _initialValue, _radio;
 
-    public CheckControl(XhtmlForm form, Element e) {
+    public CheckControl(final XhtmlForm form, final Element e) {
         super(form, e);
 
         _initialValue = e.attr("checked").length() != 0;
@@ -36,17 +36,17 @@ public class CheckControl extends AbstractControl {
         _radio = e.attr("type").equals("radio");
     }
 
-    public void setSuccessful(boolean successful) {
+    public void setSuccessful(final boolean successful) {
         super.setSuccessful(successful);
         if (_radio && successful) {
             // mark all other radio with the same name as unsucessful
-            XhtmlForm form = getForm();
+            final XhtmlForm form = getForm();
             if (form == null) {
                 return;
             }
-            for (FormControl control : form.getAllControls(getName())) {
+            for (final FormControl control : form.getAllControls(getName())) {
             if (control instanceof CheckControl) {
-                CheckControl check = (CheckControl) control;
+                final CheckControl check = (CheckControl) control;
                 if (check.isRadio() && check != this) {
                     check.setSuccessful(false);
                 }

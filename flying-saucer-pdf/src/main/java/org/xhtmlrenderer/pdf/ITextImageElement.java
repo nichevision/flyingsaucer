@@ -29,11 +29,11 @@ import org.xhtmlrenderer.render.BlockBox;
 import org.xhtmlrenderer.render.RenderingContext;
 
 public class ITextImageElement implements ITextReplacedElement {
-    private FSImage _image;
+    private final FSImage _image;
     
     private Point _location = new Point(0, 0);
     
-    public ITextImageElement(FSImage image) {
+    public ITextImageElement(final FSImage image) {
         _image = image;
     }
 
@@ -49,7 +49,7 @@ public class ITextImageElement implements ITextReplacedElement {
         return _location;
     }
 
-    public void setLocation(int x, int y) {
+    public void setLocation(final int x, final int y) {
         _location = new Point(x, y);
     }
     
@@ -57,7 +57,7 @@ public class ITextImageElement implements ITextReplacedElement {
         return _image;
     }
     
-    public void detach(LayoutContext c) {
+    public void detach(final LayoutContext c) {
     }
     
     public boolean isRequiresInteractivePaint() {
@@ -65,10 +65,10 @@ public class ITextImageElement implements ITextReplacedElement {
         return false;
     }
     
-    public void paint(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box)
+    public void paint(final RenderingContext c, final ITextOutputDevice outputDevice, final BlockBox box)
     {
-        Rectangle contentBounds = box.getContentAreaEdge(box.getAbsX(), box.getAbsY(), c);
-        ReplacedElement element = box.getReplacedElement();
+        final Rectangle contentBounds = box.getContentAreaEdge(box.getAbsX(), box.getAbsY(), c);
+        final ReplacedElement element = box.getReplacedElement();
         outputDevice.drawImage(
             ((ITextImageElement)element).getImage(),
             contentBounds.x, contentBounds.y);

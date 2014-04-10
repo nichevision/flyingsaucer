@@ -42,7 +42,7 @@ public class AddNodeToDocument {
     private Document domDocument;
     private Element documentRoot;
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         new AddNodeToDocument().run();
     }
 
@@ -55,8 +55,9 @@ public class AddNodeToDocument {
 
                 // here's where the real work takes place
                 @SuppressWarnings("serial")
+                final
 				Action addDocAction = new AbstractAction("Add Node") {
-                    public void actionPerformed(ActionEvent event) {
+                    public void actionPerformed(final ActionEvent event) {
                         // we'll add a single node on each click
                         documentRoot.appendText("adding node at " + new Date());
                         documentRoot.appendChild(domDocument.createElement("br"));
@@ -73,7 +74,7 @@ public class AddNodeToDocument {
                     }
                 };
 
-                JButton btn = new JButton(addDocAction);
+                final JButton btn = new JButton(addDocAction);
                 frame.getContentPane().add(BorderLayout.SOUTH, btn);
 
                 frame.pack();
@@ -101,18 +102,18 @@ public class AddNodeToDocument {
             // root element of the document--you could grab any other element
             // by traversing, XPath, etc.
             documentRoot = domDocument.body();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             messageAndExit("Could not render page: " + e.getMessage(), -1);
         }
 
-        FSScrollPane fsScrollPane = new FSScrollPane(panel);
+        final FSScrollPane fsScrollPane = new FSScrollPane(panel);
         frame.getContentPane().add(BorderLayout.CENTER, fsScrollPane);
     }
 
     private void initFrame() {
         frame = new JFrame("XHTMLPanel");
         frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
+            public void windowClosing(final WindowEvent e) {
                 System.exit(0);
             }
         });

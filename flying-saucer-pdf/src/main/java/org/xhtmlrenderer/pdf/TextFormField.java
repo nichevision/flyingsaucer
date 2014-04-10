@@ -39,18 +39,18 @@ public class TextFormField extends AbstractFormField
 
   private static final int DEFAULT_SIZE = 15;
 
-  private int _baseline;
+  private final int _baseline;
 
-  public TextFormField(LayoutContext c, BlockBox box, int cssWidth, int cssHeight)
+  public TextFormField(final LayoutContext c, final BlockBox box, final int cssWidth, final int cssHeight)
   {
     initDimensions(c, box, cssWidth, cssHeight);
 
-    float fontSize = box.getStyle().getFSFont(c).getSize2D();
+    final float fontSize = box.getStyle().getFSFont(c).getSize2D();
     // FIXME: findbugs possible loss of precision, cf. int / (float)2
     _baseline = (int) (getHeight() / 2 + (fontSize * 0.3f));
   }
 
-  protected void initDimensions(LayoutContext c, BlockBox box, int cssWidth, int cssHeight)
+  protected void initDimensions(final LayoutContext c, final BlockBox box, final int cssWidth, final int cssHeight)
   {
     if (cssWidth != -1)
     {
@@ -79,22 +79,22 @@ public class TextFormField extends AbstractFormField
     return FIELD_TYPE;
   }
 
-  public void paint(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box)
+  public void paint(final RenderingContext c, final ITextOutputDevice outputDevice, final BlockBox box)
   {
 
-    PdfWriter writer = outputDevice.getWriter();
+    final PdfWriter writer = outputDevice.getWriter();
 
-    Element elem = box.getElement();
+    final Element elem = box.getElement();
 
-    Rectangle targetArea = outputDevice.createLocalTargetArea(c, box);
-    TextField field = new TextField(writer, targetArea, getFieldName(outputDevice, elem));
+    final Rectangle targetArea = outputDevice.createLocalTargetArea(c, box);
+    final TextField field = new TextField(writer, targetArea, getFieldName(outputDevice, elem));
 
-    String value = getValue(elem);
+    final String value = getValue(elem);
     field.setText(value);
 
     try
     {
-      PdfFormField formField = field.getTextField();
+      final PdfFormField formField = field.getTextField();
       createAppearance(c, outputDevice, box, formField, value);
       //TODO add max length back in
       if (isReadOnly(elem))
@@ -102,32 +102,32 @@ public class TextFormField extends AbstractFormField
         formField.setFieldFlags(PdfFormField.FF_READ_ONLY);
       }
       writer.addAnnotation(formField);
-    } catch (IOException ioe)
+    } catch (final IOException ioe)
     {
       System.out.println(ioe);
-    } catch (DocumentException de)
+    } catch (final DocumentException de)
     {
       System.out.println(de);
     }
 
   }
 
-  private void createAppearance(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box, PdfFormField field, String value)
+  private void createAppearance(final RenderingContext c, final ITextOutputDevice outputDevice, final BlockBox box, final PdfFormField field, final String value)
   {
-    PdfWriter writer = outputDevice.getWriter();
-    ITextFSFont font = (ITextFSFont) box.getStyle().getFSFont(c);
+    final PdfWriter writer = outputDevice.getWriter();
+    final ITextFSFont font = (ITextFSFont) box.getStyle().getFSFont(c);
 
-    PdfContentByte cb = writer.getDirectContent();
+    final PdfContentByte cb = writer.getDirectContent();
 
-    float width = outputDevice.getDeviceLength(getWidth());
-    float height = outputDevice.getDeviceLength(getHeight());
-    float fontSize = outputDevice.getDeviceLength(font.getSize2D());
+    final float width = outputDevice.getDeviceLength(getWidth());
+    final float height = outputDevice.getDeviceLength(getHeight());
+    final float fontSize = outputDevice.getDeviceLength(font.getSize2D());
 
-    PdfAppearance tp = cb.createAppearance(width, height);
-    PdfAppearance tp2 = (PdfAppearance) tp.getDuplicate();
+    final PdfAppearance tp = cb.createAppearance(width, height);
+    final PdfAppearance tp2 = (PdfAppearance) tp.getDuplicate();
     tp2.setFontAndSize(font.getFontDescription().getFont(), fontSize);
 
-    FSColor color = box.getStyle().getColor();
+    final FSColor color = box.getStyle().getColor();
     setFillColor(tp2, color);
 
     field.setDefaultAppearanceString(tp2);
@@ -144,9 +144,9 @@ public class TextFormField extends AbstractFormField
     field.setAppearance(PdfAnnotation.APPEARANCE_NORMAL, tp);
   }
 
-  private int getSize(Element elem)
+  private int getSize(final Element elem)
   {
-    String sSize = elem.attr("size");
+    final String sSize = elem.attr("size");
     if (Util.isNullOrEmpty(sSize))
     {
       return DEFAULT_SIZE;
@@ -156,16 +156,16 @@ public class TextFormField extends AbstractFormField
       try
       {
         return Integer.parseInt(sSize.trim());
-      } catch (NumberFormatException e)
+      } catch (final NumberFormatException e)
       {
         return DEFAULT_SIZE;
       }
     }
   }
 
-  private int getMaxLength(Element elem)
+  private int getMaxLength(final Element elem)
   {
-    String sMaxLen = elem.attr("maxlength");
+    final String sMaxLen = elem.attr("maxlength");
     if (Util.isNullOrEmpty(sMaxLen))
     {
       return 0;
@@ -175,16 +175,16 @@ public class TextFormField extends AbstractFormField
       try
       {
         return Integer.parseInt(sMaxLen.trim());
-      } catch (NumberFormatException e)
+      } catch (final NumberFormatException e)
       {
         return 0;
       }
     }
   }
 
-  protected String getValue(Element e)
+  protected String getValue(final Element e)
   {
-    String result = e.attr("value");
+    final String result = e.attr("value");
     if (Util.isNullOrEmpty(result))
     {
       return "";

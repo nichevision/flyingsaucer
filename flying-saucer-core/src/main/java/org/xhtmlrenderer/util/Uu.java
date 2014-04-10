@@ -66,10 +66,10 @@ public class Uu extends Util {
      *
      * @param object PARAM
      */
-    public static void p(Object object) {
+    public static void p(final Object object) {
         init();
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
         utilAsString.setPrintWriter(pw);
         utilAsString.print(object);// our log adds a newline
         pw.flush();
@@ -83,10 +83,10 @@ public class Uu extends Util {
      *
      * @param object PARAM
      */
-    public static void pr(Object object) {
+    public static void pr(final Object object) {
         init();
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
         utilAsString.setPrintWriter(pw);
         utilAsString.print(object);// our log adds a newline
         pw.flush();
@@ -101,7 +101,7 @@ public class Uu extends Util {
      *
      * @param msec PARAM
      */
-    public static void sleep(int msec) throws InterruptedException {
+    public static void sleep(final int msec) throws InterruptedException {
         Thread.sleep(msec);
     }
 
@@ -117,10 +117,10 @@ public class Uu extends Util {
      *
      * @param args PARAM
      */
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
         try {
             Uu.p(new Object());
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }

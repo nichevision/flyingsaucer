@@ -32,11 +32,11 @@ public class SystemPropertiesUtil {
      * @param defaultVal value to use if not found, or not allowed to use the property
      * @return
      */
-    public static String getPropertyOrDefaultSandbox(String propertyName, String defaultVal) {
+    public static String getPropertyOrDefaultSandbox(final String propertyName, final String defaultVal) {
         String val = defaultVal;
         try {
             val = System.getProperty(propertyName);
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             // can happen in sandbox
         }
         return val;

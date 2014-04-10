@@ -81,11 +81,11 @@ public abstract class BasicPanel extends RootPanel implements
         this(new NaiveUserAgent());
     }
 
-    public BasicPanel(UserAgentCallback uac) {
+    public BasicPanel(final UserAgentCallback uac) {
         sharedContext = new SharedContext(uac);
         mouseTracker = new MouseTracker(this);
         formSubmissionListener = new FormSubmissionListener() {
-            public void submit(String query) {
+            public void submit(final String query) {
                 System.out.println("Form Submitted!");
                 System.out.println("Data: " + query);
 
@@ -110,7 +110,7 @@ public abstract class BasicPanel extends RootPanel implements
      *
      * @param listener Contains the DocumentListener for DocumentEvent data.
      */
-    public void addDocumentListener(DocumentListener listener) {
+    public void addDocumentListener(final DocumentListener listener) {
         this.documentListeners.put(listener, listener);
     }
 
@@ -121,11 +121,11 @@ public abstract class BasicPanel extends RootPanel implements
      *
      * @param listener Contains the DocumentListener to remove.
      */
-    public void removeDocumentListener(DocumentListener listener) {
+    public void removeDocumentListener(final DocumentListener listener) {
         this.documentListeners.remove(listener);
     }
 
-    public void paintComponent(Graphics g) {
+    public void paintComponent(final Graphics g) {
         if (doc == null) {
             paintDefaultBackground(g);
             return;
@@ -143,40 +143,40 @@ public abstract class BasicPanel extends RootPanel implements
             //queue.dispatchLayoutEvent(new ReflowEvent(ReflowEvent.CANVAS_RESIZED, this.getSize()));
             XRLog.render(Level.FINE, "skipping the actual painting");
         } else {
-            RenderingContext c = newRenderingContext((Graphics2D) g.create());
-            long start = System.currentTimeMillis();
+            final RenderingContext c = newRenderingContext((Graphics2D) g.create());
+            final long start = System.currentTimeMillis();
             doRender(c, root);
-            long end = System.currentTimeMillis();
+            final long end = System.currentTimeMillis();
             XRLog.render(Level.FINE, "RENDERING TOOK " + (end - start) + " ms");
         }
     }
 
-    protected void doRender(RenderingContext c, Layer root) {
+    protected void doRender(final RenderingContext c, final Layer root) {
         try {
             // paint the normal swing background first
             // but only if we aren't printing.
-            Graphics g = ((Java2DOutputDevice)c.getOutputDevice()).getGraphics();
+            final Graphics g = ((Java2DOutputDevice)c.getOutputDevice()).getGraphics();
 
             paintDefaultBackground(g);
 
             if (enclosingScrollPane == null) {
-                Insets insets = getInsets();
+                final Insets insets = getInsets();
                 g.translate(insets.left, insets.top);
             }
 
-            long start = System.currentTimeMillis();
+            final long start = System.currentTimeMillis();
             if (!c.isPrint()) {
                 root.paint(c);
             } else {
                 paintPagedView(c, root);
             }
-            long after = System.currentTimeMillis();
+            final long after = System.currentTimeMillis();
             if (Configuration.isTrue("xr.incremental.repaint.print-timing", false)) {
                 Uu.p("repaint took ms: " + (after - start));
             }
-        } catch (ThreadDeath t) {
+        } catch (final ThreadDeath t) {
             throw t;
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             if (documentListeners.size() > 0) {
                 fireOnRenderException(t);
             } else {
@@ -193,14 +193,14 @@ public abstract class BasicPanel extends RootPanel implements
         }
     }
 
-    private void paintDefaultBackground(Graphics g) {
+    private void paintDefaultBackground(final Graphics g) {
         if (!(g instanceof PrinterGraphics) && explicitlyOpaque) {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
         }
     }
 
-    private void paintPagedView(RenderingContext c, Layer root) {
+    private void paintPagedView(final RenderingContext c, final Layer root) {
         if (root.getLastPage() == null) {
             return;
         }
@@ -216,24 +216,24 @@ public abstract class BasicPanel extends RootPanel implements
                 root.getLastPage().getPaintingBottom() + PAGE_PAINTING_CLEARANCE_HEIGHT));
         revalidate();
 
-        Graphics2D g = ((Java2DOutputDevice)c.getOutputDevice()).getGraphics();
-        Shape working = g.getClip();
+        final Graphics2D g = ((Java2DOutputDevice)c.getOutputDevice()).getGraphics();
+        final Shape working = g.getClip();
 
-        List<PageBox> pages = root.getPages();
+        final List<PageBox> pages = root.getPages();
         c.setPageCount(pages.size());
         for (int i = 0; i < pages.size(); i++) {
-            PageBox page = (PageBox)pages.get(i);
+            final PageBox page = (PageBox)pages.get(i);
             c.setPage(i, page);
 
             g.setClip(working);
 
-            Rectangle overall = page.getScreenPaintingBounds(c, pagePaintingClearanceWidth);
+            final Rectangle overall = page.getScreenPaintingBounds(c, pagePaintingClearanceWidth);
             overall.x -= 1;
             overall.y -= 1;
             overall.width += 1;
             overall.height += 1;
 
-            Rectangle bounds = new Rectangle(overall);
+            final Rectangle bounds = new Rectangle(overall);
             bounds.width += 1;
             bounds.height += 1;
             if (working.intersects(bounds)) {
@@ -241,18 +241,18 @@ public abstract class BasicPanel extends RootPanel implements
                 page.paintMarginAreas(c, pagePaintingClearanceWidth, Layer.PAGED_MODE_SCREEN);
                 page.paintBorder(c, pagePaintingClearanceWidth, Layer.PAGED_MODE_SCREEN);
 
-                Color old = g.getColor();
+                final Color old = g.getColor();
 
                 g.setColor(Color.BLACK);
                 g.drawRect(overall.x, overall.y, overall.width, overall.height);
                 g.setColor(old);
 
-                Rectangle content = page.getPagedViewClippingBounds(c, pagePaintingClearanceWidth);
+                final Rectangle content = page.getPagedViewClippingBounds(c, pagePaintingClearanceWidth);
                 g.clip(content);
 
-                int left = pagePaintingClearanceWidth +
+                final int left = pagePaintingClearanceWidth +
                     page.getMarginBorderPadding(c, CalculatedStyle.LEFT);
-                int top = page.getPaintingTop()
+                final int top = page.getPaintingTop()
                     + page.getMarginBorderPadding(c, CalculatedStyle.TOP)
                     - page.getTop();
 
@@ -267,12 +267,12 @@ public abstract class BasicPanel extends RootPanel implements
         g.setClip(working);
     }
 
-    private int calcCenteredPageLeftOffset(int maxPageWidth) {
+    private int calcCenteredPageLeftOffset(final int maxPageWidth) {
         return (getWidth() - maxPageWidth) / 2;
     }
 
-    public void paintPage(Graphics2D g, int pageNo) {
-        Layer root = getRootLayer();
+    public void paintPage(final Graphics2D g, final int pageNo) {
+        final Layer root = getRootLayer();
 
         if (root == null) {
             throw new RuntimeException("Document needs layout");
@@ -283,9 +283,9 @@ public abstract class BasicPanel extends RootPanel implements
                     "and " + root.getPages().size());
         }
 
-        RenderingContext c = newRenderingContext(g);
+        final RenderingContext c = newRenderingContext(g);
 
-        PageBox page = (PageBox)root.getPages().get(pageNo);
+        final PageBox page = (PageBox)root.getPages().get(pageNo);
         c.setPageCount(root.getPages().size());
         c.setPage(pageNo, page);
 
@@ -293,15 +293,15 @@ public abstract class BasicPanel extends RootPanel implements
         page.paintMarginAreas(c, 0, Layer.PAGED_MODE_PRINT);
         page.paintBorder(c, 0, Layer.PAGED_MODE_PRINT);
 
-        Shape working = g.getClip();
+        final Shape working = g.getClip();
 
-        Rectangle content = page.getPrintClippingBounds(c);
+        final Rectangle content = page.getPrintClippingBounds(c);
         g.clip(content);
 
-        int top = -page.getPaintingTop() +
+        final int top = -page.getPaintingTop() +
             page.getMarginBorderPadding(c, CalculatedStyle.TOP);
 
-        int left = page.getMarginBorderPadding(c, CalculatedStyle.LEFT);
+        final int left = page.getMarginBorderPadding(c, CalculatedStyle.LEFT);
 
         g.translate(left, top);
         root.paint(c);
@@ -310,8 +310,8 @@ public abstract class BasicPanel extends RootPanel implements
         g.setClip(working);
     }
 
-    public void assignPagePrintPositions(Graphics2D g) {
-        RenderingContext c = newRenderingContext(g);
+    public void assignPagePrintPositions(final Graphics2D g) {
+        final RenderingContext c = newRenderingContext(g);
         getRootLayer().assignPagePaintingPositions(c, Layer.PAGED_MODE_PRINT);
     }
 
@@ -319,11 +319,11 @@ public abstract class BasicPanel extends RootPanel implements
         printTree(getRootBox(), "");
     }
 
-    private void printTree(Box box, String tab) {
+    private void printTree(final Box box, final String tab) {
         XRLog.layout(Level.FINEST, tab + "Box = " + box);
-        Iterator<Box> it = box.getChildIterator();
+        final Iterator<Box> it = box.getChildIterator();
         while (it.hasNext()) {
-            Box bx = (Box) it.next();
+            final Box bx = (Box) it.next();
             printTree(bx, tab + " ");
         }
     }
@@ -336,14 +336,14 @@ public abstract class BasicPanel extends RootPanel implements
      *
      * @param l The new layout value
      */
-    public void setLayout(LayoutManager l) {
+    public void setLayout(final LayoutManager l) {
     }
 
-    public void setSharedContext(SharedContext ctx) {
+    public void setSharedContext(final SharedContext ctx) {
         this.sharedContext = ctx;
     }
 
-    public void setSize(Dimension d) {
+    public void setSize(final Dimension d) {
         XRLog.layout(Level.FINEST, "set size called");
         super.setSize(d);
         /* CLEAN: do we need this?
@@ -359,32 +359,32 @@ public abstract class BasicPanel extends RootPanel implements
     /*
 =========== set document utility methods =============== */
 
-    public void setDocument(InputStream stream, String url, NamespaceHandler nsh) {
-        Document dom = HTMLResource.load(stream, url).getDocument();
+    public void setDocument(final InputStream stream, final String url, final NamespaceHandler nsh) {
+        final Document dom = HTMLResource.load(stream, url).getDocument();
 
         setDocument(dom, url, nsh);
     }
 
-    public void setDocumentFromString(String content, String url, NamespaceHandler nsh) {
-        Document dom = HTMLResource.load(content).getDocument();
+    public void setDocumentFromString(final String content, final String url, final NamespaceHandler nsh) {
+        final Document dom = HTMLResource.load(content).getDocument();
 
         setDocument(dom, url, nsh);
     }
 
-    public void setDocument(Document doc, String url) {
+    public void setDocument(final Document doc, final String url) {
         setDocument(doc, url, new HtmlNamespaceHandler());
     }
 
-    public void setDocument(String url) {
+    public void setDocument(final String url) {
         setDocument(loadDocument(url), url, new HtmlNamespaceHandler());
     }
 
-    public void setDocument(String url, NamespaceHandler nsh) {
+    public void setDocument(final String url, final NamespaceHandler nsh) {
         setDocument(loadDocument(url), url, nsh);
     }
 
     // TODO: should throw more specific exception (PWW 25/07/2006)
-    protected void setDocument(InputStream stream, String url)
+    protected void setDocument(final InputStream stream, final String url)
             throws Exception {
         setDocument(stream, url, new HtmlNamespaceHandler());
     }
@@ -395,17 +395,17 @@ public abstract class BasicPanel extends RootPanel implements
      *
      * @param filename The new document to load
      */
-    protected void setDocumentRelative(String filename) {
-        String url = getSharedContext().getUac().resolveURI(filename);
+    protected void setDocumentRelative(final String filename) {
+        final String url = getSharedContext().getUac().resolveURI(filename);
         if (isAnchorInCurrentDocument(filename)) {
-            String id = getAnchorId(filename);
-            Box box = getSharedContext().getBoxById(id);
+            final String id = getAnchorId(filename);
+            final Box box = getSharedContext().getBoxById(id);
             if (box != null) {
                 Point pt;
                 if (box.getStyle().isInline()) {
                     pt = new Point(box.getAbsX(), box.getAbsY());
                 } else {
-                    RectPropertySet margin = box.getMargin(getLayoutContext());
+                    final RectPropertySet margin = box.getMargin(getLayoutContext());
                     pt = new Point(
                             box.getAbsX() + (int)margin.left(),
                             box.getAbsY() + (int)margin.top());
@@ -426,7 +426,7 @@ public abstract class BasicPanel extends RootPanel implements
      *
      * @param URI A URI for the Document to load, for example, file.toURL().toExternalForm().
      */
-    public void reloadDocument(String URI) {
+    public void reloadDocument(final String URI) {
         reloadDocument(loadDocument(URI));
     }
 
@@ -436,7 +436,7 @@ public abstract class BasicPanel extends RootPanel implements
      *
      * @param doc The document to reload.
      */
-    public void reloadDocument(Document doc) {
+    public void reloadDocument(final Document doc) {
         if (this.doc == null) {
             XRLog.render("Reload called on BasicPanel, but there is no document set on the panel yet.");
             return;
@@ -450,7 +450,7 @@ public abstract class BasicPanel extends RootPanel implements
         URL base = null;
         try {
             base = new URL(getSharedContext().getUac().getBaseURL());
-        } catch (MalformedURLException e) {
+        } catch (final MalformedURLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return base;
@@ -472,7 +472,7 @@ public abstract class BasicPanel extends RootPanel implements
     }
 
     protected Document loadDocument(final String uri) {
-        HTMLResource xmlResource = sharedContext.getUac().getXMLResource(uri);
+        final HTMLResource xmlResource = sharedContext.getUac().getXMLResource(uri);
         return xmlResource.getDocument();
     }
 
@@ -483,21 +483,21 @@ public abstract class BasicPanel extends RootPanel implements
     /* ====== hover and active utility methods
 ========= */
 
-    public boolean isHover(Element e) {
+    public boolean isHover(final Element e) {
         if (e == hovered_element) {
             return true;
         }
         return false;
     }
 
-    public boolean isActive(Element e) {
+    public boolean isActive(final Element e) {
         if (e == active_element) {
             return true;
         }
         return false;
     }
 
-    public boolean isFocus(Element e) {
+    public boolean isFocus(final Element e) {
         if (e == focus_element) {
             return true;
         }
@@ -526,7 +526,7 @@ public abstract class BasicPanel extends RootPanel implements
      *               <code>BasicPanel</code> should be painted, <code>false</code> if it
      *               should not.
      */
-    public void setOpaque(boolean opaque) {
+    public void setOpaque(final boolean opaque) {
         checkOpacityMethodClient();
         explicitlyOpaque = opaque;
     }
@@ -541,9 +541,9 @@ public abstract class BasicPanel extends RootPanel implements
      *                               method in this same class.
      */
     private void checkOpacityMethodClient() {
-        StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+        final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
         if (stackTrace.length > 2) {
-            String callingClassName = stackTrace[2].getClassName();
+            final String callingClassName = stackTrace[2].getClassName();
             if (BasicPanel.class.getName().equals(callingClassName))
                 throw new IllegalStateException("BasicPanel should not use its own opacity methods. Use " +
                         "super.isOpaque()/setOpaque() instead.");
@@ -558,16 +558,16 @@ public abstract class BasicPanel extends RootPanel implements
         if (enclosingScrollPane != null) {
             return enclosingScrollPane.getViewportBorderBounds();
         } else {
-            Dimension dim = getSize();
+            final Dimension dim = getSize();
             return new Rectangle(0, 0, dim.width, dim.height);
         }
     }
 
-    private boolean isAnchorInCurrentDocument(String str) {
+    private boolean isAnchorInCurrentDocument(final String str) {
         return str.charAt(0) == '#';
     }
 
-    private String getAnchorId(String url) {
+    private String getAnchorId(final String url) {
         return url.substring(1, url.length());
     }
 
@@ -575,7 +575,7 @@ public abstract class BasicPanel extends RootPanel implements
      * Scroll the panel to make the specified point be on screen. Typically
      * this will scroll the screen down to the y component of the point.
      */
-    public void scrollTo(Point pt) {
+    public void scrollTo(final Point pt) {
         if (this.enclosingScrollPane != null) {
             this.enclosingScrollPane.getVerticalScrollBar().setValue(pt.y);
         }
@@ -586,15 +586,15 @@ public abstract class BasicPanel extends RootPanel implements
         return this.getSharedContext().isInteractive();
     }
 
-    public void setInteractive(boolean interactive) {
+    public void setInteractive(final boolean interactive) {
         this.getSharedContext().setInteractive(interactive);
     }
 
-    public void addMouseTrackingListener(FSMouseListener l) {
+    public void addMouseTrackingListener(final FSMouseListener l) {
         mouseTracker.addListener(l);
     }
 
-    public void removeMouseTrackingListener(FSMouseListener l) {
+    public void removeMouseTrackingListener(final FSMouseListener l) {
         mouseTracker.removeListener(l);
     }
 
@@ -610,13 +610,13 @@ public abstract class BasicPanel extends RootPanel implements
         return centeredPagedView;
     }
 
-    public void setCenteredPagedView(boolean centeredPagedView) {
+    public void setCenteredPagedView(final boolean centeredPagedView) {
         this.centeredPagedView = centeredPagedView;
     }
-    public void submit(String url) {
+    public void submit(final String url) {
         formSubmissionListener.submit(url);
     }
-    public void setFormSubmissionListener(FormSubmissionListener fsl) {
+    public void setFormSubmissionListener(final FormSubmissionListener fsl) {
         this.formSubmissionListener =fsl;
         sharedContext.setFormSubmissionListener(formSubmissionListener);
     }

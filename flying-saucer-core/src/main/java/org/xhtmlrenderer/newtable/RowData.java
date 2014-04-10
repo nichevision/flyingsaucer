@@ -32,20 +32,20 @@ import java.util.List;
  * position in the grid.
  */
 public class RowData {
-    private List<TableCellBox> _row = new ArrayList<TableCellBox>();
+    private final List<TableCellBox> _row = new ArrayList<TableCellBox>();
     
     public List<TableCellBox> getRow() {
         return _row;
     }
     
-    public void extendToColumnCount(int columnCount) {
+    public void extendToColumnCount(final int columnCount) {
         while (_row.size() < columnCount) {
             _row.add(null);
         }
     }
     
-    public void splitColumn(int pos) {
-        TableCellBox current = _row.get(pos);
+    public void splitColumn(final int pos) {
+        final TableCellBox current = _row.get(pos);
         _row.add(pos+1, current == null ? null : TableCellBox.SPANNING_CELL);
     }
 }

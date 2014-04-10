@@ -35,23 +35,23 @@ import com.lowagie.text.pdf.BaseFont;
 public class ITextTextRenderer implements TextRenderer {
     private static float TEXT_MEASURING_DELTA = 0.01f;
     
-    public void setup(FontContext context) {
+    public void setup(final FontContext context) {
     }
 
-    public void drawString(OutputDevice outputDevice, String string, float x, float y) {
+    public void drawString(final OutputDevice outputDevice, final String string, final float x, final float y) {
         ((ITextOutputDevice)outputDevice).drawString(string, x, y, null);
     }
     
     public void drawString(
-            OutputDevice outputDevice, String string, float x, float y, JustificationInfo info) {
+            final OutputDevice outputDevice, final String string, final float x, final float y, final JustificationInfo info) {
         ((ITextOutputDevice)outputDevice).drawString(string, x, y, info);
     }
 
-    public FSFontMetrics getFSFontMetrics(FontContext context, FSFont font, String string) {
-        FontDescription descr = ((ITextFSFont)font).getFontDescription();
-        BaseFont bf = descr.getFont();
-        float size = font.getSize2D();
-        ITextFSFontMetrics result = new ITextFSFontMetrics();
+    public FSFontMetrics getFSFontMetrics(final FontContext context, final FSFont font, final String string) {
+        final FontDescription descr = ((ITextFSFont)font).getFontDescription();
+        final BaseFont bf = descr.getFont();
+        final float size = font.getSize2D();
+        final ITextFSFontMetrics result = new ITextFSFontMetrics();
         result.setAscent(bf.getFontDescriptor(BaseFont.BBOXURY, size));
         result.setDescent(-bf.getFontDescriptor(BaseFont.BBOXLLY, size));
         
@@ -68,9 +68,9 @@ public class ITextTextRenderer implements TextRenderer {
         return result;
     }
 
-    public int getWidth(FontContext context, FSFont font, String string) {
-        BaseFont bf = ((ITextFSFont)font).getFontDescription().getFont();
-        float result = bf.getWidthPoint(string, font.getSize2D());
+    public int getWidth(final FontContext context, final FSFont font, final String string) {
+        final BaseFont bf = ((ITextFSFont)font).getFontDescription().getFont();
+        final float result = bf.getWidthPoint(string, font.getSize2D());
         if (result - Math.floor(result) < TEXT_MEASURING_DELTA) {
             return (int)result;
         } else {
@@ -78,36 +78,36 @@ public class ITextTextRenderer implements TextRenderer {
         }
     }
 
-    public void setFontScale(float scale) {
+    public void setFontScale(final float scale) {
     }
 
     public float getFontScale() {
         return 1.0f;
     }
 
-    public void setSmoothingThreshold(float fontsize) {
+    public void setSmoothingThreshold(final float fontsize) {
     }
 
     public int getSmoothingLevel() {
         return 0;
     }
 
-    public void setSmoothingLevel(int level) {
+    public void setSmoothingLevel(final int level) {
     }
 
-    public Rectangle getGlyphBounds(OutputDevice outputDevice, FSFont font, FSGlyphVector fsGlyphVector, int index, float x, float y) {
+    public Rectangle getGlyphBounds(final OutputDevice outputDevice, final FSFont font, final FSGlyphVector fsGlyphVector, final int index, final float x, final float y) {
         throw new UnsupportedOperationException();
     }
 
-    public float[] getGlyphPositions(OutputDevice outputDevice, FSFont font, FSGlyphVector fsGlyphVector) {
+    public float[] getGlyphPositions(final OutputDevice outputDevice, final FSFont font, final FSGlyphVector fsGlyphVector) {
         throw new UnsupportedOperationException();
     }
 
-    public FSGlyphVector getGlyphVector(OutputDevice outputDevice, FSFont font, String string) {
+    public FSGlyphVector getGlyphVector(final OutputDevice outputDevice, final FSFont font, final String string) {
         throw new UnsupportedOperationException();
     }
 
-    public void drawGlyphVector(OutputDevice outputDevice, FSGlyphVector vector, float x, float y) {
+    public void drawGlyphVector(final OutputDevice outputDevice, final FSGlyphVector vector, final float x, final float y) {
         throw new UnsupportedOperationException();
     }
 }

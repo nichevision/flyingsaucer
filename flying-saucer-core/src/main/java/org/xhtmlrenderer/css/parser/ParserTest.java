@@ -24,25 +24,25 @@ import java.io.StringReader;
 import org.xhtmlrenderer.css.sheet.StylesheetInfo.CSSOrigin;
 
 public class ParserTest {
-    public static void main(String[] args) throws Exception {
-        String test = "div { background-image: url('something') }\n";
-        StringBuffer longTest = new StringBuffer();
+    public static void main(final String[] args) throws Exception {
+        final String test = "div { background-image: url('something') }\n";
+        final StringBuffer longTest = new StringBuffer();
         for (int i = 0 ; i < 10000; i++) {
             longTest.append(test);
         }
         
-        CSSErrorHandler errorHandler = new CSSErrorHandler() {
-            public void error(String uri, String message) {
+        final CSSErrorHandler errorHandler = new CSSErrorHandler() {
+            public void error(final String uri, final String message) {
                 System.out.println(message);
             }
         };
         
         long total = 0;
         for (int i = 0; i < 40; i++) {
-            long start = System.currentTimeMillis();
-            CSSParser p = new CSSParser(errorHandler);
+            final long start = System.currentTimeMillis();
+            final CSSParser p = new CSSParser(errorHandler);
             p.parseStylesheet(null, CSSOrigin.AUTHOR, new StringReader(longTest.toString()));
-            long end = System.currentTimeMillis();
+            final long end = System.currentTimeMillis();
             // System.out.println("Took " + (end-start) + " ms");
             total += (end-start);
         }
@@ -50,24 +50,24 @@ public class ParserTest {
         
         total = 0;
         for (int i = 0; i < 10; i++) {
-            long start = System.currentTimeMillis();
-            CSSParser p = new CSSParser(errorHandler);
+            final long start = System.currentTimeMillis();
+            final CSSParser p = new CSSParser(errorHandler);
             p.parseStylesheet(null, CSSOrigin.AUTHOR, new StringReader(longTest.toString()));
-            long end = System.currentTimeMillis();
+            final long end = System.currentTimeMillis();
             // System.out.println("Took " + (end-start) + " ms");
             total += (end-start);
         }
         System.out.println("Average " + (total/10) + " ms");
         
-        CSSParser p = new CSSParser(errorHandler);
+        final CSSParser p = new CSSParser(errorHandler);
         
         total = 0;
         for (int i = 0; i < 10; i++) {
-            long start = System.currentTimeMillis();
+            final long start = System.currentTimeMillis();
             for (int j = 0; j < 10000; j++) {
                 p.parseStylesheet(null, CSSOrigin.AUTHOR, new StringReader(test));
             }
-            long end = System.currentTimeMillis();
+            final long end = System.currentTimeMillis();
             // System.out.println("Took " + (end-start) + " ms");
             total += (end-start);
         }

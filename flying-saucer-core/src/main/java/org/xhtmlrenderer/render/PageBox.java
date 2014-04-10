@@ -79,25 +79,25 @@ public class PageBox {
     
     private PageInfo _pageInfo;
     
-    private MarginAreaContainer[] _marginAreas = new MarginAreaContainer[MARGIN_AREA_DEFS.length];
+    private final MarginAreaContainer[] _marginAreas = new MarginAreaContainer[MARGIN_AREA_DEFS.length];
     
     private Element _metadata;
     
-    public int getWidth(CssContext cssCtx) {
+    public int getWidth(final CssContext cssCtx) {
         resolvePageDimensions(cssCtx);
         
         return _pageDimensions.getWidth();
     }
 
-    public int getHeight(CssContext cssCtx) {
+    public int getHeight(final CssContext cssCtx) {
         resolvePageDimensions(cssCtx);
         
         return _pageDimensions.getHeight();
     }
     
-    private void resolvePageDimensions(CssContext cssCtx) {
+    private void resolvePageDimensions(final CssContext cssCtx) {
         if (_pageDimensions == null) {
-            CalculatedStyle style = getStyle();
+            final CalculatedStyle style = getStyle();
             
             int width;
             int height;
@@ -124,7 +124,7 @@ public class PageBox {
                 height = temp;
             }
             
-            PageDimensions dim = new PageDimensions();
+            final PageDimensions dim = new PageDimensions();
             dim.setWidth(width);
             dim.setHeight(height);
             
@@ -133,8 +133,8 @@ public class PageBox {
     }
     
     private boolean isUseLetterSize() {
-        Locale l = Locale.getDefault();
-        String county = l.getCountry();
+        final Locale l = Locale.getDefault();
+        final String county = l.getCountry();
         
         // Per http://en.wikipedia.org/wiki/Paper_size, letter paper is
         // a de facto standard in Canada (although the government uses
@@ -143,7 +143,7 @@ public class PageBox {
         return county.equals("US") || county.equals("CA") || county.equals("MX"); 
     }
     
-    private int resolveAutoPageWidth(CssContext cssCtx) {
+    private int resolveAutoPageWidth(final CssContext cssCtx) {
         if (isUseLetterSize()) {
             return (int)LengthValue.calcFloatProportionalValue(
                     getStyle(),
@@ -165,7 +165,7 @@ public class PageBox {
         }
     }
     
-    private int resolveAutoPageHeight(CssContext cssCtx) {
+    private int resolveAutoPageHeight(final CssContext cssCtx) {
         if (isUseLetterSize()) {
             return (int)LengthValue.calcFloatProportionalValue(
                     getStyle(),
@@ -187,8 +187,8 @@ public class PageBox {
         }
     }    
 
-    public int getContentHeight(CssContext cssCtx) {
-        int retval = getHeight(cssCtx) - getMarginBorderPadding(cssCtx, CalculatedStyle.TOP)
+    public int getContentHeight(final CssContext cssCtx) {
+        final int retval = getHeight(cssCtx) - getMarginBorderPadding(cssCtx, CalculatedStyle.TOP)
                 - getMarginBorderPadding(cssCtx, CalculatedStyle.BOTTOM);
         if (retval <= 0) {
             throw new IllegalArgumentException(
@@ -197,8 +197,8 @@ public class PageBox {
         return retval;
     }
 
-    public int getContentWidth(CssContext cssCtx) {
-        int retval = getWidth(cssCtx) - getMarginBorderPadding(cssCtx, CalculatedStyle.LEFT)
+    public int getContentWidth(final CssContext cssCtx) {
+        final int retval = getWidth(cssCtx) - getMarginBorderPadding(cssCtx, CalculatedStyle.LEFT)
                 - getMarginBorderPadding(cssCtx, CalculatedStyle.RIGHT);
         if (retval <= 0) {
             throw new IllegalArgumentException(
@@ -212,7 +212,7 @@ public class PageBox {
         return _style;
     }
 
-    public void setStyle(CalculatedStyle style) {
+    public void setStyle(final CalculatedStyle style) {
         _style = style;
     }
 
@@ -224,7 +224,7 @@ public class PageBox {
         return _top;
     }
     
-    public void setTopAndBottom(CssContext cssCtx, int top) {
+    public void setTopAndBottom(final CssContext cssCtx, final int top) {
         _top = top;
         _bottom = top + getContentHeight(cssCtx);
     }
@@ -233,7 +233,7 @@ public class PageBox {
         return _paintingBottom;
     }
 
-    public void setPaintingBottom(int paintingBottom) {
+    public void setPaintingBottom(final int paintingBottom) {
         _paintingBottom = paintingBottom;
     }
 
@@ -241,24 +241,24 @@ public class PageBox {
         return _paintingTop;
     }
 
-    public void setPaintingTop(int paintingTop) {
+    public void setPaintingTop(final int paintingTop) {
         _paintingTop = paintingTop;
     }
     
-    public Rectangle getScreenPaintingBounds(CssContext cssCtx, int additionalClearance) {
+    public Rectangle getScreenPaintingBounds(final CssContext cssCtx, final int additionalClearance) {
         return new Rectangle(
                 additionalClearance, getPaintingTop(),
                 getWidth(cssCtx), getPaintingBottom()-getPaintingTop());
     }
     
-    public Rectangle getPrintPaintingBounds(CssContext cssCtx) {
+    public Rectangle getPrintPaintingBounds(final CssContext cssCtx) {
         return new Rectangle(
                 0, 0,
                 getWidth(cssCtx), getHeight(cssCtx));
     }
     
-    public Rectangle getPagedViewClippingBounds(CssContext cssCtx, int additionalClearance) {
-        Rectangle result = new Rectangle(
+    public Rectangle getPagedViewClippingBounds(final CssContext cssCtx, final int additionalClearance) {
+        final Rectangle result = new Rectangle(
                 additionalClearance + 
                     getMarginBorderPadding(cssCtx, CalculatedStyle.LEFT),
                 getPaintingTop() + 
@@ -269,8 +269,8 @@ public class PageBox {
         return result;
     }
     
-    public Rectangle getPrintClippingBounds(CssContext cssCtx) {
-        Rectangle result = new Rectangle(
+    public Rectangle getPrintClippingBounds(final CssContext cssCtx) {
+        final Rectangle result = new Rectangle(
                 getMarginBorderPadding(cssCtx, CalculatedStyle.LEFT),
                 getMarginBorderPadding(cssCtx, CalculatedStyle.TOP),
                 getContentWidth(cssCtx),
@@ -281,20 +281,20 @@ public class PageBox {
         return result;
     }
     
-    public RectPropertySet getMargin(CssContext cssCtx) {
+    public RectPropertySet getMargin(final CssContext cssCtx) {
         return getStyle().getMarginRect(_outerPageWidth, cssCtx);
     }
 
-    private Rectangle getBorderEdge(int left, int top, CssContext cssCtx) {
-        RectPropertySet margin = getMargin(cssCtx);
-        Rectangle result = new Rectangle(left + (int) margin.left(),
+    private Rectangle getBorderEdge(final int left, final int top, final CssContext cssCtx) {
+        final RectPropertySet margin = getMargin(cssCtx);
+        final Rectangle result = new Rectangle(left + (int) margin.left(),
                 top + (int) margin.top(),
                 getWidth(cssCtx) - (int) margin.left() - (int) margin.right(),
                 getHeight(cssCtx) - (int) margin.top() - (int) margin.bottom());
         return result;
     }
     
-    public void paintBorder(RenderingContext c, int additionalClearance, short mode) {
+    public void paintBorder(final RenderingContext c, final int additionalClearance, final short mode) {
         int top = 0;
         if (mode == Layer.PAGED_MODE_SCREEN) {
             top = getPaintingTop();
@@ -305,7 +305,7 @@ public class PageBox {
                 BorderPainter.ALL);
     }
     
-    public void paintBackground(RenderingContext c, int additionalClearance, short mode) {
+    public void paintBackground(final RenderingContext c, final int additionalClearance, final short mode) {
         Rectangle bounds;
         if (mode == Layer.PAGED_MODE_SCREEN) {
             bounds = getScreenPaintingBounds(c, additionalClearance);
@@ -316,12 +316,12 @@ public class PageBox {
         c.getOutputDevice().paintBackground(c, getStyle(), bounds, bounds, getStyle().getBorder(c));
     }
     
-    public void paintMarginAreas(RenderingContext c, int additionalClearance, short mode) {
+    public void paintMarginAreas(final RenderingContext c, final int additionalClearance, final short mode) {
         for (int i = 0; i < MARGIN_AREA_DEFS.length; i++) {
-            MarginAreaContainer container = _marginAreas[i];
+            final MarginAreaContainer container = _marginAreas[i];
             if (container != null) {
-                TableBox table = _marginAreas[i].getTable();
-                Point p = container.getArea().getPaintingPosition(
+                final TableBox table = _marginAreas[i].getTable();
+                final Point p = container.getArea().getPaintingPosition(
                         c, this, additionalClearance, mode);
                 
                 c.getOutputDevice().translate(p.x, p.y);
@@ -335,7 +335,7 @@ public class PageBox {
         return _pageNo;
     }
 
-    public void setPageNo(int pageNo) {
+    public void setPageNo(final int pageNo) {
         _pageNo = pageNo;
     }
 
@@ -343,11 +343,11 @@ public class PageBox {
         return _outerPageWidth;
     }
 
-    public void setOuterPageWidth(int containingBlockWidth) {
+    public void setOuterPageWidth(final int containingBlockWidth) {
         _outerPageWidth = containingBlockWidth;
     }
     
-    public int getMarginBorderPadding(CssContext cssCtx, int which) {
+    public int getMarginBorderPadding(final CssContext cssCtx, final int which) {
         return getStyle().getMarginBorderPadding(
                 cssCtx, (int)getOuterPageWidth(), which);
     }
@@ -356,7 +356,7 @@ public class PageBox {
         return _pageInfo;
     }
 
-    public void setPageInfo(PageInfo pageInfo) {
+    public void setPageInfo(final PageInfo pageInfo) {
         _pageInfo = pageInfo;
     }
     
@@ -364,7 +364,7 @@ public class PageBox {
         return _metadata;
     }
     
-    public void layout(LayoutContext c) {
+    public void layout(final LayoutContext c) {
         c.setPage(this);
         retrievePageMetadata(c);
         layoutMarginAreas(c);
@@ -372,21 +372,21 @@ public class PageBox {
     
     // HACK Would much prefer to do this in ITextRenderer or ITextOutputDevice
     // but given the existing API, this is about the only place it can be done
-    private void retrievePageMetadata(LayoutContext c) {
-        List<PropertyDeclaration> props = getPageInfo().getXMPPropertyList();
+    private void retrievePageMetadata(final LayoutContext c) {
+        final List<PropertyDeclaration> props = getPageInfo().getXMPPropertyList();
         if (props != null && props.size() > 0)
         {
-            for (Iterator<PropertyDeclaration> i = props.iterator(); i.hasNext(); ) {
-                PropertyDeclaration decl = (PropertyDeclaration)i.next();
+            for (final Iterator<PropertyDeclaration> i = props.iterator(); i.hasNext(); ) {
+                final PropertyDeclaration decl = (PropertyDeclaration)i.next();
                 if (decl.getCSSName() == CSSName.CONTENT) {
-                    PropertyValue value = (PropertyValue)decl.getValue();
-                    List<?> values = value.getValues();
+                    final PropertyValue value = (PropertyValue)decl.getValue();
+                    final List<?> values = value.getValues();
                     if (values.size() == 1) {
-                        PropertyValue funcVal = (PropertyValue)values.get(0);
+                        final PropertyValue funcVal = (PropertyValue)values.get(0);
                         if (funcVal.getPropertyValueType() == PropertyValueImp.VALUE_TYPE_FUNCTION) {
-                            FSFunction func = funcVal.getFunction();
+                            final FSFunction func = funcVal.getFunction();
                             if (BoxBuilder.isElementFunction(func)) {
-                                BlockBox metadata = BoxBuilder.getRunningBlock(c, funcVal);
+                                final BlockBox metadata = BoxBuilder.getRunningBlock(c, funcVal);
                                 if (metadata != null) {
                                     _metadata = metadata.getElement();
                                 }
@@ -399,13 +399,13 @@ public class PageBox {
         }
     }
 
-    private void layoutMarginAreas(LayoutContext c) {
-        RectPropertySet margin = getMargin(c);
+    private void layoutMarginAreas(final LayoutContext c) {
+        final RectPropertySet margin = getMargin(c);
         for (int i = 0; i < MARGIN_AREA_DEFS.length; i++) {
-            MarginArea area = MARGIN_AREA_DEFS[i];
+            final MarginArea area = MARGIN_AREA_DEFS[i];
             
-            Dimension dim = area.getLayoutDimension(c, this, margin);
-            TableBox table = BoxBuilder.createMarginTable(
+            final Dimension dim = area.getLayoutDimension(c, this, margin);
+            final TableBox table = BoxBuilder.createMarginTable(
                     c, _pageInfo, 
                     area.getMarginBoxNames(),
                     (int)dim.getHeight(),
@@ -438,18 +438,18 @@ public class PageBox {
         return _pageNo % 2 == 0;
     }
     
-    public void exportLeadingText(RenderingContext c, Writer writer) throws IOException {
+    public void exportLeadingText(final RenderingContext c, final Writer writer) throws IOException {
         for (int i = 0; i < LEADING_TRAILING_SPLIT; i++) {
-            MarginAreaContainer container = _marginAreas[i];
+            final MarginAreaContainer container = _marginAreas[i];
             if (container != null) {
                 container.getTable().exportText(c, writer);
             }
         }
     }
     
-    public void exportTrailingText(RenderingContext c, Writer writer) throws IOException {
+    public void exportTrailingText(final RenderingContext c, final Writer writer) throws IOException {
         for (int i = LEADING_TRAILING_SPLIT; i < _marginAreas.length; i++) {
-            MarginAreaContainer container = _marginAreas[i];
+            final MarginAreaContainer container = _marginAreas[i];
             if (container != null) {
                 container.getTable().exportText(c, writer);
             }
@@ -464,7 +464,7 @@ public class PageBox {
             return _height;
         }
 
-        public void setHeight(int height) {
+        public void setHeight(final int height) {
             _height = height;
         }
 
@@ -472,7 +472,7 @@ public class PageBox {
             return _width;
         }
 
-        public void setWidth(int width) {
+        public void setWidth(final int width) {
             _width = width;
         }
     }
@@ -481,7 +481,7 @@ public class PageBox {
         private final MarginArea _area;
         private final TableBox _table;
         
-        public MarginAreaContainer(MarginArea area, TableBox table) {
+        public MarginAreaContainer(final MarginArea area, final TableBox table) {
             _area = area;
             _table = table;
         }
@@ -503,11 +503,11 @@ public class PageBox {
         public abstract Point getPaintingPosition(
                 RenderingContext c, PageBox page, int additionalClearance, short mode);
         
-        public MarginArea(MarginBoxName marginBoxName) {
+        public MarginArea(final MarginBoxName marginBoxName) {
             _marginBoxNames = new MarginBoxName[] { marginBoxName };
         }
         
-        public MarginArea(MarginBoxName[] marginBoxNames) {
+        public MarginArea(final MarginBoxName[] marginBoxNames) {
             _marginBoxNames = marginBoxNames;
         }
 
@@ -517,7 +517,7 @@ public class PageBox {
         }
 
         @SuppressWarnings("unused")
-		public void setTable(TableBox table) {
+		public void setTable(final TableBox table) {
             _table = table;
         }
         
@@ -535,13 +535,13 @@ public class PageBox {
             super(MarginBoxName.TOP_LEFT_CORNER);
         }
 
-        public Dimension getLayoutDimension(CssContext c, PageBox page, RectPropertySet margin) {
+        public Dimension getLayoutDimension(final CssContext c, final PageBox page, final RectPropertySet margin) {
             return new Dimension((int)margin.left(), (int)margin.top());
         }
 
         public Point getPaintingPosition(
-                RenderingContext c, PageBox page, int additionalClearance, short mode) {
-            int left = additionalClearance;
+                final RenderingContext c, final PageBox page, final int additionalClearance, final short mode) {
+            final int left = additionalClearance;
             int top;
             if (mode == Layer.PAGED_MODE_SCREEN) {
                 top = page.getPaintingTop();
@@ -561,13 +561,13 @@ public class PageBox {
             super(MarginBoxName.TOP_RIGHT_CORNER);
         }
 
-        public Dimension getLayoutDimension(CssContext c, PageBox page, RectPropertySet margin) {
+        public Dimension getLayoutDimension(final CssContext c, final PageBox page, final RectPropertySet margin) {
             return new Dimension((int)margin.right(), (int)margin.top());
         }
 
         public Point getPaintingPosition(
-                RenderingContext c, PageBox page, int additionalClearance, short mode) {
-            int left = additionalClearance + page.getWidth(c) - (int)page.getMargin(c).right();
+                final RenderingContext c, final PageBox page, final int additionalClearance, final short mode) {
+            final int left = additionalClearance + page.getWidth(c) - (int)page.getMargin(c).right();
             int top;
             if (mode == Layer.PAGED_MODE_SCREEN) {
                 top = page.getPaintingTop();
@@ -586,13 +586,13 @@ public class PageBox {
             super(MarginBoxName.BOTTOM_RIGHT_CORNER);
         }
 
-        public Dimension getLayoutDimension(CssContext c, PageBox page, RectPropertySet margin) {
+        public Dimension getLayoutDimension(final CssContext c, final PageBox page, final RectPropertySet margin) {
             return new Dimension((int)margin.right(), (int)margin.bottom());
         }
 
         public Point getPaintingPosition(
-                RenderingContext c, PageBox page, int additionalClearance, short mode) {
-            int left = additionalClearance + page.getWidth(c) - (int)page.getMargin(c).right();
+                final RenderingContext c, final PageBox page, final int additionalClearance, final short mode) {
+            final int left = additionalClearance + page.getWidth(c) - (int)page.getMargin(c).right();
             int top;
             
             if (mode == Layer.PAGED_MODE_SCREEN) {
@@ -612,13 +612,13 @@ public class PageBox {
             super(MarginBoxName.BOTTOM_LEFT_CORNER);
         }
 
-        public Dimension getLayoutDimension(CssContext c, PageBox page, RectPropertySet margin) {
+        public Dimension getLayoutDimension(final CssContext c, final PageBox page, final RectPropertySet margin) {
             return new Dimension((int)margin.left(), (int)margin.bottom());
         }
 
         public Point getPaintingPosition(
-                RenderingContext c, PageBox page, int additionalClearance, short mode) {
-            int left = additionalClearance;
+                final RenderingContext c, final PageBox page, final int additionalClearance, final short mode) {
+            final int left = additionalClearance;
             int top;
             
             if (mode == Layer.PAGED_MODE_SCREEN) {
@@ -641,13 +641,13 @@ public class PageBox {
                     MarginBoxName.LEFT_BOTTOM });
         }
 
-        public Dimension getLayoutDimension(CssContext c, PageBox page, RectPropertySet margin) {
+        public Dimension getLayoutDimension(final CssContext c, final PageBox page, final RectPropertySet margin) {
             return new Dimension((int)margin.left(), page.getContentHeight(c));
         }
 
         public Point getPaintingPosition(
-                RenderingContext c, PageBox page, int additionalClearance, short mode) {
-            int left = additionalClearance;
+                final RenderingContext c, final PageBox page, final int additionalClearance, final short mode) {
+            final int left = additionalClearance;
             int top;
             if (mode == Layer.PAGED_MODE_SCREEN) {
                 top = page.getPaintingTop() + (int)page.getMargin(c).top();
@@ -673,13 +673,13 @@ public class PageBox {
                     MarginBoxName.RIGHT_BOTTOM });
         }
 
-        public Dimension getLayoutDimension(CssContext c, PageBox page, RectPropertySet margin) {
+        public Dimension getLayoutDimension(final CssContext c, final PageBox page, final RectPropertySet margin) {
             return new Dimension((int)margin.left(), page.getContentHeight(c));
         }
 
         public Point getPaintingPosition(
-                RenderingContext c, PageBox page, int additionalClearance, short mode) {
-            int left = additionalClearance + page.getWidth(c) - (int)page.getMargin(c).right();
+                final RenderingContext c, final PageBox page, final int additionalClearance, final short mode) {
+            final int left = additionalClearance + page.getWidth(c) - (int)page.getMargin(c).right();
             int top;
             if (mode == Layer.PAGED_MODE_SCREEN) {
                 top = page.getPaintingTop() + (int)page.getMargin(c).top();
@@ -705,13 +705,13 @@ public class PageBox {
                     MarginBoxName.TOP_RIGHT });
         }
 
-        public Dimension getLayoutDimension(CssContext c, PageBox page, RectPropertySet margin) {
+        public Dimension getLayoutDimension(final CssContext c, final PageBox page, final RectPropertySet margin) {
             return new Dimension(page.getContentWidth(c), (int)margin.top());
         }
 
         public Point getPaintingPosition(
-                RenderingContext c, PageBox page, int additionalClearance, short mode) {
-            int left = additionalClearance + (int)page.getMargin(c).left();
+                final RenderingContext c, final PageBox page, final int additionalClearance, final short mode) {
+            final int left = additionalClearance + (int)page.getMargin(c).left();
             int top;
             if (mode == Layer.PAGED_MODE_SCREEN) {
                 top = page.getPaintingTop();
@@ -733,13 +733,13 @@ public class PageBox {
                     MarginBoxName.BOTTOM_RIGHT });
         }
 
-        public Dimension getLayoutDimension(CssContext c, PageBox page, RectPropertySet margin) {
+        public Dimension getLayoutDimension(final CssContext c, final PageBox page, final RectPropertySet margin) {
             return new Dimension(page.getContentWidth(c), (int)margin.bottom());
         }
 
         public Point getPaintingPosition(
-                RenderingContext c, PageBox page, int additionalClearance, short mode) {
-            int left = additionalClearance + (int)page.getMargin(c).left();
+                final RenderingContext c, final PageBox page, final int additionalClearance, final short mode) {
+            final int left = additionalClearance + (int)page.getMargin(c).left();
             int top;
             
             if (mode == Layer.PAGED_MODE_SCREEN) {

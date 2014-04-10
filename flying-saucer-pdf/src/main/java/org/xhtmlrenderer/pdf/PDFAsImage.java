@@ -24,7 +24,7 @@ import java.net.URL;
 import org.xhtmlrenderer.extend.FSImage;
 
 public class PDFAsImage implements FSImage {
-    private URL _source;
+    private final URL _source;
     
     private float _width;
     private float _height;
@@ -32,7 +32,7 @@ public class PDFAsImage implements FSImage {
     private float _unscaledWidth;
     private float _unscaledHeight;
     
-    public PDFAsImage(URL source) {
+    public PDFAsImage(final URL source) {
         _source = source;
     }
     
@@ -44,7 +44,7 @@ public class PDFAsImage implements FSImage {
         return (int)_height;
     }
 
-    public void scale(int width, int height) {
+    public void scale(final int width, final int height) {
         float targetWidth = width;
         float targetHeight = height;
         
@@ -64,14 +64,14 @@ public class PDFAsImage implements FSImage {
         return _source;
     }
     
-    public void setInitialWidth(float width) {
+    public void setInitialWidth(final float width) {
         if (_width == 0) {
             _width = width;
             _unscaledWidth = width;
         }
     }
     
-    public void setInitialHeight(float height) {
+    public void setInitialHeight(final float height) {
         if (_height == 0) {
             _height = height;
             _unscaledHeight = height;
@@ -90,7 +90,7 @@ public class PDFAsImage implements FSImage {
         return _unscaledHeight;
     }
 
-    public void setUnscaledHeight(float unscaledHeight) {
+    public void setUnscaledHeight(final float unscaledHeight) {
         _unscaledHeight = unscaledHeight;
     }
 
@@ -98,7 +98,7 @@ public class PDFAsImage implements FSImage {
         return _unscaledWidth;
     }
 
-    public void setUnscaledWidth(float unscaledWidth) {
+    public void setUnscaledWidth(final float unscaledWidth) {
         _unscaledWidth = unscaledWidth;
     }
     

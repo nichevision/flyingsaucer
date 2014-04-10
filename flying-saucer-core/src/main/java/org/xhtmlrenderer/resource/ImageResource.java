@@ -28,10 +28,10 @@ import org.xhtmlrenderer.swing.AWTFSImage;
  */
 public class ImageResource extends AbstractResource {
     private final String _imageUri;
-    private FSImage _img;
+    private final FSImage _img;
 
     //HACK: at least for now, till we know what we want to do here
-    public ImageResource(final String uri, FSImage img) {
+    public ImageResource(final String uri, final FSImage img) {
         _imageUri = uri;
         _img = img;
     }
@@ -51,7 +51,7 @@ public class ImageResource extends AbstractResource {
     public boolean hasDimensions(final int width, final int height) {
         if (isLoaded()) {
             if (_img instanceof AWTFSImage) {
-                AWTFSImage awtfi = (AWTFSImage) _img;
+                final AWTFSImage awtfi = (AWTFSImage) _img;
                 return awtfi.getWidth() == width && awtfi.getHeight() == height;
             } else {
                 return false;

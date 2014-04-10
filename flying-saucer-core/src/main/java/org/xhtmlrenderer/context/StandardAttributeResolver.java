@@ -35,15 +35,15 @@ public class StandardAttributeResolver implements AttributeResolver {
     /**
      * Description of the Field
      */
-    private NamespaceHandler nsh;
+    private final NamespaceHandler nsh;
     /**
      * Description of the Field
      */
-    private UserAgentCallback uac;
+    private final UserAgentCallback uac;
     /**
      * Description of the Field
      */
-    private UserInterface ui;
+    private final UserInterface ui;
 
     /**
      * Constructor for the StandardAttributeResolver object
@@ -52,7 +52,7 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param uac PARAM
      * @param ui  PARAM
      */
-    public StandardAttributeResolver(NamespaceHandler nsh, UserAgentCallback uac, UserInterface ui) {
+    public StandardAttributeResolver(final NamespaceHandler nsh, final UserAgentCallback uac, final UserInterface ui) {
         this.nsh = nsh;
         this.uac = uac;
         this.ui = ui;
@@ -65,11 +65,11 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param attrName PARAM
      * @return The attributeValue value
      */
-    public String getAttributeValue(Object e, String attrName) {
+    public String getAttributeValue(final Object e, final String attrName) {
         return nsh.getAttributeValue((Element) e, attrName);
     }
     
-    public String getAttributeValue(Object e, String namespaceURI, String attrName) {
+    public String getAttributeValue(final Object e, final String namespaceURI, final String attrName) {
         return nsh.getAttributeValue((Element)e, namespaceURI, attrName);
     }
 
@@ -79,7 +79,7 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param e PARAM
      * @return The class value
      */
-    public String getClass(Object e) {
+    public String getClass(final Object e) {
         return nsh.getClass((Element) e);
     }
 
@@ -89,11 +89,11 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param e PARAM
      * @return The iD value
      */
-    public String getID(Object e) {
+    public String getID(final Object e) {
         return nsh.getID((Element) e);
     }
 
-    public String getNonCssStyling(Object e) {
+    public String getNonCssStyling(final Object e) {
         return nsh.getNonCssStyling((Element) e);
     }
 
@@ -103,7 +103,7 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param e PARAM
      * @return The elementStyling value
      */
-    public String getElementStyling(Object e) {
+    public String getElementStyling(final Object e) {
         return nsh.getElementStyling((Element) e);
     }
 
@@ -113,7 +113,7 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param e PARAM
      * @return The lang value
      */
-    public String getLang(Object e) {
+    public String getLang(final Object e) {
         return nsh.getLang((Element) e);
     }
 
@@ -123,7 +123,7 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param e PARAM
      * @return The link value
      */
-    public boolean isLink(Object e) {
+    public boolean isLink(final Object e) {
         return nsh.getLinkUri((Element) e) != null;
     }
 
@@ -133,7 +133,7 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param e PARAM
      * @return The visited value
      */
-    public boolean isVisited(Object e) {
+    public boolean isVisited(final Object e) {
         return isLink(e) && uac.isVisited(nsh.getLinkUri((Element) e));
     }
 
@@ -143,7 +143,7 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param e PARAM
      * @return The hover value
      */
-    public boolean isHover(Object e) {
+    public boolean isHover(final Object e) {
         return ui.isHover((Element) e);
     }
 
@@ -153,7 +153,7 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param e PARAM
      * @return The active value
      */
-    public boolean isActive(Object e) {
+    public boolean isActive(final Object e) {
         return ui.isActive((Element) e);
     }
 
@@ -163,7 +163,7 @@ public class StandardAttributeResolver implements AttributeResolver {
      * @param e PARAM
      * @return The focus value
      */
-    public boolean isFocus(Object e) {
+    public boolean isFocus(final Object e) {
         return ui.isFocus((Element) e);
     }
 }

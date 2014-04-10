@@ -23,10 +23,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class FSFunction {
-    private String _name;
-    private List<PropertyValue> _parameters;
+    private final String _name;
+    private final List<PropertyValue> _parameters;
     
-    public FSFunction(String name, List<PropertyValue> parameters) {
+    public FSFunction(final String name, final List<PropertyValue> parameters) {
         _name = name;
         _parameters = parameters;
     }
@@ -41,10 +41,10 @@ public class FSFunction {
     
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
         result.append(_name);
         result.append('(');
-        for (Iterator<PropertyValue> i = _parameters.iterator(); i.hasNext(); ) {
+        for (final Iterator<PropertyValue> i = _parameters.iterator(); i.hasNext(); ) {
             result.append(i.next());  // HACK
 
             if (i.hasNext())

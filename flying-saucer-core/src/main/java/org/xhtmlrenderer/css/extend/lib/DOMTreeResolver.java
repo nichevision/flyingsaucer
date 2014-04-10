@@ -32,13 +32,13 @@ import org.xhtmlrenderer.css.extend.TreeResolver;
  *         works for a w3c DOM tree
  */
 public class DOMTreeResolver implements TreeResolver {
-    public Object getParentElement(Object element) {
+    public Object getParentElement(final Object element) {
         Node parent = ((Element) element).parentNode();
         if (!(parent instanceof Element) || parent instanceof Document) parent = null;
         return parent;
     }
 
-    public Object getPreviousSiblingElement(Object element) {
+    public Object getPreviousSiblingElement(final Object element) {
         Node sibling = ((Element) element).previousSibling();
         while (sibling != null && !(sibling instanceof Element)) {
             sibling = sibling.previousSibling();
@@ -49,14 +49,14 @@ public class DOMTreeResolver implements TreeResolver {
         return sibling;
     }
 
-    public String getElementName(Object element) {
-        String name = ((Element) element).nodeName();
+    public String getElementName(final Object element) {
+        final String name = ((Element) element).nodeName();
 //        if (name == null) name = ((Element) element).getNodeName();
         return name;
     }
 
-    public boolean isFirstChildElement(Object element) {
-        Node parent = ((Element) element).parentNode();
+    public boolean isFirstChildElement(final Object element) {
+        final Node parent = ((Element) element).parentNode();
         Node currentChild = parent.childNodeSize() > 0 ? parent.childNode(0) : null;
         while (currentChild != null && !(currentChild instanceof Element)) {
             currentChild = currentChild.nextSibling();
@@ -64,8 +64,8 @@ public class DOMTreeResolver implements TreeResolver {
         return currentChild == element;
     }
 
-    public boolean isLastChildElement(Object element) {
-        Node parent = ((Element) element).parentNode();
+    public boolean isLastChildElement(final Object element) {
+        final Node parent = ((Element) element).parentNode();
         Node currentChild = parent.childNodeSize() > 0 ? parent.childNode(parent.childNodeSize() - 1) : null;
         while (currentChild != null && !(currentChild instanceof Element)) {
             currentChild = currentChild.previousSibling();
@@ -73,10 +73,10 @@ public class DOMTreeResolver implements TreeResolver {
         return currentChild == element;
     }
 
-    public boolean matchesElement(Object element, String namespaceURI, String name) {
-        Element e = (Element)element;
-        String localName = e.nodeName();
-        String eName = localName;
+    public boolean matchesElement(final Object element, final String namespaceURI, final String name) {
+        final Element e = (Element)element;
+        final String localName = e.nodeName();
+        final String eName = localName;
 
 //        if (localName == null) {
 //            eName = e.getNodeName();
@@ -94,9 +94,9 @@ public class DOMTreeResolver implements TreeResolver {
         }
     }
     
-    public int getPositionOfElement(Object element) {
-        Node parent = ((Element) element).parentNode();
-        List<Node> nl = parent.childNodes();
+    public int getPositionOfElement(final Object element) {
+        final Node parent = ((Element) element).parentNode();
+        final List<Node> nl = parent.childNodes();
 
         int elt_count = 0;
         int i = 0;

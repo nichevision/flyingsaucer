@@ -38,9 +38,9 @@ import java.math.BigInteger;
  */
 public class PermutationGenerator {
 
-    private int[] a;
+    private final int[] a;
     private BigInteger numLeft;
-    private BigInteger total;
+    private final BigInteger total;
 
     //-----------------------------------------------------------
     // Constructor. WARNING: Don't make n too large.
@@ -51,7 +51,7 @@ public class PermutationGenerator {
     // why we use BigInteger instead.
     //----------------------------------------------------------
 
-    public PermutationGenerator(int n) {
+    public PermutationGenerator(final int n) {
         if (n < 1) {
             throw new IllegalArgumentException("Min 1");
         }
@@ -99,7 +99,7 @@ public class PermutationGenerator {
     // Compute factorial
     //------------------
 
-    private static BigInteger getFactorial(int n) {
+    private static BigInteger getFactorial(final int n) {
         BigInteger fact = BigInteger.ONE;
         for (int i = n; i > 1; i--) {
             fact = fact.multiply(new BigInteger(Integer.toString(i)));

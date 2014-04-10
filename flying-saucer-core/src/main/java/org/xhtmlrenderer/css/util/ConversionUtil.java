@@ -37,7 +37,7 @@ public class ConversionUtil {
      * @param rgbcol  PARAM
      * @return        Returns
      */
-    public static Color rgbToColor( RGBColor rgbcol ) {
+    public static Color rgbToColor( final RGBColor rgbcol ) {
     	// TODO: Remove these casts.
     	return new java.awt.Color( ((PropertyValue) rgbcol.getRed()).getFloatValue() / 255f,
         		((PropertyValue) rgbcol.getGreen()).getFloatValue() / 255f,

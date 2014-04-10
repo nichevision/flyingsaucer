@@ -35,7 +35,7 @@ public class CheckboxFormField extends AbstractFormField
 {
   private static final String FIELD_TYPE = "Checkbox";
 
-  public CheckboxFormField(LayoutContext c, BlockBox box, int cssWidth, int cssHeight)
+  public CheckboxFormField(final LayoutContext c, final BlockBox box, final int cssWidth, final int cssHeight)
   {
     initDimensions(c, box, cssWidth, cssHeight);
   }
@@ -45,17 +45,17 @@ public class CheckboxFormField extends AbstractFormField
     return FIELD_TYPE;
   }
 
-  public void paint(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box)
+  public void paint(final RenderingContext c, final ITextOutputDevice outputDevice, final BlockBox box)
   {
-    PdfContentByte cb = outputDevice.getCurrentPage();
+    final PdfContentByte cb = outputDevice.getCurrentPage();
 
-    PdfWriter writer = outputDevice.getWriter();
-    Element elm = box.getElement();
+    final PdfWriter writer = outputDevice.getWriter();
+    final Element elm = box.getElement();
 
-    Rectangle targetArea = outputDevice.createLocalTargetArea(c, box);
-    String onValue = getValue(elm);
+    final Rectangle targetArea = outputDevice.createLocalTargetArea(c, box);
+    final String onValue = getValue(elm);
 
-    RadioCheckField field = new RadioCheckField(writer, targetArea, getFieldName(outputDevice, elm), onValue);
+    final RadioCheckField field = new RadioCheckField(writer, targetArea, getFieldName(outputDevice, elm), onValue);
 
 
     field.setChecked(isChecked(elm));
@@ -68,16 +68,16 @@ public class CheckboxFormField extends AbstractFormField
 
     try
     {
-      PdfFormField formField = field.getCheckField();
+      final PdfFormField formField = field.getCheckField();
       if (isReadOnly(elm))
       {
         formField.setFieldFlags(PdfFormField.FF_READ_ONLY);
       }
       writer.addAnnotation(formField);
-    } catch (IOException ioe)
+    } catch (final IOException ioe)
     {
       System.out.println(ioe);
-    } catch (DocumentException de)
+    } catch (final DocumentException de)
     {
       System.out.println(de);
     }

@@ -32,12 +32,12 @@ import org.xhtmlrenderer.render.BlockBox;
 import org.xhtmlrenderer.simple.extend.XhtmlForm;
 
 class ButtonField extends AbstractButtonField {
-    public ButtonField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public ButtonField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
     
     public JComponent create() {
-        JButton button = new JButton();
+        final JButton button = new JButton();
 
         String value = getAttribute("value");
 
@@ -49,7 +49,7 @@ class ButtonField extends AbstractButtonField {
         button.setText(value);
         
         button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 JOptionPane.showMessageDialog(
                         null,
                         "<input type=\"button\" .../> doesn't make much " +
@@ -62,7 +62,7 @@ class ButtonField extends AbstractButtonField {
         return button;
     }
 
-    public boolean includeInSubmission(JComponent source) {
+    public boolean includeInSubmission(final JComponent source) {
         return false;
     }
 }

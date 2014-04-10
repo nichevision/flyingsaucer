@@ -42,7 +42,7 @@ public final class ValueConstants {
      * @param type PARAM
      * @return Returns
      */
-    public static CSSPrimitiveUnit sacPrimitiveTypeForString(String type) {
+    public static CSSPrimitiveUnit sacPrimitiveTypeForString(final String type) {
         if ("em".equals(type)) {
             return CSSPrimitiveUnit.CSS_EMS;
         } else if ("ex".equals(type)) {
@@ -69,7 +69,7 @@ public final class ValueConstants {
         }
     }
 
-    public static String stringForSACPrimitiveType(CSSPrimitiveUnit type) {
+    public static String stringForSACPrimitiveType(final CSSPrimitiveUnit type) {
         return type.toString();
     }
 
@@ -83,7 +83,7 @@ public final class ValueConstants {
      * @return See desc.
      */
     //TODO: method may be unnecessary (tobe)
-    public static boolean isAbsoluteUnit(PropertyValue primitive) {
+    public static boolean isAbsoluteUnit(final PropertyValue primitive) {
     	CSSPrimitiveUnit type;
         type = primitive.getPrimitiveTypeN();
         return isAbsoluteUnit(type);
@@ -99,7 +99,7 @@ public final class ValueConstants {
      * @return See desc.
      */
     //TODO: method may be unnecessary (tobe)
-    public static boolean isAbsoluteUnit(CSSPrimitiveUnit type) {
+    public static boolean isAbsoluteUnit(final CSSPrimitiveUnit type) {
         // TODO: check this list...
 
         // note, all types are included here to make sure none are missed
@@ -165,7 +165,7 @@ public final class ValueConstants {
      * @param cssValue PARAM
      * @return The cssValueTypeDesc value
      */
-    public static String getCssValueTypeDesc(PropertyValue cssValue) {
+    public static String getCssValueTypeDesc(final PropertyValue cssValue) {
         switch (cssValue.getCssValueTypeN()) {
             case CSS_CUSTOM:
                 return "CSS_CUSTOM";
@@ -188,7 +188,7 @@ public final class ValueConstants {
      * @param cssPrimitiveType PARAM
      * @return See desc.
      */
-    public static boolean isNumber(CSSPrimitiveUnit cssPrimitiveType) {
+    public static boolean isNumber(final CSSPrimitiveUnit cssPrimitiveType) {
         switch (cssPrimitiveType) {
             // fall thru on all these
             // relative length or size
@@ -218,7 +218,7 @@ public final class ValueConstants {
      * @param value PARAM
      * @return Returns
      */
-    public static CSSPrimitiveUnit guessType(String value) {
+    public static CSSPrimitiveUnit guessType(final String value) {
     	CSSPrimitiveUnit type = CSSPrimitiveUnit.CSS_STRING;
         if (value != null && value.length() > 1) {
             if (value.endsWith("%")) {
@@ -226,7 +226,7 @@ public final class ValueConstants {
             } else if (value.startsWith("rgb") || value.startsWith("#")) {
                 type = CSSPrimitiveUnit.CSS_RGBCOLOR;
             } else {
-                String hmm = value.substring(value.length() - 2);
+                final String hmm = value.substring(value.length() - 2);
                 if ("pt".equals(hmm)) {
                     type = CSSPrimitiveUnit.CSS_PT;
                 } else if ("px".equals(hmm)) {
@@ -246,7 +246,7 @@ public final class ValueConstants {
                         try {
                             new Float(value);
                             type = CSSPrimitiveUnit.CSS_NUMBER;
-                        } catch (NumberFormatException ex) {
+                        } catch (final NumberFormatException ex) {
                             type = CSSPrimitiveUnit.CSS_STRING;
                         }
                     } else {

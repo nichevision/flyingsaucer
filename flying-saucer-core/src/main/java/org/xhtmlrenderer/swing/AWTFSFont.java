@@ -24,9 +24,9 @@ import java.awt.Font;
 import org.xhtmlrenderer.render.FSFont;
 
 public class AWTFSFont implements FSFont {
-    private Font _font;
+    private final Font _font;
     
-    public AWTFSFont(Font font) {
+    public AWTFSFont(final Font font) {
         _font = font;
     }
     

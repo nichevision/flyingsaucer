@@ -34,7 +34,7 @@ public class FunctionData {
     public FunctionData() {
     }
     
-    public FunctionData(ContentFunction contentFunction, FSFunction function) {
+    public FunctionData(final ContentFunction contentFunction, final FSFunction function) {
         _contentFunction = contentFunction;
         _function = function;
     }
@@ -43,7 +43,7 @@ public class FunctionData {
         return _contentFunction;
     }
     
-    public void setContentFunction(ContentFunction contentFunction) {
+    public void setContentFunction(final ContentFunction contentFunction) {
         _contentFunction = contentFunction;
     }
 
@@ -51,7 +51,7 @@ public class FunctionData {
         return _function;
     }
 
-    public void setFunction(FSFunction function) {
+    public void setFunction(final FSFunction function) {
         _function = function;
     }
 }

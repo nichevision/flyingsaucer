@@ -36,7 +36,7 @@ import org.xhtmlrenderer.render.InlineLayoutBox;
  * must be taken into consideration when aligning content.
  */
 public class VerticalAlignContext {
-    private List<InlineBoxMeasurements> _measurements = new ArrayList<InlineBoxMeasurements>();
+    private final List<InlineBoxMeasurements> _measurements = new ArrayList<InlineBoxMeasurements>();
     
     private int _inlineTop;
     private boolean _inlineTopSet = false;
@@ -54,7 +54,7 @@ public class VerticalAlignContext {
     
     private VerticalAlignContext _parent = null;
     
-    private void moveTrackedValues(int ty) {
+    private void moveTrackedValues(final int ty) {
         if (_inlineTopSet) {
             _inlineTop += ty;
         }
@@ -80,28 +80,28 @@ public class VerticalAlignContext {
         return _inlineTop;
     }
 
-    public void updateInlineTop(int inlineTop) {
+    public void updateInlineTop(final int inlineTop) {
         if (! _inlineTopSet || inlineTop < _inlineTop) {
             _inlineTop = inlineTop;
             _inlineTopSet = true;
         }
     }
     
-    public void updatePaintingTop(int paintingTop) {
+    public void updatePaintingTop(final int paintingTop) {
         if (! _paintingTopSet || paintingTop < _paintingTop) {
             _paintingTop = paintingTop;
             _paintingTopSet = true;
         }
     }
     
-    public void updateInlineBottom(int inlineBottom) {
+    public void updateInlineBottom(final int inlineBottom) {
         if (! _inlineBottomSet || inlineBottom > _inlineBottom) {
             _inlineBottom = inlineBottom;
             _inlineBottomSet = true;
         }
     }
     
-    public void updatePaintingBottom(int paintingBottom) {
+    public void updatePaintingBottom(final int paintingBottom) {
         if (! _paintingBottomSet || paintingBottom > _paintingBottom) {
             _paintingBottom = paintingBottom;
             _paintingBottomSet = true;
@@ -112,7 +112,7 @@ public class VerticalAlignContext {
         return _inlineBottom - _inlineTop;
     }
     
-    public void pushMeasurements(InlineBoxMeasurements measurements) {
+    public void pushMeasurements(final InlineBoxMeasurements measurements) {
         _measurements.add(measurements);
         
         updateInlineTop(measurements.getInlineTop());
@@ -138,14 +138,14 @@ public class VerticalAlignContext {
         return _paintingTop;
     }
     
-    public VerticalAlignContext createChild(Box root) {
-        VerticalAlignContext result = new VerticalAlignContext();
+    public VerticalAlignContext createChild(final Box root) {
+        final VerticalAlignContext result = new VerticalAlignContext();
         
-        VerticalAlignContext vaRoot = getRoot();
+        final VerticalAlignContext vaRoot = getRoot();
         
         result.setParent(vaRoot);
         
-        InlineBoxMeasurements initial = vaRoot._measurements.get(0);
+        final InlineBoxMeasurements initial = vaRoot._measurements.get(0);
         result.pushMeasurements(initial);
         
         if (vaRoot._children == null) {
@@ -165,16 +165,16 @@ public class VerticalAlignContext {
         return _parent;
     }
 
-    public void setParent(VerticalAlignContext parent) {
+    public void setParent(final VerticalAlignContext parent) {
         _parent = parent;
     }
     
     private VerticalAlignContext getRoot() {
-        VerticalAlignContext result = this;
+        final VerticalAlignContext result = this;
         return result.getParent() != null ? result.getParent() : this;
     }
     
-    private void merge(VerticalAlignContext context) {
+    private void merge(final VerticalAlignContext context) {
         updateInlineBottom(context.getInlineBottom());
         updateInlineTop(context.getInlineTop());
         
@@ -183,15 +183,15 @@ public class VerticalAlignContext {
     }
     
     public void alignChildren() {
-        List<ChildContextData> children = getChildren();
+        final List<ChildContextData> children = getChildren();
         for (int i = 0; i < children.size(); i++) {
-            ChildContextData data = (ChildContextData)children.get(i);
+            final ChildContextData data = (ChildContextData)children.get(i);
             data.align();
             merge(data.getVerticalAlignContext());
         }
     }
     
-    public void setInitialMeasurements(InlineBoxMeasurements measurements) {
+    public void setInitialMeasurements(final InlineBoxMeasurements measurements) {
         _measurements.add(measurements);
     }
     
@@ -204,7 +204,7 @@ public class VerticalAlignContext {
 		public ChildContextData() {
         }
         
-        public ChildContextData(Box root, VerticalAlignContext vaContext) {
+        public ChildContextData(final Box root, final VerticalAlignContext vaContext) {
             _root = root;
             _verticalAlignContext = vaContext;
         }
@@ -215,7 +215,7 @@ public class VerticalAlignContext {
         }
         
         @SuppressWarnings("unused")
-		public void setRoot(Box root) {
+		public void setRoot(final Box root) {
             _root = root;
         }
         
@@ -224,21 +224,21 @@ public class VerticalAlignContext {
         }
         
         @SuppressWarnings("unused")
-		public void setVerticalAlignContext(VerticalAlignContext verticalAlignContext) {
+		public void setVerticalAlignContext(final VerticalAlignContext verticalAlignContext) {
             _verticalAlignContext = verticalAlignContext;
         }
         
-        private void moveContextContents(int ty) {
+        private void moveContextContents(final int ty) {
             moveInlineContents(_root, ty);
         }
         
-        private void moveInlineContents(Box box, int ty) {
+        private void moveInlineContents(final Box box, final int ty) {
             if (canBeMoved(box)) { 
                 box.setY(box.getY() + ty);
                 if (box instanceof InlineLayoutBox) {
-                    InlineLayoutBox iB = (InlineLayoutBox)box;
+                    final InlineLayoutBox iB = (InlineLayoutBox)box;
                     for (int i = 0; i < iB.getInlineChildCount(); i++) {
-                        Object child = iB.getInlineChild(i);
+                        final Object child = iB.getInlineChild(i);
                         if (child instanceof Box) {
                             moveInlineContents((Box)child, ty);
                         }
@@ -247,14 +247,14 @@ public class VerticalAlignContext {
             }
         }
         
-        private boolean canBeMoved(Box box) {
-            IdentValue vAlign = box.getStyle().getIdent(CSSName.VERTICAL_ALIGN);
+        private boolean canBeMoved(final Box box) {
+            final IdentValue vAlign = box.getStyle().getIdent(CSSName.VERTICAL_ALIGN);
             return box == _root ||
                 ! (vAlign == IdentValue.TOP || vAlign == IdentValue.BOTTOM);
         }
         
         public void align() {
-            IdentValue vAlign = _root.getStyle().getIdent(
+            final IdentValue vAlign = _root.getStyle().getIdent(
                     CSSName.VERTICAL_ALIGN);
             int delta = 0;
             if (vAlign == IdentValue.TOP) {

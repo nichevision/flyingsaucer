@@ -26,15 +26,15 @@ import java.awt.event.MouseEvent;
  * Default, no-op implementation of an FSMouseListener. Override the method as needed in your own subclass.
  */
 public class DefaultFSMouseListener implements FSMouseListener {
-    public void onMouseOver(BasicPanel panel, Box box) { }
+    public void onMouseOver(final BasicPanel panel, final Box box) { }
 
-    public void onMouseOut(BasicPanel panel, Box box) { }
+    public void onMouseOut(final BasicPanel panel, final Box box) { }
 
-    public void onMouseUp(BasicPanel panel, Box box) { }
+    public void onMouseUp(final BasicPanel panel, final Box box) { }
 
-    public void onMousePressed(BasicPanel panel, MouseEvent e) { }
+    public void onMousePressed(final BasicPanel panel, final MouseEvent e) { }
 
-    public void onMouseDragged(BasicPanel panel, MouseEvent e) { }
+    public void onMouseDragged(final BasicPanel panel, final MouseEvent e) { }
 
     public void reset() { }
 }

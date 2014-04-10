@@ -61,7 +61,7 @@ public class DeferredImageReplacedElement extends ImageReplacedElement {
      * @param imageResource
      * @param repaintListener
      */
-    public DeferredImageReplacedElement(ImageResource imageResource, RepaintListener repaintListener, int w, int h) {
+    public DeferredImageReplacedElement(final ImageResource imageResource, final RepaintListener repaintListener, final int w, final int h) {
         this._imageResource = imageResource;
         _loaded = false;
         this.repaintListener = repaintListener;
@@ -78,7 +78,7 @@ public class DeferredImageReplacedElement extends ImageReplacedElement {
     }
 
     /** {@inheritDoc} */
-    public void detach(LayoutContext c) {
+    public void detach(final LayoutContext c) {
         // nothing to do in this case
     }
 
@@ -103,7 +103,7 @@ public class DeferredImageReplacedElement extends ImageReplacedElement {
     }
 
     /** {@inheritDoc} */
-    public void setLocation(int x, int y) {
+    public void setLocation(final int x, final int y) {
         _location = new Point(x, y);
     }
 
@@ -115,8 +115,8 @@ public class DeferredImageReplacedElement extends ImageReplacedElement {
         if (!_loaded && _imageResource.isLoaded()) {
             Image image = ((AWTFSImage) _imageResource.getImage()).getImage();
             if (_doScaleImage && (_targetWidth > 0 || _targetHeight > 0)) {
-                int w = image.getWidth(null);
-                int h = image.getHeight(null);
+                final int w = image.getWidth(null);
+                final int h = image.getHeight(null);
                 int newW = _targetWidth;
                 int newH = _targetHeight;
 
@@ -136,6 +136,7 @@ public class DeferredImageReplacedElement extends ImageReplacedElement {
                             throw new RuntimeException("image is not a buffered image! " + _imageResource.getImageUri());
                         }
                         @SuppressWarnings("unused")
+                        final
 						String scalingType = Configuration.valueFor("xr.image.scale", "HIGH").trim();
 
                         if (scalingType.equalsIgnoreCase("HIGH") || scalingType.equalsIgnoreCase("MID")) {

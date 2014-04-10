@@ -39,11 +39,11 @@ public class SwingImageReplacer extends ElementReplacer {
         return context.getNamespaceHandler().isImageElement(element);
     }
 
-    public ReplacedElement replace(LayoutContext context, BlockBox box, UserAgentCallback uac, int cssWidth, int cssHeight) {
+    public ReplacedElement replace(final LayoutContext context, final BlockBox box, final UserAgentCallback uac, final int cssWidth, final int cssHeight) {
         return replaceImage(uac, context, box.getElement(), cssWidth, cssHeight);
     }
 
-    public void clear(Element element) {
+    public void clear(final Element element) {
         System.out.println("*** cleared image components for element " + element);
         imageComponents.remove(element);
     }
@@ -64,21 +64,21 @@ public class SwingImageReplacer extends ElementReplacer {
      * @param cssWidth  Target width of the image
      * @param cssHeight Target height of the image @return A ReplacedElement for the image; will not be null.
      */
-    protected ReplacedElement replaceImage(UserAgentCallback uac, LayoutContext context, Element elem, int cssWidth, int cssHeight) {
+    protected ReplacedElement replaceImage(final UserAgentCallback uac, final LayoutContext context, final Element elem, final int cssWidth, final int cssHeight) {
         ReplacedElement re = null;
 
         // lookup in cache, or instantiate
         re = lookupImageReplacedElement(elem);
         if (re == null) {
             Image im = null;
-            String imageSrc = context.getNamespaceHandler().getImageSourceURI(elem);
+            final String imageSrc = context.getNamespaceHandler().getImageSourceURI(elem);
             if (imageSrc == null || imageSrc.length() == 0) {
                 XRLog.layout(Level.WARNING, "No source provided for img element.");
                 re = newIrreplaceableImageElement(cssWidth, cssHeight);
             } else {
                 //FSImage is here since we need to capture a target H/W
                 //for the image (as opposed to what the actual image size is).
-                FSImage fsImage = uac.getImageResource(imageSrc).getImage();
+                final FSImage fsImage = uac.getImageResource(imageSrc).getImage();
                 if (fsImage != null) {
                     im = ((AWTFSImage) fsImage).getImage();
                 }
@@ -102,7 +102,7 @@ public class SwingImageReplacer extends ElementReplacer {
      * @param cc The replaced element containing the image, or another ReplacedElement to be used in its place
      *           (like a placeholder if the image can't be loaded).
      */
-    protected void storeImageReplacedElement(Element e, ReplacedElement cc) {
+    protected void storeImageReplacedElement(final Element e, final ReplacedElement cc) {
         System.out.println("\n*** Cached image for element");
         imageComponents.put(e, cc);
     }
@@ -113,11 +113,11 @@ public class SwingImageReplacer extends ElementReplacer {
      * @param e The element by which the image is keyed
      * @return The ReplacedElement for the image, or null if there is none.
      */
-    protected ReplacedElement lookupImageReplacedElement(Element e) {
+    protected ReplacedElement lookupImageReplacedElement(final Element e) {
         if (imageComponents.size() == 0) {
             return null;
         }
-        ReplacedElement replacedElement = imageComponents.get(e);
+        final ReplacedElement replacedElement = imageComponents.get(e);
         return replacedElement;
     }
 
@@ -129,20 +129,20 @@ public class SwingImageReplacer extends ElementReplacer {
      * @param cssHeight Target height for the element
      * @return A ReplacedElement to substitute for one that can't be generated.
      */
-    protected ReplacedElement newIrreplaceableImageElement(int cssWidth, int cssHeight) {
+    protected ReplacedElement newIrreplaceableImageElement(final int cssWidth, final int cssHeight) {
         BufferedImage missingImage = null;
         ReplacedElement mre;
         try {
             // TODO: we can come up with something better; not sure if we should use Alt text, how text should size, etc.
             missingImage = ImageUtil.createCompatibleBufferedImage(cssWidth, cssHeight, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g = missingImage.createGraphics();
+            final Graphics2D g = missingImage.createGraphics();
             g.setColor(Color.BLACK);
             g.setBackground(Color.WHITE);
             g.setFont(new Font("Serif", Font.PLAIN, 12));
             g.drawString("Missing", 0, 12);
             g.dispose();
             mre = new ImageReplacedElement(missingImage, cssWidth, cssHeight);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             mre = new EmptyReplacedElement(
                     cssWidth < 0 ? 0 : cssWidth,
                     cssHeight < 0 ? 0 : cssHeight);

@@ -51,7 +51,7 @@ public abstract class AbstractFormField implements ITextReplacedElement {
         return _x;
     }
 
-    protected void setX(int x) {
+    protected void setX(final int x) {
         _x = x;
     }
 
@@ -59,7 +59,7 @@ public abstract class AbstractFormField implements ITextReplacedElement {
         return _y;
     }
 
-    protected void setY(int y) {
+    protected void setY(final int y) {
         _y = y;
     }
 
@@ -67,7 +67,7 @@ public abstract class AbstractFormField implements ITextReplacedElement {
         return _width;
     }
 
-    protected void setWidth(int width) {
+    protected void setWidth(final int width) {
         _width = width;
     }
 
@@ -75,13 +75,13 @@ public abstract class AbstractFormField implements ITextReplacedElement {
         return _height;
     }
 
-    protected void setHeight(int height) {
+    protected void setHeight(final int height) {
         _height = height;
     }
 
-    protected String getFieldName(ITextOutputDevice outputDevice, Element e) {
+    protected String getFieldName(final ITextOutputDevice outputDevice, final Element e) {
         if (_fieldName == null) {
-            String result = e.attr("name");
+            final String result = e.attr("name");
 
             if (Util.isNullOrEmpty(result)) {
                 _fieldName = getFieldType()
@@ -94,8 +94,8 @@ public abstract class AbstractFormField implements ITextReplacedElement {
         return _fieldName;
     }
 
-    protected String getValue(Element e) {
-        String result = e.attr("value");
+    protected String getValue(final Element e) {
+        final String result = e.attr("value");
 
         if (Util.isNullOrEmpty(result)) {
             return DEFAULT_CHECKED_STATE;
@@ -104,19 +104,19 @@ public abstract class AbstractFormField implements ITextReplacedElement {
         }
     }
 
-    protected boolean isChecked(Element e) {
+    protected boolean isChecked(final Element e) {
         return !Util.isNullOrEmpty(e.attr("checked"));
     }
 
-    protected boolean isReadOnly(Element e) {
+    protected boolean isReadOnly(final Element e) {
         return !Util.isNullOrEmpty(e.attr("readonly"));
     }
     
-    protected boolean isSelected(Element e) {
+    protected boolean isSelected(final Element e) {
         return Util.isNullOrEmpty(e.attr("selected"));
     }
 
-    public void detach(LayoutContext c) {
+    public void detach(final LayoutContext c) {
     }
 
     public int getIntrinsicHeight() {
@@ -136,13 +136,13 @@ public abstract class AbstractFormField implements ITextReplacedElement {
         return false;
     }
 
-    public void setLocation(int x, int y) {
+    public void setLocation(final int x, final int y) {
         setX(x);
         setY(y);
     }
 
-    protected void initDimensions(LayoutContext c, BlockBox box, int cssWidth,
-            int cssHeight) {
+    protected void initDimensions(final LayoutContext c, final BlockBox box, final int cssWidth,
+            final int cssHeight) {
         if (cssWidth != -1) {
             setWidth(cssWidth);
         } else {
@@ -164,40 +164,40 @@ public abstract class AbstractFormField implements ITextReplacedElement {
         }
     }
 
-    protected String spaces(int count) {
-        StringBuffer result = new StringBuffer(count);
+    protected String spaces(final int count) {
+        final StringBuffer result = new StringBuffer(count);
         for (int i = 0; i < count; i++) {
             result.append(' ');
         }
         return result.toString();
     }
     
-    protected void setStrokeColor(PdfTemplate template, FSColor color)
+    protected void setStrokeColor(final PdfTemplate template, final FSColor color)
     {
         if (color instanceof FSRGBColor)
         {
-            FSRGBColor rgb = (FSRGBColor)color;
+            final FSRGBColor rgb = (FSRGBColor)color;
             template.setRGBColorStroke(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
         }
         else if (color instanceof FSCMYKColor)
         {
-            FSCMYKColor cmyk = (FSCMYKColor)color;
+            final FSCMYKColor cmyk = (FSCMYKColor)color;
             template.setCMYKColorStroke(
                     (int)(cmyk.getCyan()*255), (int)(cmyk.getMagenta()*255), 
                     (int)(cmyk.getYellow()*255), (int)(cmyk.getBlack()*255));
         }
     }
     
-    protected void setFillColor(PdfTemplate template, FSColor color)
+    protected void setFillColor(final PdfTemplate template, final FSColor color)
     {
         if (color instanceof FSRGBColor)
         {
-            FSRGBColor rgb = (FSRGBColor)color;
+            final FSRGBColor rgb = (FSRGBColor)color;
             template.setRGBColorFill(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
         }
         else if (color instanceof FSCMYKColor)
         {
-            FSCMYKColor cmyk = (FSCMYKColor)color;
+            final FSCMYKColor cmyk = (FSCMYKColor)color;
             template.setCMYKColorFill(
                     (int)(cmyk.getCyan()*255), (int)(cmyk.getMagenta()*255), 
                     (int)(cmyk.getYellow()*255), (int)(cmyk.getBlack()*255));

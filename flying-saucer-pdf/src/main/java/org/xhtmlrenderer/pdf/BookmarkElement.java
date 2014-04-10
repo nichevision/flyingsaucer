@@ -41,11 +41,11 @@ public class BookmarkElement implements ITextReplacedElement {
         return _location;
     }
 
-    public void setLocation(int x, int y) {
+    public void setLocation(final int x, final int y) {
         _location = new Point(x, y);
     }
     
-    public void detach(LayoutContext c) {
+    public void detach(final LayoutContext c) {
         c.removeBoxId(getAnchorName());
     }
 
@@ -53,7 +53,7 @@ public class BookmarkElement implements ITextReplacedElement {
         return _anchorName;
     }
 
-    public void setAnchorName(String anchorName) {
+    public void setAnchorName(final String anchorName) {
         _anchorName = anchorName;
     }
     
@@ -62,7 +62,7 @@ public class BookmarkElement implements ITextReplacedElement {
         return false;
     }
 
-    public void paint(RenderingContext c, ITextOutputDevice outputDevice, BlockBox box) {
+    public void paint(final RenderingContext c, final ITextOutputDevice outputDevice, final BlockBox box) {
     }
 
 	public int getBaseline() {

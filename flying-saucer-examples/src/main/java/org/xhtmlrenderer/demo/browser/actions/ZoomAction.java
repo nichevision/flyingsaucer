@@ -13,18 +13,18 @@ import java.awt.event.ActionEvent;
 public class ZoomAction extends AbstractAction {
     private static boolean needsWarning = true;
 
-    private ScaleFactor scalingFactor;
+    private final ScaleFactor scalingFactor;
     private final ScalableXHTMLPanel view;
 
-    public ZoomAction(ScalableXHTMLPanel panel, ScaleFactor factor) {
+    public ZoomAction(final ScalableXHTMLPanel panel, final ScaleFactor factor) {
         super(factor.getZoomLabel());
         this.scalingFactor = factor;
         this.view = panel;
     }
 
-    public void actionPerformed(ActionEvent evt) {
+    public void actionPerformed(final ActionEvent evt) {
         if (needsWarning) {
-            String msg = "The \"zoom\" feature is experimental, and some pages\n" +
+            final String msg = "The \"zoom\" feature is experimental, and some pages\n" +
                     "will display incorrectly at certain zoom resolutions\n" +
                     "due to layout calculations not being zoom-aware.";
             JOptionPane.showMessageDialog(null, msg, "Zoom Panel", JOptionPane.WARNING_MESSAGE);

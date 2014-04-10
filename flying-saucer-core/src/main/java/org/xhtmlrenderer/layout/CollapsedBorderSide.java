@@ -33,7 +33,7 @@ public class CollapsedBorderSide implements Comparable<CollapsedBorderSide> {
     private TableCellBox _cell;
     private int _side;
     
-    public CollapsedBorderSide(TableCellBox cell, int side) {
+    public CollapsedBorderSide(final TableCellBox cell, final int side) {
         _side = side;
         _cell = cell;
     }
@@ -42,7 +42,7 @@ public class CollapsedBorderSide implements Comparable<CollapsedBorderSide> {
         return _cell;
     }
     
-    public void setCell(TableCellBox cell) {
+    public void setCell(final TableCellBox cell) {
         _cell = cell;
     }
     
@@ -50,13 +50,13 @@ public class CollapsedBorderSide implements Comparable<CollapsedBorderSide> {
         return _side;
     }
     
-    public void setSide(int side) {
+    public void setSide(final int side) {
         _side = side;
     }
     
-    public int compareTo(CollapsedBorderSide obj) {
-        CollapsedBorderSide c1 = this;
-        CollapsedBorderSide c2 = (CollapsedBorderSide)obj;
+    public int compareTo(final CollapsedBorderSide obj) {
+        final CollapsedBorderSide c1 = this;
+        final CollapsedBorderSide c2 = (CollapsedBorderSide)obj;
         
         CollapsedBorderValue v1 = null;
         CollapsedBorderValue v2 = null;
@@ -91,7 +91,7 @@ public class CollapsedBorderSide implements Comparable<CollapsedBorderSide> {
                 break;                
         }
         
-        CollapsedBorderValue result = TableCellBox.compareBorders(v1, v2, true);
+        final CollapsedBorderValue result = TableCellBox.compareBorders(v1, v2, true);
         
         if (result == null) {
             return 0;
@@ -100,11 +100,11 @@ public class CollapsedBorderSide implements Comparable<CollapsedBorderSide> {
         }
     }
 
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof CollapsedBorderSide)) return false;
 
-        CollapsedBorderSide that = (CollapsedBorderSide) o;
+        final CollapsedBorderSide that = (CollapsedBorderSide) o;
 
         if (_side != that._side) return false;
         if (!_cell.equals(that._cell)) return false;

@@ -27,7 +27,7 @@ public class JustificationInfo {
         return _nonSpaceAdjust;
     }
     
-    public void setNonSpaceAdjust(float nonSpaceAdjust) {
+    public void setNonSpaceAdjust(final float nonSpaceAdjust) {
         _nonSpaceAdjust = nonSpaceAdjust;
     }
     
@@ -35,7 +35,7 @@ public class JustificationInfo {
         return _spaceAdjust;
     }
     
-    public void setSpaceAdjust(float spaceAdjust) {
+    public void setSpaceAdjust(final float spaceAdjust) {
         _spaceAdjust = spaceAdjust;
     }
 }

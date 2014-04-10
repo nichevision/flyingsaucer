@@ -53,15 +53,15 @@ import java.awt.event.WindowEvent;
  * instances has been calculated"
  */
 public class PanelResizeToPreferredSize {
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         final JFrame f = new JFrame("XHTMLPanel");
         f.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
+            public void windowClosing(final WindowEvent e) {
                 System.exit(0);
             }
         });
 
-        Container content = f.getContentPane();
+        final Container content = f.getContentPane();
         content.setBackground(Color.white);
 
         // Note: we're using a layout manager that depends on the preferred size of its components.
@@ -93,7 +93,7 @@ public class PanelResizeToPreferredSize {
                         null,
                         new HtmlNamespaceHandler());
 
-                Dimension savedSize = panel.getSize();
+                final Dimension savedSize = panel.getSize();
 
                 // Set the panel size to some artificially large size; the render engine will actually calculate
                 // the actual (preferred) size based on the document content. Setting it to a large size here prevents

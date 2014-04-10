@@ -57,7 +57,7 @@ public class InlineText {
     private boolean _trimmedLeadingSpace;
     private boolean _trimmedTrailingSpace;
     private Node _textNode;
-    public void trimTrailingSpace(LayoutContext c) {
+    public void trimTrailingSpace(final LayoutContext c) {
         if (! isEmpty() && _masterText.charAt(_end-1) == ' ') {
             _end--;
             setWidth(c.getTextRenderer().getWidth(c.getFontContext(), 
@@ -85,7 +85,7 @@ public class InlineText {
         }
     }
     
-    public void setSubstring(int start, int end) {
+    public void setSubstring(final int start, final int end) {
         if (end < start) {
             Uu.p("setting substring to: " + start + " " + end);
             throw new RuntimeException("set substring length too long: " + this);
@@ -105,7 +105,7 @@ public class InlineText {
         return _masterText;
     }
 
-    public void setMasterText(String masterText) {
+    public void setMasterText(final String masterText) {
         _masterText = masterText;
     }
 
@@ -113,7 +113,7 @@ public class InlineText {
         return _x;
     }
 
-    public void setX(int x) {
+    public void setX(final int x) {
         _x = x;
     }
 
@@ -121,15 +121,15 @@ public class InlineText {
         return _width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(final int width) {
         _width = width;
     }
     
-    public void paint(RenderingContext c) {
+    public void paint(final RenderingContext c) {
         c.getOutputDevice().drawText(c, this);
     }
     
-    public void paintSelection(RenderingContext c) {
+    public void paintSelection(final RenderingContext c) {
         c.getOutputDevice().drawSelection(c, this);
     }
 
@@ -137,7 +137,7 @@ public class InlineText {
         return _parent;
     }
 
-    public void setParent(InlineLayoutBox parent) {
+    public void setParent(final InlineLayoutBox parent) {
         _parent = parent;
     }
 
@@ -149,12 +149,12 @@ public class InlineText {
         return _functionData;
     }
 
-    public void setFunctionData(FunctionData functionData) {
+    public void setFunctionData(final FunctionData functionData) {
         _functionData = functionData;
     }
     
-    public void updateDynamicValue(RenderingContext c) {
-        String value = _functionData.getContentFunction().calculate(
+    public void updateDynamicValue(final RenderingContext c) {
+        final String value = _functionData.getContentFunction().calculate(
                 c, _functionData.getFunction(), this);
         _start = 0;
         _end = value.length();
@@ -165,7 +165,7 @@ public class InlineText {
     }
     
     public String toString() {
-        StringBuffer result = new StringBuffer();
+        final StringBuffer result = new StringBuffer();
         result.append("InlineText: ");
         if (_containedLF || isDynamicFunction()) {
             result.append("(");
@@ -184,20 +184,20 @@ public class InlineText {
         return result.toString();
     }
     
-    public boolean updateSelection(RenderingContext c, Rectangle selection) {
+    public boolean updateSelection(final RenderingContext c, final Rectangle selection) {
         ensureGlyphPositions(c);
-        float[] positions = _glyphPositions;
-        int y = getParent().getAbsY();
-        int offset = getParent().getAbsX() + getX();
+        final float[] positions = _glyphPositions;
+        final int y = getParent().getAbsY();
+        final int offset = getParent().getAbsX() + getX();
         
-        int prevSelectionStart = _selectionStart;
-        int prevSelectionEnd = _selectionEnd;
+        final int prevSelectionStart = _selectionStart;
+        final int prevSelectionEnd = _selectionEnd;
         
         boolean found = false;
         _selectionStart = 0;
         _selectionEnd = 0;
         for (int i = 0; i < positions.length - 2; i += 2) {
-            Rectangle target = new Rectangle(
+            final Rectangle target = new Rectangle(
                     (int)(offset + (positions[i] + positions[i+2]) / 2),
                     y,
                     1,
@@ -216,9 +216,9 @@ public class InlineText {
         return prevSelectionStart != _selectionStart || prevSelectionEnd != _selectionEnd;
     }
 
-    private void ensureGlyphPositions(RenderingContext c) {
+    private void ensureGlyphPositions(final RenderingContext c) {
         if (_glyphPositions == null) {
-            FSGlyphVector glyphVector = c.getTextRenderer().getGlyphVector(
+            final FSGlyphVector glyphVector = c.getTextRenderer().getGlyphVector(
                     c.getOutputDevice(),
                     getParent().getStyle().getFSFont(c),
                     getSubstring());
@@ -230,7 +230,7 @@ public class InlineText {
     }
     
     public boolean clearSelection() {
-        boolean result = _selectionStart != 0 || _selectionEnd != 0;
+        final boolean result = _selectionStart != 0 || _selectionEnd != 0;
         
         _selectionStart = 0;
         _selectionEnd = 0;
@@ -260,13 +260,13 @@ public class InlineText {
     }
     
     public String getTextExportText() {
-        char[] ch = getSubstring().toCharArray();
-        StringBuffer result = new StringBuffer();
+        final char[] ch = getSubstring().toCharArray();
+        final StringBuffer result = new StringBuffer();
         if (isTrimmedLeadingSpace()) {
             result.append(' ');
         }
         for (int i = 0; i < ch.length; i++) {
-            char c = ch[i];
+            final char c = ch[i];
             if (c != '\n') {
                 result.append(c);
             }
@@ -281,11 +281,11 @@ public class InlineText {
         return _trimmedLeadingSpace;
     }
 
-    public void setTrimmedLeadingSpace(boolean trimmedLeadingSpace) {
+    public void setTrimmedLeadingSpace(final boolean trimmedLeadingSpace) {
         _trimmedLeadingSpace = trimmedLeadingSpace;
     }
 
-    private void setTrimmedTrailingSpace(boolean trimmedTrailingSpace) {
+    private void setTrimmedTrailingSpace(final boolean trimmedTrailingSpace) {
         _trimmedTrailingSpace = trimmedTrailingSpace;
     }
 
@@ -293,14 +293,14 @@ public class InlineText {
         return _trimmedTrailingSpace;
     }
     
-    public void countJustifiableChars(CharCounts counts) {
-        String s = getSubstring();
-        int len = s.length();
+    public void countJustifiableChars(final CharCounts counts) {
+        final String s = getSubstring();
+        final int len = s.length();
         int spaces = 0;
         int other = 0;
         
         for (int i = 0; i < len; i++) {
-            char c = s.charAt(i);
+            final char c = s.charAt(i);
             if (c == ' ' || c == '\u00a0' || c == '\u3000') {
                 spaces++;
             } else {
@@ -312,13 +312,13 @@ public class InlineText {
         counts.setNonSpaceCount(counts.getNonSpaceCount() + other);
     }
     
-    public float calcTotalAdjustment(JustificationInfo info) {
-        String s = getSubstring();
-        int len = s.length();
+    public float calcTotalAdjustment(final JustificationInfo info) {
+        final String s = getSubstring();
+        final int len = s.length();
 
         float result = 0.0f;
         for (int i = 0; i < len; i++) {
-            char c = s.charAt(i);
+            final char c = s.charAt(i);
             if (c == ' ' || c == '\u00a0' || c == '\u3000') {
                 result += info.getSpaceAdjust();
             } else {
@@ -334,10 +334,10 @@ public class InlineText {
     public int getEnd(){
         return _end;
     }
-    public void setSelectionStart(short s){
+    public void setSelectionStart(final short s){
         _selectionStart = s;
     }
-    public void setSelectionEnd(short s){
+    public void setSelectionEnd(final short s){
         _selectionEnd = s;
     }
 
@@ -345,7 +345,7 @@ public class InlineText {
         return this._textNode;
     }
 
-    public void setTextNode(Node node) {
+    public void setTextNode(final Node node) {
         this._textNode = node;
     }
 }

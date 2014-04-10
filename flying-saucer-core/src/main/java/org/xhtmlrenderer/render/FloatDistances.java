@@ -36,7 +36,7 @@ public class FloatDistances {
         return _leftFloatDistance;
     }
 
-    public void setLeftFloatDistance(int leftFloatDistance) {
+    public void setLeftFloatDistance(final int leftFloatDistance) {
         _leftFloatDistance = leftFloatDistance;
     }
 
@@ -44,7 +44,7 @@ public class FloatDistances {
         return _rightFloatDistance;
     }
 
-    public void setRightFloatDistance(int rightFloatDistance) {
+    public void setRightFloatDistance(final int rightFloatDistance) {
         _rightFloatDistance = rightFloatDistance;
     }
 }

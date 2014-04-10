@@ -32,7 +32,7 @@ public class BoxRangeData {
     public BoxRangeData() {
     }
     
-    public BoxRangeData(BlockBox box, BoxRange range) {
+    public BoxRangeData(final BlockBox box, final BoxRange range) {
         _box = box;
         _range = range;
     }
@@ -41,7 +41,7 @@ public class BoxRangeData {
         return _box;
     }
     
-    public void setBox(BlockBox box) {
+    public void setBox(final BlockBox box) {
         _box = box;
     }
 
@@ -49,7 +49,7 @@ public class BoxRangeData {
         return _range;
     }
 
-    public void setRange(BoxRange range) {
+    public void setRange(final BoxRange range) {
         _range = range;
     }
 
@@ -57,7 +57,7 @@ public class BoxRangeData {
         return _clip;
     }
 
-    public void setClip(Shape clip) {
+    public void setClip(final Shape clip) {
         _clip = clip;
     }
     

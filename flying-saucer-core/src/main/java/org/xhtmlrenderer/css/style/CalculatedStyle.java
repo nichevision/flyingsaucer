@@ -130,7 +130,7 @@ public class CalculatedStyle {
      * @param parent  PARAM
      * @param matched PARAM
      */
-    private CalculatedStyle(CalculatedStyle parent, CascadedStyle matched) {
+    private CalculatedStyle(final CalculatedStyle parent, final CascadedStyle matched) {
         this();
         _parent = parent;
 
@@ -142,7 +142,7 @@ public class CalculatedStyle {
     }
 
     private void checkPaddingAllowed() {
-        IdentValue v = getIdent(CSSName.DISPLAY);
+        final IdentValue v = getIdent(CSSName.DISPLAY);
         if (v == IdentValue.TABLE_HEADER_GROUP || v == IdentValue.TABLE_ROW_GROUP ||
                 v == IdentValue.TABLE_FOOTER_GROUP || v == IdentValue.TABLE_ROW) {
             _paddingAllowed = false;
@@ -152,7 +152,7 @@ public class CalculatedStyle {
     }
 
     private void checkMarginsAllowed() {
-        IdentValue v = getIdent(CSSName.DISPLAY);
+        final IdentValue v = getIdent(CSSName.DISPLAY);
         if (v == IdentValue.TABLE_HEADER_GROUP || v == IdentValue.TABLE_ROW_GROUP ||
                 v == IdentValue.TABLE_FOOTER_GROUP || v == IdentValue.TABLE_ROW ||
                 v == IdentValue.TABLE_CELL) {
@@ -161,7 +161,7 @@ public class CalculatedStyle {
     }
 
     private void checkBordersAllowed() {
-        IdentValue v = getIdent(CSSName.DISPLAY);
+        final IdentValue v = getIdent(CSSName.DISPLAY);
         if (v == IdentValue.TABLE_HEADER_GROUP || v == IdentValue.TABLE_ROW_GROUP ||
                 v == IdentValue.TABLE_FOOTER_GROUP || v == IdentValue.TABLE_ROW) {
             _bordersAllowed = false;
@@ -176,8 +176,8 @@ public class CalculatedStyle {
      * @param matched the CascadedStyle to apply
      * @return The derived child style
      */
-    public synchronized CalculatedStyle deriveStyle(CascadedStyle matched) {
-        String fingerprint = matched.getFingerprint();
+    public synchronized CalculatedStyle deriveStyle(final CascadedStyle matched) {
+        final String fingerprint = matched.getFingerprint();
         CalculatedStyle cs = _childCache.get(fingerprint);
 
         if (cs == null) {
@@ -189,7 +189,7 @@ public class CalculatedStyle {
 
     public int countAssigned() {
         int c = 0;
-        for (FSDerivedValue derivedValue : _derivedValuesById) {
+        for (final FSDerivedValue derivedValue : _derivedValuesById) {
             if (derivedValue != null) c++;
         }
         return c;
@@ -213,8 +213,8 @@ public class CalculatedStyle {
         return genStyleKey();
     }
 
-    public FSColor asColor(CSSName cssName) {
-        FSDerivedValue prop = valueByName(cssName);
+    public FSColor asColor(final CSSName cssName) {
+        final FSDerivedValue prop = valueByName(cssName);
         if (prop == IdentValue.TRANSPARENT) {
             return FSRGBColor.TRANSPARENT;
         } else {
@@ -222,30 +222,30 @@ public class CalculatedStyle {
         }
     }
 
-    public float asFloat(CSSName cssName) {
+    public float asFloat(final CSSName cssName) {
         return valueByName(cssName).asFloat();
     }
 
-    public String asString(CSSName cssName) {
+    public String asString(final CSSName cssName) {
         return valueByName(cssName).asString();
     }
 
-    public String[] asStringArray(CSSName cssName) {
+    public String[] asStringArray(final CSSName cssName) {
         return valueByName(cssName).asStringArray();
     }
 
-    public void setDefaultValue(CSSName cssName, FSDerivedValue fsDerivedValue) {
+    public void setDefaultValue(final CSSName cssName, final FSDerivedValue fsDerivedValue) {
         if (_derivedValuesById[cssName.FS_ID] == null) {
             _derivedValuesById[cssName.FS_ID] = fsDerivedValue;
         }
     }
 
     // TODO: doc
-    public boolean hasAbsoluteUnit(CSSName cssName) {
+    public boolean hasAbsoluteUnit(final CSSName cssName) {
         boolean isAbs = false;
         try {
             isAbs = valueByName(cssName).hasAbsoluteUnit();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             XRLog.layout(Level.WARNING, "Property " + cssName + " has an assignment we don't understand, " +
                     "and can't tell if it's an absolute unit or not. Assuming it is not. Exception was: " +
                     e.getMessage());
@@ -261,7 +261,7 @@ public class CalculatedStyle {
      * @param val     PARAM
      * @return The ident value
      */
-    public boolean isIdent(CSSName cssName, IdentValue val) {
+    public boolean isIdent(final CSSName cssName, final IdentValue val) {
         return valueByName(cssName) == val;
     }
 
@@ -271,7 +271,7 @@ public class CalculatedStyle {
      * @param cssName PARAM
      * @return The ident value
      */
-    public IdentValue getIdent(CSSName cssName) {
+    public IdentValue getIdent(final CSSName cssName) {
         return valueByName(cssName).asIdentValue();
     }
 
@@ -294,7 +294,7 @@ public class CalculatedStyle {
      * @return The backgroundColor value
      */
     public FSColor getBackgroundColor() {
-        FSDerivedValue prop = valueByName(CSSName.BACKGROUND_COLOR);
+        final FSDerivedValue prop = valueByName(CSSName.BACKGROUND_COLOR);
         if (prop == IdentValue.TRANSPARENT) {
             return null;
         } else {
@@ -310,14 +310,14 @@ public class CalculatedStyle {
         return _backgroundSize;
     }
 
-    public BorderRadiusCorner getBorderRadiusCorner(CSSName cssName)
+    public BorderRadiusCorner getBorderRadiusCorner(final CSSName cssName)
     {
-    	FSDerivedValue value = valueByName(cssName);
-    	ListValue valueList = (ListValue) value;
-    	List<?> values = valueList.getValues();
+    	final FSDerivedValue value = valueByName(cssName);
+    	final ListValue valueList = (ListValue) value;
+    	final List<?> values = valueList.getValues();
 
-    	boolean firstAuto = ((PropertyValue)values.get(0)).getIdentValue() == IdentValue.AUTO;
-        boolean secondAuto = ((PropertyValue)values.get(1)).getIdentValue() == IdentValue.AUTO;
+    	final boolean firstAuto = ((PropertyValue)values.get(0)).getIdentValue() == IdentValue.AUTO;
+        final boolean secondAuto = ((PropertyValue)values.get(1)).getIdentValue() == IdentValue.AUTO;
 
         if (firstAuto && secondAuto)
         {
@@ -334,19 +334,19 @@ public class CalculatedStyle {
     }
     
     private BackgroundSize createBackgroundSize() {
-        FSDerivedValue value = valueByName(CSSName.BACKGROUND_SIZE);
+        final FSDerivedValue value = valueByName(CSSName.BACKGROUND_SIZE);
         if (value instanceof IdentValue) {
-            IdentValue ident = (IdentValue)value;
+            final IdentValue ident = (IdentValue)value;
             if (ident == IdentValue.COVER) {
                 return new BackgroundSize(false, true, false);
             } else if (ident == IdentValue.CONTAIN) {
                 return new BackgroundSize(true, false, false);
             }
         } else {
-            ListValue valueList = (ListValue)value;
-            List<?> values = valueList.getValues();
-            boolean firstAuto = ((PropertyValue)values.get(0)).getIdentValue() == IdentValue.AUTO;
-            boolean secondAuto = ((PropertyValue)values.get(1)).getIdentValue() == IdentValue.AUTO;
+            final ListValue valueList = (ListValue)value;
+            final List<?> values = valueList.getValues();
+            final boolean firstAuto = ((PropertyValue)values.get(0)).getIdentValue() == IdentValue.AUTO;
+            final boolean secondAuto = ((PropertyValue)values.get(1)).getIdentValue() == IdentValue.AUTO;
 
             if (firstAuto && secondAuto) {
                 return new BackgroundSize(false, false, true);
@@ -359,15 +359,15 @@ public class CalculatedStyle {
     }
 
     public BackgroundPosition getBackgroundPosition() {
-        ListValue result = (ListValue) valueByName(CSSName.BACKGROUND_POSITION);
-        List<?> values = result.getValues();
+        final ListValue result = (ListValue) valueByName(CSSName.BACKGROUND_POSITION);
+        final List<?> values = result.getValues();
 
         return new BackgroundPosition(
                 (PropertyValue) values.get(0), (PropertyValue) values.get(1));
     }
 
     public List<?> getCounterReset() {
-        FSDerivedValue value = valueByName(CSSName.COUNTER_RESET);
+        final FSDerivedValue value = valueByName(CSSName.COUNTER_RESET);
 
         if (value == IdentValue.NONE) {
             return null;
@@ -377,7 +377,7 @@ public class CalculatedStyle {
     }
 
     public List<?> getCounterIncrement() {
-        FSDerivedValue value = valueByName(CSSName.COUNTER_INCREMENT);
+        final FSDerivedValue value = valueByName(CSSName.COUNTER_INCREMENT);
 
         if (value == IdentValue.NONE) {
             return null;
@@ -386,25 +386,25 @@ public class CalculatedStyle {
         }
     }
 
-    public BorderPropertySet getBorder(CssContext ctx) {
+    public BorderPropertySet getBorder(final CssContext ctx) {
         if (! _bordersAllowed) {
             return BorderPropertySet.EMPTY_BORDER;
         } else {
-            BorderPropertySet b = getBorderProperty(this, ctx);
+            final BorderPropertySet b = getBorderProperty(this, ctx);
             return b;
         }
     }
 
-    public FontSpecification getFont(CssContext ctx) {
+    public FontSpecification getFont(final CssContext ctx) {
         if (_font == null) {
             _font = new FontSpecification();
 
             _font.families = valueByName(CSSName.FONT_FAMILY).asStringArray();
 
-            FSDerivedValue fontSize = valueByName(CSSName.FONT_SIZE);
+            final FSDerivedValue fontSize = valueByName(CSSName.FONT_SIZE);
             if (fontSize instanceof IdentValue) {
                 PropertyValue replacement;
-                IdentValue resolved = resolveAbsoluteFontSize();
+                final IdentValue resolved = resolveAbsoluteFontSize();
                 if (resolved != null) {
                     replacement = FontSizeHelper.resolveAbsoluteFontSize(resolved, _font.families);
                 } else {
@@ -430,16 +430,16 @@ public class CalculatedStyle {
     }
 
     private IdentValue resolveAbsoluteFontSize() {
-        FSDerivedValue fontSize = valueByName(CSSName.FONT_SIZE);
+        final FSDerivedValue fontSize = valueByName(CSSName.FONT_SIZE);
         if (! (fontSize instanceof IdentValue)) {
             return null;
         }
-        IdentValue fontSizeIdent = (IdentValue) fontSize;
+        final IdentValue fontSizeIdent = (IdentValue) fontSize;
         if (PrimitivePropertyBuilders.ABSOLUTE_FONT_SIZES.contains(fontSizeIdent)) {
             return fontSizeIdent;
         }
 
-        IdentValue parent = getParent().resolveAbsoluteFontSize();
+        final IdentValue parent = getParent().resolveAbsoluteFontSize();
         if (parent != null) {
             if (fontSizeIdent == IdentValue.SMALLER) {
                 return FontSizeHelper.getNextSmaller(parent);
@@ -451,7 +451,7 @@ public class CalculatedStyle {
         return null;
     }
 
-    public float getFloatPropertyProportionalTo(CSSName cssName, float baseValue, CssContext ctx) {
+    public float getFloatPropertyProportionalTo(final CSSName cssName, final float baseValue, final CssContext ctx) {
         return valueByName(cssName).getFloatProportionalTo(cssName, baseValue, ctx);
     }
 
@@ -461,7 +461,7 @@ public class CalculatedStyle {
      * @param ctx
      * @return TODO
      */
-    public float getFloatPropertyProportionalWidth(CSSName cssName, float parentWidth, CssContext ctx) {
+    public float getFloatPropertyProportionalWidth(final CSSName cssName, final float parentWidth, final CssContext ctx) {
         return valueByName(cssName).getFloatProportionalTo(cssName, parentWidth, ctx);
     }
 
@@ -471,18 +471,18 @@ public class CalculatedStyle {
      * @param ctx
      * @return TODO
      */
-    public float getFloatPropertyProportionalHeight(CSSName cssName, float parentHeight, CssContext ctx) {
+    public float getFloatPropertyProportionalHeight(final CSSName cssName, final float parentHeight, final CssContext ctx) {
         return valueByName(cssName).getFloatProportionalTo(cssName, parentHeight, ctx);
     }
 
-    public float getLineHeight(CssContext ctx) {
+    public float getLineHeight(final CssContext ctx) {
         if (! _lineHeightResolved) {
             if (isIdent(CSSName.LINE_HEIGHT, IdentValue.NORMAL)) {
-                float lineHeight1 = getFont(ctx).size * 1.1f;
+                final float lineHeight1 = getFont(ctx).size * 1.1f;
                 // Make sure rasterized characters will (probably) fit inside
                 // the line box
-                FSFontMetrics metrics = getFSFontMetrics(ctx);
-                float lineHeight2 = (float)Math.ceil(metrics.getDescent() + metrics.getAscent());
+                final FSFontMetrics metrics = getFSFontMetrics(ctx);
+                final float lineHeight2 = (float)Math.ceil(metrics.getDescent() + metrics.getAscent());
                 _lineHeight = Math.max(lineHeight1, lineHeight2);
             } else if (isLength(CSSName.LINE_HEIGHT)) {
                 //could be more elegant, I suppose
@@ -505,11 +505,11 @@ public class CalculatedStyle {
      * @param ctx
      * @return The marginWidth value
      */
-    public RectPropertySet getMarginRect(float cbWidth, CssContext ctx) {
+    public RectPropertySet getMarginRect(final float cbWidth, final CssContext ctx) {
         return getMarginRect(cbWidth, ctx, true);
     }
 
-    public RectPropertySet getMarginRect(float cbWidth, CssContext ctx, boolean useCache) {
+    public RectPropertySet getMarginRect(final float cbWidth, final CssContext ctx, final boolean useCache) {
         if (! _marginsAllowed) {
             return RectPropertySet.ALL_ZEROS;
         } else {
@@ -527,7 +527,7 @@ public class CalculatedStyle {
      * @param ctx
      * @return The paddingWidth value
      */
-    public RectPropertySet getPaddingRect(float cbWidth, CssContext ctx, boolean useCache) {
+    public RectPropertySet getPaddingRect(final float cbWidth, final CssContext ctx, final boolean useCache) {
         if (! _paddingAllowed) {
             return RectPropertySet.ALL_ZEROS;
         } else {
@@ -535,7 +535,7 @@ public class CalculatedStyle {
         }
     }
 
-    public RectPropertySet getPaddingRect(float cbWidth, CssContext ctx) {
+    public RectPropertySet getPaddingRect(final float cbWidth, final CssContext ctx) {
         return getPaddingRect(cbWidth, ctx, true);
     }
 
@@ -543,20 +543,20 @@ public class CalculatedStyle {
      * @param cssName
      * @return TODO
      */
-    public String getStringProperty(CSSName cssName) {
+    public String getStringProperty(final CSSName cssName) {
         return valueByName(cssName).asString();
     }
 
     /**
      * TODO: doc
      */
-    public boolean isLength(CSSName cssName) {
-        FSDerivedValue val = valueByName(cssName);
+    public boolean isLength(final CSSName cssName) {
+        final FSDerivedValue val = valueByName(cssName);
         return val instanceof LengthValue;
     }
 
-    public boolean isLengthOrNumber(CSSName cssName) {
-        FSDerivedValue val = valueByName(cssName);
+    public boolean isLengthOrNumber(final CSSName cssName) {
+        final FSDerivedValue val = valueByName(cssName);
         return val instanceof NumberValue || val instanceof LengthValue;
     }
 
@@ -567,10 +567,10 @@ public class CalculatedStyle {
      * @param cssName The CSS property name, e.g. "font-family"
      * @return See desc.
      */
-    public FSDerivedValue valueByName(CSSName cssName) {
+    public FSDerivedValue valueByName(final CSSName cssName) {
         FSDerivedValue val = _derivedValuesById[cssName.FS_ID];
 
-        boolean needInitialValue = val == IdentValue.FS_INITIAL_VALUE;
+        final boolean needInitialValue = val == IdentValue.FS_INITIAL_VALUE;
 
         // but the property may not be defined for this Element
         if (val == null || needInitialValue) {
@@ -583,13 +583,13 @@ public class CalculatedStyle {
                 // Do nothing, val is already set
             } else {
                 // otherwise, use the initial value (defined by the CSS2 Spec)
-                String initialValue = CSSName.initialValue(cssName);
+                final String initialValue = CSSName.initialValue(cssName);
                 if (initialValue == null) {
                     throw new XRRuntimeException("Property '" + cssName + "' has no initial values assigned. " +
                             "Check CSSName declarations.");
                 }
                 if (initialValue.charAt(0) == '=') {
-                    CSSName ref = CSSName.getByPropertyName(initialValue.substring(1));
+                    final CSSName ref = CSSName.getByPropertyName(initialValue.substring(1));
                     val = valueByName(ref);
                 } else {
                     val = CSSName.initialDerivedValue(cssName);
@@ -620,28 +620,28 @@ public class CalculatedStyle {
      *
      * @param matched PARAM
      */
-    private void derive(CascadedStyle matched) {
+    private void derive(final CascadedStyle matched) {
         if (matched == null) {
             return;
         }//nothing to derive
 
-        Iterator<PropertyDeclaration> mProps = matched.getCascadedPropertyDeclarations();
+        final Iterator<PropertyDeclaration> mProps = matched.getCascadedPropertyDeclarations();
         while (mProps.hasNext()) {
-            PropertyDeclaration pd = (PropertyDeclaration) mProps.next();
-            FSDerivedValue val = deriveValue(pd.getCSSName(), pd.getValue());
+            final PropertyDeclaration pd = (PropertyDeclaration) mProps.next();
+            final FSDerivedValue val = deriveValue(pd.getCSSName(), pd.getValue());
             _derivedValuesById[pd.getCSSName().FS_ID] = val;
         }
     }
 
-    private FSDerivedValue deriveValue(CSSName cssName, PropertyValue value) {
+    private FSDerivedValue deriveValue(final CSSName cssName, final PropertyValue value) {
         return DerivedValueFactory.newDerivedValue(this, cssName, value);
     }
 
     private String genStyleKey() {
-        StringBuffer sb = new StringBuffer();
+        final StringBuffer sb = new StringBuffer();
         for (int i = 0; i < _derivedValuesById.length; i++) {
-            CSSName name = CSSName.getByID(i);
-            FSDerivedValue val = _derivedValuesById[i];
+            final CSSName name = CSSName.getByID(i);
+            final FSDerivedValue val = _derivedValuesById[i];
             if (val != null) {
                 sb.append(name.toString());
             } else {
@@ -669,18 +669,18 @@ public class CalculatedStyle {
         }
     }
 
-    private static RectPropertySet getPaddingProperty(CalculatedStyle style,
-                                                      CSSName shorthandProp,
-                                                      CSSName.CSSSideProperties sides,
-                                                      float cbWidth,
-                                                      CssContext ctx,
-                                                      boolean useCache) {
+    private static RectPropertySet getPaddingProperty(final CalculatedStyle style,
+                                                      final CSSName shorthandProp,
+                                                      final CSSName.CSSSideProperties sides,
+                                                      final float cbWidth,
+                                                      final CssContext ctx,
+                                                      final boolean useCache) {
         if (! useCache) {
             return newRectInstance(style, shorthandProp, sides, cbWidth, ctx);
         } else {
             if (style._padding == null) {
                 RectPropertySet result = newRectInstance(style, shorthandProp, sides, cbWidth, ctx);
-                boolean allZeros = result.isAllZeros();
+                final boolean allZeros = result.isAllZeros();
 
                 if (allZeros) {
                     result = RectPropertySet.ALL_ZEROS;
@@ -697,12 +697,12 @@ public class CalculatedStyle {
         }
     }
 
-    private static RectPropertySet getMarginProperty(CalculatedStyle style,
-                                                     CSSName shorthandProp,
-                                                     CSSName.CSSSideProperties sides,
-                                                     float cbWidth,
-                                                     CssContext ctx,
-                                                     boolean useCache) {
+    private static RectPropertySet getMarginProperty(final CalculatedStyle style,
+                                                     final CSSName shorthandProp,
+                                                     final CSSName.CSSSideProperties sides,
+                                                     final float cbWidth,
+                                                     final CssContext ctx,
+                                                     final boolean useCache) {
         if (! useCache) {
             return newRectInstance(style, shorthandProp, sides, cbWidth, ctx);
         } else {
@@ -718,11 +718,11 @@ public class CalculatedStyle {
         }
     }
 
-    private static RectPropertySet newRectInstance(CalculatedStyle style,
-                                                   CSSName shorthand,
-                                                   CSSName.CSSSideProperties sides,
-                                                   float cbWidth,
-                                                   CssContext ctx) {
+    private static RectPropertySet newRectInstance(final CalculatedStyle style,
+                                                   final CSSName shorthand,
+                                                   final CSSName.CSSSideProperties sides,
+                                                   final float cbWidth,
+                                                   final CssContext ctx) {
         RectPropertySet rect;
         rect = RectPropertySet.newInstance(style,
                 shorthand,
@@ -732,12 +732,12 @@ public class CalculatedStyle {
         return rect;
     }
 
-    private static BorderPropertySet getBorderProperty(CalculatedStyle style,
-                                                       CssContext ctx) {
+    private static BorderPropertySet getBorderProperty(final CalculatedStyle style,
+                                                       final CssContext ctx) {
         if (style._border == null) {
             BorderPropertySet result = BorderPropertySet.newInstance(style, ctx);
 
-            boolean allZeros = result.isAllZeros();
+            final boolean allZeros = result.isAllZeros();
             if (allZeros && ! result.hasHidden()) {
                 result = BorderPropertySet.EMPTY_BORDER;
             }
@@ -758,10 +758,10 @@ public class CalculatedStyle {
     public static final int BOTTOM = 4;
 
     public int getMarginBorderPadding(
-            CssContext cssCtx, int cbWidth, int which) {
-        BorderPropertySet border = getBorder(cssCtx);
-        RectPropertySet margin = getMarginRect(cbWidth, cssCtx);
-        RectPropertySet padding = getPaddingRect(cbWidth, cssCtx);
+            final CssContext cssCtx, final int cbWidth, final int which) {
+        final BorderPropertySet border = getBorder(cssCtx);
+        final RectPropertySet margin = getMarginRect(cbWidth, cssCtx);
+        final RectPropertySet padding = getPaddingRect(cbWidth, cssCtx);
 
         switch (which) {
             case LEFT:
@@ -781,14 +781,14 @@ public class CalculatedStyle {
         return getIdent(CSSName.WHITE_SPACE);
     }
 
-    public FSFont getFSFont(CssContext cssContext) {
+    public FSFont getFSFont(final CssContext cssContext) {
         if (_FSFont == null) {
             _FSFont = cssContext.getFont(getFont(cssContext));
         }
         return _FSFont;
     }
 
-    public FSFontMetrics getFSFontMetrics(CssContext c) {
+    public FSFontMetrics getFSFontMetrics(final CssContext c) {
         if (_FSFontMetrics == null) {
             _FSFontMetrics = c.getFSFontMetrics(getFSFont(c));
         }
@@ -800,12 +800,12 @@ public class CalculatedStyle {
     }
 
     public boolean isClearLeft() {
-        IdentValue clear = getIdent(CSSName.CLEAR);
+        final IdentValue clear = getIdent(CSSName.CLEAR);
         return clear == IdentValue.LEFT || clear == IdentValue.BOTH;
     }
 
     public boolean isClearRight() {
-        IdentValue clear = getIdent(CSSName.CLEAR);
+        final IdentValue clear = getIdent(CSSName.CLEAR);
         return clear == IdentValue.RIGHT || clear == IdentValue.BOTH;
     }
 
@@ -847,7 +847,7 @@ public class CalculatedStyle {
     }
 
     public boolean isTableSection() {
-        IdentValue display = getIdent(CSSName.DISPLAY);
+        final IdentValue display = getIdent(CSSName.DISPLAY);
 
         return display == IdentValue.TABLE_ROW_GROUP ||
                 display == IdentValue.TABLE_HEADER_GROUP ||
@@ -882,7 +882,7 @@ public class CalculatedStyle {
         if (isFloated() || isAbsolute() || isFixed()) {
             return true;
         } else {
-            IdentValue display = getIdent(CSSName.DISPLAY);
+            final IdentValue display = getIdent(CSSName.DISPLAY);
             if (display == IdentValue.INLINE) {
                 return false;
             } else {
@@ -897,7 +897,7 @@ public class CalculatedStyle {
         if (isFloated() || isAbsolute() || isFixed() || isRunning()) {
             return true;
         } else {
-            IdentValue display = getIdent(CSSName.DISPLAY);
+            final IdentValue display = getIdent(CSSName.DISPLAY);
             return display == IdentValue.INLINE || display == IdentValue.INLINE_BLOCK ||
                     display == IdentValue.INLINE_TABLE;
         }
@@ -916,7 +916,7 @@ public class CalculatedStyle {
     }
 
     public boolean isFloated() {
-        IdentValue floatVal = getIdent(CSSName.FLOAT);
+        final IdentValue floatVal = getIdent(CSSName.FLOAT);
         return floatVal == IdentValue.LEFT || floatVal == IdentValue.RIGHT;
     }
 
@@ -965,13 +965,13 @@ public class CalculatedStyle {
     }
 
     public boolean establishesBFC() {
-        FSDerivedValue value = valueByName(CSSName.POSITION);
+        final FSDerivedValue value = valueByName(CSSName.POSITION);
 
         if (value instanceof FunctionValue) {  // running(header)
             return false;
         } else {
-            IdentValue display = getIdent(CSSName.DISPLAY);
-            IdentValue position = (IdentValue)value;
+            final IdentValue display = getIdent(CSSName.DISPLAY);
+            final IdentValue position = (IdentValue)value;
 
             return isFloated() ||
                     position == IdentValue.ABSOLUTE || position == IdentValue.FIXED ||
@@ -981,19 +981,19 @@ public class CalculatedStyle {
     }
 
     public boolean requiresLayer() {
-        FSDerivedValue value = valueByName(CSSName.POSITION);
+        final FSDerivedValue value = valueByName(CSSName.POSITION);
 
         if (value instanceof FunctionValue) {  // running(header)
             return false;
         } else {
-            IdentValue position = getIdent(CSSName.POSITION);
+            final IdentValue position = getIdent(CSSName.POSITION);
 
             if (position == IdentValue.ABSOLUTE ||
                     position == IdentValue.RELATIVE || position == IdentValue.FIXED) {
                 return true;
             }
 
-            IdentValue overflow = getIdent(CSSName.OVERFLOW);
+            final IdentValue overflow = getIdent(CSSName.OVERFLOW);
             if ((overflow == IdentValue.SCROLL || overflow == IdentValue.AUTO) &&
                     isOverflowApplies()) {
                 return true;
@@ -1007,35 +1007,35 @@ public class CalculatedStyle {
     }
 
     public boolean isRunning() {
-        FSDerivedValue value = valueByName(CSSName.POSITION);
+        final FSDerivedValue value = valueByName(CSSName.POSITION);
         return value instanceof FunctionValue;
     }
 
     public boolean isLinearGradient() {
-        FSDerivedValue value = valueByName(CSSName.BACKGROUND_IMAGE);    	
+        final FSDerivedValue value = valueByName(CSSName.BACKGROUND_IMAGE);    	
         return value instanceof FunctionValue &&
         		GeneralUtil.ciEquals(((FunctionValue) value).getFunction().getName(), "linear-gradient");
     }
     
-    public FSLinearGradient getLinearGradient(CssContext cssContext, int w, int h)
+    public FSLinearGradient getLinearGradient(final CssContext cssContext, final int w, final int h)
     {
     	assert(isLinearGradient());
 
-    	FunctionValue value = (FunctionValue) valueByName(CSSName.BACKGROUND_IMAGE);
+    	final FunctionValue value = (FunctionValue) valueByName(CSSName.BACKGROUND_IMAGE);
     	return new FSLinearGradient(value.getFunction(), this, w, h, cssContext);
     }
     
     public String getRunningName() {
-        FunctionValue value = (FunctionValue)valueByName(CSSName.POSITION);
-        FSFunction function = value.getFunction();
+        final FunctionValue value = (FunctionValue)valueByName(CSSName.POSITION);
+        final FSFunction function = value.getFunction();
 
-        PropertyValue param = (PropertyValue)function.getParameters().get(0);
+        final PropertyValue param = (PropertyValue)function.getParameters().get(0);
 
         return param.getStringValue();
     }
 
     public boolean isOverflowApplies() {
-        IdentValue display = getIdent(CSSName.DISPLAY);
+        final IdentValue display = getIdent(CSSName.DISPLAY);
         return display == IdentValue.BLOCK || display == IdentValue.LIST_ITEM ||
                 display == IdentValue.TABLE || display == IdentValue.INLINE_BLOCK ||
                 display == IdentValue.TABLE_CELL;
@@ -1046,12 +1046,12 @@ public class CalculatedStyle {
     }
 
     public boolean isHorizontalBackgroundRepeat() {
-        IdentValue value = getIdent(CSSName.BACKGROUND_REPEAT);
+        final IdentValue value = getIdent(CSSName.BACKGROUND_REPEAT);
         return value == IdentValue.REPEAT_X || value == IdentValue.REPEAT;
     }
 
     public boolean isVerticalBackgroundRepeat() {
-        IdentValue value = getIdent(CSSName.BACKGROUND_REPEAT);
+        final IdentValue value = getIdent(CSSName.BACKGROUND_REPEAT);
         return value == IdentValue.REPEAT_Y || value == IdentValue.REPEAT;
     }
 
@@ -1073,13 +1073,13 @@ public class CalculatedStyle {
     }
 
     public boolean isForcePageBreakBefore() {
-        IdentValue val = getIdent(CSSName.PAGE_BREAK_BEFORE);
+        final IdentValue val = getIdent(CSSName.PAGE_BREAK_BEFORE);
         return val == IdentValue.ALWAYS || val == IdentValue.LEFT
                 || val == IdentValue.RIGHT;
     }
 
     public boolean isForcePageBreakAfter() {
-        IdentValue val = getIdent(CSSName.PAGE_BREAK_AFTER);
+        final IdentValue val = getIdent(CSSName.PAGE_BREAK_AFTER);
         return val == IdentValue.ALWAYS || val == IdentValue.LEFT
                 || val == IdentValue.RIGHT;
     }
@@ -1088,12 +1088,12 @@ public class CalculatedStyle {
         return isIdent(CSSName.PAGE_BREAK_INSIDE, IdentValue.AVOID);
     }
 
-    public CalculatedStyle createAnonymousStyle(IdentValue display) {
+    public CalculatedStyle createAnonymousStyle(final IdentValue display) {
         return deriveStyle(CascadedStyle.createAnonymousStyle(display));
     }
 
     public boolean mayHaveFirstLine() {
-        IdentValue display = getIdent(CSSName.DISPLAY);
+        final IdentValue display = getIdent(CSSName.DISPLAY);
         return display == IdentValue.BLOCK ||
                 display == IdentValue.LIST_ITEM ||
                 display == IdentValue.RUN_IN ||
@@ -1104,7 +1104,7 @@ public class CalculatedStyle {
     }
 
     public boolean mayHaveFirstLetter() {
-        IdentValue display = getIdent(CSSName.DISPLAY);
+        final IdentValue display = getIdent(CSSName.DISPLAY);
         return display == IdentValue.BLOCK ||
                 display == IdentValue.LIST_ITEM ||
                 display == IdentValue.TABLE_CELL ||
@@ -1133,19 +1133,19 @@ public class CalculatedStyle {
         return isIdent(CSSName.MAX_HEIGHT, IdentValue.NONE);
     }
 
-    public int getMinWidth(CssContext c, int cbWidth) {
+    public int getMinWidth(final CssContext c, final int cbWidth) {
         return (int) getFloatPropertyProportionalTo(CSSName.MIN_WIDTH, cbWidth, c);
     }
 
-    public int getMaxWidth(CssContext c, int cbWidth) {
+    public int getMaxWidth(final CssContext c, final int cbWidth) {
         return (int) getFloatPropertyProportionalTo(CSSName.MAX_WIDTH, cbWidth, c);
     }
 
-    public int getMinHeight(CssContext c, int cbHeight) {
+    public int getMinHeight(final CssContext c, final int cbHeight) {
         return (int) getFloatPropertyProportionalTo(CSSName.MIN_HEIGHT, cbHeight, c);
     }
 
-    public int getMaxHeight(CssContext c, int cbHeight) {
+    public int getMaxHeight(final CssContext c, final int cbHeight) {
         return (int) getFloatPropertyProportionalTo(CSSName.MAX_HEIGHT, cbHeight, c);
     }
 
@@ -1153,28 +1153,28 @@ public class CalculatedStyle {
         return isIdent(CSSName.BORDER_COLLAPSE, IdentValue.COLLAPSE) && ! isPaginateTable();
     }
 
-    public int getBorderHSpacing(CssContext c) {
+    public int getBorderHSpacing(final CssContext c) {
         return isCollapseBorders() ? 0 : (int) getFloatPropertyProportionalTo(CSSName.FS_BORDER_SPACING_HORIZONTAL, 0, c);
     }
 
-    public int getBorderVSpacing(CssContext c) {
+    public int getBorderVSpacing(final CssContext c) {
         return isCollapseBorders() ? 0 : (int) getFloatPropertyProportionalTo(CSSName.FS_BORDER_SPACING_VERTICAL, 0, c);
     }
 
     public int getRowSpan() {
-        int result = (int) asFloat(CSSName.FS_ROWSPAN);
+        final int result = (int) asFloat(CSSName.FS_ROWSPAN);
         return result > 0 ? result : 1;
     }
 
     public int getColSpan() {
-        int result = (int) asFloat(CSSName.FS_COLSPAN);
+        final int result = (int) asFloat(CSSName.FS_COLSPAN);
         return result > 0 ? result : 1;
     }
 
-    public Length asLength(CssContext c, CSSName cssName) {
-        Length result = new Length();
+    public Length asLength(final CssContext c, final CSSName cssName) {
+        final Length result = new Length();
 
-        FSDerivedValue value = valueByName(cssName);
+        final FSDerivedValue value = valueByName(cssName);
         if (value instanceof LengthValue || value instanceof NumberValue) {
             if (value.hasAbsoluteUnit()) {
                 result.setValue((int) value.getFloatProportionalTo(cssName, 0, c));
@@ -1198,13 +1198,13 @@ public class CalculatedStyle {
     }
 
     public List<FSDerivedValue> getTextDecorations() {
-        FSDerivedValue value = valueByName(CSSName.TEXT_DECORATION);
+        final FSDerivedValue value = valueByName(CSSName.TEXT_DECORATION);
         if (value == IdentValue.NONE) {
             return null;
         } else {
-            List<?> idents = ((ListValue) value).getValues();
-            List<FSDerivedValue> result = new ArrayList<FSDerivedValue>(idents.size());
-            for (Object ident : idents) {
+            final List<?> idents = ((ListValue) value).getValues();
+            final List<FSDerivedValue> result = new ArrayList<FSDerivedValue>(idents.size());
+            for (final Object ident : idents) {
                 result.add(DerivedValueFactory.newDerivedValue(
                         this, CSSName.TEXT_DECORATION, (PropertyValue) ident));
             }
@@ -1213,7 +1213,7 @@ public class CalculatedStyle {
     }
 
     public Cursor getCursor() {
-        FSDerivedValue value = valueByName(CSSName.CURSOR);
+        final FSDerivedValue value = valueByName(CSSName.CURSOR);
 
         if (value == IdentValue.AUTO || value == IdentValue.DEFAULT) {
             return Cursor.getDefaultCursor();

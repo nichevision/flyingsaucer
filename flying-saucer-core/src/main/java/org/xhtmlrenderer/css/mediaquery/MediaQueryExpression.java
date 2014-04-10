@@ -45,9 +45,9 @@ public class MediaQueryExpression
             || _mediaFeature == MediaFeatureName.MAX_ASPECT_RATIO;
 	}
 
-    private static boolean featureWithCSSValueID(MediaFeatureName mediaFeature, PropertyValue value)
+    private static boolean featureWithCSSValueID(final MediaFeatureName mediaFeature, final PropertyValue value)
     {
-		IdentValue result = IdentValue.fsValueOf(value.getStringValue());
+		final IdentValue result = IdentValue.fsValueOf(value.getStringValue());
     	
 		if (result == null)
 			return false;
@@ -56,7 +56,7 @@ public class MediaQueryExpression
             || mediaFeature == MediaFeatureName.POINTER;
     }
     
-    private static boolean featureWithValidPositiveLenghtOrNumber(MediaFeatureName mediaFeature, PropertyValue value)
+    private static boolean featureWithValidPositiveLenghtOrNumber(final MediaFeatureName mediaFeature, final PropertyValue value)
     {
     	if (!BuilderUtil.isLength(value) && value.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_PERCENTAGE)
     		return false;
@@ -78,7 +78,7 @@ public class MediaQueryExpression
             || mediaFeature == MediaFeatureName.MIN_DEVICE_WIDTH;
     }
     
-    private static boolean featureWithValidDensity(MediaFeatureName mediaFeature, PropertyValue value)
+    private static boolean featureWithValidDensity(final MediaFeatureName mediaFeature, final PropertyValue value)
     {
     	if ((value.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_DPPX && value.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_DPI && value.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_DPCM) || value.getFloatValue() <= 0)
     	   return false;
@@ -89,7 +89,7 @@ public class MediaQueryExpression
     }
     
     
-    private static boolean featureWithPositiveInteger(MediaFeatureName mediaFeature, PropertyValue value)
+    private static boolean featureWithPositiveInteger(final MediaFeatureName mediaFeature, final PropertyValue value)
     {
         if ((value.getFloatValue() % 1f) != 0f || value.getFloatValue() < 0)
             return false;
@@ -104,7 +104,7 @@ public class MediaQueryExpression
             || mediaFeature == MediaFeatureName.MAX_MONOCHROME;
     }
     
-    private static boolean featureWithPositiveNumber(MediaFeatureName mediaFeature, PropertyValue value)
+    private static boolean featureWithPositiveNumber(final MediaFeatureName mediaFeature, final PropertyValue value)
     {
         if (value.getPrimitiveTypeN() != CSSPrimitiveUnit.CSS_NUMBER || value.getFloatValue() < 0)
             return false;
@@ -113,7 +113,7 @@ public class MediaQueryExpression
         return false;
     }
     
-    private static boolean featureWithZeroOrOne(MediaFeatureName mediaFeature, PropertyValue value)
+    private static boolean featureWithZeroOrOne(final MediaFeatureName mediaFeature, final PropertyValue value)
     {
         if ((value.getFloatValue() % 1f) != 0f || !(value.getFloatValue() == 1 || value.getFloatValue() == 0))
             return false;
@@ -122,7 +122,7 @@ public class MediaQueryExpression
             || mediaFeature == MediaFeatureName.HOVER;
     }
     
-    private static boolean featureWithAspectRatio(MediaFeatureName mediaFeature)
+    private static boolean featureWithAspectRatio(final MediaFeatureName mediaFeature)
     {
         return mediaFeature == MediaFeatureName.ASPECT_RATIO
             || mediaFeature == MediaFeatureName.DEVICE_ASPECT_RATIO
@@ -132,7 +132,7 @@ public class MediaQueryExpression
             || mediaFeature == MediaFeatureName.MAX_DEVICE_ASPECT_RATIO;
     }
     
-    private static boolean featureWithoutValue(MediaFeatureName mediaFeature)
+    private static boolean featureWithoutValue(final MediaFeatureName mediaFeature)
     {
         // Media features that are prefixed by min/max cannot be used without a value.
         return mediaFeature == MediaFeatureName.MONOCHROME
@@ -154,7 +154,7 @@ public class MediaQueryExpression
     @Override
     public String toString() 
     {
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
         result.append('(');
         result.append(_mediaFeature.toString());
         if (_cssValue != null) {
@@ -166,7 +166,7 @@ public class MediaQueryExpression
         return result.toString();
     }
     
-    public MediaQueryExpression(String mediaFeatureStr, List<PropertyValue> valueList)
+    public MediaQueryExpression(final String mediaFeatureStr, final List<PropertyValue> valueList)
     {
     	_mediaFeature = MediaFeatureName.fsValueOf(mediaFeatureStr);
 
@@ -196,10 +196,10 @@ public class MediaQueryExpression
         }
         else if (valueList.size() == 2 && featureWithAspectRatio(_mediaFeature)) 
         {
-        	PropertyValue top = valueList.get(0);
-        	PropertyValue bottom = valueList.get(1);
+        	final PropertyValue top = valueList.get(0);
+        	final PropertyValue bottom = valueList.get(1);
 
-        	List<PropertyValue> values = Arrays.asList(top, bottom);
+        	final List<PropertyValue> values = Arrays.asList(top, bottom);
         	
         	_cssValue = new PropertyValueImp(values);
         	

@@ -39,13 +39,13 @@ import static org.xhtmlrenderer.css.parser.property.BuilderUtil.*;
 public class ContentPropertyBuilder implements PropertyBuilder {
 
     public List<PropertyDeclaration> buildDeclarations(
-            CSSName cssName, List<PropertyValue> values, CSSOrigin origin, boolean important, boolean inheritAllowed) {
+            final CSSName cssName, final List<PropertyValue> values, final CSSOrigin origin, final boolean important, final boolean inheritAllowed) {
         if (values.size() == 1) {
-            PropertyValue value = values.get(0);
+            final PropertyValue value = values.get(0);
             if (value.getCssValueTypeN() == CSSValueType.CSS_INHERIT) {
                 return Collections.emptyList();
             } else if (value.getPrimitiveTypeN() == CSSPrimitiveUnit.CSS_IDENT) {
-                IdentValue ident = checkIdent(CSSName.CONTENT, value);
+                final IdentValue ident = checkIdent(CSSName.CONTENT, value);
                 if (ident == IdentValue.NONE || ident == IdentValue.NORMAL) {
                     return Collections.singletonList(
                             new PropertyDeclaration(CSSName.CONTENT, value, important, origin));
@@ -53,14 +53,14 @@ public class ContentPropertyBuilder implements PropertyBuilder {
             }
         }
         
-        List<PropertyValue> resultValues = new ArrayList<PropertyValue>();
-        for (PropertyValue value : values) {
+        final List<PropertyValue> resultValues = new ArrayList<PropertyValue>();
+        for (final PropertyValue value : values) {
             if (value.getOperator() != null) {
                 throw new CSSParseException(
                         "Found unexpected operator, " + value.getOperator().getExternalName(), -1);
             }
             
-            CSSPrimitiveUnit type = value.getPrimitiveTypeN();
+            final CSSPrimitiveUnit type = value.getPrimitiveTypeN();
             if (type == CSSPrimitiveUnit.CSS_URI) {
                 continue;
             } else if (type == CSSPrimitiveUnit.CSS_STRING) {
@@ -72,7 +72,7 @@ public class ContentPropertyBuilder implements PropertyBuilder {
                 }
                 resultValues.add(value);
             } else if (type == CSSPrimitiveUnit.CSS_IDENT) {
-                IdentValue ident = checkIdent(CSSName.CONTENT, value);
+                final IdentValue ident = checkIdent(CSSName.CONTENT, value);
                 if (ident == IdentValue.OPEN_QUOTE || ident == IdentValue.CLOSE_QUOTE ||
                         ident == IdentValue.NO_CLOSE_QUOTE || ident == IdentValue.NO_OPEN_QUOTE) {
                     resultValues.add(value);
@@ -94,8 +94,8 @@ public class ContentPropertyBuilder implements PropertyBuilder {
         }
     }
     
-    private boolean isFunctionAllowed(FSFunction function) {
-        String name = function.getName();
+    private boolean isFunctionAllowed(final FSFunction function) {
+        final String name = function.getName();
         return name.equals("attr") || name.equals("counter") || name.equals("counters") ||
             name.equals("element") || name.startsWith("-fs") || name.equals("target-counter") ||
             name.equals("leader");

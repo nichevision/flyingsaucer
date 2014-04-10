@@ -95,7 +95,7 @@ public class FSScrollPane extends JScrollPane {
         
 
     /** Instantiates a new FSScrollPane around the given Panel; see class documentation. */
-    public FSScrollPane(JPanel aview) {
+    public FSScrollPane(final JPanel aview) {
         super(aview, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_ALWAYS);
 
         // TODO: need to get line-height, I think; this should not be fixed (PWW 28-01-05)
@@ -103,7 +103,7 @@ public class FSScrollPane extends JScrollPane {
     }
     
     /* @Override */
-    public void setViewportView(Component view)
+    public void setViewportView(final Component view)
     {
         setPreferredSize(new Dimension((int)view.getSize().getWidth(), (int)view.getSize().getHeight()));
         if (view instanceof JComponent) {
@@ -115,7 +115,7 @@ public class FSScrollPane extends JScrollPane {
     }
     
     /** Assigns the default keyboard bindings on the view for document navigation. */
-    private void setDefaultInputMap(JComponent view) {
+    private void setDefaultInputMap(final JComponent view) {
         view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).
                 put(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN, 0), PAGE_DOWN);
         view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).
@@ -136,13 +136,13 @@ public class FSScrollPane extends JScrollPane {
     }
     
     /** Assigns the default Actions for document navigation on the view. */
-    private void setDefaultActionMap(JComponent view) {
+    private void setDefaultActionMap(final JComponent view) {
         view.getActionMap().put(PAGE_DOWN,
                 new AbstractAction() {
                     private static final long serialVersionUID = 1L;
 
-                    public void actionPerformed(ActionEvent evt) {
-                        JScrollBar sb = getVerticalScrollBar();
+                    public void actionPerformed(final ActionEvent evt) {
+                        final JScrollBar sb = getVerticalScrollBar();
                         sb.getModel().setValue(sb.getModel().getValue() + sb.getBlockIncrement(1));
                     }
                 });
@@ -150,8 +150,8 @@ public class FSScrollPane extends JScrollPane {
                 new AbstractAction() {
                     private static final long serialVersionUID = 1L;
 
-                    public void actionPerformed(ActionEvent evt) {
-                        JScrollBar sb = getVerticalScrollBar();
+                    public void actionPerformed(final ActionEvent evt) {
+                        final JScrollBar sb = getVerticalScrollBar();
                         sb.getModel().setValue(sb.getModel().getMaximum());
                     }
                 });
@@ -159,8 +159,8 @@ public class FSScrollPane extends JScrollPane {
                 new AbstractAction() {
                     private static final long serialVersionUID = 1L;
 
-                    public void actionPerformed(ActionEvent evt) {
-                        JScrollBar sb = getVerticalScrollBar();
+                    public void actionPerformed(final ActionEvent evt) {
+                        final JScrollBar sb = getVerticalScrollBar();
                         sb.getModel().setValue(sb.getModel().getValue() - sb.getBlockIncrement(-1));
                     }
                 });
@@ -168,8 +168,8 @@ public class FSScrollPane extends JScrollPane {
                 new AbstractAction() {
                     private static final long serialVersionUID = 1L;
 
-                    public void actionPerformed(ActionEvent evt) {
-                        JScrollBar sb = getVerticalScrollBar();
+                    public void actionPerformed(final ActionEvent evt) {
+                        final JScrollBar sb = getVerticalScrollBar();
                         sb.getModel().setValue(0);
                     }
                 });
@@ -177,8 +177,8 @@ public class FSScrollPane extends JScrollPane {
                 new AbstractAction() {
                     private static final long serialVersionUID = 1L;
 
-                    public void actionPerformed(ActionEvent evt) {
-                        JScrollBar sb = getVerticalScrollBar();
+                    public void actionPerformed(final ActionEvent evt) {
+                        final JScrollBar sb = getVerticalScrollBar();
                         sb.getModel().setValue(sb.getModel().getValue() + sb.getUnitIncrement(1));
                     }
                 });
@@ -186,28 +186,28 @@ public class FSScrollPane extends JScrollPane {
                 new AbstractAction() {
                     private static final long serialVersionUID = 1L;
 
-                    public void actionPerformed(ActionEvent evt) {
-                        JScrollBar sb = getVerticalScrollBar();
+                    public void actionPerformed(final ActionEvent evt) {
+                        final JScrollBar sb = getVerticalScrollBar();
                         sb.getModel().setValue(sb.getModel().getValue() - sb.getUnitIncrement(-1));
                     }
                 });
     }
     
     /** Adds a component listener on the view for resize events, to adjust the scroll increment. */
-    private void addResizeListener(Component view) {
+    private void addResizeListener(final Component view) {
         view.addComponentListener( new ComponentAdapter() {
             /** Invoked when the component's size changes. Reset scrollable increment, because
              * page-down/up is relative to current view size.
              */
-            public void componentResized(ComponentEvent e) {
-                JScrollBar bar = getVerticalScrollBar();
+            public void componentResized(final ComponentEvent e) {
+                final JScrollBar bar = getVerticalScrollBar();
                 
                 // NOTE: use the scroll pane size--the XHTMLPanel size is a virtual size of the entire
                 // page
                 
                 // want to page down leaving the current line at the bottom be the first at the top
                 // TODO: this will only work once unit increment is set correctly; multiplier is a workaround (PWW 28-01-05)
-                int incr = (int)(getSize().getHeight() - (bar.getUnitIncrement(1) * 3));
+                final int incr = (int)(getSize().getHeight() - (bar.getUnitIncrement(1) * 3));
                 getVerticalScrollBar().setBlockIncrement(incr);
             }
         });        

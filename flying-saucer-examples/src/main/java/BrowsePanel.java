@@ -49,15 +49,15 @@ public class BrowsePanel {
     private JFrame frame;
     private UserAgentCallback uac;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         try {
             new BrowsePanel().run(args);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
 
-    private void run(String[] args) {
+    private void run(final String[] args) {
         loadAndCheckArgs(args);
 
         EventQueue.invokeLater(new Runnable() {
@@ -71,7 +71,7 @@ public class BrowsePanel {
                 // a regular JScrollPane here, or our FSScrollPane.
                 // FSScrollPane is already set up to move the correct
                 // amount when scrolling 1 line or 1 page
-                FSScrollPane scroll = new FSScrollPane(panel);
+                final FSScrollPane scroll = new FSScrollPane(panel);
 
                 frame = new JFrame("Flying Saucer");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,10 +84,10 @@ public class BrowsePanel {
         });
     }
 
-    private void setupUserAgentCallback(XHTMLPanel panel) {
+    private void setupUserAgentCallback(final XHTMLPanel panel) {
         uac = new DelegatingUserAgent();
 
-        ImageResourceLoader irl = new ImageResourceLoader();
+        final ImageResourceLoader irl = new ImageResourceLoader();
         irl.setRepaintListener(panel);
         ((DelegatingUserAgent) uac).setImageResourceLoader(irl);
         
@@ -107,22 +107,22 @@ public class BrowsePanel {
                 frame.setTitle(panel.getDocumentTitle());
             }
 
-            public void onLayoutException(Throwable t) {
+            public void onLayoutException(final Throwable t) {
                 panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 panel.setDocument(getErrorDocument("can't layout: " + t.getMessage()).getDocument());
             }
 
-            public void onRenderException(Throwable t) {
+            public void onRenderException(final Throwable t) {
                 panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 panel.setDocument(getErrorDocument("can't render: " + t.getMessage()).getDocument());
             }
         });
     }
 
-    private HTMLResource getErrorDocument(String reason) {
+    private HTMLResource getErrorDocument(final String reason) {
         HTMLResource xr;
-        String cleanUri = GeneralUtil.escapeHTML(uri);
-        String notFound = "<html><h1>Document not found</h1><p>Could not load URI <pre>" + cleanUri + "</pre>, because: " + reason + "</p></html>";
+        final String cleanUri = GeneralUtil.escapeHTML(uri);
+        final String notFound = "<html><h1>Document not found</h1><p>Could not load URI <pre>" + cleanUri + "</pre>, because: " + reason + "</p></html>";
         xr = HTMLResource.load(new StringReader(notFound));
         return xr;
     }
@@ -137,7 +137,7 @@ public class BrowsePanel {
                     final HTMLResource resource = getUAC().getXMLResource(uri);
                     uri = resource.getURI();
                     doc = resource.getDocument();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                     System.err.println("Can't load document");
                     return;
@@ -168,20 +168,20 @@ public class BrowsePanel {
         try {
             panel.setDocument(document, uri);
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             e.printStackTrace();  
         }
     }
 
-    private void loadAndCheckArgs(String[] args) {
+    private void loadAndCheckArgs(final String[] args) {
         if (args.length == 0) {
             throw new IllegalArgumentException("Enter a file or URI.");
         }
-        String name = args[0];
+        final String name = args[0];
         if (!new File(name).exists()) {
             try {
                 new URL(name);
-            } catch (MalformedURLException e) {
+            } catch (final MalformedURLException e) {
                 throw new IllegalArgumentException("File " + name + " does not exist or is not a URI");
             }
         }

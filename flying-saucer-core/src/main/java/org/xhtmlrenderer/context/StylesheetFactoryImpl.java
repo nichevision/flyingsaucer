@@ -50,23 +50,23 @@ public class StylesheetFactoryImpl implements StylesheetFactory {
      * the UserAgentCallback to resolve uris
      */
     private UserAgentCallback _userAgentCallback;
-    private CSSParser _cssParser;
+    private final CSSParser _cssParser;
 
-    public StylesheetFactoryImpl(UserAgentCallback userAgentCallback) {
+    public StylesheetFactoryImpl(final UserAgentCallback userAgentCallback) {
         _userAgentCallback = userAgentCallback;
         _cssParser = new CSSParser(new CSSErrorHandler() {
-            public void error(String uri, String message) {
+            public void error(final String uri, final String message) {
                 XRLog.cssParse(Level.WARNING, "(" + uri + ") " + message);
             }
         });
     }
 
-    public synchronized Stylesheet parse(Reader reader, StylesheetInfo info) {
+    public synchronized Stylesheet parse(final Reader reader, final StylesheetInfo info) {
         try {
-        	Stylesheet s1 = _cssParser.parseStylesheet(info.getUri(), info.getOrigin(), reader);
+        	final Stylesheet s1 = _cssParser.parseStylesheet(info.getUri(), info.getOrigin(), reader);
         	_userAgentCallback.getStylesheetCache().putStylesheet(info.getUri(), s1);
             return s1; 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             XRLog.cssParse(Level.WARNING, "Couldn't parse stylesheet at URI " + info.getUri() + ": " + e.getMessage(), e);
             e.printStackTrace();
             return new Stylesheet(info.getUri(), info.getOrigin());
@@ -76,39 +76,39 @@ public class StylesheetFactoryImpl implements StylesheetFactory {
     /**
      * @return Returns null if uri could not be loaded
      */
-    private Stylesheet parse(StylesheetInfo info) {
-        CSSResource cr = _userAgentCallback.getCSSResource(info.getUri());
+    private Stylesheet parse(final StylesheetInfo info) {
+        final CSSResource cr = _userAgentCallback.getCSSResource(info.getUri());
         // Whether by accident or design, InputStream will never be null
         // since the null resource stream is wrapped in a BufferedInputStream
-        InputStream is = cr.getResourceInputStream();
+        final InputStream is = cr.getResourceInputStream();
         try {
-            Stylesheet s1 = parse(new InputStreamReader(is, "UTF-8"), info);
+            final Stylesheet s1 = parse(new InputStreamReader(is, "UTF-8"), info);
             return s1;
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             // Shouldn't happen
             throw new RuntimeException(e.getMessage(), e);
         } finally {
             if (is != null) {
                 try {
                     is.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }
         }
     }
 
-    public synchronized Ruleset parseStyleDeclaration(CSSOrigin origin, String styleDeclaration) {
+    public synchronized Ruleset parseStyleDeclaration(final CSSOrigin origin, final String styleDeclaration) {
         return _cssParser.parseDeclaration(origin, styleDeclaration);
     }
 
-    public Stylesheet getStylesheet(StylesheetInfo info) 
+    public Stylesheet getStylesheet(final StylesheetInfo info) 
     {
         XRLog.load("Requesting stylesheet: " + info.getUri());
         
         // Give the user agent the chance to return a cached Stylesheet
         // instance.
-        Stylesheet s1 = _userAgentCallback.getStylesheetCache().getStylesheet(info);
+        final Stylesheet s1 = _userAgentCallback.getStylesheetCache().getStylesheet(info);
 
         if (s1 == null)
         	return parse(info);
@@ -116,7 +116,7 @@ public class StylesheetFactoryImpl implements StylesheetFactory {
         return s1;
     }
 
-    public void setUserAgentCallback(UserAgentCallback userAgent) {
+    public void setUserAgentCallback(final UserAgentCallback userAgent) {
         _userAgentCallback = userAgent;
     }
     
@@ -125,7 +125,7 @@ public class StylesheetFactoryImpl implements StylesheetFactory {
     	return _userAgentCallback;
     }
     
-    public void setSupportCMYKColors(boolean b) {
+    public void setSupportCMYKColors(final boolean b) {
         _cssParser.setSupportCMYKColors(b);
     }
 }

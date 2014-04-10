@@ -54,7 +54,7 @@ public class MarginBoxName {
     // on the screen.
     public static final MarginBoxName FS_PDF_XMP_METADATA = addValue("-fs-pdf-xmp-metadata", IdentValue.TOP, IdentValue.LEFT);
     
-    private MarginBoxName(String ident, IdentValue textAlign, IdentValue verticalAlign) {
+    private MarginBoxName(final String ident, final IdentValue textAlign, final IdentValue verticalAlign) {
         _ident = ident;
         _textAlign = textAlign;
         _verticalAlign = verticalAlign;
@@ -62,8 +62,8 @@ public class MarginBoxName {
         this.FS_ID = _maxAssigned++;
     }
     
-    private final static MarginBoxName addValue(String ident, IdentValue textAlign, IdentValue verticalAlign) {
-        MarginBoxName val = new MarginBoxName(ident, textAlign, verticalAlign);
+    private final static MarginBoxName addValue(final String ident, final IdentValue textAlign, final IdentValue verticalAlign) {
+        final MarginBoxName val = new MarginBoxName(ident, textAlign, verticalAlign);
         ALL.put(ident, val);
         return val;
     }
@@ -72,7 +72,7 @@ public class MarginBoxName {
         return _ident;
     }
     
-    public static MarginBoxName valueOf(String ident) {
+    public static MarginBoxName valueOf(final String ident) {
         return ALL.get(ident);
     }
     
@@ -80,7 +80,7 @@ public class MarginBoxName {
         return FS_ID;
     }
     
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || ! (o instanceof MarginBoxName)) {
             return false;
         }

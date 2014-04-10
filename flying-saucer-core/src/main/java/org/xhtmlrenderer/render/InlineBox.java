@@ -68,7 +68,7 @@ public class InlineBox implements Styleable {
 
     private final Node _textNode;
 
-    public InlineBox(String text, Node node) {
+    public InlineBox(final String text, final Node node) {
         _text = text;
         _originalText = text;
         _textNode = node;
@@ -78,7 +78,7 @@ public class InlineBox implements Styleable {
         return _text;
     }
 
-    public void setText(String text) {
+    public void setText(final String text) {
         _text = text;
         _originalText = text;
     }
@@ -92,7 +92,7 @@ public class InlineBox implements Styleable {
         return _removableWhitespace;
     }
 
-    public void setRemovableWhitespace(boolean removeableWhitespace) {
+    public void setRemovableWhitespace(final boolean removeableWhitespace) {
         _removableWhitespace = removeableWhitespace;
     }
 
@@ -100,7 +100,7 @@ public class InlineBox implements Styleable {
         return _endsHere;
     }
 
-    public void setEndsHere(boolean endsHere) {
+    public void setEndsHere(final boolean endsHere) {
         _endsHere = endsHere;
     }
 
@@ -108,7 +108,7 @@ public class InlineBox implements Styleable {
         return _startsHere;
     }
 
-    public void setStartsHere(boolean startsHere) {
+    public void setStartsHere(final boolean startsHere) {
         _startsHere = startsHere;
     }
 
@@ -116,7 +116,7 @@ public class InlineBox implements Styleable {
         return _style;
     }
 
-    public void setStyle(CalculatedStyle style) {
+    public void setStyle(final CalculatedStyle style) {
         _style = style;
     }
 
@@ -124,7 +124,7 @@ public class InlineBox implements Styleable {
         return _element;
     }
 
-    public void setElement(Element element) {
+    public void setElement(final Element element) {
         _element = element;
     }
 
@@ -132,7 +132,7 @@ public class InlineBox implements Styleable {
         return _contentFunction;
     }
 
-    public void setContentFunction(ContentFunction contentFunction) {
+    public void setContentFunction(final ContentFunction contentFunction) {
         _contentFunction = contentFunction;
     }
 
@@ -140,18 +140,18 @@ public class InlineBox implements Styleable {
         return _contentFunction != null;
     }
 
-    private int getTextWidth(LayoutContext c, String s) {
+    private int getTextWidth(final LayoutContext c, final String s) {
         return c.getTextRenderer().getWidth(
                 c.getFontContext(),
                 c.getFont(getStyle().getFont(c)),
                 s);
     }
 
-    private int getMaxCharWidth(LayoutContext c, String s) {
-        char[] chars = s.toCharArray();
+    private int getMaxCharWidth(final LayoutContext c, final String s) {
+        final char[] chars = s.toCharArray();
         int result = 0;
         for (int i = 0; i < chars.length; i++) {
-            int width = getTextWidth(c, Character.toString(chars[i]));
+            final int width = getTextWidth(c, Character.toString(chars[i]));
             if (width > result) {
                 result = width;
             }
@@ -159,7 +159,7 @@ public class InlineBox implements Styleable {
         return result;
     }
 
-    private void calcMaxWidthFromLineLength(LayoutContext c, int cbWidth, boolean trim) {
+    private void calcMaxWidthFromLineLength(final LayoutContext c, final int cbWidth, final boolean trim) {
         int last = 0;
         int current = 0;
 
@@ -195,7 +195,7 @@ public class InlineBox implements Styleable {
         }
     }
 
-    public int getSpaceWidth(LayoutContext c) {
+    public int getSpaceWidth(final LayoutContext c) {
         return c.getTextRenderer().getWidth(
                 c.getFontContext(),
                 getStyle().getFSFont(c),
@@ -203,7 +203,7 @@ public class InlineBox implements Styleable {
 
     }
 
-    public int getTrailingSpaceWidth(LayoutContext c) {
+    public int getTrailingSpaceWidth(final LayoutContext c) {
         if (_text.length() > 0 && _text.charAt(_text.length()-1) == ' ') {
             return getSpaceWidth(c);
         } else {
@@ -212,22 +212,22 @@ public class InlineBox implements Styleable {
     }
 
     private int calcMinWidthFromWordLength(
-            LayoutContext c, int cbWidth, boolean trimLeadingSpace, boolean includeWS) {
-        int spaceWidth = getSpaceWidth(c);
+            final LayoutContext c, final int cbWidth, final boolean trimLeadingSpace, final boolean includeWS) {
+        final int spaceWidth = getSpaceWidth(c);
 
         int last = 0;
         int current = 0;
         int maxWidth = 0;
         int spaceCount = 0;
 
-        boolean haveFirstWord = false;
+        final boolean haveFirstWord = false;
         int firstWord = 0;
         int lastWord = 0;
 
-        String text = getText(trimLeadingSpace);
+        final String text = getText(trimLeadingSpace);
 
         while ( (current = text.indexOf(WhitespaceStripper.SPACE, last)) != -1) {
-            String currentWord = text.substring(last, current);
+            final String currentWord = text.substring(last, current);
             int wordWidth = getTextWidth(c, currentWord);
             int minWordWidth;
             if (getStyle().getWordWrap() == IdentValue.BREAK_WORD) {
@@ -271,7 +271,7 @@ public class InlineBox implements Styleable {
             }
         }
 
-        String currentWord = text.substring(last);
+        final String currentWord = text.substring(last);
         int wordWidth = getTextWidth(c, currentWord);
         int minWordWidth;
         if (getStyle().getWordWrap() == IdentValue.BREAK_WORD) {
@@ -300,7 +300,7 @@ public class InlineBox implements Styleable {
         maxWidth += wordWidth;
 
         if (isStartsHere()) {
-            int leftMBP = getStyle().getMarginBorderPadding(c, cbWidth, CalculatedStyle.LEFT);
+            final int leftMBP = getStyle().getMarginBorderPadding(c, cbWidth, CalculatedStyle.LEFT);
             if (firstWord + leftMBP > _minWidth) {
                 _minWidth = firstWord + leftMBP;
             }
@@ -308,7 +308,7 @@ public class InlineBox implements Styleable {
         }
 
         if (isEndsHere()) {
-            int rightMBP = getStyle().getMarginBorderPadding(c, cbWidth, CalculatedStyle.RIGHT);
+            final int rightMBP = getStyle().getMarginBorderPadding(c, cbWidth, CalculatedStyle.RIGHT);
             if (lastWord + rightMBP > _minWidth) {
                 _minWidth = lastWord + rightMBP;
             }
@@ -318,7 +318,7 @@ public class InlineBox implements Styleable {
         return maxWidth;
     }
 
-    private String getText(boolean trimLeadingSpace) {
+    private String getText(final boolean trimLeadingSpace) {
         if (! trimLeadingSpace) {
             return getText();
         } else {
@@ -330,14 +330,14 @@ public class InlineBox implements Styleable {
         }
     }
 
-    private int getInlineMBP(LayoutContext c, int cbWidth) {
+    private int getInlineMBP(final LayoutContext c, final int cbWidth) {
         return getStyle().getMarginBorderPadding(c, cbWidth, CalculatedStyle.LEFT) +
             getStyle().getMarginBorderPadding(c, cbWidth, CalculatedStyle.RIGHT);
     }
 
-    public void calcMinMaxWidth(LayoutContext c, int cbWidth, boolean trimLeadingSpace) {
+    public void calcMinMaxWidth(final LayoutContext c, final int cbWidth, final boolean trimLeadingSpace) {
         if (! _minMaxCalculated) {
-            IdentValue whitespace = getStyle().getWhitespace();
+            final IdentValue whitespace = getStyle().getWhitespace();
             if (whitespace == IdentValue.NOWRAP) {
                 _minWidth = _maxWidth = getInlineMBP(c, cbWidth) + getTextWidth(c, getText(trimLeadingSpace));
             } else if (whitespace == IdentValue.PRE) {
@@ -373,12 +373,12 @@ public class InlineBox implements Styleable {
         return _pseudoElementOrClass;
     }
 
-    public void setPseudoElementOrClass(String pseudoElementOrClass) {
+    public void setPseudoElementOrClass(final String pseudoElementOrClass) {
         _pseudoElementOrClass = pseudoElementOrClass;
     }
 
     public String toString() {
-        StringBuffer result = new StringBuffer();
+        final StringBuffer result = new StringBuffer();
         result.append("InlineBox: ");
         if (getElement() != null) {
             result.append("<");
@@ -411,7 +411,7 @@ public class InlineBox implements Styleable {
         return result.toString();
     }
 
-    protected void appendPositioningInfo(StringBuffer result) {
+    protected void appendPositioningInfo(final StringBuffer result) {
         if (getStyle().isRelative()) {
             result.append("(relative) ");
         }
@@ -430,9 +430,9 @@ public class InlineBox implements Styleable {
         if (_text == null) {
             return null;
         } else {
-            StringBuffer result = new StringBuffer();
+            final StringBuffer result = new StringBuffer();
             for (int i = 0; i < _text.length() && i < 40; i++) {
-                char c = _text.charAt(i);
+                final char c = _text.charAt(i);
                 if (c == '\n') {
                     result.append(' ');
                 } else {
@@ -450,7 +450,7 @@ public class InlineBox implements Styleable {
         return _function;
     }
 
-    public void setFunction(FSFunction function) {
+    public void setFunction(final FSFunction function) {
         _function = function;
     }
 

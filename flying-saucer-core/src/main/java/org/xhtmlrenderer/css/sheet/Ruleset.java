@@ -33,12 +33,12 @@ import org.xhtmlrenderer.css.sheet.StylesheetInfo.CSSOrigin;
  * @author Patrick Wright
  */
 public class Ruleset {
-    private CSSOrigin _origin;
-    private java.util.List<PropertyDeclaration> _props;
+    private final CSSOrigin _origin;
+    private final java.util.List<PropertyDeclaration> _props;
 
     private List<Selector> _fsSelectors = new ArrayList<Selector>();
 
-    public Ruleset(CSSOrigin orig) {
+    public Ruleset(final CSSOrigin orig) {
         _origin = orig;
         _props = new LinkedList<PropertyDeclaration>();
         _fsSelectors = new LinkedList<Selector>();
@@ -54,15 +54,15 @@ public class Ruleset {
         return Collections.unmodifiableList(_props);
     }
 
-    public void addProperty(PropertyDeclaration decl) {
+    public void addProperty(final PropertyDeclaration decl) {
         _props.add(decl);
     }
     
-    public void addAllProperties(List<PropertyDeclaration> props) {
+    public void addAllProperties(final List<PropertyDeclaration> props) {
         _props.addAll(props);
     }
     
-    public void addFSSelector(Selector selector) {
+    public void addFSSelector(final Selector selector) {
         _fsSelectors.add(selector);
     }
     

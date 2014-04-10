@@ -11,16 +11,16 @@ public class CopySelectionAction extends AbstractAction {
 
     protected BrowserStartup root;
 
-    public CopySelectionAction(BrowserStartup root) {
+    public CopySelectionAction(final BrowserStartup root) {
         super("Copy");
         this.root = root;
     }
 
 
-    public void actionPerformed(ActionEvent evt) {
+    public void actionPerformed(final ActionEvent evt) {
         // ... collection seleciton here
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Clipboard clip = tk.getSystemClipboard();
+        final Toolkit tk = Toolkit.getDefaultToolkit();
+        final Clipboard clip = tk.getSystemClipboard();
         clip.setContents(new StringSelection("..."), null);
     }
 }

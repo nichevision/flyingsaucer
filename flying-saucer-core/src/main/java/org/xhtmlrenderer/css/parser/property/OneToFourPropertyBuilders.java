@@ -34,14 +34,14 @@ public abstract class OneToFourPropertyBuilders {
         protected abstract PropertyBuilder getPropertyBuilder();
         
         public List<PropertyDeclaration> buildDeclarations(
-                CSSName cssName, List<PropertyValue> values,
-                CSSOrigin origin, boolean important, boolean inheritAllowed) {
-            List<PropertyDeclaration> result = new ArrayList<>(4);
+                final CSSName cssName, final List<PropertyValue> values,
+                final CSSOrigin origin, final boolean important, final boolean inheritAllowed) {
+            final List<PropertyDeclaration> result = new ArrayList<>(4);
             checkValueCount(cssName, 1, 4, values.size());
             
-            PropertyBuilder builder = getPropertyBuilder();
+            final PropertyBuilder builder = getPropertyBuilder();
             
-            CSSName[] props = getProperties();
+            final CSSName[] props = getProperties();
             
             PropertyDeclaration decl1;
             PropertyDeclaration decl2;

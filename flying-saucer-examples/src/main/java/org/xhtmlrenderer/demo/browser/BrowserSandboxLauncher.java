@@ -9,8 +9,8 @@ package org.xhtmlrenderer.demo.browser;
  * @author Patrick Wright
  */
 public class BrowserSandboxLauncher {
-    public static void main(String[] args) {
-        BrowserStartup bs = new BrowserStartup();
+    public static void main(final String[] args) {
+        final BrowserStartup bs = new BrowserStartup();
         bs.initUI();
 
         bs.panel.url.setVisible(false);

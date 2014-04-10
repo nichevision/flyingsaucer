@@ -26,8 +26,8 @@ import java.net.URLStreamHandler;
 
 public class Handler extends URLStreamHandler {
 
-    protected void parseURL(URL u, String spec, int start, int limit) {
-        String sub = spec.substring(start, limit);
+    protected void parseURL(final URL u, final String spec, final int start, final int limit) {
+        final String sub = spec.substring(start, limit);
 
         // Make sure we have a comma
         if (sub.indexOf(',') < 0) {
@@ -37,7 +37,7 @@ public class Handler extends URLStreamHandler {
         setURL(u, "data", "", -1, "", "", sub, "", "");
     }
 
-    protected URLConnection openConnection(URL u) throws IOException {
+    protected URLConnection openConnection(final URL u) throws IOException {
         return new DataURLConnection(u);
     }
 

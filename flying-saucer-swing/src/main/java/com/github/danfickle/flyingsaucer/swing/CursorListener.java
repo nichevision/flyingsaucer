@@ -32,8 +32,8 @@ public class CursorListener extends DefaultFSMouseListener {
     /**
      * {@inheritDoc}
      */
-    public void onMouseOver(BasicPanel panel, Box box) {
-        Cursor c = box.getStyle().getCursor();
+    public void onMouseOver(final BasicPanel panel, final Box box) {
+        final Cursor c = box.getStyle().getCursor();
 
         if (!panel.getCursor().equals(c)) {
             panel.setCursor(c);

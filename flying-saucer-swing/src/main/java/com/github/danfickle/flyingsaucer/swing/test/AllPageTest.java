@@ -9,45 +9,45 @@ import java.util.Date;
 
 public class AllPageTest {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         new AllPageTest().run();
     }
 
     public void run() {
         try {
-            String demosDir = "d:/java/javanet/xhtmlrenderer/demos/browser/xhtml/new";
-            File[] files = new File(demosDir).listFiles(new FilenameFilter() {
-                public boolean accept(File dir, String name) {
+            final String demosDir = "d:/java/javanet/xhtmlrenderer/demos/browser/xhtml/new";
+            final File[] files = new File(demosDir).listFiles(new FilenameFilter() {
+                public boolean accept(final File dir, final String name) {
                     return name.endsWith("xhtml");
                 }
             });
-            for (File file : files) {
+            for (final File file : files) {
                 try {
                     render(file);
-                } catch ( Exception ex ) {
+                } catch ( final Exception ex ) {
                     ex.printStackTrace();
                 }
             }
-        } catch ( Exception ex ) {
+        } catch ( final Exception ex ) {
             ex.printStackTrace();
         }
     }
 
-    private void render(File file) throws Exception {
+    private void render(final File file) throws Exception {
         System.out.println("\n\n*** Rendering page " + file.getName() + " ***\n\n");
         long total = 0;
-        int cnt = 1;
-        String page = file.toURL().toExternalForm();
+        final int cnt = 1;
+        final String page = file.toURL().toExternalForm();
         System.out.println("Testing with page " + page);
         for (int i = 0; i < cnt; i++) {
-            Date start = new Date();
+            final Date start = new Date();
             Graphics2DRenderer.renderToImage(page, 700, 700);
-            Date end = new Date();
-            long diff = (end.getTime() - start.getTime());
+            final Date end = new Date();
+            final long diff = (end.getTime() - start.getTime());
             Uu.p("ms = " + diff);
             if (i > 4) total += diff;
         }
-        long avg = total / cnt;
+        final long avg = total / cnt;
         System.out.println("average : " + avg);
     }
 }

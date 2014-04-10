@@ -36,7 +36,7 @@ import com.github.danfickle.flyingsaucer.swing.XHTMLPrintable;
  * @author Patrick Wright
  */
 public class SimplePrintable {
-    public static void main(String[] args) throws MalformedURLException, URISyntaxException {
+    public static void main(final String[] args) throws MalformedURLException, URISyntaxException {
         if (args.length == 0) {
             System.err.println("Need file path");
             System.exit(-1);
@@ -56,7 +56,7 @@ public class SimplePrintable {
         }
     }
 
-    private void printPanel(XHTMLPanel panel) {
+    private void printPanel(final XHTMLPanel panel) {
         final PrinterJob printJob = PrinterJob.getPrinterJob();
         printJob.setPrintable(new XHTMLPrintable(panel));
 
@@ -65,27 +65,27 @@ public class SimplePrintable {
 
                 printJob.print();
 
-            } catch (PrinterException ex) {
+            } catch (final PrinterException ex) {
                 ex.printStackTrace();
             }
         }
     }
 
-    private void printURL(String url) {
-        XHTMLPanel panel = new XHTMLPanel();
+    private void printURL(final String url) {
+        final XHTMLPanel panel = new XHTMLPanel();
         panel.getSharedContext().setPrint(true);
         panel.getSharedContext().setInteractive(false);
 
         try {
             panel.setDocument(url);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
 
         printPanel(panel);
     }
 
-    public void printFile(File file) {
+    public void printFile(final File file) {
         printURL(file.toURI().toString());
     }
 }

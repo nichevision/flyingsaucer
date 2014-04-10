@@ -37,56 +37,56 @@ public class HTMLResource extends AbstractResource {
     private Document document;
     private final String _uri;
     
-    private HTMLResource(String html)
+    private HTMLResource(final String html)
     {
     	setDocument(Jsoup.parse(html));
       _uri = null;
     }
 
-    private HTMLResource(InputStream stream, String uri) {
+    private HTMLResource(final InputStream stream, final String uri) {
       _uri = uri;
     	try {
 			document = Jsoup.parse(stream, null, "");
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			XRLog.load(Level.WARNING, "Unable to parse input stream", e);
 			throw new XRRuntimeException("Unable to parse input stream", e);
 		}
     }
     
-    private HTMLResource(File file)
+    private HTMLResource(final File file)
     {
       _uri = null;
     	try {
 			document = Jsoup.parse(file, null);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			XRLog.load(Level.WARNING, "Unable to parse file", e);
 			throw new XRRuntimeException("Unable to parse file", e);
 		}
     }
 
-    public static HTMLResource load(String html)
+    public static HTMLResource load(final String html)
     {
     	return new HTMLResource(html);
     }
     
-    public static HTMLResource load(InputStream stream, String uri) {
+    public static HTMLResource load(final InputStream stream, final String uri) {
         return new HTMLResource(stream, uri);
     }
 
     public String getURI() {
       return _uri;
     }
-    public static HTMLResource load(Reader reader) {
-    	char[] cbuf = new char[4096];
+    public static HTMLResource load(final Reader reader) {
+    	final char[] cbuf = new char[4096];
     	int numChars;
     	
-    	StringBuilder builder = new StringBuilder(4096);
+    	final StringBuilder builder = new StringBuilder(4096);
 
     	try {
 			while ((numChars = reader.read(cbuf)) >= 0) {
 			    builder.append(cbuf, 0, numChars);
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			XRLog.load(Level.WARNING, "Unable to parse reader", e);
 			throw new XRRuntimeException("Unable to parse reader", e);
 		}
@@ -98,11 +98,11 @@ public class HTMLResource extends AbstractResource {
         return document;
     }
 
-    private void setDocument(Document document) {
+    private void setDocument(final Document document) {
         this.document = document;
     }
 
-	public static HTMLResource load(File file) {
+	public static HTMLResource load(final File file) {
 		return new HTMLResource(file);
 	}
 }

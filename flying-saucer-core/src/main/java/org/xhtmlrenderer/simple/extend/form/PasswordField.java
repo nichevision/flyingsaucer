@@ -29,15 +29,15 @@ import org.xhtmlrenderer.simple.extend.XhtmlForm;
 import org.xhtmlrenderer.util.GeneralUtil;
 
 class PasswordField extends InputField {
-    public PasswordField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public PasswordField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         super(e, form, context, box);
     }
 
     public JComponent create() {
-        JPasswordField password = new JPasswordField();
+        final JPasswordField password = new JPasswordField();
 
         if (hasAttribute("size")) {
-            int size = GeneralUtil.parseIntRelaxed(getAttribute("size"));
+            final int size = GeneralUtil.parseIntRelaxed(getAttribute("size"));
             
             // Size of 0 doesn't make any sense, so use default value
             if (size == 0) {
@@ -64,13 +64,13 @@ class PasswordField extends InputField {
     }
     
     protected void applyOriginalState() {
-        JPasswordField password = (JPasswordField) getComponent();
+        final JPasswordField password = (JPasswordField) getComponent();
         
         password.setText(getOriginalState().getValue());
     }
     
     protected String[] getFieldValues() {
-        JPasswordField textfield = (JPasswordField) getComponent();
+        final JPasswordField textfield = (JPasswordField) getComponent();
         
         return new String [] {
                 new String(textfield.getPassword())

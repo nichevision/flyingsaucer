@@ -51,7 +51,7 @@ import org.xhtmlrenderer.render.PageBox;
  * {@link SharedContext}.
  */
 public class LayoutContext implements CssContext {
-    private SharedContext _sharedContext;
+    private final SharedContext _sharedContext;
 
     private Layer _rootLayer;
 
@@ -64,12 +64,12 @@ public class LayoutContext implements CssContext {
 
     private FontContext _fontContext;
 
-    private ContentFunctionFactory _contentFunctionFactory = new ContentFunctionFactory();
+    private final ContentFunctionFactory _contentFunctionFactory = new ContentFunctionFactory();
 
     private int _extraSpaceTop;
     private int _extraSpaceBottom;
     
-    private Map<CalculatedStyle, CounterContext> _counterContextMap = new HashMap<CalculatedStyle, CounterContext>();
+    private final Map<CalculatedStyle, CounterContext> _counterContextMap = new HashMap<CalculatedStyle, CounterContext>();
     
     private String _pendingPageName;
     private String _pageName;
@@ -110,7 +110,7 @@ public class LayoutContext implements CssContext {
     }
 
     //the stuff that needs to have a separate instance for each run.
-    LayoutContext(SharedContext sharedContext) {
+    LayoutContext(final SharedContext sharedContext) {
         _sharedContext = sharedContext;
         _bfcs = new LinkedList<BlockFormattingContext>();
         _layers = new LinkedList<Layer>();
@@ -119,7 +119,7 @@ public class LayoutContext implements CssContext {
         _firstLetters = new StyleTracker();
     }
 
-    public void reInit(boolean keepLayers) {
+    public void reInit(final boolean keepLayers) {
         _firstLines = new StyleTracker();
         _firstLetters = new StyleTracker();
         _currentMarkerData = null;
@@ -136,7 +136,7 @@ public class LayoutContext implements CssContext {
     }
 
     public LayoutState captureLayoutState() {
-        LayoutState result = new LayoutState();
+        final LayoutState result = new LayoutState();
 
         result.setFirstLines(_firstLines);
         result.setFirstLetters(_firstLetters);
@@ -154,7 +154,7 @@ public class LayoutContext implements CssContext {
         return result;
     }
 
-    public void restoreLayoutState(LayoutState layoutState) {
+    public void restoreLayoutState(final LayoutState layoutState) {
         _firstLines = layoutState.getFirstLines();
         _firstLetters = layoutState.getFirstLetters();
 
@@ -171,7 +171,7 @@ public class LayoutContext implements CssContext {
     }
 
     public LayoutState copyStateForRelayout() {
-        LayoutState result = new LayoutState();
+        final LayoutState result = new LayoutState();
 
         result.setFirstLetters(_firstLetters.copyOf());
         result.setFirstLines(_firstLines.copyOf());
@@ -184,7 +184,7 @@ public class LayoutContext implements CssContext {
         return result;
     }
 
-    public void restoreStateForRelayout(LayoutState layoutState) {
+    public void restoreStateForRelayout(final LayoutState layoutState) {
         _firstLines = layoutState.getFirstLines();
         _firstLetters = layoutState.getFirstLetters();
 
@@ -199,7 +199,7 @@ public class LayoutContext implements CssContext {
         return _bfcs.getLast();
     }
 
-    public void pushBFC(BlockFormattingContext bfc) {
+    public void pushBFC(final BlockFormattingContext bfc) {
         _bfcs.add(bfc);
     }
 
@@ -207,14 +207,14 @@ public class LayoutContext implements CssContext {
         _bfcs.removeLast();
     }
 
-    public void pushLayer(Box master) {
+    public void pushLayer(final Box master) {
         Layer layer = null;
 
         if (_rootLayer == null) {
             layer = new Layer(master);
             _rootLayer = layer;
         } else {
-            Layer parent = getLayer();
+            final Layer parent = getLayer();
 
             layer = new Layer(parent, master);
 
@@ -224,12 +224,12 @@ public class LayoutContext implements CssContext {
         pushLayer(layer);
     }
 
-    public void pushLayer(Layer layer) {
+    public void pushLayer(final Layer layer) {
         _layers.add(layer);
     }
 
     public void popLayer() {
-        Layer layer = getLayer();
+        final Layer layer = getLayer();
 
         layer.finish(this);
 
@@ -244,16 +244,16 @@ public class LayoutContext implements CssContext {
         return _rootLayer;
     }
 
-    public void translate(int x, int y) {
+    public void translate(final int x, final int y) {
         getBlockFormattingContext().translate(x, y);
     }
 
     /* code to keep track of all of the id'd boxes */
-    public void addBoxId(String id, Box box) {
+    public void addBoxId(final String id, final Box box) {
         _sharedContext.addBoxId(id, box);
     }
 
-    public void removeBoxId(String id) {
+    public void removeBoxId(final String id) {
         _sharedContext.removeBoxId(id);
     }
 
@@ -269,15 +269,15 @@ public class LayoutContext implements CssContext {
         return _sharedContext.getDotsPerPixel();
     }
 
-    public float getFontSize2D(FontSpecification font) {
+    public float getFontSize2D(final FontSpecification font) {
         return _sharedContext.getFont(font).getSize2D();
     }
 
-    public float getXHeight(FontSpecification parentFont) {
+    public float getXHeight(final FontSpecification parentFont) {
         return _sharedContext.getXHeight(getFontContext(), parentFont);
     }
 
-    public FSFont getFont(FontSpecification font) {
+    public FSFont getFont(final FontSpecification font) {
         return _sharedContext.getFont(font);
     }
 
@@ -301,7 +301,7 @@ public class LayoutContext implements CssContext {
         return _currentMarkerData;
     }
 
-    public void setCurrentMarkerData(MarkerData currentMarkerData) {
+    public void setCurrentMarkerData(final MarkerData currentMarkerData) {
         _currentMarkerData = currentMarkerData;
     }
 
@@ -313,7 +313,7 @@ public class LayoutContext implements CssContext {
         return _fontContext;
     }
 
-    public void setFontContext(FontContext fontContext) {
+    public void setFontContext(final FontContext fontContext) {
         _fontContext = fontContext;
     }
 
@@ -329,7 +329,7 @@ public class LayoutContext implements CssContext {
         return _extraSpaceBottom;
     }
 
-    public void setExtraSpaceBottom(int extraSpaceBottom) {
+    public void setExtraSpaceBottom(final int extraSpaceBottom) {
         _extraSpaceBottom = extraSpaceBottom;
     }
 
@@ -337,26 +337,26 @@ public class LayoutContext implements CssContext {
         return _extraSpaceTop;
     }
 
-    public void setExtraSpaceTop(int extraSpaceTop) {
+    public void setExtraSpaceTop(final int extraSpaceTop) {
         _extraSpaceTop = extraSpaceTop;
     }
 
-    public void resolveCounters(CalculatedStyle style) {
+    public void resolveCounters(final CalculatedStyle style) {
         //new context for child elements
-        CounterContext cc = new CounterContext(style);
+        final CounterContext cc = new CounterContext(style);
         _counterContextMap.put(style, cc);
     }
 
-    public CounterContext getCounterContext(CalculatedStyle style) {
+    public CounterContext getCounterContext(final CalculatedStyle style) {
         return _counterContextMap.get(style);
     }
 
-    public FSFontMetrics getFSFontMetrics(FSFont font) {
+    public FSFontMetrics getFSFontMetrics(final FSFont font) {
         return getTextRenderer().getFSFontMetrics(getFontContext(), font, "");
     }
 
     public class CounterContext {
-        private Map<String, Integer> _counters = new HashMap<String, Integer>();
+        private final Map<String, Integer> _counters = new HashMap<String, Integer>();
         /**
          * This is different because it needs to work even when the counter- properties cascade
          * and it should also logically be redefined on each level (think list-items within list-items)
@@ -369,21 +369,21 @@ public class LayoutContext implements CssContext {
          *
          * @param style
          */
-        CounterContext(CalculatedStyle style) {
+        CounterContext(final CalculatedStyle style) {
             _parent = _counterContextMap.get(style.getParent());
             if (_parent == null) _parent = new CounterContext();//top-level context, above root element
             //first the explicitly named counters
-            List<?> resets = style.getCounterReset();
+            final List<?> resets = style.getCounterReset();
             if (resets != null) {
-              for (Object name : resets) {
-                  CounterData cd = (CounterData) name;
+              for (final Object name : resets) {
+                  final CounterData cd = (CounterData) name;
                   _parent.resetCounter(cd);
               }
             }
 
-            List<?> increments = style.getCounterIncrement();
-            if (increments != null) for (Iterator<?> i = increments.iterator(); i.hasNext();) {
-                CounterData cd = (CounterData) i.next();
+            final List<?> increments = style.getCounterIncrement();
+            if (increments != null) for (final Iterator<?> i = increments.iterator(); i.hasNext();) {
+                final CounterData cd = (CounterData) i.next();
                 if (!_parent.incrementCounter(cd)) {
                     _parent.resetCounter(new CounterData(cd.getName(), 0));
                     _parent.incrementCounter(cd);
@@ -404,12 +404,12 @@ public class LayoutContext implements CssContext {
          * @param cd
          * @return true if a counter was found and incremented
          */
-        private boolean incrementCounter(CounterData cd) {
+        private boolean incrementCounter(final CounterData cd) {
             if ("list-item".equals(cd.getName())) {//reserved name for list-item counter in CSS3
                 incrementListItemCounter(cd.getValue());
                 return true;
             } else {
-                Integer currentValue = _counters.get(cd.getName());
+                final Integer currentValue = _counters.get(cd.getName());
                 if (currentValue == null) {
                     if (_parent == null) return false;
                     return _parent.incrementCounter(cd);
@@ -420,7 +420,7 @@ public class LayoutContext implements CssContext {
             }
         }
 
-        private void incrementListItemCounter(int increment) {
+        private void incrementListItemCounter(final int increment) {
             Integer currentValue = _counters.get("list-item");
             if (currentValue == null) {
                 currentValue = new Integer(0);
@@ -428,14 +428,14 @@ public class LayoutContext implements CssContext {
             _counters.put("list-item", new Integer(currentValue.intValue() + increment));
         }
 
-        private void resetCounter(CounterData cd) {
+        private void resetCounter(final CounterData cd) {
             _counters.put(cd.getName(), new Integer(cd.getValue()));
         }
 
-        public int getCurrentCounterValue(String name) {
+        public int getCurrentCounterValue(final String name) {
             //only the counters of the parent are in scope
             //_parent is never null for a publicly accessible CounterContext
-            Integer value = _parent.getCounter(name);
+            final Integer value = _parent.getCounter(name);
             if (value == null) {
                 _parent.resetCounter(new CounterData(name, 0));
                 return 0;
@@ -444,17 +444,17 @@ public class LayoutContext implements CssContext {
             }
         }
 
-        private Integer getCounter(String name) {
-            Integer value = _counters.get(name);
+        private Integer getCounter(final String name) {
+            final Integer value = _counters.get(name);
             if (value != null) return value;
             if (_parent == null) return null;
             return _parent.getCounter(name);
         }
 
-        public List<Integer> getCurrentCounterValues(String name) {
+        public List<Integer> getCurrentCounterValues(final String name) {
             //only the counters of the parent are in scope
             //_parent is never null for a publicly accessible CounterContext
-            List<Integer> values = new ArrayList<Integer>();
+            final List<Integer> values = new ArrayList<Integer>();
             _parent.getCounterValues(name, values);
             if (values.size() == 0) {
                 _parent.resetCounter(new CounterData(name, 0));
@@ -463,9 +463,9 @@ public class LayoutContext implements CssContext {
             return values;
         }
 
-        private void getCounterValues(String name, List<Integer> values) {
+        private void getCounterValues(final String name, final List<Integer> values) {
             if (_parent != null) _parent.getCounterValues(name, values);
-            Integer value = _counters.get(name);
+            final Integer value = _counters.get(name);
             if (value != null) values.add(value);
         }
     }
@@ -474,7 +474,7 @@ public class LayoutContext implements CssContext {
         return _pageName;
     }
 
-    public void setPageName(String currentPageName) {
+    public void setPageName(final String currentPageName) {
         _pageName = currentPageName;
     }
     
@@ -482,7 +482,7 @@ public class LayoutContext implements CssContext {
         return _noPageBreak;
     }
 
-    public void setNoPageBreak(int noPageBreak) {
+    public void setNoPageBreak(final int noPageBreak) {
         _noPageBreak = noPageBreak;
     }
     
@@ -494,7 +494,7 @@ public class LayoutContext implements CssContext {
         return _pendingPageName;
     }
 
-    public void setPendingPageName(String pendingPageName) {
+    public void setPendingPageName(final String pendingPageName) {
         _pendingPageName = pendingPageName;
     }
 
@@ -502,7 +502,7 @@ public class LayoutContext implements CssContext {
         return _rootDocumentLayer;
     }
 
-    public void setRootDocumentLayer(Layer rootDocumentLayer) {
+    public void setRootDocumentLayer(final Layer rootDocumentLayer) {
         _rootDocumentLayer = rootDocumentLayer;
     }
 
@@ -510,7 +510,7 @@ public class LayoutContext implements CssContext {
         return _page;
     }
 
-    public void setPage(PageBox page) {
+    public void setPage(final PageBox page) {
         _page = page;
     }
 
@@ -518,7 +518,7 @@ public class LayoutContext implements CssContext {
         return _mayCheckKeepTogether;
     }
 
-    public void setMayCheckKeepTogether(boolean mayKeepTogether) {
+    public void setMayCheckKeepTogether(final boolean mayKeepTogether) {
         _mayCheckKeepTogether = mayKeepTogether;
     }
 
@@ -526,7 +526,7 @@ public class LayoutContext implements CssContext {
         return _breakAtLineContext;
     }
 
-    public void setBreakAtLineContext(BreakAtLineContext breakAtLineContext) {
+    public void setBreakAtLineContext(final BreakAtLineContext breakAtLineContext) {
         _breakAtLineContext = breakAtLineContext;
     }
 

@@ -39,17 +39,17 @@ import org.xhtmlrenderer.swing.AWTFSFont;
 import java.awt.*;
 
 public abstract class FormField {
-    private XhtmlForm _parentForm;
-    private Element _element;
+    private final XhtmlForm _parentForm;
+    private final Element _element;
     private FormFieldState _originalState;
     private JComponent _component;
-    private LayoutContext context;
-    private BlockBox box;
+    private final LayoutContext context;
+    private final BlockBox box;
     protected Integer intrinsicWidth;
     protected Integer intrinsicHeight;
     
 
-    public FormField(Element e, XhtmlForm form, LayoutContext context, BlockBox box) {
+    public FormField(final Element e, final XhtmlForm form, final LayoutContext context, final BlockBox box) {
         _element = e;
         _parentForm = form;
         this.context = context;
@@ -72,8 +72,8 @@ public abstract class FormField {
 
     public Dimension getIntrinsicSize(){
 
-        int width = intrinsicWidth == null ? 0 : intrinsicWidth.intValue();
-        int height = intrinsicHeight == null ? 0 : intrinsicHeight.intValue();
+        final int width = intrinsicWidth == null ? 0 : intrinsicWidth.intValue();
+        final int height = intrinsicHeight == null ? 0 : intrinsicHeight.intValue();
 
         return new Dimension(width, height);
     }
@@ -95,11 +95,11 @@ public abstract class FormField {
         return _originalState;
     }
     
-    protected boolean hasAttribute(String attributeName) {
+    protected boolean hasAttribute(final String attributeName) {
         return getElement().attr(attributeName).length() > 0;
     }
 
-    protected String getAttribute(String attributeName) {
+    protected String getAttribute(final String attributeName) {
         return getElement().attr(attributeName);
     }
     
@@ -114,7 +114,7 @@ public abstract class FormField {
 
             _component.setSize(getIntrinsicSize());
 
-            String d = _element.attr("disabled");
+            final String d = _element.attr("disabled");
             if (d.equalsIgnoreCase("disabled")) {
                 _component.setEnabled(false);
             }
@@ -142,7 +142,7 @@ public abstract class FormField {
      * @param source The JComponent that caused the submission
      * @return true if it should
      */
-    public boolean includeInSubmission(JComponent source) {
+    public boolean includeInSubmission(final JComponent source) {
         return true;
     }
 
@@ -155,8 +155,8 @@ public abstract class FormField {
             return new String[] {};
         }
 
-        String name = getAttribute("name");
-        String[] values = getFieldValues();
+        final String name = getAttribute("name");
+        final String[] values = getFieldValues();
 
         for (int i = 0; i < values.length; i++) {
             values[i] = URLUTF8Encoder.encode(name) + "=" + URLUTF8Encoder.encode(values[i]);
@@ -180,44 +180,44 @@ public abstract class FormField {
         return getBox().getStyle();
     }
 
-    protected void applyComponentStyle(JComponent comp) {
-        Font font = getFont();
+    protected void applyComponentStyle(final JComponent comp) {
+        final Font font = getFont();
         if (font != null) {
             comp.setFont(font);
         }
 
-        CalculatedStyle style = getStyle();
+        final CalculatedStyle style = getStyle();
 
-        FSColor foreground = style.getColor();
+        final FSColor foreground = style.getColor();
         if (foreground != null) {
             comp.setForeground(toColor(foreground));
         }
 
-        FSColor background = style.getBackgroundColor();
+        final FSColor background = style.getBackgroundColor();
         if (background != null) {
             comp.setBackground(toColor(background));
         }
     }
 
-    private static Color toColor(FSColor color)
+    private static Color toColor(final FSColor color)
     {
         if (color instanceof FSRGBColor) {
-            FSRGBColor rgb = (FSRGBColor)color;
+            final FSRGBColor rgb = (FSRGBColor)color;
             return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
         }
         throw new RuntimeException("internal error: unsupported color class " + color.getClass().getName());
     }
 
     public Font getFont() {
-        FSFont font = getStyle().getFSFont(getContext());
+        final FSFont font = getStyle().getFSFont(getContext());
         if (font instanceof AWTFSFont) {
             return ((AWTFSFont) font).getAWTFont();
         }
         return null;
     }
 
-    protected static Integer getLengthValue(CalculatedStyle style, CSSName cssName) {
-        FSDerivedValue widthValue = style.valueByName(cssName);
+    protected static Integer getLengthValue(final CalculatedStyle style, final CSSName cssName) {
+        final FSDerivedValue widthValue = style.valueByName(cssName);
         if (widthValue instanceof LengthValue) {
             return new Integer((int)widthValue.asFloat());
         }

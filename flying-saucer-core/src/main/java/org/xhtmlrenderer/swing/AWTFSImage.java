@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 public abstract class AWTFSImage implements FSImage {
     private static final FSImage NULL_FS_IMAGE = new NullImage();
 
-    public static FSImage createImage(Image img) {
+    public static FSImage createImage(final Image img) {
         if (img == null) {
             return NULL_FS_IMAGE;
         } else {
@@ -52,7 +52,7 @@ public abstract class AWTFSImage implements FSImage {
     static class NewAWTFSImage extends AWTFSImage {
         private BufferedImage img;
 
-        public NewAWTFSImage(BufferedImage img) {
+        public NewAWTFSImage(final BufferedImage img) {
             this.img = img;
         }
 
@@ -68,10 +68,10 @@ public abstract class AWTFSImage implements FSImage {
             return img;
         }
 
-        public void scale(int width, int height) {
+        public void scale(final int width, final int height) {
             if (width > 0 || height > 0) {
-                int currentWith = getWidth();
-                int currentHeight = getHeight();
+                final int currentWith = getWidth();
+                final int currentHeight = getHeight();
                 int targetWidth = width;
                 int targetHeight = height;
 
@@ -101,7 +101,7 @@ public abstract class AWTFSImage implements FSImage {
             return 0;
         }
 
-        public void scale(int width, int height) {
+        public void scale(final int width, final int height) {
         }
 
         public BufferedImage getImage() {

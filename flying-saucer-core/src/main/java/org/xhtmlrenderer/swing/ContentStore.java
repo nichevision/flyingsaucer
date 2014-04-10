@@ -10,22 +10,22 @@ public class ContentStore
 	private final Document doc;
 	private final Map<String, String> store = new HashMap<>();
 	
-	public ContentStore(Document doc)
+	public ContentStore(final Document doc)
 	{
 		this.doc = doc;
 	}
 
-	public void addContent(String uri, String content)
+	public void addContent(final String uri, final String content)
 	{
 		store.put(uri, content);
 	}
 	
-	public boolean isAvailable(String uri)
+	public boolean isAvailable(final String uri)
 	{
 		return store.containsKey(uri);
 	}
 
-	public String getContent(String uri)
+	public String getContent(final String uri)
 	{
 		return store.get(uri);
 	}

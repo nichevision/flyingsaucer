@@ -54,9 +54,9 @@ public class FontSizeHelper {
         FIXED_FONT_SIZES.put(IdentValue.XX_LARGE, new PropertyValueImp(CSSPrimitiveUnit.CSS_PX, 26f, "26px"));        
     }
     
-    public static IdentValue getNextSmaller(IdentValue absFontSize) {
+    public static IdentValue getNextSmaller(final IdentValue absFontSize) {
         IdentValue prev = null;
-        for (IdentValue size : PROPORTIONAL_FONT_SIZES.keySet()) {
+        for (final IdentValue size : PROPORTIONAL_FONT_SIZES.keySet()) {
             if (size == absFontSize) {
                 return prev;
             }
@@ -65,9 +65,9 @@ public class FontSizeHelper {
         return null;
     }
     
-    public static IdentValue getNextLarger(IdentValue absFontSize) {
-        for (Iterator<IdentValue> i = PROPORTIONAL_FONT_SIZES.keySet().iterator(); i.hasNext(); ) {
-            IdentValue ident = i.next();
+    public static IdentValue getNextLarger(final IdentValue absFontSize) {
+        for (final Iterator<IdentValue> i = PROPORTIONAL_FONT_SIZES.keySet().iterator(); i.hasNext(); ) {
+            final IdentValue ident = i.next();
             if (ident == absFontSize && i.hasNext()) {
                 return i.next();
             }
@@ -75,8 +75,8 @@ public class FontSizeHelper {
         return null;
     }
     
-    public static PropertyValue resolveAbsoluteFontSize(IdentValue fontSize, String[] fontFamilies) {
-        boolean monospace = isMonospace(fontFamilies);
+    public static PropertyValue resolveAbsoluteFontSize(final IdentValue fontSize, final String[] fontFamilies) {
+        final boolean monospace = isMonospace(fontFamilies);
         
         if (monospace) {
             return FIXED_FONT_SIZES.get(fontSize);
@@ -85,7 +85,7 @@ public class FontSizeHelper {
         }
     }
     
-    public static PropertyValue getDefaultRelativeFontSize(IdentValue fontSize) {
+    public static PropertyValue getDefaultRelativeFontSize(final IdentValue fontSize) {
         if (fontSize == IdentValue.LARGER) {
             return DEFAULT_LARGER;
         } else if (fontSize == IdentValue.SMALLER) {
@@ -95,8 +95,8 @@ public class FontSizeHelper {
         }
     }
     
-    private static boolean isMonospace(String[] fontFamilies) {
-        for (String fontFamily : fontFamilies) {
+    private static boolean isMonospace(final String[] fontFamilies) {
+        for (final String fontFamily : fontFamilies) {
             if (fontFamily.equals("monospace")) {
                 return true;
             }

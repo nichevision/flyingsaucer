@@ -28,7 +28,7 @@ import com.lowagie.text.DocumentException;
 
 public class ToPDF
 {
-    public static void main(String[] args) throws IOException, DocumentException {
+    public static void main(final String[] args) throws IOException, DocumentException {
         if (args.length != 2) {
             System.err.println("Usage: ... [url] [pdf]");
             System.exit(1);
@@ -36,7 +36,7 @@ public class ToPDF
         String url = args[0];
         if (url.indexOf("://") == -1) {
             // maybe it's a file
-            File f = new File(url);
+            final File f = new File(url);
             if (f.exists()) {
                 url = f.toURI().toURL().toString();
             }
@@ -44,13 +44,13 @@ public class ToPDF
         createPDF(url, args[1]);
     }
     
-    public static void createPDF(String url, String pdf) 
+    public static void createPDF(final String url, final String pdf) 
             throws IOException, DocumentException {
         OutputStream os = null;
         try {
             os = new FileOutputStream(pdf);
             
-            ITextRenderer renderer = new ITextRenderer();
+            final ITextRenderer renderer = new ITextRenderer();
             
             renderer.setDocument(url);
             renderer.layout();
@@ -62,7 +62,7 @@ public class ToPDF
             if (os != null) {
                 try {
                     os.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }

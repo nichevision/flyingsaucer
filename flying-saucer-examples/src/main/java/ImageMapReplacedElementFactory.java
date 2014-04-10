@@ -67,7 +67,7 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
    private static final String POLY_SHAPE = "poly";
    private static final String POLYGON_SHAPE = "polygon";
 
-   public ImageMapReplacedElementFactory(ImageMapListener listener) {
+   public ImageMapReplacedElementFactory(final ImageMapListener listener) {
        super(null);
        if (null == listener) {
          throw new IllegalArgumentException("listener required");
@@ -75,8 +75,8 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
       this.listener = listener;
    }
 
-   public ReplacedElement createReplacedElement(LayoutContext context, BlockBox box, UserAgentCallback uac, int cssWidth, int cssHeight) {
-      Element e = box.getElement();
+   public ReplacedElement createReplacedElement(final LayoutContext context, final BlockBox box, final UserAgentCallback uac, final int cssWidth, final int cssHeight) {
+      final Element e = box.getElement();
       if (e == null) {
          return null;
       } else if (context.getNamespaceHandler().isImageElement(e)) {
@@ -84,7 +84,7 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
          if (isNotBlank(usemapAttr)) {
             final ReplacedElement re = replaceImageMap(uac, context, e, usemapAttr, cssWidth, cssHeight);
             if (context.isInteractive() && re instanceof SwingReplacedElement) {
-                FSCanvas canvas = context.getCanvas();
+                final FSCanvas canvas = context.getCanvas();
                 if (canvas instanceof JComponent) {
                     ((JComponent) canvas).add(((SwingReplacedElement) re).getJComponent());
                 }
@@ -98,7 +98,7 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
       }
    }
 
-    private boolean isNotBlank(String _v) {
+    private boolean isNotBlank(final String _v) {
         if (_v == null || _v.length() == 0) {
             return false;
         }
@@ -110,18 +110,18 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
     }
 
     // See SwingReplacedElementFactory#replaceImage
-   protected ReplacedElement replaceImageMap(UserAgentCallback uac, LayoutContext context, Element elem, String usemapAttr, int cssWidth, int cssHeight) {
+   protected ReplacedElement replaceImageMap(final UserAgentCallback uac, final LayoutContext context, final Element elem, final String usemapAttr, final int cssWidth, final int cssHeight) {
       ReplacedElement re;
       // lookup in cache, or instantiate
       re = lookupImageReplacedElement(elem, "");
       if (re == null) {
          Image im = null;
-         String imageSrc = context.getNamespaceHandler().getImageSourceURI(elem);
+         final String imageSrc = context.getNamespaceHandler().getImageSourceURI(elem);
          if (imageSrc == null || imageSrc.length() == 0) {
             XRLog.layout(Level.WARNING, "No source provided for img element.");
             re = newIrreplaceableImageElement(cssWidth, cssHeight);
          } else {
-            FSImage fsImage = uac.getImageResource(imageSrc).getImage();
+            final FSImage fsImage = uac.getImageResource(imageSrc).getImage();
             if (fsImage != null) {
                im = ((AWTFSImage) fsImage).getImage();
             }
@@ -132,7 +132,7 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
                if (null == map) {
                   final List<Element> maps = elem.ownerDocument().getElementsByTag(MAP_ELT);
                   for (int i = 0; i < maps.size(); i++) {
-                      String mapAttr = maps.get(i).attr(MAP_NAME_ATTR);
+                      final String mapAttr = maps.get(i).attr(MAP_NAME_ATTR);
                       if (areEqual(mapName, mapAttr)) {
                         map = maps.get(i);
                         break;
@@ -152,40 +152,40 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
       return re;
    }
 
-    private static boolean areEqual(String str1, String str2) {
+    private static boolean areEqual(final String str1, final String str2) {
         return (str1 == null && str2 == null) || (str1 != null && str1.equals(str2));
     }
-    private static boolean areEqualIgnoreCase(String str1, String str2) {
+    private static boolean areEqualIgnoreCase(final String str1, final String str2) {
         return (str1 == null && str2 == null) || (str1 != null && str1.equalsIgnoreCase(str2));
     }
 
     private static class ImageMapReplacedElement extends SwingReplacedElement {
       private final Map<Shape, String> areas;
 
-      public ImageMapReplacedElement(Image image, Node map, int targetWidth, int targetHeight, final ImageMapListener listener) {
+      public ImageMapReplacedElement(final Image image, final Node map, final int targetWidth, final int targetHeight, final ImageMapListener listener) {
          super(create(image, targetWidth, targetHeight));
          areas = parseMap(map);
          getJComponent().addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                final Point point = e.getPoint();
                 final Set<Entry<Shape, String>> set = areas.entrySet();
-                for (Entry<Shape, String> entry : set) {
+                for (final Entry<Shape, String> entry : set) {
                     if (entry.getKey().contains(point)) {
                         listener.areaClicked(new ImageMapEvent(this, (String) entry.getValue()));
                     }
                 }
             }
 
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(final MouseEvent e) {
                getJComponent().setCursor(Cursor.getDefaultCursor());
             }
          });
          getJComponent().addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseMoved(MouseEvent e) {
+            public void mouseMoved(final MouseEvent e) {
                final JComponent c = getJComponent();
                final Point point = e.getPoint();
                 final Set<Entry<Shape, String>> set = areas.entrySet();
-                for (Entry<Shape, String> entry : set) {
+                for (final Entry<Shape, String> entry : set) {
                     if ((entry.getKey()).contains(point)) {
                         updateCursor(c, Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                         return;
@@ -196,13 +196,13 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
          });
       }
 
-      private static void updateCursor(JComponent c, Cursor cursor) {
+      private static void updateCursor(final JComponent c, final Cursor cursor) {
          if (!c.getCursor().equals(cursor)) {
             c.setCursor(cursor);
          }
       }
 
-      private static Map<Shape, String> parseMap(Node map) {
+      private static Map<Shape, String> parseMap(final Node map) {
          if (null == map) {
             return Collections.emptyMap();
          } else if (map.childNodeSize() > 0) {
@@ -244,14 +244,14 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
          }
       }
 
-      private static Shape getCoords(String[] coordValues, int length) {
+      private static Shape getCoords(final String[] coordValues, final int length) {
          if ((-1 == length && 0 == coordValues.length % 2) || length == coordValues.length) {
-            int[] coords = new int[coordValues.length];
+            final int[] coords = new int[coordValues.length];
             int i = 0;
-             for (String coord : coordValues) {
+             for (final String coord : coordValues) {
                  try {
                      coords[i++] = Integer.parseInt(coord.trim());
-                 } catch (NumberFormatException e) {
+                 } catch (final NumberFormatException e) {
                      XRLog.layout(Level.WARNING, "Error while parsing shape coords", e);
                      return null;
                  }
@@ -279,7 +279,7 @@ public class ImageMapReplacedElementFactory extends SwingReplacedElementFactory 
          }
       }
 
-      private static JComponent create(Image image, int targetWidth, int targetHeight) {
+      private static JComponent create(final Image image, final int targetWidth, final int targetHeight) {
          final JLabel component = new JLabel(new ImageIcon(image));
          component.setSize(component.getPreferredSize());
          return component;

@@ -39,11 +39,11 @@ import org.xhtmlrenderer.layout.Styleable;
 public class AnonymousBlockBox extends BlockBox {
     private List<InlineBox> _openInlineBoxes;
     
-    public AnonymousBlockBox(Element element) {
+    public AnonymousBlockBox(final Element element) {
         setElement(element);
     }
 
-    public void layout(LayoutContext c) {
+    public void layout(final LayoutContext c) {
         layoutInlineChildren(c, 0, calcInitialBreakAtLine(c), true);
     }
 
@@ -51,8 +51,8 @@ public class AnonymousBlockBox extends BlockBox {
         return getContainingBlock().getContentWidth();
     }
     
-    public Box find(CssContext cssCtx, int absX, int absY, boolean findAnonymous) {
-        Box result = super.find(cssCtx, absX, absY, findAnonymous);
+    public Box find(final CssContext cssCtx, final int absX, final int absY, final boolean findAnonymous) {
+        final Box result = super.find(cssCtx, absX, absY, findAnonymous);
         if (! findAnonymous && result == this) {
             return getParent();
         } else {
@@ -64,15 +64,15 @@ public class AnonymousBlockBox extends BlockBox {
         return _openInlineBoxes;
     }
 
-    public void setOpenInlineBoxes(List<InlineBox> openInlineBoxes) {
+    public void setOpenInlineBoxes(final List<InlineBox> openInlineBoxes) {
         _openInlineBoxes = openInlineBoxes;
     }
     
     public boolean isSkipWhenCollapsingMargins() {
         // An anonymous block will already have its children provided to it
-        for (Iterator<Styleable> i = getInlineContent().iterator(); i.hasNext(); ) {
-            Styleable styleable = (Styleable)i.next();
-            CalculatedStyle style = styleable.getStyle();
+        for (final Iterator<Styleable> i = getInlineContent().iterator(); i.hasNext(); ) {
+            final Styleable styleable = (Styleable)i.next();
+            final CalculatedStyle style = styleable.getStyle();
             if (! (style.isFloated() || style.isAbsolute() || style.isFixed() || style.isRunning())) {
                 return false;
             }
@@ -80,11 +80,11 @@ public class AnonymousBlockBox extends BlockBox {
         return true;
     }
     
-    public void provideSiblingMarginToFloats(int margin) {
-        for (Iterator<Styleable> i = getInlineContent().iterator(); i.hasNext(); ) {
-            Styleable styleable = (Styleable)i.next();
+    public void provideSiblingMarginToFloats(final int margin) {
+        for (final Iterator<Styleable> i = getInlineContent().iterator(); i.hasNext(); ) {
+            final Styleable styleable = (Styleable)i.next();
             if (styleable instanceof BlockBox) {
-                BlockBox b = (BlockBox)styleable;
+                final BlockBox b = (BlockBox)styleable;
                 if (b.isFloated()) {
                     b.getFloatedBoxData().setMarginFromSibling(margin);
                 }
@@ -96,7 +96,7 @@ public class AnonymousBlockBox extends BlockBox {
         return false;
     }
     
-    public void styleText(LayoutContext c) {
+    public void styleText(final LayoutContext c) {
         styleText(c, getParent().getStyle());
     } 
     

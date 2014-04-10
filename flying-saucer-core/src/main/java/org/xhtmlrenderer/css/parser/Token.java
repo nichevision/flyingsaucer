@@ -135,7 +135,7 @@ public class Token {
     private final String _name;
     private final String _externalName;
   
-    private Token(int type, String name, String externalName) {
+    private Token(final int type, final String name, final String externalName) {
         _type = type;
         _name = name;
         _externalName = externalName;
@@ -157,7 +157,7 @@ public class Token {
         return _name;
     }
     
-    public static Token createOtherToken(String value) {
+    public static Token createOtherToken(final String value) {
         return new Token(OTHER, "OTHER", value + " (other)");
     }
 }

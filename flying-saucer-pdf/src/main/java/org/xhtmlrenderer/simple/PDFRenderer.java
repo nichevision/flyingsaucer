@@ -50,7 +50,7 @@ public class PDFRenderer {
      * @throws DocumentException if an error occurred
      *                           while building the Document.
      */
-    public static void renderToPDF(String url, String pdf)
+    public static void renderToPDF(final String url, final String pdf)
             throws IOException, DocumentException {
 
         renderToPDF(url, pdf, null);
@@ -67,10 +67,10 @@ public class PDFRenderer {
      * @throws DocumentException if an error occurred
      *                           while building the Document.
      */
-    public static void renderToPDF(String url, String pdf, Character pdfVersion)
+    public static void renderToPDF(final String url, final String pdf, final Character pdfVersion)
             throws IOException, DocumentException {
 
-        ITextRenderer renderer = new ITextRenderer();
+        final ITextRenderer renderer = new ITextRenderer();
         renderer.setDocument(url);
         if (pdfVersion != null) renderer.setPDFVersion(pdfVersion.charValue());
         doRenderToPDF(renderer, pdf);
@@ -86,7 +86,7 @@ public class PDFRenderer {
      * @throws DocumentException if an error occurred
      *                           while building the Document.
      */
-    public static void renderToPDF(File file, String pdf)
+    public static void renderToPDF(final File file, final String pdf)
             throws IOException, DocumentException {
 
         renderToPDF(file, pdf, null);
@@ -103,10 +103,10 @@ public class PDFRenderer {
      * @throws DocumentException if an error occurred
      *                           while building the Document.
      */
-    public static void renderToPDF(File file, String pdf, Character pdfVersion)
+    public static void renderToPDF(final File file, final String pdf, final Character pdfVersion)
             throws IOException, DocumentException {
 
-        ITextRenderer renderer = new ITextRenderer();
+        final ITextRenderer renderer = new ITextRenderer();
         renderer.setDocument(file);
         if (pdfVersion != null) renderer.setPDFVersion(pdfVersion.charValue());
         doRenderToPDF(renderer, pdf);
@@ -119,7 +119,7 @@ public class PDFRenderer {
      * @throws com.lowagie.text.DocumentException
      * @throws java.io.IOException
      */
-    private static void doRenderToPDF(ITextRenderer renderer, String pdf)
+    private static void doRenderToPDF(final ITextRenderer renderer, final String pdf)
             throws IOException, DocumentException {
         OutputStream os = null;
         try {
@@ -133,7 +133,7 @@ public class PDFRenderer {
             if (os != null) {
                 try {
                     os.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignore
                 }
             }
@@ -151,7 +151,7 @@ public class PDFRenderer {
      * @throws DocumentException if an error occurs while building
      * the document
      */
-    public static void main(String[] args) throws IOException, DocumentException {
+    public static void main(final String[] args) throws IOException, DocumentException {
         if (args.length < 2) {
             usage("Incorrect argument list.");
         }
@@ -159,10 +159,10 @@ public class PDFRenderer {
         if (args.length == 3) {
             pdfVersion = checkVersion(args[2]);
         }
-        String url = args[0];
+        final String url = args[0];
         if (url.indexOf("://") == -1) {
             // maybe it's a file
-            File f = new File(url);
+            final File f = new File(url);
             if (f.exists()) {
                 PDFRenderer.renderToPDF(f, args[1], pdfVersion);
             } else {
@@ -173,7 +173,7 @@ public class PDFRenderer {
         }
     }
 
-    private static Character checkVersion(String version) {
+    private static Character checkVersion(final String version) {
         final Character val = versionMap.get(version.trim());
         if (val == null) {
             usage("Invalid PDF version number; use 1.2 through 1.7");
@@ -184,7 +184,7 @@ public class PDFRenderer {
     /** prints out usage information, with optional error message
      * @param err
      */
-    private static void usage(String err) {
+    private static void usage(final String err) {
         if (err != null && err.length() > 0) {
             System.err.println("==>" + err);
         }

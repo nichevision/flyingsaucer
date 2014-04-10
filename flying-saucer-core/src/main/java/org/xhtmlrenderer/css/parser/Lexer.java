@@ -99,19 +99,19 @@ class Lexer {
     "\3\0\1\54\1\64\1\65\1\66\10\0";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[518];
+    final int [] result = new int[518];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackAction(String packed, int offset, int [] result) {
+  private static int zzUnpackAction(final String packed, final int offset, final int [] result) {
     int i = 0;       /* index in packed string  */
     int j = offset;  /* index in unpacked array */
-    int l = packed.length();
+    final int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
-      int value = packed.charAt(i++);
+      final int value = packed.charAt(i++);
       do result[j++] = value; while (--count > 0);
     }
     return j;
@@ -191,18 +191,18 @@ class Lexer {
     "\0\u779b\0\u77de\0\u7821\0\u7864\0\u78a7\0\u78ea";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[518];
+    final int [] result = new int[518];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackRowMap(String packed, int offset, int [] result) {
+  private static int zzUnpackRowMap(final String packed, final int offset, final int [] result) {
     int i = 0;  /* index in packed string  */
     int j = offset;  /* index in unpacked array */
-    int l = packed.length();
+    final int l = packed.length();
     while (i < l) {
-      int high = packed.charAt(i++) << 16;
+      final int high = packed.charAt(i++) << 16;
       result[j++] = high | packed.charAt(i++);
     }
     return j;
@@ -1431,16 +1431,16 @@ class Lexer {
     "\1\u015f\70\u010b\3\u010c\1\u0163\1\u01ad\6\u010c\1\u015f\67\u010c";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[31021];
+    final int [] result = new int[31021];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackTrans(String packed, int offset, int [] result) {
+  private static int zzUnpackTrans(final String packed, final int offset, final int [] result) {
     int i = 0;       /* index in packed string  */
     int j = offset;  /* index in unpacked array */
-    int l = packed.length();
+    final int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
       int value = packed.charAt(i++);
@@ -1483,19 +1483,19 @@ class Lexer {
     "\10\0";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[518];
+    final int [] result = new int[518];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackAttribute(String packed, int offset, int [] result) {
+  private static int zzUnpackAttribute(final String packed, final int offset, final int [] result) {
     int i = 0;       /* index in packed string  */
     int j = offset;  /* index in unpacked array */
-    int l = packed.length();
+    final int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
-      int value = packed.charAt(i++);
+      final int value = packed.charAt(i++);
       do result[j++] = value; while (--count > 0);
     }
     return j;
@@ -1559,7 +1559,7 @@ class Lexer {
     	return this.yyline;
     }
     
-    public void setyyline(int i) {
+    public void setyyline(final int i) {
     	this.yyline = i;
 	}
 
@@ -1570,7 +1570,7 @@ class Lexer {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  Lexer(java.io.Reader in) {
+  Lexer(final java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -1580,7 +1580,7 @@ class Lexer {
    *
    * @param   in  the java.io.Inputstream to read input from.
    */
-  Lexer(java.io.InputStream in) {
+  Lexer(final java.io.InputStream in) {
     this(new java.io.InputStreamReader(in));
   }
 
@@ -1590,13 +1590,13 @@ class Lexer {
    * @param packed   the packed character translation table
    * @return         the unpacked character translation table
    */
-  private static char [] zzUnpackCMap(String packed) {
-    char [] map = new char[0x10000];
+  private static char [] zzUnpackCMap(final String packed) {
+    final char [] map = new char[0x10000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
     while (i < 204) {
       int  count = packed.charAt(i++);
-      char value = packed.charAt(i++);
+      final char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
     }
     return map;
@@ -1629,13 +1629,13 @@ class Lexer {
     /* is the buffer big enough? */
     if (zzCurrentPos >= zzBuffer.length) {
       /* if not: blow it up */
-      char newBuffer[] = new char[zzCurrentPos*2];
+      final char newBuffer[] = new char[zzCurrentPos*2];
       System.arraycopy(zzBuffer, 0, newBuffer, 0, zzBuffer.length);
       zzBuffer = newBuffer;
     }
 
     /* finally: fill the buffer with new input */
-    int numRead = zzReader.read(zzBuffer, zzEndRead,
+    final int numRead = zzReader.read(zzBuffer, zzEndRead,
                                             zzBuffer.length-zzEndRead);
 
     if (numRead < 0) {
@@ -1670,7 +1670,7 @@ class Lexer {
    *
    * @param reader   the new input stream 
    */
-  public final void yyreset(java.io.Reader reader) {
+  public final void yyreset(final java.io.Reader reader) {
     zzReader = reader;
     zzAtBOL  = true;
     zzAtEOF  = false;
@@ -1694,7 +1694,7 @@ class Lexer {
    *
    * @param newState the new lexical state
    */
-  public final void yybegin(int newState) {
+  public final void yybegin(final int newState) {
     zzLexicalState = newState;
   }
 
@@ -1718,7 +1718,7 @@ class Lexer {
    *
    * @return the character at position pos
    */
-  public final char yycharat(int pos) {
+  public final char yycharat(final int pos) {
     return zzBuffer[zzStartRead+pos];
   }
 
@@ -1745,12 +1745,12 @@ class Lexer {
    *
    * @param   errorCode  the code of the errormessage to display
    */
-  private void zzScanError(int errorCode) {
+  private void zzScanError(final int errorCode) {
     String message;
     try {
       message = ZZ_ERROR_MSG[errorCode];
     }
-    catch (ArrayIndexOutOfBoundsException e) {
+    catch (final ArrayIndexOutOfBoundsException e) {
       message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
     }
 
@@ -1766,7 +1766,7 @@ class Lexer {
    * @param number  the number of characters to be read again.
    *                This number must not be greater than yylength()!
    */
-  public void yypushback(int number)  {
+  public void yypushback(final int number)  {
     if ( number > yylength() )
       zzScanError(ZZ_PUSHBACK_2BIG);
 
@@ -1790,11 +1790,11 @@ class Lexer {
     int zzMarkedPosL;
     int zzEndReadL = zzEndRead;
     char [] zzBufferL = zzBuffer;
-    char [] zzCMapL = ZZ_CMAP;
+    final char [] zzCMapL = ZZ_CMAP;
 
-    int [] zzTransL = ZZ_TRANS;
-    int [] zzRowMapL = ZZ_ROWMAP;
-    int [] zzAttrL = ZZ_ATTRIBUTE;
+    final int [] zzTransL = ZZ_TRANS;
+    final int [] zzRowMapL = ZZ_ROWMAP;
+    final int [] zzAttrL = ZZ_ATTRIBUTE;
 
     while (true) {
       zzMarkedPosL = zzMarkedPos;
@@ -1835,7 +1835,7 @@ class Lexer {
         else if (zzAtEOF)
           zzPeek = false;
         else {
-          boolean eof = zzRefill();
+          final boolean eof = zzRefill();
           zzEndReadL = zzEndRead;
           zzMarkedPosL = zzMarkedPos;
           zzBufferL = zzBuffer;
@@ -1866,7 +1866,7 @@ class Lexer {
             // store back cached positions
             zzCurrentPos  = zzCurrentPosL;
             zzMarkedPos   = zzMarkedPosL;
-            boolean eof = zzRefill();
+            final boolean eof = zzRefill();
             // get translated positions and possibly new buffer
             zzCurrentPosL  = zzCurrentPos;
             zzMarkedPosL   = zzMarkedPos;
@@ -1880,11 +1880,11 @@ class Lexer {
               zzInput = zzBufferL[zzCurrentPosL++];
             }
           }
-          int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
+          final int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
           if (zzNext == -1) break zzForAction;
           zzState = zzNext;
 
-          int zzAttributes = zzAttrL[zzState];
+          final int zzAttributes = zzAttrL[zzState];
           if ( (zzAttributes & 1) == 1 ) {
             zzAction = zzState;
             zzMarkedPosL = zzCurrentPosL;

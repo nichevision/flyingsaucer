@@ -27,7 +27,7 @@ public class CharCounts {
         return _spaceCount;
     }
     
-    public void setSpaceCount(int spaceCount) {
+    public void setSpaceCount(final int spaceCount) {
         _spaceCount = spaceCount;
     }
     
@@ -35,7 +35,7 @@ public class CharCounts {
         return _nonSpaceCount;
     }
     
-    public void setNonSpaceCount(int nonSpaceCount) {
+    public void setNonSpaceCount(final int nonSpaceCount) {
         _nonSpaceCount = nonSpaceCount;
     }
 }

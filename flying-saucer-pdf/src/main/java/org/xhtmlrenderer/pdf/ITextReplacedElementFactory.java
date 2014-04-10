@@ -38,27 +38,27 @@ import org.xhtmlrenderer.util.JsoupUtil;
 import static org.xhtmlrenderer.util.GeneralUtil.ciEquals;
 
 public class ITextReplacedElementFactory implements ReplacedElementFactory {
-    private ITextOutputDevice _outputDevice;
+    private final ITextOutputDevice _outputDevice;
 
     private Map<Element, RadioButtonFormField> _radioButtonsByElem = new HashMap<Element, RadioButtonFormField>();
     private Map<String, List<RadioButtonFormField>> _radioButtonsByName = new HashMap<String, List<RadioButtonFormField>>();
 
-    public ITextReplacedElementFactory(ITextOutputDevice outputDevice) {
+    public ITextReplacedElementFactory(final ITextOutputDevice outputDevice) {
         _outputDevice = outputDevice;
     }
 
-    public ReplacedElement createReplacedElement(LayoutContext c, BlockBox box,
-            UserAgentCallback uac, int cssWidth, int cssHeight) {
-        Element e = box.getElement();
+    public ReplacedElement createReplacedElement(final LayoutContext c, final BlockBox box,
+            final UserAgentCallback uac, final int cssWidth, final int cssHeight) {
+        final Element e = box.getElement();
         if (e == null) {
             return null;
         }
 
-        String nodeName = e.nodeName();
+        final String nodeName = e.nodeName();
         if (nodeName.equals("img")) {
-            String srcAttr = e.attr("src");
+            final String srcAttr = e.attr("src");
             if (srcAttr != null && srcAttr.length() > 0) {
-                FSImage fsImage = uac.getImageResource(srcAttr).getImage();
+                final FSImage fsImage = uac.getImageResource(srcAttr).getImage();
                 if (fsImage != null) {
                     if (cssWidth != -1 || cssHeight != -1) {
                         fsImage.scale(cssWidth, cssHeight);
@@ -68,7 +68,7 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
             }
 
         } else if (nodeName.equals("input")) {
-            String type = e.attr("type");
+            final String type = e.attr("type");
             if (ciEquals(type, "hidden")) {
                 return new EmptyReplacedElement(1, 1);
             } else if (ciEquals(type, "checkbox")) {
@@ -92,9 +92,9 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
              */
         } else if (ciEquals(nodeName, "bookmark")) {
             // HACK Add box as named anchor and return placeholder
-            BookmarkElement result = new BookmarkElement();
+            final BookmarkElement result = new BookmarkElement();
             if (e.hasAttr("name")) {
-                String name = e.attr("name");
+                final String name = e.attr("name");
                 c.addBoxId(name, box);
                 result.setAnchorName(name);
             }
@@ -104,7 +104,7 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
         return null;
     }
 
-    private boolean isTextarea(Element e) {
+    private boolean isTextarea(final Element e) {
         if (!ciEquals(e.nodeName(), "textarea"))
             return false;
 
@@ -121,10 +121,10 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
         return true;
     }
 
-    private void saveResult(Element e, RadioButtonFormField result) {
+    private void saveResult(final Element e, final RadioButtonFormField result) {
         _radioButtonsByElem.put(e, result);
 
-        String fieldName = result.getFieldName(_outputDevice, e);
+        final String fieldName = result.getFieldName(_outputDevice, e);
         List<RadioButtonFormField> fields = _radioButtonsByName.get(fieldName);
         if (fields == null) {
             fields = new ArrayList<RadioButtonFormField>();
@@ -138,11 +138,11 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
         _radioButtonsByName = new HashMap<String, List<RadioButtonFormField>>();
     }
 
-    public void remove(Element e) {
-        RadioButtonFormField field = _radioButtonsByElem.remove(e);
+    public void remove(final Element e) {
+        final RadioButtonFormField field = _radioButtonsByElem.remove(e);
         if (field != null) {
-            String fieldName = field.getFieldName(_outputDevice, e);
-            List<RadioButtonFormField> values = _radioButtonsByName.get(fieldName);
+            final String fieldName = field.getFieldName(_outputDevice, e);
+            final List<RadioButtonFormField> values = _radioButtonsByName.get(fieldName);
             if (values != null) {
                 values.remove(field);
                 if (values.size() == 0) {
@@ -152,10 +152,10 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
         }
     }
 
-    public void remove(String fieldName) {
-        List<RadioButtonFormField> values = _radioButtonsByName.get(fieldName);
+    public void remove(final String fieldName) {
+        final List<RadioButtonFormField> values = _radioButtonsByName.get(fieldName);
         if (values != null) {
-            for (RadioButtonFormField field : values) {
+            for (final RadioButtonFormField field : values) {
                 _radioButtonsByElem.remove(field.getBox().getElement());
             }
         }
@@ -163,11 +163,11 @@ public class ITextReplacedElementFactory implements ReplacedElementFactory {
         _radioButtonsByName.remove(fieldName);
     }
 
-    public List<RadioButtonFormField> getRadioButtons(String name) {
+    public List<RadioButtonFormField> getRadioButtons(final String name) {
         return _radioButtonsByName.get(name);
     }
 
-    public void setFormSubmissionListener(FormSubmissionListener listener) {
+    public void setFormSubmissionListener(final FormSubmissionListener listener) {
         // nothing to do, form submission is handled by pdf readers
     }
 }

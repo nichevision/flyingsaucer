@@ -39,12 +39,12 @@ public class DefaultDocumentListener implements DocumentListener {
     /**
      * {@inheritDoc}
      */
-    public void onLayoutException(Throwable t) {
+    public void onLayoutException(final Throwable t) {
     }
 
     /**
      * {@inheritDoc}
      */
-    public void onRenderException(Throwable t) {
+    public void onRenderException(final Throwable t) {
     }
 }
