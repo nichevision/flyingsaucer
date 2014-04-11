@@ -19,12 +19,11 @@
 
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.extend.ReplacedElementFactory;
-import com.github.danfickle.flyingsaucer.swing.test.DelegatingReplacedElementFactory;
-import com.github.danfickle.flyingsaucer.swing.test.SwingImageReplacer;
 
 import com.github.danfickle.flyingsaucer.swing.XHTMLPanel;
 
 import javax.swing.*;
+
 import java.io.File;
 import java.awt.*;
 import java.awt.event.ActionEvent;
