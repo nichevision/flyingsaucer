@@ -1,10 +1,11 @@
 package org.xhtmlrenderer.demo.browser.actions;
 
 import org.xhtmlrenderer.demo.browser.BrowserStartup;
-import com.github.danfickle.flyingsaucer.swing.test.DocumentDiffTest;
+import org.xhtmlrenderer.demo.browser.DocumentDiffTest;
 import org.xhtmlrenderer.util.Uu;
 
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URL;
