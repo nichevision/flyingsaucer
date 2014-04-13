@@ -1150,7 +1150,7 @@ public class CalculatedStyle {
     }
 
     public boolean isCollapseBorders() {
-        return isIdent(CSSName.BORDER_COLLAPSE, IdentValue.COLLAPSE) && ! isPaginateTable();
+        return isIdent(CSSName.BORDER_COLLAPSE, IdentValue.COLLAPSE);
     }
 
     public int getBorderHSpacing(final CssContext c) {
